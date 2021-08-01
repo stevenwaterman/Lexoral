@@ -81,6 +81,9 @@
   function blur() {
     focus = false;
   }
+
+  // TODO textareas instead of textinput (multiline)
+  // TODO click on options to select
 </script>
 
 <style>
@@ -131,7 +134,7 @@
 </style>
 
 <span class="measurement" bind:clientWidth>{text}</span>
-<div class="wrapper" tabindex="-1">
+<div class="wrapper">
   <input bind:this={input} class:hasOptions={section.options.length > 1} on:focus={onFocus} on:blur={blur} on:keydown={key} bind:value={text} style={`width: ${clientWidth}px;`}>
   {#if focus && section.options.length > 1}
     <div class="popup">
@@ -141,16 +144,3 @@
     </div>
   {/if}
 </div>
-
-
-<!-- <button class:hasOptions={section.options.length > 1} on:click={clicked} on:keydown={keyDown} on:mouseleave="{() => popup = false}">
-  {selectedText}
-  {#if popup}
-    <div class="popup">
-      {#each section.options as option, idx}
-        <button class:selected={selectedOption === idx} on:click="{() => select(idx)}">{option.text}</button>
-      {/each}
-    </div>
-  {/if}
-</button> -->
-
