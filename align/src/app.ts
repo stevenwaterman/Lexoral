@@ -40,6 +40,8 @@ type WordAlternative = {
   }
 };
 
+// TODO capitalisation
+
 export default function start() {
   const data = fs.readFileSync('test.json', 'utf8')
   const json: Response = JSON.parse(data);
@@ -60,6 +62,7 @@ function precompute(result: Result): OutputSection[] {
 
   // If there is only one alternative, there is no aligning to do.
   if (count === 1) {
+    // TODO split on punctuation
     const alternative = alternatives[0];
 
     const { start } = wordTime(alternative.words[0]);
@@ -68,7 +71,7 @@ function precompute(result: Result): OutputSection[] {
     return [{
       startTime: start,
       endTime: end,
-      options: [{text: alternative.transcript, confidence: alternative.confidence}]
+      options: [{text: alternative.transcript.trim(), confidence: alternative.confidence}]
     }];
   }
 
@@ -140,11 +143,11 @@ function precompute(result: Result): OutputSection[] {
 
     // Add the gaps needed
     alignedIdxs.forEach(id => {
-      alignedSequences[id] = plusGaps(alignedSequences[id], addGaps)
+      alignedSequences[id] = plusGaps(alignedSequences[id], addGaps);
     })
 
     // Add the new alignment to the list
-    alignedIdxs.push(newIdx)
+    alignedIdxs.push(newIdx);
   }
 
   // Find the location of any spaces that appear in all the aligned sequences
@@ -273,10 +276,10 @@ function wordTime(word: Word): { start: number, end: number } {
   const startTime = word.startTime as string;
   const endTime = word.endTime as string;
 
-  const startMillis = parseFloat(startTime.substr(0, startTime.length - 1)) * 1000;
-  const endMillis = parseFloat(endTime.substr(0, endTime.length - 1)) * 1000;
+  const startSeconds = parseFloat(startTime.substr(0, startTime.length - 1));
+  const endSeconds = parseFloat(endTime.substr(0, endTime.length - 1));
 
-  return { start: startMillis, end: endMillis };
+  return { start: startSeconds, end: endSeconds };
 }
 
 await start();
