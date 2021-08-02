@@ -82,7 +82,7 @@
     focus = false;
   }
 
-  // TODO textareas instead of textinput (multiline)
+  // TODO unfocussing and refocussing restarts audio
   // TODO click on options to select
 </script>
 
@@ -102,6 +102,7 @@
     padding: 0;
     margin: 0;
     min-width: 8px;
+    max-width: 100%;
   }
 
   .popup {
