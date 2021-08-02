@@ -58,22 +58,22 @@ function transform(response: Response): Output {
 function precompute(result: Result): OutputSection[] {
   if (!result.alternatives) return [];
   const alternatives: Alternative[] = result.alternatives.filter(alternative => alternative.transcript);
+  const alignedSequences: Record<number, string> = align(alternatives);
+  const timedAlternatives = breakSequences(alignedSequences, alternatives);
+  const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
+  const collapsedAlternatives = collapseAlternatives(wordAlternatives);
+  return collapsedAlternatives.map(alternative => ({
+    options: alternative.words.map(({word, confidence}) => ({text: word, confidence})),
+    startTime: alternative.time.start,
+    endTime: alternative.time.end
+  }));
+}
+
+function align(alternatives: Alternative[]): Record<number, string> {
   const count = alternatives.length;
 
-  // If there is only one alternative, there is no aligning to do.
-  if (count === 1) {
-    // TODO split on punctuation
-    const alternative = alternatives[0];
-
-    const { start } = wordTime(alternative.words[0]);
-    const { end } = wordTime(alternative.words[alternative.words.length - 1]);
-
-    return [{
-      startTime: start,
-      endTime: end,
-      options: [{text: alternative.transcript.trim(), confidence: alternative.confidence}]
-    }];
-  }
+  if (count === 0) return {};
+  if (count === 1) return { 0: alternatives[0].transcript };
 
   const defaultAligner = NWaligner();
 
@@ -150,15 +150,10 @@ function precompute(result: Result): OutputSection[] {
     alignedIdxs.push(newIdx);
   }
 
-  // Find the location of any spaces that appear in all the aligned sequences
-  const wordBreakSet: Set<number> = Object.values(alignedSequences).map(sequence => indexesOf(sequence, " ")).reduce((a, b) => intersection(a, b));
-  const wordBreaks = [...wordBreakSet];
-  wordBreaks.sort((a, b) => a - b);
+  return alignedSequences;
+}
 
-  // Break the sequences along those line breaks, then add the timings for each word
-  const wordSequences: string[][] = Object.values(alignedSequences).map(sequence => breakSequence(sequence, wordBreaks));
-  const timedAlternatives: TimedAlternative[] = timeSequences(wordSequences, alternatives[0].words);
-
+function transposeAlternatives(timedAlternatives: TimedAlternative[], alternatives: Alternative[]): WordAlternative[] {
   const confidence = alternatives.map(alternative => alternative.confidence);
 
   // Create a list of the options for each word break
@@ -185,7 +180,10 @@ function precompute(result: Result): OutputSection[] {
     output.words.sort((a, b) => b.confidence - a.confidence);
     wordAlternatives.push(output);
   }
+  return wordAlternatives;
+}
 
+function collapseAlternatives(wordAlternatives: WordAlternative[]): WordAlternative[] {
   // Combine sequential options where there's only one choice and it's not the end of a sentence.
   const collapsedAlternatives: WordAlternative[] = [];
   wordAlternatives.forEach(alternative => {
@@ -208,11 +206,19 @@ function precompute(result: Result): OutputSection[] {
     collapsedAlternatives.push(alternative);
   })
 
-  return collapsedAlternatives.map(alternative => ({
-    options: alternative.words.map(({word, confidence}) => ({text: word, confidence})),
-    startTime: alternative.time.start,
-    endTime: alternative.time.end
-  }));
+  return collapsedAlternatives;
+}
+
+function breakSequences(alignedSequences: Record<number, string>, alternatives: Alternative[]) {
+  // Find the location of any spaces that appear in all the aligned sequences
+  const wordBreakSet: Set<number> = Object.values(alignedSequences).map(sequence => indexesOf(sequence, " ")).reduce((a, b) => intersection(a, b));
+  const wordBreaks = [...wordBreakSet];
+  wordBreaks.sort((a, b) => a - b);
+
+  // Break the sequences along those line breaks, then add the timings for each word
+  const wordSequences: string[][] = Object.values(alignedSequences).map(sequence => breakSequence(sequence, wordBreaks));
+  const timedAlternatives: TimedAlternative[] = timeSequences(wordSequences, alternatives[0].words);
+  return timedAlternatives;
 }
 
 function plusGaps(str: string, gaps: number[]): string {
