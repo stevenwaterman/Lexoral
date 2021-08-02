@@ -1,5 +1,6 @@
 <script lang="ts">
   import Editor from "./Editor.svelte";
+  import { refineTiming } from "./envelope";
   import type { Output } from "./types";
 
   let data: string;

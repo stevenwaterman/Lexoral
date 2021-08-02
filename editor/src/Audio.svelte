@@ -3,7 +3,7 @@
   import { audioStore } from "./state";
 
   let context: AudioContext;
-  let buffer: AudioBuffer;
+  export let buffer: AudioBuffer;
   let stop: () => void = () => {};
 
   onMount(async () => {
@@ -20,9 +20,9 @@
     bufferNode.buffer = buffer;
     bufferNode.connect(context.destination);
     bufferNode.loop = true;
-    const start = Math.max(0, time.start - 0.25);
+    const start = Math.max(0, time.start);
     bufferNode.loopStart = start;
-    bufferNode.loopEnd = Math.min(buffer.duration, time.end + 0.25);
+    bufferNode.loopEnd = Math.min(buffer.duration, time.end);
     bufferNode.start(0, start);
     stop();
     stop = () => bufferNode.stop();
