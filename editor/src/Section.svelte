@@ -1,23 +1,19 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from "svelte";
-  import { audioStore } from "./state";
-
+  import { selectedSectionIdxStore } from "./state";
   import type { OutputSection } from "./types";
+
+  export let idx: number;
   export let section: OutputSection;
 
-  let selectedOption: number = 0;
-  function updateSelectedOption(selectedOption: number) {
-    text = section.options[selectedOption].text;
-  }
-  $: updateSelectedOption(selectedOption);
+  let text: string = "";
 
-  let text: string = section.options[selectedOption].text;
+  let selectedOption: number = 0;
+  let options: OutputSection["options"];
+  $: options = section.options.filter(option => option.text.startsWith(text));
 
   let clientWidth: number;
 
   let input: HTMLInputElement;
-
-  const dispatch = createEventDispatcher();
 
   function key(event: KeyboardEvent) {
     const start = input.selectionStart;
@@ -33,13 +29,12 @@
       }
     }
 
-    if (event.key === "Tab") {
+    if (event.key === "Enter") {
       event.preventDefault();
-      if (event.shiftKey) {
-        prev();
-      } else {
-        next();
+      if (options.length > selectedOption) {
+        text = options[selectedOption].text;
       }
+      next();
     }
 
     if (event.key === "ArrowDown") {
@@ -54,11 +49,11 @@
   }
 
   function next() {
-    dispatch("next");
+    selectedSectionIdxStore.right();
   }
 
   function prev() {
-    dispatch("prev");
+    selectedSectionIdxStore.left();
   }
 
   export function focusStart() {
@@ -71,11 +66,16 @@
     input.setSelectionRange(text.length, text.length, "none");
   }
 
+  $: if(input && $selectedSectionIdxStore?.idx === idx) {
+    if($selectedSectionIdxStore.direction === "left") focusEnd();
+    else focusStart();
+  }
+
   let focus = false;
 
   function onFocus() {
     focus = true;
-    audioStore.set({ start: section.startTime, end: section.endTime });
+    selectedSectionIdxStore.set(idx);
   }
 
   function blur() {
@@ -94,15 +94,16 @@
     user-select: none;
     white-space: pre;
     opacity: 0;
-    padding: 1px;
     pointer-events: none;
+    padding: 1px;
   }
 
   input {
     padding: 0;
     margin: 0;
-    min-width: 8px;
     max-width: 100%;
+    border: none;
+    outline: none;
   }
 
   .popup {
@@ -128,18 +129,14 @@
   .option {
     white-space: nowrap;
   }
-
-  .hasOptions {
-    background-color: lightpink;
-  }
 </style>
 
 <span class="measurement" bind:clientWidth>{text}</span>
 <div class="wrapper">
-  <input bind:this={input} class:hasOptions={section.options.length > 1} on:focus={onFocus} on:blur={blur} on:keydown={key} bind:value={text} style={`width: ${clientWidth}px;`}>
-  {#if focus && section.options.length > 1}
+  <input bind:this={input} class:hidden={text.length === 0 && !focus} on:focus={onFocus} on:blur={blur} on:keydown={key} bind:value={text} style={`width: ${clientWidth || 100}px;`}>
+  {#if focus && options.length}
     <div class="popup">
-      {#each section.options as option, idx}
+      {#each options as option, idx}
         <span class="option" class:highlight={selectedOption === idx}>{option.text}</span>
       {/each}
     </div>

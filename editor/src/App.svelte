@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Editor from "./Editor.svelte";
+  import Editor from "./EditorWrapper.svelte";
   import { refineTiming } from "./envelope";
   import type { Output } from "./types";
 

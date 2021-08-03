@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { audioStore } from "./state";
+  import { loopStore, playingStore } from "./state";
+  import type { AudioState } from "./state";
 
   let context: AudioContext;
   export let buffer: AudioBuffer;
@@ -12,19 +13,34 @@
     buffer = await context.decodeAudioData(audioData);
   })
   
-  let time: {start: number; end: number;};
-  $: time = $audioStore;
+  let loop: AudioState["loop"];
+  $: loop = $loopStore;
 
-  $: if(context && buffer) {
-    const bufferNode = context.createBufferSource();
-    bufferNode.buffer = buffer;
-    bufferNode.connect(context.destination);
-    bufferNode.loop = true;
-    const start = Math.max(0, time.start);
-    bufferNode.loopStart = start;
-    bufferNode.loopEnd = Math.min(buffer.duration, time.end);
-    bufferNode.start(0, start);
-    stop();
-    stop = () => bufferNode.stop();
+  let playing: AudioState["playing"];
+  $: playing = $playingStore;
+
+  $: if (context && buffer) {
+    const oldStop = stop;
+
+    if (playing) {
+      const bufferNode = context.createBufferSource();
+      bufferNode.buffer = buffer;
+      bufferNode.connect(context.destination);
+      bufferNode.loop = true;
+      stop = () => bufferNode.stop();
+
+      if (loop) {
+        const start = Math.max(0, loop.start);
+        bufferNode.loopStart = start;
+        bufferNode.loopEnd = Math.min(buffer.duration, loop.end);
+        bufferNode.start(0, start);
+      } else {
+        bufferNode.start(0);
+      }
+    } else {
+      stop = () => {};
+    }
+
+    oldStop();
   }
 </script>

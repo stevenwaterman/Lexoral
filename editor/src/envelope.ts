@@ -40,8 +40,6 @@ export async function refineTiming(output: Output, buffer: AudioBuffer): Promise
     const startTime = findTiming(envelopeChannel, sampleRate, originalStart, -0.5, 0.02);
     const endTime = findTiming(envelopeChannel, sampleRate, originalEnd, -0.02, 0.5);
 
-    console.log({startTime, endTime, word: section.options[0].text})
-
     return {
       startTime,
       endTime,
