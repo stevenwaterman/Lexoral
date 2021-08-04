@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { loopStore, playingStore } from "./state";
-  import type { AudioState } from "./state";
+  import { audioTimeStore } from "./state";
 
   let context: AudioContext;
   export let buffer: AudioBuffer;
@@ -13,45 +12,22 @@
     buffer = await context.decodeAudioData(audioData);
   })
   
-  let loop: AudioState["loop"];
-  $: loop = $loopStore;
-
-  let playing: AudioState["playing"];
-  $: playing = $playingStore;
+  let timings: {start: number; end: number} | null;
+  $: timings = $audioTimeStore;
 
   $: if (context && buffer) {
-    const oldStop = stop;
-    let timeouts: NodeJS.Timeout[] = [];
+    stop();
+    stop = () => {};
 
-    if (playing) {
+    if (timings) {
       const bufferNode = context.createBufferSource();
       bufferNode.buffer = buffer;
       bufferNode.connect(context.destination);
       bufferNode.loop = true;
-
-      if (loop) {
-        const start = Math.max(0, loop.start);
-        bufferNode.loopStart = start;
-        bufferNode.loopEnd = Math.min(buffer.duration, loop.end);
-        bufferNode.start(0, start);
-        timeouts.push(setInterval(() => {
-          console.log("Looping")
-        }, (loop.end - loop.start) * 1000));
-      } else {
-        bufferNode.start(0);
-        timeouts.push(setTimeout(() => {
-          console.log("Completely finished")
-        }, buffer.duration * 1000));
-      }
-
-      stop = () => {
-        bufferNode.stop();
-        timeouts.forEach(timeout => clearTimeout(timeout));
-      }
-    } else {
-      stop = () => {};
+      bufferNode.loopStart = timings.start;
+      bufferNode.loopEnd = timings.end;
+      bufferNode.start(0, timings.start);
+      stop = () => bufferNode.stop();
     }
-
-    oldStop();
   }
 </script>

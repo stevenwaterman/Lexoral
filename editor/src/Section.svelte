@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { selectedSectionIdxStore } from "./state";
+import { currentSectionStore, directionStore, sectionsStore, selectSection } from "./state";
+
   import type { OutputSection } from "./types";
 
   export let idx: number;
@@ -9,7 +10,7 @@
 
   let selectedOption: number = 0;
   let options: OutputSection["options"];
-  $: options = section.options.filter(option => option.text.startsWith(text));
+  $: options = section.options.filter(option => option.text.toLowerCase().startsWith(text.toLowerCase()) && option.text.length > text.length);
 
   let clientWidth: number;
 
@@ -32,9 +33,10 @@
     if (event.key === "Enter") {
       event.preventDefault();
       if (options.length > selectedOption) {
-        text = options[selectedOption].text;
+        acceptOption();
+      } else {
+        next();
       }
-      next();
     }
 
     if (event.key === "ArrowDown") {
@@ -52,17 +54,31 @@
       if (event.shiftKey) {
         prev();
       } else {
+        if (options.length > selectedOption) {
+          acceptOption()
+        }
         next();
       }
     }
   }
 
+  function acceptOption() {
+    const option = options[selectedOption].text;
+    text += option.substring(text.length, option.length);
+  }
+
   function next() {
-    selectedSectionIdxStore.right();
+    const sections = $sectionsStore;
+    const nextIdx = (((idx + 1) % sections.length) + sections.length) % sections.length;
+    const nextSection = sections[nextIdx];
+    selectSection(nextSection, "start");
   }
 
   function prev() {
-    selectedSectionIdxStore.left();
+    const sections = $sectionsStore;
+    const prevIdx = (((idx - 1) % sections.length) + sections.length) % sections.length;
+    const prevSection = sections[prevIdx];
+    selectSection(prevSection, "end");
   }
 
   export function focusStart() {
@@ -75,24 +91,21 @@
     input.setSelectionRange(text.length, text.length, "none");
   }
 
-  $: if(input && $selectedSectionIdxStore?.idx === idx) {
-    if($selectedSectionIdxStore.direction === "left") focusEnd();
-    else focusStart();
-  }
-
   let focus = false;
-
-  function onFocus() {
-    focus = true;
-    selectedSectionIdxStore.set(idx);
+  $: if(input) {
+    if($currentSectionStore === section) {
+      focus = true;
+      if ($directionStore === "start") focusStart();
+      else focusEnd();
+    } else {
+      focus = false;
+    }
   }
 
-  function blur() {
-    focus = false;
+  function click(event: MouseEvent) {
+    event.preventDefault();
+    selectSection(section, "start");
   }
-
-  // TODO unfocussing and refocussing restarts audio
-  // TODO click on options to select
 </script>
 
 <style>
@@ -113,10 +126,12 @@
     max-width: 100%;
     min-width: 1em;
     border: none;
+    outline: none;
+    border-bottom: 1px solid black;
   }
 
-  .underline {
-    border-bottom: 1px solid black;
+  .focus {
+    background-color: yellow;
   }
 
   .popup {
@@ -146,7 +161,14 @@
 
 <span class="measurement" bind:clientWidth>{text}</span>
 <div class="wrapper">
-  <input bind:this={input} class:underline={!text.length} on:focus={onFocus} on:blur={blur} on:keydown={key} bind:value={text} style={`width: ${clientWidth || 100}px;`}>
+  <input
+    bind:this={input}
+    bind:value={text}
+    class:focus
+    on:keydown={key}
+    on:click={click}
+    style={`width: ${clientWidth}px;`}
+  >
   {#if focus && options.length}
     <div class="popup">
       {#each options as option, idx}

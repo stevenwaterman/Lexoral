@@ -183,6 +183,8 @@ function transposeAlternatives(timedAlternatives: TimedAlternative[], alternativ
   return wordAlternatives;
 }
 
+const punctuation = [".", ",", "?", "!", ";", ":", "-"]
+
 function collapseAlternatives(wordAlternatives: WordAlternative[]): WordAlternative[] {
   // Combine sequential options where there's only one choice and it's not the end of a sentence.
   const collapsedAlternatives: WordAlternative[] = [];
@@ -193,7 +195,7 @@ function collapseAlternatives(wordAlternatives: WordAlternative[]): WordAlternat
         if (last.words.length === 1) {
           const lastWord = last.words[0].word;
           const lastCharacter = lastWord[lastWord.length - 1];
-          if (lastCharacter !== "." && lastCharacter !== "?" && lastCharacter !== "!") {
+          if (!punctuation.includes(lastCharacter)) {
             last.words[0].word = last.words[0].word + " " + alternative.words[0].word;
             last.words[0].confidence = last.words[0].confidence * alternative.words[0].confidence;
             last.time.end = alternative.time.end;
