@@ -21,21 +21,32 @@
 
   $: if (context && buffer) {
     const oldStop = stop;
+    let timeouts: NodeJS.Timeout[] = [];
 
     if (playing) {
       const bufferNode = context.createBufferSource();
       bufferNode.buffer = buffer;
       bufferNode.connect(context.destination);
       bufferNode.loop = true;
-      stop = () => bufferNode.stop();
 
       if (loop) {
         const start = Math.max(0, loop.start);
         bufferNode.loopStart = start;
         bufferNode.loopEnd = Math.min(buffer.duration, loop.end);
         bufferNode.start(0, start);
+        timeouts.push(setInterval(() => {
+          console.log("Looping")
+        }, (loop.end - loop.start) * 1000));
       } else {
         bufferNode.start(0);
+        timeouts.push(setTimeout(() => {
+          console.log("Completely finished")
+        }, buffer.duration * 1000));
+      }
+
+      stop = () => {
+        bufferNode.stop();
+        timeouts.forEach(timeout => clearTimeout(timeout));
       }
     } else {
       stop = () => {};

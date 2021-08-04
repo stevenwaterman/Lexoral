@@ -40,8 +40,6 @@ type WordAlternative = {
   }
 };
 
-// TODO capitalisation
-
 export default function start() {
   const data = fs.readFileSync('test.json', 'utf8')
   const json: Response = JSON.parse(data);
@@ -75,7 +73,9 @@ function align(alternatives: Alternative[]): Record<number, string> {
   if (count === 0) return {};
   if (count === 1) return { 0: alternatives[0].transcript };
 
-  const defaultAligner = NWaligner();
+  const defaultAligner = NWaligner({
+    similarityScoreFunction: (char1: string, char2: string) => (char1.toLowerCase() === char2.toLowerCase() ? 1 : -2)
+  });
 
   let alignments: Array<{
     aIdx: number;

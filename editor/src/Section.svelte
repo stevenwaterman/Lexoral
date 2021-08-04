@@ -46,6 +46,15 @@
       event.preventDefault();
       selectedOption = (selectedOption + section.options.length - 1) % section.options.length;
     }
+
+    if (event.key === "Tab") {
+      event.preventDefault();
+      if (event.shiftKey) {
+        prev();
+      } else {
+        next();
+      }
+    }
   }
 
   function next() {
@@ -102,8 +111,12 @@
     padding: 0;
     margin: 0;
     max-width: 100%;
+    min-width: 1em;
     border: none;
-    outline: none;
+  }
+
+  .underline {
+    border-bottom: 1px solid black;
   }
 
   .popup {
@@ -133,7 +146,7 @@
 
 <span class="measurement" bind:clientWidth>{text}</span>
 <div class="wrapper">
-  <input bind:this={input} class:hidden={text.length === 0 && !focus} on:focus={onFocus} on:blur={blur} on:keydown={key} bind:value={text} style={`width: ${clientWidth || 100}px;`}>
+  <input bind:this={input} class:underline={!text.length} on:focus={onFocus} on:blur={blur} on:keydown={key} bind:value={text} style={`width: ${clientWidth || 100}px;`}>
   {#if focus && options.length}
     <div class="popup">
       {#each options as option, idx}
