@@ -1,18 +1,23 @@
 <script lang="ts">
-import { currentSectionStore, directionStore, sectionsStore, selectSection } from "./state";
-
+  import { currentSectionStore, directionStore, sectionsStore, selectSection } from "./state";
   import type { OutputSection } from "./types";
+  import { modulo, moduloGet } from "./utils";
 
   export let idx: number;
   export let section: OutputSection;
 
   let text: string = "";
 
-  let selectedOption: number = 0;
+  let selectedIdx: number = 0;
+
+  let clampedSelectedIdx: number;
+  $: clampedSelectedIdx = modulo(selectedIdx, options.length);
+
   let options: OutputSection["options"];
   $: options = section.options.filter(option => option.text.toLowerCase().startsWith(text.toLowerCase()) && option.text.length > text.length);
 
-  let clientWidth: number;
+  let selectedOption: OutputSection["options"][number] | null;
+  $: selectedOption = moduloGet(options, selectedIdx);
 
   let input: HTMLInputElement;
 
@@ -32,7 +37,7 @@ import { currentSectionStore, directionStore, sectionsStore, selectSection } fro
 
     if (event.key === "Enter") {
       event.preventDefault();
-      if (options.length > selectedOption) {
+      if (options.length > selectedIdx) {
         acceptOption();
       } else {
         next();
@@ -41,12 +46,12 @@ import { currentSectionStore, directionStore, sectionsStore, selectSection } fro
 
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      selectedOption = (selectedOption + 1) % section.options.length;
+      selectedIdx++;
     }
 
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      selectedOption = (selectedOption + section.options.length - 1) % section.options.length;
+      selectedIdx--;
     }
 
     if (event.key === "Tab") {
@@ -54,7 +59,7 @@ import { currentSectionStore, directionStore, sectionsStore, selectSection } fro
       if (event.shiftKey) {
         prev();
       } else {
-        if (options.length > selectedOption) {
+        if (options.length > selectedIdx) {
           acceptOption()
         }
         next();
@@ -63,71 +68,74 @@ import { currentSectionStore, directionStore, sectionsStore, selectSection } fro
   }
 
   function acceptOption() {
-    const option = options[selectedOption].text;
+    const option = options[selectedIdx].text;
     text += option.substring(text.length, option.length);
   }
 
   function next() {
     const sections = $sectionsStore;
-    const nextIdx = (((idx + 1) % sections.length) + sections.length) % sections.length;
-    const nextSection = sections[nextIdx];
+    const nextSection = moduloGet(sections, idx + 1);
     selectSection(nextSection, "start");
   }
 
   function prev() {
     const sections = $sectionsStore;
-    const prevIdx = (((idx - 1) % sections.length) + sections.length) % sections.length;
-    const prevSection = sections[prevIdx];
+    const prevSection = moduloGet(sections, idx - 1);
     selectSection(prevSection, "end");
   }
 
   export function focusStart() {
-    input.focus();
-    input.setSelectionRange(0, 0, "none");
+    if (!focus) {
+      input.focus();
+      input.setSelectionRange(0, 0, "none");
+    }
   }
 
   export function focusEnd() {
-    input.focus();
-    input.setSelectionRange(text.length, text.length, "none");
+    if (!focus) {
+      input.focus();
+      input.setSelectionRange(text.length, text.length, "none");
+    }
   }
 
   let focus = false;
   $: if(input) {
     if($currentSectionStore === section) {
-      focus = true;
       if ($directionStore === "start") focusStart();
       else focusEnd();
+      focus = true;
     } else {
       focus = false;
     }
   }
 
   function click(event: MouseEvent) {
-    event.preventDefault();
+    focus = true;
     selectSection(section, "start");
   }
 </script>
 
 <style>
   .measurement {
-    position: fixed;
-    top: 0;
-    left: 0;
+    /* position: fixed; */
+    /* top: 0; */
+    /* left: 0; */
     user-select: none;
     white-space: pre;
     opacity: 0;
     pointer-events: none;
-    padding: 1px;
+    /* padding: 1px; */
+    /* min-width: 8px; */
   }
 
   input {
     padding: 0;
     margin: 0;
-    max-width: 100%;
-    min-width: 1em;
+    width: 100%;
     border: none;
     outline: none;
     border-bottom: 1px solid black;
+    position: absolute;
   }
 
   .focus {
@@ -147,7 +155,11 @@ import { currentSectionStore, directionStore, sectionsStore, selectSection } fro
 
   .wrapper {
     position: relative;
-    display: inline;
+    display: inline-flex;
+    flex-direction: column;
+    width: min-content;
+    margin: 2px;
+    max-width: 100%;
   }
 
   .highlight {
@@ -159,20 +171,20 @@ import { currentSectionStore, directionStore, sectionsStore, selectSection } fro
   }
 </style>
 
-<span class="measurement" bind:clientWidth>{text}</span>
+
 <div class="wrapper">
+  <span class="measurement">{text || "W"}</span>
   <input
     bind:this={input}
     bind:value={text}
     class:focus
     on:keydown={key}
     on:click={click}
-    style={`width: ${clientWidth}px;`}
   >
   {#if focus && options.length}
     <div class="popup">
       {#each options as option, idx}
-        <span class="option" class:highlight={selectedOption === idx}>{option.text}</span>
+        <span class="option" class:highlight={clampedSelectedIdx === idx}>{option.text}</span>
       {/each}
     </div>
   {/if}

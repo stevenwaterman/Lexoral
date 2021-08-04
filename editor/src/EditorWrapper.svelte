@@ -2,6 +2,7 @@
   import Audio from "./Audio.svelte";
   import { refineTiming } from "./envelope";
   import Editor from "./Editor.svelte";
+  import Controls from "./Controls.svelte";
   import type { Output } from "./types";
   import { sectionsStore } from "./state";
 
@@ -23,6 +24,7 @@
     Processing audio
   {:then}
     <Editor/>
+    <Controls/>
   {/await}
 {/if}
 

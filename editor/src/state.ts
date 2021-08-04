@@ -23,55 +23,6 @@ function maybeDerived<S extends Stores, T>(
   return derived(stores, actualFunc, initial);
 }
 
-
-
-
-
-
-
-
-
-
-
-// type SelectedIdxState = null | {
-//   idx: number;
-//   direction: "left" | "right"
-// }
-
-// const internalSelectedSectionIdxStore: Writable<SelectedIdxState> = writable(null);
-
-// const clampedSelectedSectionIdxStore: Readable<SelectedIdxState> = derived([sectionsStore, internalSelectedSectionIdxStore], ([sections, selected]) => {
-//   if(!selected) return null;
-//   if(!sections.length) return null;
-//   return {
-//     idx: ((selected.idx % sections.length) + sections.length) % sections.length,
-//     direction: selected.direction
-//   }
-// });
-
-// export const selectedSectionIdxStore: Readable<SelectedIdxState> & {
-//   left: () => void;
-//   right: () => void;
-//   set: (idx: number) => void;
-// } = {
-//   subscribe: clampedSelectedSectionIdxStore.subscribe,
-//   set: (idx: number) => internalSelectedSectionIdxStore.update(state => state?.idx === idx ? state : ({ idx, direction: "left" })),
-//   left: () => internalSelectedSectionIdxStore.update(state => ({idx: state.idx - 1, direction: "left"})),
-//   right: () => internalSelectedSectionIdxStore.update(state => ({idx: state.idx + 1, direction: "right"})),
-// };
-
-// export const selectedSectionStore: Readable<null | {
-//   section: OutputSection,
-//   direction: "left" | "right"
-// }> = derived([sectionsStore, selectedSectionIdxStore], ([sections, selected]) => {
-//   if (selected === null) return null;
-//   if (sections.length === 0) return null;
-//   return {
-//     section: sections[selected.idx],
-//     direction: selected.direction
-//   };
-// });
-
 const internalSectionsStore: Writable<Output> = writable([]);
 
 const playingSectionsStore: Writable<Output | null> = writable([]);
@@ -118,3 +69,7 @@ export const sectionsStore = {
     if (sections.length) selectSection(sections[0], "start");
   }
 }
+export const audioLengthStore: Readable<number> = derived(sectionsStore, sections => {
+  if (!sections?.length) return 0;
+  return sections[sections.length - 1].endTime;
+});

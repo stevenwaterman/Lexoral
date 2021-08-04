@@ -23,10 +23,8 @@
       const bufferNode = context.createBufferSource();
       bufferNode.buffer = buffer;
       bufferNode.connect(context.destination);
-      bufferNode.loop = true;
-      bufferNode.loopStart = timings.start;
-      bufferNode.loopEnd = timings.end;
-      bufferNode.start(0, timings.start);
+      const duration = timings.end - timings.start;
+      bufferNode.start(0, timings.start, duration);
       stop = () => bufferNode.stop();
     }
   }

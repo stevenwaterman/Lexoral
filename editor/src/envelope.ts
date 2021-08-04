@@ -29,6 +29,8 @@ export async function toEnvelope(buffer: AudioBuffer): Promise<AudioBuffer> {
 }
 
 export async function refineTiming(output: Output, buffer: AudioBuffer): Promise<Output> {
+  return output; // TODO work on this more and then re-enable it
+
   const envelope = await toEnvelope(buffer);
   const envelopeChannel = envelope.getChannelData(0);
   const sampleRate = buffer.sampleRate;
