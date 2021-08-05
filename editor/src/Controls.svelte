@@ -1,24 +1,8 @@
 <script lang="ts">
-  import type { Tweened } from "svelte/motion";
-  import { tweened } from "svelte/motion";
-  import type { Readable } from "svelte/store";
-  import { derived } from "svelte/store";
-  import { audioLengthStore, audioTimeStore } from "./state";
+import { audioLengthStore, currentTime, currentTimePercent } from "./state";
 
-  let currentTime: Tweened<number> = tweened(0);
-  let currentTimePercent: Readable<number> = derived([currentTime, audioLengthStore], ([time, length]) => {
-    if (!length) return 0;
-    return 100 * (time / length);
-  })
 
-  audioTimeStore.subscribe(time => {
-    if (time === null) {
-      currentTime.set($currentTime, {duration: 0});
-    } else {
-      currentTime.set(time.start, {duration: 0});
-      currentTime.set(time.end, {duration: (time.end - time.start) * 1000});
-    }
-  })
+
 </script>
 
 <style>

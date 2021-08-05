@@ -12,6 +12,8 @@
     buffer = await context.decodeAudioData(audioData);
   })
   
+  // TODO multiple sections can have the same timings and they don't start playing when you swap between them
+
   let timings: {start: number; end: number} | null;
   $: timings = $audioTimeStore;
 

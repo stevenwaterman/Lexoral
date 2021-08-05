@@ -1,27 +1,10 @@
 import { writable, derived } from "svelte/store";
 import type { Writable, Readable } from "svelte/store";
 import type { Output, OutputSection } from "./types";
+import type { Tweened } from "svelte/motion";
+import { tweened } from "svelte/motion";
+import { maybeDerived } from "./utils";
 
-type Stores = Readable<any> | [Readable<any>, ...Array<Readable<any>>];
-type StoresValues<T> = T extends Readable<infer U> ? U : {
-  [K in keyof T]: T[K] extends Readable<infer U> ? U : never;
-};
-function maybeDerived<S extends Stores, T>(
-  stores: S,
-  initial: T,
-  func: (values: StoresValues<S>) => T,
-  equality: (last: T, next: T) => boolean = (a, b) => (a === b)
-): Readable<T> {
-  let lastValue: T = initial;
-  const actualFunc = (stores: StoresValues<S>, set: (value: T) => void) => {
-    const nextValue = func(stores);
-    if (!equality(lastValue, nextValue)) {
-      lastValue = nextValue;
-      set(nextValue);
-    }
-  };
-  return derived(stores, actualFunc, initial);
-}
 
 const internalSectionsStore: Writable<Output> = writable([]);
 
@@ -55,6 +38,8 @@ export const audioTimeStore: Readable<{start: number; end: number} | null> = may
   (a, b) => a?.start === b?.start && a?.end === b?.end
 );
 
+
+
 export function selectSection(section: OutputSection, direction: "start" | "end") {
   directionStore.set(direction);
   playingSectionsStore.set([section]);
@@ -73,3 +58,19 @@ export const audioLengthStore: Readable<number> = derived(sectionsStore, section
   if (!sections?.length) return 0;
   return sections[sections.length - 1].endTime;
 });
+
+
+export const currentTime: Tweened<number> = tweened(0);
+export const currentTimePercent: Readable<number> = derived([currentTime, audioLengthStore], ([time, length]) => {
+  if (!length) return 0;
+  return 100 * (time / length);
+})
+
+audioTimeStore.subscribe(time => {
+  if (time === null) {
+    currentTime.update(time => time, {duration: 0});
+  } else {
+    currentTime.set(time.start, {duration: 0});
+    currentTime.set(time.end, {duration: (time.end - time.start) * 1000});
+  }
+})

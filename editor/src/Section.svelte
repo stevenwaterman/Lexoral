@@ -39,9 +39,8 @@
       event.preventDefault();
       if (options.length > selectedIdx) {
         acceptOption();
-      } else {
-        next();
       }
+      next();
     }
 
     if (event.key === "ArrowDown") {
@@ -59,9 +58,6 @@
       if (event.shiftKey) {
         prev();
       } else {
-        if (options.length > selectedIdx) {
-          acceptOption()
-        }
         next();
       }
     }
@@ -113,19 +109,20 @@
     focus = true;
     selectSection(section, "start");
   }
+
+  let popup: HTMLDivElement | undefined;
+  let popupBoundingBox: DOMRect | undefined;
+  $: popupBoundingBox = popup?.getBoundingClientRect();
+  let popupRight: number;
+  $: popupRight = popupBoundingBox?.right;
 </script>
 
 <style>
   .measurement {
-    /* position: fixed; */
-    /* top: 0; */
-    /* left: 0; */
     user-select: none;
     white-space: pre;
     opacity: 0;
     pointer-events: none;
-    /* padding: 1px; */
-    /* min-width: 8px; */
   }
 
   input {
@@ -145,12 +142,13 @@
   .popup {
     position: absolute;
     top: 100%;
-    left: 0;
+    max-width: 100vw;
     border: 1px solid black;
     z-index: 1;
     background: white;
     display: flex;
     flex-direction: column;
+    margin-top: 2px;
   }
 
   .wrapper {
@@ -182,7 +180,7 @@
     on:click={click}
   >
   {#if focus && options.length}
-    <div class="popup">
+    <div class="popup" bind:this={popup} style={`left: min(0px, calc(100vw - ${popupRight ?? 0}px));`}>
       {#each options as option, idx}
         <span class="option" class:highlight={clampedSelectedIdx === idx}>{option.text}</span>
       {/each}
