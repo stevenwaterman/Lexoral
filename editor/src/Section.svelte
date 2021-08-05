@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { currentSectionStore, directionStore, sectionsStore, selectSection } from "./state";
+  import { audioBoundsStore, currentSectionStore, directionStore, outputStore } from "./state";
   import type { OutputSection } from "./types";
   import { modulo, moduloGet } from "./utils";
 
@@ -61,6 +61,10 @@
         next();
       }
     }
+
+    if (event.key === "Escape") {
+      audioBoundsStore.set({ start: section.startTime, end: section.endTime });
+    }
   }
 
   function acceptOption() {
@@ -69,15 +73,17 @@
   }
 
   function next() {
-    const sections = $sectionsStore;
+    const sections = $outputStore;
     const nextSection = moduloGet(sections, idx + 1);
-    selectSection(nextSection, "start");
+    directionStore.set("start");
+    audioBoundsStore.set({ start: nextSection.startTime, end: nextSection.endTime });
   }
 
   function prev() {
-    const sections = $sectionsStore;
+    const sections = $outputStore;
     const prevSection = moduloGet(sections, idx - 1);
-    selectSection(prevSection, "end");
+    directionStore.set("end");
+    audioBoundsStore.set({ start: prevSection.startTime, end: prevSection.endTime });
   }
 
   export function focusStart() {
@@ -107,13 +113,13 @@
 
   function click(event: MouseEvent) {
     focus = true;
-    selectSection(section, "start");
+    audioBoundsStore.set({ start: section.startTime, end: section.endTime });
   }
 
   let popup: HTMLDivElement | undefined;
   let popupBoundingBox: DOMRect | undefined;
   $: popupBoundingBox = popup?.getBoundingClientRect();
-  let popupRight: number;
+  let popupRight: number | undefined;
   $: popupRight = popupBoundingBox?.right;
 </script>
 
@@ -177,10 +183,10 @@
     bind:value={text}
     class:focus
     on:keydown={key}
-    on:click={click}
+    on:mousedown={click}
   >
   {#if focus && options.length}
-    <div class="popup" bind:this={popup} style={`left: min(0px, calc(100vw - ${popupRight ?? 0}px));`}>
+    <div class="popup" bind:this={popup} style={`left: min(0px, calc(100vw - 2px - ${popupRight ?? 0}px));`}>
       {#each options as option, idx}
         <span class="option" class:highlight={clampedSelectedIdx === idx}>{option.text}</span>
       {/each}

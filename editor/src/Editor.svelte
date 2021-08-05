@@ -1,6 +1,6 @@
 <script lang="ts">
   import Section from "./Section.svelte";
-  import { sectionsStore } from "./state";
+  import { outputStore } from "./state";
 
   let sectionComponents: Section[] = [];
 </script>
@@ -9,7 +9,7 @@
 
 </style>
 
-{#each $sectionsStore as section, idx}
+{#each $outputStore as section, idx}
   <Section
     idx={idx}
     section={section}

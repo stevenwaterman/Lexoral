@@ -153,6 +153,8 @@ function align(alternatives: Alternative[]): Record<number, string> {
   return alignedSequences;
 }
 
+// TODO confidence is going above 1?
+
 function transposeAlternatives(timedAlternatives: TimedAlternative[], alternatives: Alternative[]): WordAlternative[] {
   const confidence = alternatives.map(alternative => alternative.confidence);
 

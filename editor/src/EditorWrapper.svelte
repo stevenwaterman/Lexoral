@@ -4,14 +4,14 @@
   import Editor from "./Editor.svelte";
   import Controls from "./Controls.svelte";
   import type { Output } from "./types";
-  import { sectionsStore } from "./state";
+  import { outputStore } from "./state";
 
   export let data: Output;
   let buffer: AudioBuffer;
 
   async function postProcess(data: Output, buffer: AudioBuffer) {
     const processed = await refineTiming(data, buffer);
-    sectionsStore.set(processed);
+    outputStore.set(processed);
   }
 </script>
 
