@@ -34,6 +34,9 @@
       } else if (event.key === "ArrowLeft" && start === 0) {
         event.preventDefault();
         prev();
+      } else if (event.key === "Backspace" && start === 0) {
+        event.preventDefault();
+        prev();
       }
     }
 
@@ -176,6 +179,7 @@
 
   .option {
     white-space: nowrap;
+    cursor: pointer;
   }
 </style>
 
@@ -192,7 +196,7 @@
   {#if focus && options.length}
     <div class="popup" bind:this={popup} style={`left: min(0px, calc(100vw - 2px - ${popupRight ?? 0}px));`}>
       {#each options as option, idx}
-        <span class="option" class:highlight={clampedSelectedIdx === idx}>{option}</span>
+        <span class="option" class:highlight={clampedSelectedIdx === idx} on:click="{() => {selectedIdx = idx; acceptOption();}}">{option}</span>
       {/each}
     </div>
   {/if}

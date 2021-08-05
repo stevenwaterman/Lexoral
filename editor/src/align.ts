@@ -12,10 +12,11 @@ export function getOptions(text: string, options: OutputSection["options"]): str
 
   const deduped: string[] = []
   justText.filter(str => {
+    if (text === str) return false;
     if (deduped.includes(str)) return false;
     deduped.push(str);
     return true;
-  })
+  });
   return deduped;
 }
 
