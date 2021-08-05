@@ -29,6 +29,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "fontawesome-svelte": "^2.0.1",
     "query-string": "^7.0.0",
+    "seqalign": "^1.0.3",
     "svelte-css-vars": "0.0.2",
     "svelte-navigator": "^3.1.5"
   }

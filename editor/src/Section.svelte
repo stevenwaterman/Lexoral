@@ -1,10 +1,15 @@
 <script lang="ts">
+  import { getOptions } from "./align";
+
   import { audioBoundsStore, currentSectionStore, directionStore, outputStore } from "./state";
   import type { OutputSection } from "./types";
   import { modulo, moduloGet } from "./utils";
 
   export let idx: number;
   export let section: OutputSection;
+
+  let options: string[];
+  $: options = getOptions(text, section.options);
 
   let text: string = "";
 
@@ -13,10 +18,7 @@
   let clampedSelectedIdx: number;
   $: clampedSelectedIdx = modulo(selectedIdx, options.length);
 
-  let options: OutputSection["options"];
-  $: options = section.options.filter(option => option.text.toLowerCase().startsWith(text.toLowerCase()) && option.text.length > text.length);
-
-  let selectedOption: OutputSection["options"][number] | null;
+  let selectedOption: string | null;
   $: selectedOption = moduloGet(options, selectedIdx);
 
   let input: HTMLInputElement;
@@ -68,7 +70,7 @@
   }
 
   function acceptOption() {
-    const option = options[selectedIdx].text;
+    const option = options[selectedIdx];
     text += option.substring(text.length, option.length);
   }
 
@@ -107,6 +109,7 @@
       else focusEnd();
       focus = true;
     } else {
+      selectedIdx = 0;
       focus = false;
     }
   }
@@ -117,10 +120,11 @@
   }
 
   let popup: HTMLDivElement | undefined;
-  let popupBoundingBox: DOMRect | undefined;
-  $: popupBoundingBox = popup?.getBoundingClientRect();
   let popupRight: number | undefined;
-  $: popupRight = popupBoundingBox?.right;
+  function updatePopupRight(popup: HTMLDivElement, text: string) {
+    popupRight = popup.getBoundingClientRect().right;
+  }
+  $: popup && updatePopupRight(popup, text);
 </script>
 
 <style>
@@ -188,7 +192,7 @@
   {#if focus && options.length}
     <div class="popup" bind:this={popup} style={`left: min(0px, calc(100vw - 2px - ${popupRight ?? 0}px));`}>
       {#each options as option, idx}
-        <span class="option" class:highlight={clampedSelectedIdx === idx}>{option.text}</span>
+        <span class="option" class:highlight={clampedSelectedIdx === idx}>{option}</span>
       {/each}
     </div>
   {/if}
