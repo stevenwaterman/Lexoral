@@ -2,6 +2,6 @@ export type OutputSection = {
   startTime: number;
   endTime: number;
   options: {text: string; confidence: number}[];
-  endParagraph: boolean
+  startParagraph: boolean
 }
 export type Output = OutputSection[];

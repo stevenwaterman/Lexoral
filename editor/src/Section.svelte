@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getOptions } from "./align";
 
-  import { audioBoundsStore, currentSectionStore, directionStore, outputStore } from "./state";
+  import { audioBoundsStore, currentSectionStore, directionStore, outputStore, playingSectionsStore } from "./state";
   import type { OutputSection } from "./types";
   import { modulo, moduloGet } from "./utils";
 
@@ -43,8 +43,7 @@
     if (event.key === "Enter") {
       event.preventDefault();
       if (event.shiftKey) {
-        section.endParagraph = !section.endParagraph;
-        console.log("pressed")
+        section.startParagraph = !section.startParagraph;
       } else {
         if (options.length > selectedIdx) {
           acceptOption();
@@ -157,6 +156,10 @@
     background-color: yellow;
   }
 
+  .playing {
+    background-color: lightblue;
+  }
+
   .popup {
     position: absolute;
     top: 100%;
@@ -186,15 +189,20 @@
     white-space: nowrap;
     cursor: pointer;
   }
+
+  
 </style>
 
-
+{#if section.startParagraph}
+  <br><br>
+{/if}
 <div class="wrapper">
   <span class="measurement">{text || "W"}</span>
   <input
     bind:this={input}
     bind:value={text}
     class:focus
+    class:playing={$playingSectionsStore.includes(section)}
     on:keydown={key}
     on:mousedown={click}
   >
@@ -206,6 +214,3 @@
     </div>
   {/if}
 </div>
-{#if section.endParagraph}
-  <br><br>
-{/if}

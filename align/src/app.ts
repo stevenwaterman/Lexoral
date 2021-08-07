@@ -11,7 +11,7 @@ type OutputSection = {
   startTime: number;
   endTime: number;
   options: {text: string; confidence: number}[];
-  endParagraph: boolean;
+  startParagraph: boolean;
 }
 type Output = OutputSection[];
 
@@ -65,7 +65,7 @@ function precompute(result: Result): OutputSection[] {
     options: alternative.words.map(({word, confidence}) => ({text: word, confidence})),
     startTime: alternative.time.start,
     endTime: alternative.time.end,
-    endParagraph: idx === collapseAlternatives.length - 1
+    startParagraph: idx === 0
   }));
 }
 

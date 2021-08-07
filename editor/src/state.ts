@@ -29,7 +29,7 @@ export const currentTimePercentStore: Readable<number> = derived([currentTimeSto
   return 100 * (time / length);
 });
 
-const playingSectionsStore: Readable<Output> = derived(
+export const playingSectionsStore: Readable<Output> = derived(
   [outputStore, audioBoundsStore],
   ([sections, audioBounds]) => sections.filter(section => section.startTime < audioBounds.end && section.endTime > audioBounds.start)
 )
