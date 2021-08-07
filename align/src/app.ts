@@ -11,6 +11,7 @@ type OutputSection = {
   startTime: number;
   endTime: number;
   options: {text: string; confidence: number}[];
+  endParagraph: boolean;
 }
 type Output = OutputSection[];
 
@@ -60,10 +61,11 @@ function precompute(result: Result): OutputSection[] {
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
   const collapsedAlternatives = collapseAlternatives(wordAlternatives);
-  return collapsedAlternatives.map(alternative => ({
+  return collapsedAlternatives.map((alternative, idx) => ({
     options: alternative.words.map(({word, confidence}) => ({text: word, confidence})),
     startTime: alternative.time.start,
-    endTime: alternative.time.end
+    endTime: alternative.time.end,
+    endParagraph: idx === collapseAlternatives.length - 1
   }));
 }
 

@@ -42,10 +42,15 @@
 
     if (event.key === "Enter") {
       event.preventDefault();
-      if (options.length > selectedIdx) {
-        acceptOption();
+      if (event.shiftKey) {
+        section.endParagraph = !section.endParagraph;
+        console.log("pressed")
+      } else {
+        if (options.length > selectedIdx) {
+          acceptOption();
+        }
+        next();
       }
-      next();
     }
 
     if (event.key === "ArrowDown") {
@@ -201,3 +206,6 @@
     </div>
   {/if}
 </div>
+{#if section.endParagraph}
+  <br><br>
+{/if}
