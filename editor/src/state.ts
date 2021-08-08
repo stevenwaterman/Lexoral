@@ -13,16 +13,10 @@ export const audioLengthStore: Readable<number> = derived(outputStore, sections 
 });
 
 export const audioBoundsStore: Writable<{start: number; end: number}> = writable({ start: 0, end: 0 });
+export const playStore: Writable<boolean> = writable(true);
+export const loopStore: Writable<boolean> = writable(true);
 
 export const currentTimeStore: Tweened<number> = tweened(0);
-audioBoundsStore.subscribe(time => {
-  if (time === null) {
-    currentTimeStore.update(time => time, {duration: 0});
-  } else {
-    currentTimeStore.set(time.start, {duration: 0});
-    currentTimeStore.set(time.end, {duration: (time.end - time.start) * 1000});
-  }
-});
 
 export const currentTimePercentStore: Readable<number> = derived([currentTimeStore, audioLengthStore], ([time, length]) => {
   if (!length) return 0;

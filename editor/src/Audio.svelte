@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { audioBoundsStore } from "./state";
+  import { audioBoundsStore, currentTimeStore, loopStore, playStore } from "./state";
 
   let context: AudioContext;
   export let buffer: AudioBuffer;
-  let stop: () => void = () => {};
+  let stopAudio: () => void = () => {};
 
   onMount(async () => {
     context = new AudioContext();
@@ -14,20 +14,87 @@
   
   // TODO multiple sections can have the same timings and they don't start playing when you swap between them
 
-  let timings: {start: number; end: number} | null;
-  $: timings = $audioBoundsStore;
+  function play(loopStart: number, loopEnd: number, loop: boolean, playbackStart: number) {
+    pause();
 
-  $: if (context && buffer) {
-    stop();
-    stop = () => {};
+    if (!context) return;
+    if (!buffer) return;
 
-    if (timings) {
-      const bufferNode = context.createBufferSource();
-      bufferNode.buffer = buffer;
-      bufferNode.connect(context.destination);
-      const duration = timings.end - timings.start;
-      bufferNode.start(0, timings.start, duration);
-      stop = () => bufferNode.stop();
+    stopAudio = () => {};
+
+    const bufferNode = context.createBufferSource();
+    bufferNode.buffer = buffer;
+    bufferNode.connect(context.destination);
+    bufferNode.loopStart = loopStart;
+    bufferNode.loopEnd = loopEnd;
+    bufferNode.loop = loop;
+
+    if (loop) {
+      bufferNode.start(0, playbackStart);
+    } else {
+      bufferNode.start(0, playbackStart, loopEnd - playbackStart)
+    }
+
+    const firstDurationMs = (loopEnd - playbackStart) * 1000;
+    const latterDurationMs = (loopEnd - loopStart) * 1000;
+
+    currentTimeStore.set(playbackStart, {duration: 0});
+    currentTimeStore.set(loopEnd, {duration: firstDurationMs});
+
+    const resetTime = () => {
+      currentTimeStore.set(loopStart, {duration: 0});
+      currentTimeStore.set(loopEnd, {duration: latterDurationMs});
+    }
+    
+    const timers: NodeJS.Timeout[] = [];
+
+    if (loop) {
+      timers.push(setTimeout(() => {
+        resetTime();
+        timers.push(setInterval(resetTime, latterDurationMs));
+      }, firstDurationMs));
+    }
+    
+
+    stopAudio = () => {
+      bufferNode.stop();
+      currentTimeStore.set($currentTimeStore, {duration: 0});
+      timers.forEach(clearTimeout);
     }
   }
+
+  function pause() {
+    stopAudio();
+    stopAudio = () => {};
+  }
+
+  audioBoundsStore.subscribe(timings => {
+    const playing = $playStore;
+    const loop = $loopStore;
+    if (playing) {
+      play(timings.start, timings.end, loop, timings.start);
+    } else {
+      currentTimeStore.set(timings.start, {duration: 0})
+    }
+  });
+
+  playStore.subscribe(playing => {
+    if (playing) {
+      const timings = $audioBoundsStore;
+      const loop = $loopStore;
+      const currentTime = $currentTimeStore;
+      play(timings.start, timings.end, loop, currentTime);
+    } else {
+      pause();
+    }
+  });
+
+  loopStore.subscribe(loop => {
+    const playing = $playStore;
+    if (playing) {
+      const timings = $audioBoundsStore;
+      const currentTime = $currentTimeStore;
+      play(timings.start, timings.end, loop, currentTime);
+    }
+  })
 </script>

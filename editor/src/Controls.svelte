@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { audioLengthStore, currentTimeStore, currentTimePercentStore, audioBoundsStore } from "./state";
+  import { audioLengthStore, currentTimeStore, currentTimePercentStore, audioBoundsStore, playStore, loopStore } from "./state";
 
   let clientWidth: number;
 
@@ -44,6 +44,10 @@
   function leave() {
     currentMousePercent = null;
     selectionStartPercent = null;
+  }
+
+  function playPause() {
+    playStore.update(play => !play);
   }
 </script>
 
@@ -109,6 +113,9 @@
   <p class="timings">
     {$currentTimeStore.toFixed(2)} / {$audioLengthStore?.toFixed(2)}
   </p>
+
+  <button on:click={playPause}>{$playStore ? "pause" : "play"}</button>
+  <input type="checkbox" bind:checked={$loopStore}>
 </div>
 
 <div class="barContainer" bind:clientWidth on:mousedown={down} on:mouseup={up} on:mousemove={move} on:mouseenter={enter} on:mouseleave={leave}>
