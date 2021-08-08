@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getOptions } from "./align";
+  import Dropdown from "./Dropdown.svelte";
 
   import { audioBoundsStore, currentSectionStore, directionStore, outputStore, playingSectionsStore } from "./state";
   import type { OutputSection } from "./types";
@@ -18,7 +19,7 @@
   let clampedSelectedIdx: number;
   $: clampedSelectedIdx = modulo(selectedIdx, options.length);
 
-  let selectedOption: string | null;
+  let selectedOption: string | undefined;
   $: selectedOption = moduloGet(options, selectedIdx);
 
   let input: HTMLInputElement;
@@ -45,9 +46,7 @@
       if (event.shiftKey) {
         section.startParagraph = !section.startParagraph;
       } else {
-        if (options.length > selectedIdx) {
-          acceptOption();
-        }
+        acceptOption();
         next();
       }
     }
@@ -77,8 +76,17 @@
   }
 
   function acceptOption() {
-    const option = options[selectedIdx];
-    text += option.substring(text.length, option.length);
+    if (!selectedOption) return;
+    text += selectedOption.substring(text.length, selectedOption.length);
+  }
+
+  function clickedOption(event: CustomEvent<number>) {
+    const selectedOption = options[event.detail];
+    text += selectedOption.substring(text.length, selectedOption.length);
+  }
+
+  function selectOption(event: CustomEvent<number>) {
+    selectedIdx = event.detail;
   }
 
   function next() {
@@ -125,13 +133,6 @@
     focus = true;
     audioBoundsStore.set({ start: section.startTime, end: section.endTime });
   }
-
-  let popup: HTMLDivElement | undefined;
-  let popupRight: number | undefined;
-  function updatePopupRight(popup: HTMLDivElement, text: string) {
-    popupRight = popup.getBoundingClientRect().right;
-  }
-  $: popup && updatePopupRight(popup, text);
 </script>
 
 <style>
@@ -160,18 +161,6 @@
     background-color: lightblue;
   }
 
-  .popup {
-    position: absolute;
-    top: 100%;
-    max-width: 100vw;
-    border: 1px solid black;
-    z-index: 1;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    margin-top: 2px;
-  }
-
   .wrapper {
     position: relative;
     display: inline-flex;
@@ -179,18 +168,7 @@
     width: min-content;
     margin: 2px;
     max-width: 100%;
-  }
-
-  .highlight {
-    background-color: lightblue;
-  }
-
-  .option {
-    white-space: nowrap;
-    cursor: pointer;
-  }
-
-  
+  }  
 </style>
 
 {#if section.startParagraph}
@@ -202,15 +180,16 @@
     bind:this={input}
     bind:value={text}
     class:focus
-    class:playing={$playingSectionsStore.includes(section)}
+    class:playing={!focus && $playingSectionsStore.includes(section)}
     on:keydown={key}
     on:mousedown={click}
   >
   {#if focus && options.length}
-    <div class="popup" bind:this={popup} style={`left: min(0px, calc(100vw - 2px - ${popupRight ?? 0}px));`}>
-      {#each options as option, idx}
-        <span class="option" class:highlight={clampedSelectedIdx === idx} on:click="{() => {selectedIdx = idx; acceptOption();}}">{option}</span>
-      {/each}
-    </div>
+    <Dropdown
+      options={options}
+      selectedIdx={clampedSelectedIdx}
+      on:clickedOption={clickedOption}
+      on:selectOption={selectOption}
+    />
   {/if}
 </div>
