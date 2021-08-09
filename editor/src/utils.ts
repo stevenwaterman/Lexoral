@@ -33,3 +33,18 @@ export function maybeDerived<S extends Stores, T>(
   };
   return derived(stores, actualFunc, initial);
 }
+
+export function lastNonNullDerived<T>(
+  stores: Readable<T | null>,
+  initial: T
+): Readable<T> {
+  let lastValue: T = initial;
+  const actualFunc = (value: T, set: (value: T) => void) => {
+    if (value === null) set(lastValue);
+    else {
+      lastValue = value;
+      set(value);
+    }
+  };
+  return derived(stores, actualFunc, initial);
+}

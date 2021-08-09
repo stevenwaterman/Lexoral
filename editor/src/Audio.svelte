@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { audioBoundsStore, currentTimeStore, loopStore, playStore } from "./state";
+  import { audioBoundsStore, currentTimeStore, loopStore, playingStore } from "./state";
 
   let context: AudioContext;
   export let buffer: AudioBuffer;
@@ -69,7 +69,7 @@
   }
 
   audioBoundsStore.subscribe(timings => {
-    const playing = $playStore;
+    const playing = $playingStore;
     const loop = $loopStore;
     if (playing) {
       play(timings.start, timings.end, loop, timings.start);
@@ -78,7 +78,7 @@
     }
   });
 
-  playStore.subscribe(playing => {
+  playingStore.subscribe(playing => {
     if (playing) {
       const timings = $audioBoundsStore;
       const loop = $loopStore;
@@ -90,7 +90,7 @@
   });
 
   loopStore.subscribe(loop => {
-    const playing = $playStore;
+    const playing = $playingStore;
     if (playing) {
       const timings = $audioBoundsStore;
       const currentTime = $currentTimeStore;

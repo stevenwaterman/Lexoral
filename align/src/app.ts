@@ -51,7 +51,7 @@ export default function start() {
 
 function transform(response: Response): Output {
   if (!response.results) return [];
-  return response.results.flatMap(result => precompute(result));
+  const output = response.results.flatMap(result => precompute(result));
 }
 
 function precompute(result: Result): OutputSection[] {

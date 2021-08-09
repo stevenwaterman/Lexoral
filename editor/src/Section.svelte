@@ -171,7 +171,7 @@
   }  
 </style>
 
-{#if section.startParagraph}
+{#if section.startParagraph && idx > 0}
   <br><br>
 {/if}
 <div class="wrapper">

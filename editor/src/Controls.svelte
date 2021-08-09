@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { audioLengthStore, currentTimeStore, currentTimePercentStore, audioBoundsStore, playStore, loopStore } from "./state";
+  import { audioLengthStore, currentTimeStore, currentTimePercentStore, audioBoundsStore, playingStore, loopStore, directionStore, prevSectionStore, nextSectionStore } from "./state";
 
   let clientWidth: number;
 
@@ -47,7 +47,19 @@
   }
 
   function playPause() {
-    playStore.update(play => !play);
+    playingStore.update(play => !play);
+  }
+
+  function skipBack() {
+    const prevSection = $prevSectionStore;
+    directionStore.set("end"); // TODO centralise this functionality
+    audioBoundsStore.set({ start: prevSection.startTime, end: prevSection.endTime });
+  }
+
+  function skipForward() {
+    const nextSection = $nextSectionStore;
+    directionStore.set("end"); // TODO centralise this functionality
+    audioBoundsStore.set({ start: nextSection.startTime, end: nextSection.endTime });
   }
 </script>
 
@@ -114,7 +126,9 @@
     {$currentTimeStore.toFixed(2)} / {$audioLengthStore?.toFixed(2)}
   </p>
 
-  <button on:click={playPause}>{$playStore ? "pause" : "play"}</button>
+  <button on:click={playPause}>{$playingStore ? "pause" : "play"}</button>
+  <button on:click={skipBack}>back</button>
+  <button on:click={skipForward}>forward</button>
   <input type="checkbox" bind:checked={$loopStore}>
 </div>
 
