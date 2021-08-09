@@ -144,6 +144,7 @@
   <button on:click={restart}>restart section</button>
   <label for="loop">loop</label>
   <input id="loop" type="checkbox" bind:checked={$audioStateStore.loop}>
+  <input bind:value={$audioStateStore.speed} type="range" min={0.5} max={2} step={0.25}/>
 </div>
 
 <div class="barContainer" bind:clientWidth on:mousedown={down} on:mouseup={up} on:mousemove={move} on:mouseenter={enter} on:mouseleave={leave}>

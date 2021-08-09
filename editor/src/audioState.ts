@@ -7,13 +7,15 @@ export type AudioState = {
   loopEnd: number;
   loop: boolean;
   paused: boolean;
+  speed: number;
 };
 
 export const audioStateStore: Writable<AudioState> = writable({
   loopStart: 0,
   loopEnd: 0,
   loop: true,
-  paused: false
+  paused: false,
+  speed: 1
 });
 export const currentTimeStore: Tweened<number> = tweened(0);
 
@@ -27,19 +29,20 @@ audioStateStore.subscribe(audioState => {
 
   let playbackStart: number;
   currentTimeStore.update((target, current) => {
-    playbackStart = clamp(current, audioState.loopStart, audioState.loopEnd);
+    if (current > audioState.loopStart && current < audioState.loopEnd) playbackStart = current;
+    else playbackStart = audioState.loopStart;
     return playbackStart;
   }, {duration: 0});
 
   if (audioState.paused) return;
 
-  const firstDurationMs = (audioState.loopEnd - playbackStart) * 1000;
+  const firstDurationMs = (audioState.loopEnd - playbackStart) * 1000 / audioState.speed;
   currentTimeStore.set(audioState.loopEnd, {duration: firstDurationMs});
 
   if (!audioState.loop || audioState.loopEnd === audioState.loopStart) return;
 
   const timers: NodeJS.Timeout[] = [];
-  const latterDurationMs = (audioState.loopEnd - audioState.loopStart) * 1000;
+  const latterDurationMs = (audioState.loopEnd - audioState.loopStart) * 1000 / audioState.speed;
 
   function resetTime() {
     currentTimeStore.set(audioState.loopStart, {duration: 0})

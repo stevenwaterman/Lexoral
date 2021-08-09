@@ -1,42 +1,49 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import * as Tone from "tone";
   import { audioStateStore, currentTimeStore } from "./audioState";
-  import type { AudioState } from "./audioState";
-import { clamp } from "./utils";
+  import { clamp } from "./utils";
 
-  let context: AudioContext;
   export let buffer: AudioBuffer;
-  let stopAudio: () => void = () => {};
+
+  let player: Tone.Player | null;
+  $: player = buffer ? new Tone.Player(buffer) : null;
 
   onMount(async () => {
-    context = new AudioContext();
-    const audioData = await fetch("/assets/audio.mp3").then(res => res.blob()).then(blob => blob.arrayBuffer());
-    buffer = await context.decodeAudioData(audioData);
+    await Tone.start();
+    new Tone.ToneAudioBuffer("/assets/audio.mp3", toneBuffer => {
+      buffer = toneBuffer.get();
+    });
   })
   
-  // TODO multiple sections can have the same timings and they don't start playing when you swap between them
+  let stopAudio: () => void = () => {};
 
-  function play(loopStart: number, loopEnd: number, loop: boolean, playbackStart: number) {
+  function play(loopStart: number, loopEnd: number, loop: boolean, playbackStart: number, speed: number) {
     pause();
 
-    if (!context) return;
-    if (!buffer) return;
+    player.loopStart = loopStart;
+    player.loopEnd = loopEnd;
+    player.loop = loop;
+    player.playbackRate = speed;
 
-    const bufferNode = context.createBufferSource();
-    bufferNode.buffer = buffer;
-    bufferNode.connect(context.destination);
-    bufferNode.loopStart = loopStart;
-    bufferNode.loopEnd = loopEnd;
-    bufferNode.loop = loop;
+    const octaves = Math.log2(speed);
+    const pitchShift: Tone.PitchShift = new Tone.PitchShift({
+      pitch: -octaves * 12,
+      delayTime: 0,
+      windowSize: 0.2 / speed
+    }).toDestination();
+
+    player.connect(pitchShift);
 
     if (loop) {
-      bufferNode.start(0, playbackStart);
+      player.start(undefined, playbackStart);
     } else {
-      bufferNode.start(0, playbackStart, loopEnd - playbackStart)
+      player.start(undefined, playbackStart, loopEnd - playbackStart)
     }
 
     stopAudio = () => {
-      bufferNode.stop();
+      pitchShift.dispose();
+      player.stop();
     }
   }
 
@@ -49,6 +56,6 @@ import { clamp } from "./utils";
     if (audioState.loopStart === audioState.loopEnd) return;
     
     if (audioState.paused) pause()
-    else play(audioState.loopStart, audioState.loopEnd, audioState.loop, clamp($currentTimeStore, audioState.loopStart, audioState.loopEnd));
+    else play(audioState.loopStart, audioState.loopEnd, audioState.loop, clamp($currentTimeStore, audioState.loopStart, audioState.loopEnd), audioState.speed);
   })
 </script>
