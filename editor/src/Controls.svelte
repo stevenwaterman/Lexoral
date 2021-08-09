@@ -1,11 +1,10 @@
 <script lang="ts">
   import { audioStateStore, currentTimeStore } from "./audioState";
-  import { directionStore, prevSectionStore, nextSectionStore, audioLengthStore, currentTimePercentStore } from "./state";
+  import { directionStore, prevSectionStore, nextSectionStore, audioLengthStore, currentTimePercentStore, hoveredFractionStore } from "./state";
 
   let clientWidth: number;
 
   let selectionStartPercent: number | null = null;
-  let currentMousePercent: number | null = null;
 
   function down({ offsetX }: MouseEvent) {
     selectionStartPercent = 100 * offsetX / clientWidth;
@@ -23,14 +22,14 @@
     if (endTime - startTime > 0.01) {
       audioStateStore.update(state => ({ 
         ...state,
-        start: startTime,
-        end: endTime
+        loopStart: startTime,
+        loopEnd: endTime
       }));
     } else {
       audioStateStore.update(state => ({
         ...state,
-        start: $audioLengthStore * fraction,
-        end: $audioLengthStore
+        loopStart: $audioLengthStore * fraction,
+        loopEnd: $audioLengthStore
       }));
     }
 
@@ -38,14 +37,14 @@
   }
 
   function move({ offsetX }: MouseEvent) {
-    currentMousePercent = 100 * (offsetX / clientWidth);
+    hoveredFractionStore.set(offsetX / clientWidth);
   }
 
   function enter() {
   }
 
   function leave() {
-    currentMousePercent = null;
+    hoveredFractionStore.set(null);
     selectionStartPercent = null;
   }
 
@@ -63,6 +62,15 @@
     const nextSection = $nextSectionStore;
     directionStore.set("end"); // TODO centralise this functionality
     audioStateStore.update(state => ({ ...state, loopStart: nextSection.startTime, loopEnd: nextSection.endTime }));
+  }
+
+  function playAll() {
+    audioStateStore.update(state => ({...state, loopStart: 0, loopEnd: $audioLengthStore }));
+  }
+
+  function restart() {
+    currentTimeStore.set(0, {duration: 0});
+    audioStateStore.update(state => state);
   }
 </script>
 
@@ -129,18 +137,21 @@
     {$currentTimeStore.toFixed(2)} / {$audioLengthStore?.toFixed(2)}
   </p>
 
-  <button on:click={playPause}>{$audioStateStore.paused ? "play" : "paused"}</button>
+  <button on:click={playPause}>{$audioStateStore.paused ? "play" : "pause"}</button>
   <button on:click={skipBack}>back</button>
   <button on:click={skipForward}>forward</button>
-  <input type="checkbox" bind:checked={$audioStateStore.loop}>
+  <button on:click={playAll}>play all</button>
+  <button on:click={restart}>restart section</button>
+  <label for="loop">loop</label>
+  <input id="loop" type="checkbox" bind:checked={$audioStateStore.loop}>
 </div>
 
 <div class="barContainer" bind:clientWidth on:mousedown={down} on:mouseup={up} on:mousemove={move} on:mouseenter={enter} on:mouseleave={leave}>
-  {#if currentMousePercent !== null}
-    <div class="bar indicator" style={`left: ${currentMousePercent}%`}/>
+  {#if $hoveredFractionStore !== null}
+    <div class="bar indicator" style={`left: ${$hoveredFractionStore * 100}%`}/>
 
     {#if selectionStartPercent !== null}
-      <div class="bar selection" style={`left: ${Math.min(selectionStartPercent, currentMousePercent)}%; width: ${Math.abs(currentMousePercent - selectionStartPercent)}%`}/>
+      <div class="bar selection" style={`left: ${Math.min(selectionStartPercent, $hoveredFractionStore * 100)}%; width: ${Math.abs($hoveredFractionStore * 100 - selectionStartPercent)}%`}/>
     {/if}
   {/if}
   <div class="bar bounds" style={`left: ${100 * $audioStateStore.loopStart / $audioLengthStore}%; width: ${100 * ($audioStateStore.loopEnd - $audioStateStore.loopStart) / $audioLengthStore}%`}/>

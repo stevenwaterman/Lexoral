@@ -46,6 +46,8 @@ import { clamp } from "./utils";
   }
 
   audioStateStore.subscribe(audioState => {
+    if (audioState.loopStart === audioState.loopEnd) return;
+    
     if (audioState.paused) pause()
     else play(audioState.loopStart, audioState.loopEnd, audioState.loop, clamp($currentTimeStore, audioState.loopStart, audioState.loopEnd));
   })

@@ -3,6 +3,7 @@ import type { Writable, Readable } from "svelte/store";
 import type { Output, OutputSection } from "./types";
 import { maybeDerived } from "./utils";
 import { currentTimeStore, audioStateStore } from "./audioState";
+import { stat } from "fs";
 
 export const outputStore: Writable<Output> = writable([]);
 
@@ -10,6 +11,9 @@ export const audioLengthStore: Readable<number> = derived(outputStore, sections 
   if (!sections?.length) return 0;
   return sections[sections.length - 1].endTime;
 });
+audioLengthStore.subscribe(audioLength => {
+  audioStateStore.update(state => ({ ...state, loopStart: 0, loopEnd: audioLength }));
+})
 
 export const currentTimePercentStore: Readable<number> = derived([currentTimeStore, audioLengthStore], ([time, length]) => {
   if (!length) return 0;
@@ -47,3 +51,13 @@ export const nextSectionStore: Readable<OutputSection> = derived(
     return sections[nextIdx];
   }
 );
+
+export const hoveredFractionStore: Writable<number | null> = writable(null);
+const hoveredTimeStore: Readable<number | null> = derived([audioLengthStore, hoveredFractionStore], ([audioLength, hoveredFraction]) => {
+  if (hoveredFraction === null) return null;
+  return audioLength * hoveredFraction;
+});
+export const hoveredSectionStore: Readable<OutputSection | null> = derived([outputStore, hoveredTimeStore], ([sections, hoveredTime]) => {
+  if (hoveredTime === null) return null;
+  return sections.find(section => section.startTime <= hoveredTime && section.endTime >= hoveredTime) ?? null;
+})

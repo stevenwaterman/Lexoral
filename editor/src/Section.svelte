@@ -3,7 +3,7 @@
   import { audioStateStore } from "./audioState";
   import Dropdown from "./Dropdown.svelte";
 
-  import { currentSectionStore, directionStore, outputStore, playingSectionsStore } from "./state";
+  import { currentSectionStore, directionStore, hoveredSectionStore, outputStore, playingSectionsStore } from "./state";
   import type { OutputSection } from "./types";
   import { modulo, moduloGet } from "./utils";
 
@@ -158,6 +158,10 @@
     background-color: yellow;
   }
 
+  .hover {
+    background-color: lightgreen;
+  }
+
   .playing {
     background-color: lightblue;
   }
@@ -181,6 +185,7 @@
     bind:this={input}
     bind:value={text}
     class:focus
+    class:hover={!focus && $hoveredSectionStore === section}
     class:playing={!focus && $playingSectionsStore.includes(section)}
     on:keydown={key}
     on:mousedown={click}

@@ -2,7 +2,6 @@ import { writable, Writable } from "svelte/store";
 import { Tweened, tweened } from "svelte/motion";
 import { clamp } from "./utils";
 
-
 export type AudioState = {
   loopStart: number;
   loopEnd: number;
@@ -21,6 +20,8 @@ export const currentTimeStore: Tweened<number> = tweened(0);
 let cancelTimers: () => void = () => {};
 
 audioStateStore.subscribe(audioState => {
+  if ("start" in audioState) throw new Error("start")
+
   cancelTimers();
   cancelTimers = () => {};
 
