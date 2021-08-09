@@ -1,8 +1,9 @@
 <script lang="ts">
   import { getOptions } from "./align";
+  import { audioStateStore } from "./audioState";
   import Dropdown from "./Dropdown.svelte";
 
-  import { audioBoundsStore, currentSectionStore, directionStore, outputStore, playingSectionsStore } from "./state";
+  import { currentSectionStore, directionStore, outputStore, playingSectionsStore } from "./state";
   import type { OutputSection } from "./types";
   import { modulo, moduloGet } from "./utils";
 
@@ -70,9 +71,9 @@
       }
     }
 
-    if (event.key === "Escape") {
-      audioBoundsStore.set({ start: section.startTime, end: section.endTime });
-    }
+    // if (event.key === "Escape") {
+    //   audioStateStore.update(state => ({ ...state, start: section.startTime, end: section.endTime }));
+    // }
   }
 
   function acceptOption() {
@@ -93,14 +94,14 @@
     const sections = $outputStore;
     const nextSection = moduloGet(sections, idx + 1);
     directionStore.set("start");
-    audioBoundsStore.set({ start: nextSection.startTime, end: nextSection.endTime });
+    audioStateStore.update(state => ({ ...state, loopStart: nextSection.startTime, loopEnd: nextSection.endTime }));
   }
 
   function prev() {
     const sections = $outputStore;
     const prevSection = moduloGet(sections, idx - 1);
     directionStore.set("end");
-    audioBoundsStore.set({ start: prevSection.startTime, end: prevSection.endTime });
+    audioStateStore.update(state => ({ ...state, loopStart: prevSection.startTime, loopEnd: prevSection.endTime }));
   }
 
   export function focusStart() {
@@ -131,7 +132,7 @@
 
   function click(event: MouseEvent) {
     focus = true;
-    audioBoundsStore.set({ start: section.startTime, end: section.endTime });
+    audioStateStore.update(state => ({ ...state, loopStart: section.startTime, loopEnd: section.endTime }));
   }
 </script>
 

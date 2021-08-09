@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { audioLengthStore, currentTimeStore, currentTimePercentStore, audioBoundsStore, playingStore, loopStore, directionStore, prevSectionStore, nextSectionStore } from "./state";
+  import { audioStateStore, currentTimeStore } from "./audioState";
+  import { directionStore, prevSectionStore, nextSectionStore, audioLengthStore, currentTimePercentStore } from "./state";
 
   let clientWidth: number;
 
@@ -20,15 +21,17 @@
     const endTime = $audioLengthStore * Math.max(fraction, selectionStartFraction);
 
     if (endTime - startTime > 0.01) {
-      audioBoundsStore.set({ 
+      audioStateStore.update(state => ({ 
+        ...state,
         start: startTime,
         end: endTime
-      });
+      }));
     } else {
-      audioBoundsStore.set({ 
+      audioStateStore.update(state => ({
+        ...state,
         start: $audioLengthStore * fraction,
         end: $audioLengthStore
-      });
+      }));
     }
 
     selectionStartPercent = null;
@@ -47,19 +50,19 @@
   }
 
   function playPause() {
-    playingStore.update(play => !play);
+    audioStateStore.update(state => ({...state, paused: !state.paused}));
   }
 
   function skipBack() {
     const prevSection = $prevSectionStore;
     directionStore.set("end"); // TODO centralise this functionality
-    audioBoundsStore.set({ start: prevSection.startTime, end: prevSection.endTime });
+    audioStateStore.update(state => ({ ...state, loopStart: prevSection.startTime, loopEnd: prevSection.endTime }));
   }
 
   function skipForward() {
     const nextSection = $nextSectionStore;
     directionStore.set("end"); // TODO centralise this functionality
-    audioBoundsStore.set({ start: nextSection.startTime, end: nextSection.endTime });
+    audioStateStore.update(state => ({ ...state, loopStart: nextSection.startTime, loopEnd: nextSection.endTime }));
   }
 </script>
 
@@ -126,10 +129,10 @@
     {$currentTimeStore.toFixed(2)} / {$audioLengthStore?.toFixed(2)}
   </p>
 
-  <button on:click={playPause}>{$playingStore ? "pause" : "play"}</button>
+  <button on:click={playPause}>{$audioStateStore.paused ? "play" : "paused"}</button>
   <button on:click={skipBack}>back</button>
   <button on:click={skipForward}>forward</button>
-  <input type="checkbox" bind:checked={$loopStore}>
+  <input type="checkbox" bind:checked={$audioStateStore.loop}>
 </div>
 
 <div class="barContainer" bind:clientWidth on:mousedown={down} on:mouseup={up} on:mousemove={move} on:mouseenter={enter} on:mouseleave={leave}>
@@ -140,7 +143,7 @@
       <div class="bar selection" style={`left: ${Math.min(selectionStartPercent, currentMousePercent)}%; width: ${Math.abs(currentMousePercent - selectionStartPercent)}%`}/>
     {/if}
   {/if}
-  <div class="bar bounds" style={`left: ${100 * $audioBoundsStore.start / $audioLengthStore}%; width: ${100 * ($audioBoundsStore.end - $audioBoundsStore.start) / $audioLengthStore}%`}/>
+  <div class="bar bounds" style={`left: ${100 * $audioStateStore.loopStart / $audioLengthStore}%; width: ${100 * ($audioStateStore.loopEnd - $audioStateStore.loopStart) / $audioLengthStore}%`}/>
   <div class="bar fg" style={`width: ${$currentTimePercentStore}%`}/>
   <div class="bar bg"/>
 </div>

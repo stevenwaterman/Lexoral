@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { audioBoundsStore, currentTimeStore, loopStore, playingStore } from "./state";
+  import { audioStateStore, currentTimeStore } from "./audioState";
+  import type { AudioState } from "./audioState";
+import { clamp } from "./utils";
 
   let context: AudioContext;
   export let buffer: AudioBuffer;
@@ -20,8 +22,6 @@
     if (!context) return;
     if (!buffer) return;
 
-    stopAudio = () => {};
-
     const bufferNode = context.createBufferSource();
     bufferNode.buffer = buffer;
     bufferNode.connect(context.destination);
@@ -35,31 +35,8 @@
       bufferNode.start(0, playbackStart, loopEnd - playbackStart)
     }
 
-    const firstDurationMs = (loopEnd - playbackStart) * 1000;
-    const latterDurationMs = (loopEnd - loopStart) * 1000;
-
-    currentTimeStore.set(playbackStart, {duration: 0});
-    currentTimeStore.set(loopEnd, {duration: firstDurationMs});
-
-    const resetTime = () => {
-      currentTimeStore.set(loopStart, {duration: 0});
-      currentTimeStore.set(loopEnd, {duration: latterDurationMs});
-    }
-    
-    const timers: NodeJS.Timeout[] = [];
-
-    if (loop) {
-      timers.push(setTimeout(() => {
-        resetTime();
-        timers.push(setInterval(resetTime, latterDurationMs));
-      }, firstDurationMs));
-    }
-    
-
     stopAudio = () => {
       bufferNode.stop();
-      currentTimeStore.set($currentTimeStore, {duration: 0});
-      timers.forEach(clearTimeout);
     }
   }
 
@@ -68,33 +45,8 @@
     stopAudio = () => {};
   }
 
-  audioBoundsStore.subscribe(timings => {
-    const playing = $playingStore;
-    const loop = $loopStore;
-    if (playing) {
-      play(timings.start, timings.end, loop, timings.start);
-    } else {
-      currentTimeStore.set(timings.start, {duration: 0})
-    }
-  });
-
-  playingStore.subscribe(playing => {
-    if (playing) {
-      const timings = $audioBoundsStore;
-      const loop = $loopStore;
-      const currentTime = $currentTimeStore;
-      play(timings.start, timings.end, loop, currentTime);
-    } else {
-      pause();
-    }
-  });
-
-  loopStore.subscribe(loop => {
-    const playing = $playingStore;
-    if (playing) {
-      const timings = $audioBoundsStore;
-      const currentTime = $currentTimeStore;
-      play(timings.start, timings.end, loop, currentTime);
-    }
+  audioStateStore.subscribe(audioState => {
+    if (audioState.paused) pause()
+    else play(audioState.loopStart, audioState.loopEnd, audioState.loop, clamp($currentTimeStore, audioState.loopStart, audioState.loopEnd));
   })
 </script>
