@@ -1,19 +1,45 @@
 <script lang="ts">
   import { getOptions } from "./align";
-  import { audioStateStore } from "./audioState";
   import Dropdown from "./Dropdown.svelte";
-
-  import { currentSectionStore, directionStore, hoveredSectionStore, outputStore, playingSectionsStore } from "./state";
+  import { navPlayingSectionsStore } from "./audio";
+  import { editSelectedSectionStore, modeStore, navDragSelectingStore, selectionStore, selectionStoreSorted, selectionCountStore, outputStore, editDirectionStore } from "./state";
   import type { OutputSection } from "./types";
-  import { modulo, moduloGet } from "./utils";
+  import { clamp, modulo, moduloGet } from "./utils";
 
-  export let idx: number;
   export let section: OutputSection;
+  let text: string = "";
+  let input: HTMLInputElement;
+
+  $: if ($modeStore === "nav") input?.blur();
+
+  let selected: boolean;
+  $: selected = $selectionStoreSorted.startIdx <= section.idx && $selectionStoreSorted.endIdx >= section.idx;
+
+  let navOnlySelected: boolean;
+  $: navOnlySelected = $modeStore === "nav" && selected && $selectionCountStore === 1;
+
+  let navPlaying: boolean;
+  $: navPlaying = selected && $navPlayingSectionsStore[section.idx] === true;
+
+  let editing: boolean;
+  $: editing = $modeStore === "edit" && $editSelectedSectionStore === section;
+
+  let navDropdownVisible: boolean;
+  $: navDropdownVisible = navPlaying || navOnlySelected;
+
+  let editDropdownVisible: boolean;
+  $: editDropdownVisible = editing;
+
+  let anyDropdownVisible: boolean;
+  $: anyDropdownVisible = navDropdownVisible || editDropdownVisible;
+
+  $: if(input && editing) {
+    if ($editDirectionStore === "start") focusStart();
+    else focusEnd();
+  }
 
   let options: string[];
   $: options = getOptions(text, section.options);
-
-  let text: string = "";
 
   let selectedIdx: number = 0;
 
@@ -23,9 +49,10 @@
   let selectedOption: string | undefined;
   $: selectedOption = moduloGet(options, selectedIdx);
 
-  let input: HTMLInputElement;
+  $: if (!anyDropdownVisible) selectedIdx = 0;
 
   function key(event: KeyboardEvent) {
+    if ($modeStore === "nav") return;
     const start = input.selectionStart;
     const end = input.selectionEnd;
 
@@ -44,12 +71,8 @@
 
     if (event.key === "Enter") {
       event.preventDefault();
-      if (event.shiftKey) {
-        section.startParagraph = !section.startParagraph;
-      } else {
-        acceptOption();
-        next();
-      }
+      acceptOption();
+      next();
     }
 
     if (event.key === "ArrowDown") {
@@ -71,68 +94,91 @@
       }
     }
 
-    // if (event.key === "Escape") {
-    //   audioStateStore.update(state => ({ ...state, start: section.startTime, end: section.endTime }));
-    // }
+    if (event.key === "Escape") {
+      modeStore.set("nav");
+    }
+  }
+
+  function prev() {
+    editDirectionStore.set("end");
+    const newCursor = section.idx - 1;
+    const clampedCursor = clamp(newCursor, 0, $outputStore.length - 1)
+    selectionStore.set({ startIdx: clampedCursor, endIdx: clampedCursor });
+  }
+
+  function next() {
+    editDirectionStore.set("start");
+    const newCursor = section.idx + 1;
+    const clampedCursor = clamp(newCursor, 0, $outputStore.length - 1)
+    selectionStore.set({ startIdx: clampedCursor, endIdx: clampedCursor });
   }
 
   function acceptOption() {
     if (!selectedOption) return;
     text += selectedOption.substring(text.length, selectedOption.length);
+    focusEnd();
   }
 
   function clickedOption(event: CustomEvent<number>) {
+    if ($modeStore === "nav") return;
     const selectedOption = options[event.detail];
     text += selectedOption.substring(text.length, selectedOption.length);
+    focusEnd(true);
   }
 
   function selectOption(event: CustomEvent<number>) {
     selectedIdx = event.detail;
   }
 
-  function next() {
-    const sections = $outputStore;
-    const nextSection = moduloGet(sections, idx + 1);
-    directionStore.set("start");
-    audioStateStore.update(state => ({ ...state, loopStart: nextSection.startTime, loopEnd: nextSection.endTime }));
+  export function focusStart(force: boolean = false) {
+    setTimeout(() => {
+      if (force || !inputFocussed) {
+        input.focus();
+        input.setSelectionRange(0, 0, "none");
+      }
+    })
   }
 
-  function prev() {
-    const sections = $outputStore;
-    const prevSection = moduloGet(sections, idx - 1);
-    directionStore.set("end");
-    audioStateStore.update(state => ({ ...state, loopStart: prevSection.startTime, loopEnd: prevSection.endTime }));
+  export function focusEnd(force: boolean = false) {
+    setTimeout(() => {
+      if (force || !inputFocussed) {
+        input.focus();
+        input.setSelectionRange(text.length, text.length, "none");
+      }
+    })
   }
 
-  export function focusStart() {
-    if (!focus) {
-      input.focus();
-      input.setSelectionRange(0, 0, "none");
-    }
-  }
-
-  export function focusEnd() {
-    if (!focus) {
-      input.focus();
-      input.setSelectionRange(text.length, text.length, "none");
-    }
-  }
-
-  let focus = false;
-  $: if(input) {
-    if($currentSectionStore === section) {
-      if ($directionStore === "start") focusStart();
-      else focusEnd();
-      focus = true;
-    } else {
-      selectedIdx = 0;
-      focus = false;
-    }
-  }
+  let inputFocussed: boolean = false;
 
   function click(event: MouseEvent) {
-    focus = true;
-    audioStateStore.update(state => ({ ...state, loopStart: section.startTime, loopEnd: section.endTime }));
+    if ($modeStore === "nav") {
+      event.preventDefault();
+
+      navDragSelectingStore.set(true);
+      if (event.shiftKey) {
+        selectionStore.update(state => {
+          if (state === null) return { startIdx: section.idx, endIdx: section.idx }
+          return { startIdx: state.startIdx, endIdx: section.idx }
+        })
+      } else {
+        if (navOnlySelected) {
+          modeStore.set("edit");
+        } else {
+          selectionStore.set({ startIdx: section.idx, endIdx: section.idx })
+        }
+      }
+    } else {
+      selectionStore.set({ startIdx: section.idx, endIdx: section.idx })
+    }
+  }
+
+  function mouseEnter() {
+    if ($modeStore === "nav" && $navDragSelectingStore) {
+      selectionStore.update(state => ({
+        startIdx: state.startIdx,
+        endIdx: section.idx
+      }))
+    }
   }
 </script>
 
@@ -142,28 +188,33 @@
     white-space: pre;
     opacity: 0;
     pointer-events: none;
+    margin-right: 4px;
+    margin-top: 4px;
+    padding-right: 1px;
   }
 
   input {
     padding: 0;
     margin: 0;
-    width: 100%;
+    width: calc(100% - 4px);
     border: none;
     outline: none;
     border-bottom: 1px solid black;
     position: absolute;
+    bottom: 0;
+    left: 0;
   }
 
-  .focus {
-    background-color: yellow;
-  }
-
-  .hover {
-    background-color: lightgreen;
-  }
-
-  .playing {
+  .navSelected {
     background-color: lightblue;
+  }
+
+  .editSelected {
+    background-color: lightpink;
+  }
+
+  .navPlaying {
+    background-color: lightgreen;
   }
 
   .wrapper {
@@ -171,26 +222,41 @@
     display: inline-flex;
     flex-direction: column;
     width: min-content;
-    margin: 2px;
     max-width: 100%;
-  }  
+  }
+
+  .nav {
+    cursor: pointer;
+  }
+
+  .break {
+    flex-basis: 100%;
+  }
 </style>
 
-{#if section.startParagraph && idx > 0}
-  <br><br>
+{#if section.startParagraph && section.idx > 0}
+  <div class="break"/>
 {/if}
-<div class="wrapper">
+<div class="wrapper"
+  on:keydown={key}
+  on:mousedown={click}
+  on:mouseenter={mouseEnter}
+>
   <span class="measurement">{text || "W"}</span>
   <input
     bind:this={input}
     bind:value={text}
-    class:focus
-    class:hover={!focus && $hoveredSectionStore === section}
-    class:playing={!focus && $playingSectionsStore.includes(section)}
-    on:keydown={key}
-    on:mousedown={click}
+    class:nav={$modeStore === "nav"}
+    class:navSelected={$modeStore === "nav" && selected}
+    class:editSelected={$modeStore === "edit" && selected}
+    class:navPlaying
+    on:focus="{() => inputFocussed = true}"
+    on:blur="{() => inputFocussed = false}"
   >
-  {#if focus && options.length}
+  {#if navDropdownVisible && options.length}
+    <Dropdown options={options} />
+  {/if}
+  {#if editDropdownVisible && options.length}
     <Dropdown
       options={options}
       selectedIdx={clampedSelectedIdx}

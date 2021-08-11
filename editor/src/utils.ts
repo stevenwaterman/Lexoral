@@ -21,12 +21,12 @@ export function maybeDerived<S extends Stores, T>(
   stores: S,
   initial: T,
   func: (values: StoresValues<S>) => T,
-  equality: (last: T, next: T) => boolean = (a, b) => (a === b)
+  update: (last: T, next: T) => boolean = (a, b) => (a !== b)
 ): Readable<T> {
   let lastValue: T = initial;
   const actualFunc = (stores: StoresValues<S>, set: (value: T) => void) => {
     const nextValue = func(stores);
-    if (!equality(lastValue, nextValue)) {
+    if (update(lastValue, nextValue)) {
       lastValue = nextValue;
       set(nextValue);
     }
@@ -51,4 +51,16 @@ export function lastNonNullDerived<T>(
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
+}
+
+export function setOffsetInterval(callback: () => void, firstDuration: number, latterDuration?: number): () => void {
+  const timers: NodeJS.Timeout[] = [];
+  timers.push(
+    setTimeout(() => {
+      callback();
+      if (latterDuration !== undefined) {
+        timers.push(setInterval(callback, latterDuration * 1000));
+      }
+    }, firstDuration * 1000));
+  return () => timers.forEach(clearTimeout);
 }
