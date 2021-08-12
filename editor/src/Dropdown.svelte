@@ -32,7 +32,7 @@
     top: 100%;
     max-width: 100vw;
     border: 1px solid black;
-    z-index: 1;
+    z-index: 2;
     background: white;
     display: flex;
     flex-direction: column;

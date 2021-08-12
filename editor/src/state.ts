@@ -31,76 +31,9 @@ export const navSelectedSectionsStore: Readable<Output> = derived([outputStore, 
 export const editSelectedSectionStore: Readable<OutputSection> = derived([outputStore, selectionStore], ([sections, {endIdx}]) => sections[endIdx]);
 export const editDirectionStore: Writable<"start" | "end"> = writable("start");
 
-
-
-// export const audioLengthStore: Readable<number> = derived(outputStore, sections => {
-//   if (!sections?.length) return 0;
-//   return sections[sections.length - 1].endTime;
-// });
-// audioLengthStore.subscribe(audioLength => {
-//   audioStateStore.update(state => ({ ...state, loopStart: 0, loopEnd: audioLength }));
-// })
-
-// export const currentTimePercentStore: Readable<number> = derived([currentTimeStore, audioLengthStore], ([time, length]) => {
-//   if (!length) return 0;
-//   return 100 * (time / length);
-// });
-
-// export const playingSectionsStore: Readable<Output> = derived(
-//   [outputStore, audioStateStore],
-//   ([sections, audioState]) => sections.filter(section => section.startTime < audioState.loopEnd && section.endTime > audioState.loopStart)
-// );
-
-// export const currentSectionStore: Readable<OutputSection> = maybeDerived(
-//   [playingSectionsStore, currentTimeStore],
-//   null,
-//   ([playingSections, currentTime]) => {
-//     if (playingSections.length === 0) return null;
-//     const section = playingSections.find(section => section.endTime >= currentTime);
-//     if (section) return section;
-//     return playingSections[playingSections.length - 1];
-//   }
-// );
-
-// export const directionStore: Writable<"start" | "end"> = writable("start");
-
-// export const hoveredFractionStore: Writable<number | null> = writable(null);
-// const hoveredTimeStore: Readable<number | null> = derived([audioLengthStore, hoveredFractionStore], ([audioLength, hoveredFraction]) => {
-//   if (hoveredFraction === null) return null;
-//   return audioLength * hoveredFraction;
-// });
-// export const hoveredSectionStore: Readable<OutputSection | null> = derived([outputStore, hoveredTimeStore], ([sections, hoveredTime]) => {
-//   if (hoveredTime === null) return null;
-//   return sections.find(section => section.startTime <= hoveredTime && section.endTime >= hoveredTime) ?? null;
-// })
-
-// /** Select the last section that is finished */
-// export function selectPrevious(sections: Output, currentTime: number) {
-//   const previous = getPreviousSeciton(sections, currentTime);
-//   if (previous === null) return;
-//   directionStore.set("end");
-//   audioStateStore.update(state => ({ ...state, loopStart: previous.startTime, loopEnd: previous.endTime }));
-// }
-
-// function getPreviousSeciton(sections: Output, currentTime: number): OutputSection | null {
-//   if (sections.length === 0) return null;
-//   const reverseSections = sections.slice().reverse();
-//   const finishedSection = reverseSections.find(section => section.endTime < currentTime);
-//   if (finishedSection) return finishedSection;
-//   return sections[0];
-// }
-
-// /** Select the first section that is yet to start */
-// export function selectNext(sections: Output, currentTime: number) {
-//   const next = getNextSeciton(sections, currentTime);
-//   if (next === null) return;
-//   directionStore.set("start");
-//   audioStateStore.update(state => ({ ...state, loopStart: next.startTime, loopEnd: next.endTime }));
-// }
-
-// function getNextSeciton(sections: Output, currentTime: number): OutputSection | null {
-//   if (sections.length === 0) return null;
-//   const finishedSection = sections.find(section => section.startTime > currentTime);
-//   if (finishedSection) return finishedSection;
-//   return sections[sections.length - 1];
-// }
+export const escPressedStore: Writable<boolean> = writable(false);
+modeStore.subscribe(mode => {
+  if(mode === "edit") {
+    escPressedStore.set(false);
+  }
+})

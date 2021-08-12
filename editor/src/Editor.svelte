@@ -1,4 +1,5 @@
 <script lang="ts">
+  import EscOverlay from "./EscOverlay.svelte";
   import { pause, playPause } from "./audio";
   import Section from "./Section.svelte";
   import { modeStore, navDragSelectingStore, selectionStore, outputStore, selectionStoreSorted } from "./state";
@@ -176,6 +177,8 @@
 </style>
 
 <svelte:body on:keydown={keyDown} on:mouseup={mouseUp}/>
+
+<EscOverlay/>
 
 <div class="container">
   {#each $outputStore as section}

@@ -2,7 +2,7 @@
   import { getOptions } from "./align";
   import Dropdown from "./Dropdown.svelte";
   import { navPlayingSectionsStore } from "./audio";
-  import { editSelectedSectionStore, modeStore, navDragSelectingStore, selectionStore, selectionStoreSorted, selectionCountStore, outputStore, editDirectionStore } from "./state";
+  import { editSelectedSectionStore, modeStore, navDragSelectingStore, escPressedStore, selectionStore, selectionStoreSorted, selectionCountStore, outputStore, editDirectionStore } from "./state";
   import type { OutputSection } from "./types";
   import { clamp, modulo, moduloGet, paragraphBounds } from "./utils";
 
@@ -257,6 +257,20 @@
     flex-basis: 100%;
     margin-bottom: 20px;
   }
+
+  .label {
+    z-index: 1;
+    padding: 0;
+    margin: 0;
+    width: calc(100% - 4px);
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8pt;
+  }
 </style>
 
 {#if section.startParagraph && section.idx > 0}
@@ -278,15 +292,19 @@
     on:focus="{() => inputFocussed = true}"
     on:blur="{() => inputFocussed = false}"
   >
-  {#if navDropdownVisible && options.length}
-    <Dropdown options={options} />
-  {/if}
-  {#if editDropdownVisible && options.length}
-    <Dropdown
-      options={options}
-      selectedIdx={clampedSelectedIdx}
-      on:clickedOption={clickedOption}
-      on:selectOption={selectOption}
-    />
+  {#if $escPressedStore}
+    <div class="label">{section.idx + 1}</div>
+  {:else}
+    {#if navDropdownVisible && options.length}
+      <Dropdown options={options} />
+    {/if}
+    {#if editDropdownVisible && options.length}
+      <Dropdown
+        options={options}
+        selectedIdx={clampedSelectedIdx}
+        on:clickedOption={clickedOption}
+        on:selectOption={selectOption}
+      />
+    {/if}
   {/if}
 </div>
