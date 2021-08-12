@@ -3,6 +3,7 @@ import type { Writable, Readable } from "svelte/store";
 import type { Output, OutputSection } from "./types";
 
 export const outputStore: Writable<Output> = writable([]);
+export const textStore: Writable<string[]> = writable([]);
 
 export const modeStore: Writable<"nav" | "edit"> = writable("nav");
 

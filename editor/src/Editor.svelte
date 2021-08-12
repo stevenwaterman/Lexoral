@@ -1,9 +1,8 @@
 <script lang="ts">
   import { pause, playPause } from "./audio";
-
   import Section from "./Section.svelte";
-  import { modeStore, navDragSelectingStore, selectionStore, outputStore } from "./state";
-  import { clamp } from "./utils";
+  import { modeStore, navDragSelectingStore, selectionStore, outputStore, selectionStoreSorted } from "./state";
+  import { clamp, paragraphBounds } from "./utils";
 
   let sectionComponents: Section[] = [];
 
@@ -20,14 +19,30 @@
         case "ArrowUp": return up(event.shiftKey);
         case " ": return space(event.shiftKey);
         case "Escape": return escape();
-        case "Enter": return enter();
+        case "Enter": return enter(event.shiftKey);
+        case "Home": return home(event.shiftKey);
+        case "End": return end(event.shiftKey);
+        case "Tab": return tab(event);
+        case "a": return aKey(event);
+      }
+    } else {
+      switch(event.key) {
+        case "Escape": return editEscape();
       }
     }
   }
 
   function left(shift: boolean) {
-    const cursor = $selectionStore.endIdx;
-    const newCursor = cursor - 1;
+    let newCursor: number;
+
+    if (shift) {
+      newCursor = $selectionStore.endIdx - 1;
+    } else if ($selectionStore.startIdx === $selectionStore.endIdx) {
+      newCursor = $selectionStoreSorted.startIdx - 1;
+    } else {
+      newCursor = $selectionStoreSorted.startIdx;
+    }
+
     const clampedCursor = clamp(newCursor, 0, $outputStore.length - 1)
     if (shift) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: clampedCursor }))
@@ -37,8 +52,16 @@
   }
 
   function right(shift: boolean) {
-    const cursor = $selectionStore.endIdx;
-    const newCursor = cursor + 1;
+    let newCursor: number;
+
+    if (shift) {
+      newCursor = $selectionStore.endIdx + 1;
+    } else if ($selectionStore.startIdx === $selectionStore.endIdx) {
+      newCursor = $selectionStoreSorted.endIdx + 1;
+    } else {
+      newCursor = $selectionStoreSorted.endIdx;
+    }
+
     const clampedCursor = clamp(newCursor, 0, $outputStore.length - 1)
     if (shift) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: clampedCursor }))
@@ -48,29 +71,69 @@
   }
 
   function down(shift: boolean) {
-    const cursor = $selectionStore.endIdx;
+    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.endIdx;
     const sections = $outputStore;
-    const section = sections.find(section => section.idx > cursor && section.startParagraph);
-    const newCursor = section ? section.idx : sections.length - 1;
-    const clampedCursor = clamp(newCursor, 0, sections.length - 1)
+
+    const currentParagraphBounds = paragraphBounds(sections, cursor);
+    if (currentParagraphBounds.endIdx === $outputStore.length - 1) return;
+    const newCursor = currentParagraphBounds.endIdx + 1;
+
     if (shift) {
-      selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: clampedCursor }))
+      selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
     } else {
-      selectionStore.set({ startIdx: clampedCursor, endIdx: clampedCursor });
+      selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
     }
   }
 
   function up(shift: boolean) {
-    const cursor = $selectionStore.endIdx;
-    const sections = $outputStore.slice().reverse();
-    const section = sections.find(section => section.idx < cursor && section.startParagraph);
-    const newCursor = section ? section.idx : 0;
-    const clampedCursor = clamp(newCursor, 0, sections.length - 1)
+    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.startIdx;
+    const sections = $outputStore;
+
+    const currentParagraphBounds = paragraphBounds(sections, cursor);
+    const prevParagraphBounds = paragraphBounds(sections, currentParagraphBounds.startIdx - 1);
+    if (prevParagraphBounds === null) return;
+
+    const newCursor = prevParagraphBounds.startIdx;
+
     if (shift) {
-      selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: clampedCursor }))
+      selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
     } else {
-      selectionStore.set({ startIdx: clampedCursor, endIdx: clampedCursor });
+      selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
     }
+  }
+
+  function end(shift: boolean) {
+    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.endIdx;
+    const sections = $outputStore;
+
+    const currentParagraphBounds = paragraphBounds(sections, cursor);
+    const newCursor = currentParagraphBounds.endIdx;
+
+    if (shift) {
+      selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
+    } else {
+      selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
+    }
+  }
+
+  function home(shift: boolean) {
+    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.startIdx;
+    const sections = $outputStore;
+
+    const currentParagraphBounds = paragraphBounds(sections, cursor);
+    const newCursor = currentParagraphBounds.startIdx;
+
+    if (shift) {
+      selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
+    } else {
+      selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
+    }
+  }
+
+  function tab(event: KeyboardEvent) {
+    event.preventDefault();
+    if (event.shiftKey) return left(false);
+    else return right(false);
   }
 
   function space(shift: boolean) {
@@ -82,8 +145,25 @@
     pause();
   }
 
-  function enter() {
-    modeStore.set("edit");
+  function editEscape() {
+    modeStore.set("nav");
+  }
+
+  function enter(shift: boolean) {
+    if (shift) {
+      outputStore.update(state => {
+        const section = state[$selectionStore.endIdx];
+        section.startParagraph = !section.startParagraph;
+        return state;
+      });
+    } else {
+      modeStore.set("edit");
+    }
+  }
+
+  function aKey(event: KeyboardEvent) {
+    if (!event.ctrlKey) return;
+    selectionStore.set({ startIdx: 0, endIdx: $outputStore.length - 1 })
   }
 </script>
 

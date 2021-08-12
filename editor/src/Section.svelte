@@ -4,7 +4,7 @@
   import { navPlayingSectionsStore } from "./audio";
   import { editSelectedSectionStore, modeStore, navDragSelectingStore, selectionStore, selectionStoreSorted, selectionCountStore, outputStore, editDirectionStore } from "./state";
   import type { OutputSection } from "./types";
-  import { clamp, modulo, moduloGet } from "./utils";
+  import { clamp, modulo, moduloGet, paragraphBounds } from "./utils";
 
   export let section: OutputSection;
   let text: string = "";
@@ -57,13 +57,10 @@
     const end = input.selectionEnd;
 
     if (start === end) { // Nothing selected
-      if(event.key === "ArrowRight" && end === text.length) {
+      if((event.key === "ArrowRight" || event.key === "Delete") && end === text.length && !event.shiftKey) {
         event.preventDefault();
         next();
-      } else if (event.key === "ArrowLeft" && start === 0) {
-        event.preventDefault();
-        prev();
-      } else if (event.key === "Backspace" && start === 0) {
+      } else if ((event.key === "ArrowLeft" || event.key === "Backspace") && start === 0 && !event.shiftKey) {
         event.preventDefault();
         prev();
       }
@@ -77,12 +74,20 @@
 
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      selectedIdx++;
+      if (options.length > 1 && !event.shiftKey) {
+        selectedIdx++;
+      } else {
+        moveDown();
+      }
     }
 
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      selectedIdx--;
+      if (options.length > 1 && !event.shiftKey) {
+        selectedIdx--;
+      } else {
+        moveUp();
+      }
     }
 
     if (event.key === "Tab") {
@@ -93,10 +98,29 @@
         next();
       }
     }
+  }
 
-    if (event.key === "Escape") {
-      modeStore.set("nav");
-    }
+  function moveDown() {
+    const cursor = section.idx;
+    const sections = $outputStore;
+
+    const currentParagraphBounds = paragraphBounds(sections, cursor);
+    if (currentParagraphBounds.endIdx === $outputStore.length - 1) return;
+    const newCursor = currentParagraphBounds.endIdx + 1;
+
+    selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
+  }
+
+  function moveUp() {
+    const cursor = section.idx
+    const sections = $outputStore;
+
+    const currentParagraphBounds = paragraphBounds(sections, cursor);
+    const prevParagraphBounds = paragraphBounds(sections, currentParagraphBounds.startIdx - 1);
+    if (prevParagraphBounds === null) return;
+
+    const newCursor = prevParagraphBounds.startIdx;
+    selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
   }
 
   function prev() {
@@ -231,6 +255,7 @@
 
   .break {
     flex-basis: 100%;
+    margin-bottom: 20px;
   }
 </style>
 

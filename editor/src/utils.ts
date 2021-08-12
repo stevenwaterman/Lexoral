@@ -1,4 +1,5 @@
 import { Readable, derived } from "svelte/store";
+import type { Output } from "./types";
 
 /**
  * Modulo that makes negative numbers positive
@@ -63,4 +64,39 @@ export function setOffsetInterval(callback: () => void, firstDuration: number, l
       }
     }, firstDuration * 1000));
   return () => timers.forEach(clearTimeout);
+}
+
+export function paragraphBounds(sections: Output, idx: number): { startIdx: number; endIdx: number } | null {
+  if (idx < 0) return null;
+  if (idx >= sections.length) return null;
+
+  let startIdx: number | null = null;
+  let endIdx: number | null = null;
+
+  for (let i = idx; i >= 0 && i < sections.length; i--) {
+    const section = sections[i];
+    if (section.startParagraph) {
+      startIdx = i;
+      break;
+    }
+  }
+
+  for (let i = idx + 1; i >= 0 && i < sections.length; i++) {
+    const section = sections[i];
+    if (section.startParagraph) {
+      endIdx = i - 1;
+      break;
+    }
+  }
+
+  if (startIdx === null) {
+    console.log("StartIdx is null - this should never happen");
+    startIdx = sections.length - 1;
+  }
+
+  if (endIdx === null) {
+    endIdx = sections.length - 1;
+  }
+  
+  return { startIdx, endIdx };
 }
