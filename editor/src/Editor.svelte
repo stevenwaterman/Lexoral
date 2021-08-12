@@ -19,7 +19,6 @@
         case "ArrowDown": return down(event.shiftKey);
         case "ArrowUp": return up(event.shiftKey);
         case " ": return space(event.shiftKey);
-        case "Escape": return escape();
         case "Enter": return enter(event.shiftKey);
         case "Home": return home(event.shiftKey);
         case "End": return end(event.shiftKey);
@@ -142,10 +141,6 @@
     else playPause(false);
   }
 
-  function escape() {
-    pause();
-  }
-
   function editEscape() {
     modeStore.set("nav");
   }
@@ -166,6 +161,13 @@
     if (!event.ctrlKey) return;
     selectionStore.set({ startIdx: 0, endIdx: $outputStore.length - 1 })
   }
+
+  function click(event: MouseEvent) {
+    console.log("clicked")
+    if ($modeStore === "edit") {
+      modeStore.set("nav");
+    }
+  }
 </script>
 
 <style>
@@ -176,7 +178,7 @@
   }
 </style>
 
-<svelte:body on:keydown={keyDown} on:mouseup={mouseUp}/>
+<svelte:body on:keydown={keyDown} on:mouseup={mouseUp} on:mousedown={click}/>
 
 <EscOverlay/>
 

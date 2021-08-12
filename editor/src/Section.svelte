@@ -213,7 +213,6 @@
     opacity: 0;
     pointer-events: none;
     margin-right: 4px;
-    margin-top: 4px;
     padding-right: 1px;
   }
 
@@ -247,6 +246,7 @@
     flex-direction: column;
     width: min-content;
     max-width: 100%;
+    margin-top: 4px;
   }
 
   .nav {
@@ -258,18 +258,25 @@
     margin-bottom: 20px;
   }
 
-  .label {
+  .labelContainer {
     z-index: 1;
     padding: 0;
     margin: 0;
     width: calc(100% - 4px);
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.7);
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .label {
+    background-color: lightpink;
     font-size: 8pt;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
   }
 </style>
 
@@ -278,7 +285,7 @@
 {/if}
 <div class="wrapper"
   on:keydown={key}
-  on:mousedown={click}
+  on:mousedown|stopPropagation={click}
   on:mouseenter={mouseEnter}
 >
   <span class="measurement">{text || "W"}</span>
@@ -293,7 +300,9 @@
     on:blur="{() => inputFocussed = false}"
   >
   {#if $escPressedStore}
-    <div class="label">{section.idx + 1}</div>
+    <div class="labelContainer">
+      <span class="label">{section.idx + 1}</span>
+    </div>
   {:else}
     {#if navDropdownVisible && options.length}
       <Dropdown options={options} />

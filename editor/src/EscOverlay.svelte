@@ -12,7 +12,7 @@
     if (text === undefined) return;
     if (text.length === 0) return;
 
-    const sections = text.split(/[/*-+. ]/).filter(section => section.length > 0);
+    const sections = text.split(/[/*\-+. ]/g).filter(section => section.length > 0);
     if (sections.length === 0) return;
     if (sections.length > 2) return;
 

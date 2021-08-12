@@ -13,8 +13,29 @@
 </script>
 
 <style>
+  :global(html) {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
   :global(body) {
     user-select: none;
+    color: #333;
+    margin: 0;
+    padding: 8px;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  :global(input) {
+    font-family: inherit;
+    font-size: inherit;
+    border: 1px solid #ccc;
+    border-radius: 2px;
   }
 </style>
 
