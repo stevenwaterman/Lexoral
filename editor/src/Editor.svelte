@@ -13,16 +13,15 @@
 
   function keyDown(event: KeyboardEvent) {
     if ($modeStore === "nav") {
-      event.preventDefault();
       switch(event.key) {
-        case "ArrowLeft": return left(event.shiftKey);
-        case "ArrowRight": return right(event.shiftKey);
-        case "ArrowDown": return down(event.shiftKey);
-        case "ArrowUp": return up(event.shiftKey);
-        case " ": return space(event.shiftKey);
-        case "Enter": return enter(event.shiftKey);
-        case "Home": return home(event.shiftKey);
-        case "End": return end(event.shiftKey);
+        case "ArrowLeft": return left(event);
+        case "ArrowRight": return right(event);
+        case "ArrowDown": return down(event);
+        case "ArrowUp": return up(event);
+        case " ": return space(event);
+        case "Enter": return enter(event);
+        case "Home": return home(event);
+        case "End": return end(event);
         case "Tab": return tab(event);
         case "a": return aKey(event);
       }
@@ -33,10 +32,12 @@
     }
   }
 
-  function left(shift: boolean) {
+  function left(event: KeyboardEvent) {
+    event.preventDefault();
+
     let newCursor: number;
 
-    if (shift) {
+    if (event.shiftKey) {
       newCursor = $selectionStore.endIdx - 1;
     } else if ($selectionStore.startIdx === $selectionStore.endIdx) {
       newCursor = $selectionStoreSorted.startIdx - 1;
@@ -45,17 +46,19 @@
     }
 
     const clampedCursor = clamp(newCursor, 0, $outputStore.length - 1)
-    if (shift) {
+    if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: clampedCursor }))
     } else {
       selectionStore.set({ startIdx: clampedCursor, endIdx: clampedCursor });
     }
   }
 
-  function right(shift: boolean) {
+  function right(event: KeyboardEvent) {
+    event.preventDefault();
+
     let newCursor: number;
 
-    if (shift) {
+    if (event.shiftKey) {
       newCursor = $selectionStore.endIdx + 1;
     } else if ($selectionStore.startIdx === $selectionStore.endIdx) {
       newCursor = $selectionStoreSorted.endIdx + 1;
@@ -64,30 +67,34 @@
     }
 
     const clampedCursor = clamp(newCursor, 0, $outputStore.length - 1)
-    if (shift) {
+    if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: clampedCursor }))
     } else {
       selectionStore.set({ startIdx: clampedCursor, endIdx: clampedCursor });
     }
   }
 
-  function down(shift: boolean) {
-    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.endIdx;
+  function down(event: KeyboardEvent) {
+    event.preventDefault();
+
+    const cursor = event.shiftKey ? $selectionStore.endIdx : $selectionStoreSorted.endIdx;
     const sections = $outputStore;
 
     const currentParagraphBounds = paragraphBounds(sections, cursor);
     if (currentParagraphBounds.endIdx === $outputStore.length - 1) return;
     const newCursor = currentParagraphBounds.endIdx + 1;
 
-    if (shift) {
+    if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
     } else {
       selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
     }
   }
 
-  function up(shift: boolean) {
-    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.startIdx;
+  function up(event: KeyboardEvent) {
+    event.preventDefault();
+
+    const cursor = event.shiftKey ? $selectionStore.endIdx : $selectionStoreSorted.startIdx;
     const sections = $outputStore;
 
     const currentParagraphBounds = paragraphBounds(sections, cursor);
@@ -96,35 +103,39 @@
 
     const newCursor = prevParagraphBounds.startIdx;
 
-    if (shift) {
+    if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
     } else {
       selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
     }
   }
 
-  function end(shift: boolean) {
-    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.endIdx;
+  function end(event: KeyboardEvent) {
+    event.preventDefault();
+
+    const cursor = event.shiftKey ? $selectionStore.endIdx : $selectionStoreSorted.endIdx;
     const sections = $outputStore;
 
     const currentParagraphBounds = paragraphBounds(sections, cursor);
     const newCursor = currentParagraphBounds.endIdx;
 
-    if (shift) {
+    if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
     } else {
       selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
     }
   }
 
-  function home(shift: boolean) {
-    const cursor = shift ? $selectionStore.endIdx : $selectionStoreSorted.startIdx;
+  function home(event: KeyboardEvent) {
+    event.preventDefault();
+
+    const cursor = event.shiftKey ? $selectionStore.endIdx : $selectionStoreSorted.startIdx;
     const sections = $outputStore;
 
     const currentParagraphBounds = paragraphBounds(sections, cursor);
     const newCursor = currentParagraphBounds.startIdx;
 
-    if (shift) {
+    if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
     } else {
       selectionStore.set({ startIdx: newCursor, endIdx: newCursor });
@@ -132,22 +143,24 @@
   }
 
   function tab(event: KeyboardEvent) {
-    event.preventDefault();
-    if (event.shiftKey) return left(false);
-    else return right(false);
+    if (event.shiftKey) return left(event);
+    else return right(event);
   }
 
-  function space(shift: boolean) {
-    if (shift) playPause(true)
+  function space(event: KeyboardEvent) {
+    event.preventDefault();
+    if (event.shiftKey) playPause(true)
     else playPause(false);
   }
 
   function editEscape() {
+    event.preventDefault();
     modeStore.set("nav");
   }
 
-  function enter(shift: boolean) {
-    if (shift) {
+  function enter(event: KeyboardEvent) {
+    event.preventDefault();
+    if (event.shiftKey) {
       outputStore.update(state => {
         const section = state[$selectionStore.endIdx];
         section.startParagraph = !section.startParagraph;
@@ -160,11 +173,11 @@
 
   function aKey(event: KeyboardEvent) {
     if (!event.ctrlKey) return;
+    event.preventDefault();
     selectionStore.set({ startIdx: 0, endIdx: $outputStore.length - 1 })
   }
 
   function click(event: MouseEvent) {
-    console.log("clicked")
     if ($modeStore === "edit") {
       modeStore.set("nav");
     }
@@ -174,14 +187,45 @@
 <style>
   .container {
     display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .sectionContainer {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    height: 90vh;
+    padding: 8px;
+    box-sizing: border-box;
+    flex-grow: 1;
+    flex-shrink: 1;
+    max-height: 100%;
+  }
+
+  .logo {
+    max-width:100%;
+    max-height:60px;
+    width: auto;
+    height: auto;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .wrapper {
+    flex-grow: 1;
+    min-height: 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 200px 8px 200px 8px;
-    box-sizing: border-box;
+  }
+
+  .padding {
+    height: 40%;
   }
 </style>
 
@@ -190,14 +234,22 @@
 <EscOverlay/>
 
 <div class="container">
-  {#each $outputStore as section}
-    <Section
-      section={section}
-      bind:this={sectionComponents[section.idx]}
-    />
-  {/each}
-</div>
+  <img class="logo" src="/assets/logo.png" alt="logo"/>
 
-<p style="position: fixed; bottom: 0">
-  {$modeStore === "nav" ? "Navigation Mode" : "Edit Mode"}
-</p>
+  <div class="wrapper">
+    <div class="padding"/>
+    <div class="sectionContainer">
+      {#each $outputStore as section}
+        <Section
+          section={section}
+          bind:this={sectionComponents[section.idx]}
+        />
+      {/each}
+    </div>
+    <div class="padding"/>
+  </div>
+  
+  <div>
+    {$modeStore === "nav" ? "Navigation Mode" : "Edit Mode"}
+  </div>
+</div>

@@ -18,13 +18,8 @@
   let navOnlySelected: boolean;
   $: navOnlySelected = $modeStore === "nav" && selected && $selectionCountStore === 1;
 
-  let endCursor: boolean;
-  $: endCursor = $selectionStore.endIdx === section.idx;
-  $: if (endCursor) {
-    input?.scrollIntoView({
-      block: "center",
-      behavior: "smooth"
-    });
+  $: if (!$navDragSelectingStore && $selectionStore.endIdx === section.idx) {
+    input?.scrollIntoView({ block: "center" });
   }
 
   let navPlaying: boolean;
@@ -81,6 +76,7 @@
         section.startParagraph = !section.startParagraph;
       } else {
         acceptOption();
+        next();
       }
     }
 
