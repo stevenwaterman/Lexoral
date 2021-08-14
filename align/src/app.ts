@@ -51,8 +51,10 @@ export default function start() {
 
 function transform(response: Response): Output {
   if (!response.results) return [];
-  const output = response.results.flatMap(result => precompute(result));
+  return response.results.flatMap(result => precompute(result));
 }
+
+
 
 function precompute(result: Result): OutputSection[] {
   if (!result.alternatives) return [];
@@ -65,7 +67,7 @@ function precompute(result: Result): OutputSection[] {
     options: alternative.words.map(({word, confidence}) => ({text: word, confidence})),
     startTime: alternative.time.start,
     endTime: alternative.time.end,
-    startParagraph: idx === 0
+    startParagraph: idx === 0 || collapsedAlternatives[idx - 1].words.every(({ word }) => sentenceEndingPunctuation.includes(word[word.length - 1]))
   }));
 }
 
@@ -187,32 +189,31 @@ function transposeAlternatives(timedAlternatives: TimedAlternative[], alternativ
   return wordAlternatives;
 }
 
-const punctuation = [".", ",", "?", "!", ";", ":", "-"]
+const punctuation = [".", ",", "?", "!", ";", ":", "-"];
+const sentenceEndingPunctuation = [".", "?", "!"];
 
 function collapseAlternatives(wordAlternatives: WordAlternative[]): WordAlternative[] {
-  // Combine sequential options where there's only one choice and it's not the end of a sentence.
-  const collapsedAlternatives: WordAlternative[] = [];
-  wordAlternatives.forEach(alternative => {
-    if (collapsedAlternatives.length) {
-      if (alternative.words.length === 1) {
-        const last = collapsedAlternatives[collapsedAlternatives.length - 1];
-        if (last.words.length === 1) {
-          const lastWord = last.words[0].word;
-          const lastCharacter = lastWord[lastWord.length - 1];
-          if (!punctuation.includes(lastCharacter)) {
-            last.words[0].word = last.words[0].word + " " + alternative.words[0].word;
-            last.words[0].confidence = last.words[0].confidence * alternative.words[0].confidence;
-            last.time.end = alternative.time.end;
-            return;
-          }
-        }
-      }
-    }
+  // Combine sequential options where there's only one choice and it's not the end of a sentence and the previous option isn't too long
+  return wordAlternatives.reduce(collapseOneAlternative, []);
+}
 
-    collapsedAlternatives.push(alternative);
-  })
+function collapseOneAlternative(collapsed: WordAlternative[], alternative: WordAlternative): WordAlternative[] {
+  if (collapsed.length === 0) return [...collapsed, alternative]; // First one
+  if (alternative.words.length > 1) return [...collapsed, alternative]; // More than one option
 
-  return collapsedAlternatives;
+  const last = collapsed[collapsed.length - 1];
+  if (last.words.length > 1) return [...collapsed, alternative]; // More than one option in the last section
+
+  const lastWord = last.words[0].word;
+  if (lastWord.length > 30) return [...collapsed, alternative]; // Last section is too long to extend further
+
+  const lastCharacter = lastWord[lastWord.length - 1];
+  if (punctuation.includes(lastCharacter)) return [...collapsed, alternative]; // Last section ends in punctuation
+   
+  last.words[0].word = last.words[0].word + " " + alternative.words[0].word;
+  last.words[0].confidence = last.words[0].confidence * alternative.words[0].confidence;
+  last.time.end = alternative.time.end;
+  return collapsed;
 }
 
 function breakSequences(alignedSequences: Record<number, string>, alternatives: Alternative[]) {

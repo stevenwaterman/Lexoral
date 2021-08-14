@@ -1,13 +1,17 @@
 import { writable, derived } from "svelte/store";
 import type { Writable, Readable } from "svelte/store";
 import type { Output, OutputSection } from "./types";
+import { maybeWritable } from "./utils";
 
 export const outputStore: Writable<Output> = writable([]);
 export const textStore: Writable<string[]> = writable([]);
 
 export const modeStore: Writable<"nav" | "edit"> = writable("nav");
 
-export const selectionStore: Writable<{ startIdx: number; endIdx: number }> = writable({ startIdx: 0, endIdx: 0 });
+export const selectionStore: Writable<{ startIdx: number; endIdx: number }> = maybeWritable(
+  { startIdx: 0, endIdx: 0 }, 
+  (last, next) => last.startIdx !== next.startIdx || last.endIdx !== next.endIdx
+);
 modeStore.subscribe(mode => {
   if (mode === "edit") {
     selectionStore.update(selection => ({

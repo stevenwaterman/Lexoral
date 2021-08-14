@@ -66,7 +66,7 @@
   class="popup"
   class:edit={$modeStore === "edit"} 
   bind:clientWidth={width} 
-  style={`left: min(0px, calc(100vw - 2px - ${popupRight ?? 0}px));`}
+  style={`left: min(0px, calc(100vw - 12px - ${popupRight ?? 0}px));`}
 >
   {#each options as option, idx}
     <span

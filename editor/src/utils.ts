@@ -1,4 +1,4 @@
-import { Readable, derived } from "svelte/store";
+import { Readable, derived, writable, Writable } from "svelte/store";
 import type { Output } from "./types";
 
 /**
@@ -33,6 +33,27 @@ export function maybeDerived<S extends Stores, T>(
     }
   };
   return derived(stores, actualFunc, initial);
+}
+
+export function maybeWritable<T>(
+  initial: T,
+  update: (last: T, next: T) => boolean = (a, b) => (a !== b)
+): Writable<T> {
+  let lastValue: T = initial;
+  const internalStore: Writable<T> = writable(initial);
+
+  const storeSetFunc: (typeof internalStore)["set"] = newValue => {
+    if (update(lastValue, newValue)) {
+      lastValue = newValue;
+      internalStore.set(newValue);
+    }
+  }
+
+  return {
+    subscribe: internalStore.subscribe,
+    set: storeSetFunc,
+    update: func => storeSetFunc(func(lastValue))
+  }
 }
 
 export function lastNonNullDerived<T>(

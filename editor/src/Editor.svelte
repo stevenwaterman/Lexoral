@@ -13,6 +13,7 @@
 
   function keyDown(event: KeyboardEvent) {
     if ($modeStore === "nav") {
+      event.preventDefault();
       switch(event.key) {
         case "ArrowLeft": return left(event.shiftKey);
         case "ArrowRight": return right(event.shiftKey);
@@ -175,6 +176,12 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    width: 100%;
+    height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 200px 8px 200px 8px;
+    box-sizing: border-box;
   }
 </style>
 

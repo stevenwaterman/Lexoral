@@ -18,8 +18,17 @@
   let navOnlySelected: boolean;
   $: navOnlySelected = $modeStore === "nav" && selected && $selectionCountStore === 1;
 
+  let endCursor: boolean;
+  $: endCursor = $selectionStore.endIdx === section.idx;
+  $: if (endCursor) {
+    input?.scrollIntoView({
+      block: "center",
+      behavior: "smooth"
+    });
+  }
+
   let navPlaying: boolean;
-  $: navPlaying = selected && $navPlayingSectionsStore[section.idx] === true;
+  $: navPlaying = $modeStore === "nav" && selected && $navPlayingSectionsStore[section.idx] === true;
 
   let editing: boolean;
   $: editing = $modeStore === "edit" && $editSelectedSectionStore === section;
@@ -68,8 +77,11 @@
 
     if (event.key === "Enter") {
       event.preventDefault();
-      acceptOption();
-      next();
+      if (event.shiftKey) {
+        section.startParagraph = !section.startParagraph;
+      } else {
+        acceptOption();
+      }
     }
 
     if (event.key === "ArrowDown") {

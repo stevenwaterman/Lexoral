@@ -1,7 +1,7 @@
 import * as Tone from "tone";
 import { writable, Writable } from "svelte/store";
 import type { Output, OutputSection } from "./types";
-import { navSelectedSectionsStore } from "./state";
+import { navSelectedSectionsStore, modeStore } from "./state";
 import { setOffsetInterval } from "./utils";
 
 export const navPlayingSectionsStore: Writable<Record<number, boolean>> = writable({});
@@ -70,10 +70,24 @@ function play(loop: boolean) {
   }
 }
 
+let mode: "nav" | "edit";
+modeStore.subscribe(state => {
+  mode = state;
+  if (mode === "nav") {
+    player.stop();
+  } else {
+    play(false);
+  }
+})
+
 let navSelectedSections: Output;
 navSelectedSectionsStore.subscribe(state => {
   navSelectedSections = state;
-  player.stop();
+  if (mode === "edit") {
+    play(false);
+  } else {
+    player.stop();
+  }
 })
 
 export function playPause(loop: boolean) {
