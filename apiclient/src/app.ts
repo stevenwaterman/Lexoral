@@ -5,7 +5,7 @@ import speech, { protos } from '@google-cloud/speech';
 const client = new speech.v1p1beta1.SpeechClient({ projectId: "amie-300613", keyFile: "/home/steven/service.json" });
 
 async function quickstart() {
-  const gcsUri: string = 'gs://testing-storage-steven-waterman/safety.mp3';
+  const gcsUri: string = 'gs://testing-storage-steven-waterman/gulliver.mp3';
 
   const audio: protos.google.cloud.speech.v1p1beta1.IRecognitionAudio = { uri: gcsUri };
 

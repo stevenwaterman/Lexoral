@@ -1,5 +1,9 @@
 holding right in edit mode is deafening
-
-
-later: manually split a section (move collapsing to frontend)
-
+manually split a section (move collapsing to frontend)
+manually change timing of sections
+automatically refine timing without making it overlap
+Offset start and end time
+Autoplay
+Manaul way to play in edit mode (alt?)
+Escape mode is slow
+Scroll into view running too often

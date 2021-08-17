@@ -1,0 +1,5065 @@
+[
+  {
+    "options": [
+      {
+        "text": "Gulliver's sales for the South Seas",
+        "confidence": 0.880451448757351
+      }
+    ],
+    "startTime": 0.3,
+    "endTime": 2.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9790034796343587
+      }
+    ],
+    "startTime": 2.9,
+    "endTime": 3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "is",
+        "confidence": 0.87315226
+      },
+      {
+        "text": "his",
+        "confidence": 0.83447462
+      }
+    ],
+    "startTime": 3,
+    "endTime": 3.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "wrecked on the coast of Lilliput.",
+        "confidence": 0.880451448757351
+      }
+    ],
+    "startTime": 3.2,
+    "endTime": 5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "At first,",
+        "confidence": 0.9498877731433709
+      }
+    ],
+    "startTime": 7.2,
+    "endTime": 7.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "everything went well,",
+        "confidence": 0.9257813897889907
+      }
+    ],
+    "startTime": 8,
+    "endTime": 9.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but after leaving the South Seas,",
+        "confidence": 0.8570711816796351
+      }
+    ],
+    "startTime": 9.6,
+    "endTime": 11.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "when steering for the East Indies,",
+        "confidence": 0.8570711816796351
+      }
+    ],
+    "startTime": 11.5,
+    "endTime": 13.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the ship was driven by a great storm.",
+        "confidence": 0.8141214361910261
+      }
+    ],
+    "startTime": 13.9,
+    "endTime": 16.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Far to the South,",
+        "confidence": 0.902286781567272
+      }
+    ],
+    "startTime": 16.5,
+    "endTime": 17.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9746218616178127
+      }
+    ],
+    "startTime": 18.1,
+    "endTime": 18.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gale",
+        "confidence": 0.86281747
+      },
+      {
+        "text": "Gail",
+        "confidence": 0.81500459
+      }
+    ],
+    "startTime": 18.2,
+    "endTime": 18.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "lasted so long that 12 of the crew",
+        "confidence": 0.8141214361910261
+      }
+    ],
+    "startTime": 18.6,
+    "endTime": 21.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "died,",
+        "confidence": 0.9746218616178127
+      }
+    ],
+    "startTime": 21.5,
+    "endTime": 21.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "from the effects of the hard work,",
+        "confidence": 0.8353203106275846
+      }
+    ],
+    "startTime": 21.9,
+    "endTime": 23.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and the bad food and all the others",
+        "confidence": 0.8141214361910261
+      }
+    ],
+    "startTime": 23.6,
+    "endTime": 25.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "were worn out and week on a sailing",
+        "confidence": 0.8141214361910261
+      }
+    ],
+    "startTime": 25.8,
+    "endTime": 29,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "ship.",
+        "confidence": 0.9746218616178127
+      }
+    ],
+    "startTime": 29,
+    "endTime": 29.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "When the weather is very heavy,",
+        "confidence": 0.8570711816796351
+      }
+    ],
+    "startTime": 30.1,
+    "endTime": 31.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "all hands have to be constantly",
+        "confidence": 0.8570711816796351
+      }
+    ],
+    "startTime": 31.7,
+    "endTime": 33.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "on",
+        "confidence": 0.9746218616178127
+      }
+    ],
+    "startTime": 33.4,
+    "endTime": 33.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "deck,",
+        "confidence": 0.86281747
+      },
+      {
+        "text": "deck",
+        "confidence": 0.81500459
+      }
+    ],
+    "startTime": 33.6,
+    "endTime": 34.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and there is little rest for the",
+        "confidence": 0.8353203106275846
+      }
+    ],
+    "startTime": 34.5,
+    "endTime": 35.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "men.",
+        "confidence": 0.9746218616178127
+      }
+    ],
+    "startTime": 35.7,
+    "endTime": 36.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Apps the sale.",
+        "confidence": 0.9522854356079193
+      }
+    ],
+    "startTime": 37,
+    "endTime": 38.1,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "One of the few that can still be",
+        "confidence": 0.8777665888460915
+      }
+    ],
+    "startTime": 38.3,
+    "endTime": 39.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "carried in such a gale may be blown",
+        "confidence": 0.8777665888460915
+      }
+    ],
+    "startTime": 39.9,
+    "endTime": 42,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to Ribbons by the Furious wind and",
+        "confidence": 0.8921885906754463
+      }
+    ],
+    "startTime": 42,
+    "endTime": 44.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a new one has to be bent on the",
+        "confidence": 0.8635777150111313
+      }
+    ],
+    "startTime": 44.5,
+    "endTime": 47.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "night.",
+        "confidence": 0.9838352541378764
+      }
+    ],
+    "startTime": 47.6,
+    "endTime": 48.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Perhaps is dark.",
+        "confidence": 0.9522854356079193
+      }
+    ],
+    "startTime": 48.2,
+    "endTime": 49.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "The tattered canvas is thrashing",
+        "confidence": 0.9217473627387187
+      }
+    ],
+    "startTime": 50.2,
+    "endTime": 52.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "with a noise like thunder the ship,",
+        "confidence": 0.8921885906754463
+      }
+    ],
+    "startTime": 52.3,
+    "endTime": 54.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "burying her decks under",
+        "confidence": 0.9368919835531156
+      }
+    ],
+    "startTime": 54.7,
+    "endTime": 56.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "angry.",
+        "confidence": 0.88114119
+      },
+      {
+        "text": "angry",
+        "confidence": 0.86400044
+      }
+    ],
+    "startTime": 56.4,
+    "endTime": 56.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Black",
+        "confidence": 0.88114119
+      },
+      {
+        "text": "black.",
+        "confidence": 0.86400044
+      }
+    ],
+    "startTime": 56.9,
+    "endTime": 57.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "sees",
+        "confidence": 0.88114119
+      },
+      {
+        "text": "Sea's,",
+        "confidence": 0.86400044
+      }
+    ],
+    "startTime": 57.3,
+    "endTime": 57.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "every few minutes.",
+        "confidence": 0.9522854356079193
+      }
+    ],
+    "startTime": 57.7,
+    "endTime": 59,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The men's hands are numb with the",
+        "confidence": 0.8921885906754463
+      }
+    ],
+    "startTime": 59.2,
+    "endTime": 61.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "cold and the wet and the hard dangerous",
+        "confidence": 0.8777665888460915
+      }
+    ],
+    "startTime": 61.2,
+    "endTime": 64,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "work Aloft.",
+        "confidence": 0.9679318072845399
+      }
+    ],
+    "startTime": 64,
+    "endTime": 65.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "There is no chance of going below",
+        "confidence": 0.9977308718052161
+      }
+    ],
+    "startTime": 65.7,
+    "endTime": 67.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "when their job is done to turn in",
+        "confidence": 0.9974071312291826
+      }
+    ],
+    "startTime": 67.7,
+    "endTime": 70.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "between warm dry blankets,",
+        "confidence": 0.9987027241522788
+      }
+    ],
+    "startTime": 70.1,
+    "endTime": 72.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in a snug birth.",
+        "confidence": 0.9987027241522788
+      }
+    ],
+    "startTime": 72.2,
+    "endTime": 73.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Possibly.",
+        "confidence": 0.9996755231443848
+      }
+    ],
+    "startTime": 74.1,
+    "endTime": 74.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Even those who belong to the watch",
+        "confidence": 0.9977308718052161
+      }
+    ],
+    "startTime": 74.7,
+    "endTime": 76.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "below,",
+        "confidence": 0.9996755231443848
+      }
+    ],
+    "startTime": 76.6,
+    "endTime": 77,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "may have to remain on deck or if",
+        "confidence": 0.9974071312291826
+      }
+    ],
+    "startTime": 77,
+    "endTime": 80,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "they have the Good Fortune to be",
+        "confidence": 0.9977308718052161
+      }
+    ],
+    "startTime": 80,
+    "endTime": 81.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "allowed to go below.",
+        "confidence": 0.9987027241522788
+      }
+    ],
+    "startTime": 81.2,
+    "endTime": 82.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "They",
+        "confidence": 0.9996755231443848
+      }
+    ],
+    "startTime": 83.3,
+    "endTime": 83.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "may",
+        "confidence": 0.9845655474902941
+      },
+      {
+        "text": "met",
+        "confidence": 0.9789771062231644
+      }
+    ],
+    "startTime": 83.5,
+    "endTime": 83.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "no sooner have dropped off a sleep,",
+        "confidence": 0.9977308718052161
+      }
+    ],
+    "startTime": 83.7,
+    "endTime": 85.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "rolled round in blankets,",
+        "confidence": 0.9987027241522788
+      }
+    ],
+    "startTime": 86.2,
+    "endTime": 87.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "which perhaps have been wet ever",
+        "confidence": 0.9980547174616701
+      }
+    ],
+    "startTime": 87.8,
+    "endTime": 89.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "since the",
+        "confidence": 0.9993511515739995
+      }
+    ],
+    "startTime": 89.5,
+    "endTime": 89.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gale",
+        "confidence": 0.9825956080306641
+      },
+      {
+        "text": "Gail",
+        "confidence": 0.9813566106654662
+      }
+    ],
+    "startTime": 89.9,
+    "endTime": 90.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "began.",
+        "confidence": 0.9996755231443848
+      }
+    ],
+    "startTime": 90.2,
+    "endTime": 90.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Then there is a Thump,",
+        "confidence": 0.9983786682326515
+      }
+    ],
+    "startTime": 91.3,
+    "endTime": 92.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Thump",
+        "confidence": 0.9996755231443848
+      }
+    ],
+    "startTime": 92.5,
+    "endTime": 92.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "overhead.",
+        "confidence": 0.9825956080306641
+      },
+      {
+        "text": "overhead,",
+        "confidence": 0.9813566106654662
+      }
+    ],
+    "startTime": 92.9,
+    "endTime": 93.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And",
+        "confidence": 0.9825956080306641
+      },
+      {
+        "text": "and",
+        "confidence": 0.9813566106654662
+      }
+    ],
+    "startTime": 94.3,
+    "endTime": 94.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "one of the watch on",
+        "confidence": 0.9983786682326515
+      }
+    ],
+    "startTime": 94.5,
+    "endTime": 95.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Bellows down the fox of hatch.",
+        "confidence": 0.803294217499193
+      }
+    ],
+    "startTime": 95.7,
+    "endTime": 97.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "All",
+        "confidence": 0.9641525927054191
+      }
+    ],
+    "startTime": 98,
+    "endTime": 98.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Hands",
+        "confidence": 0.83916193
+      },
+      {
+        "text": "Hands,",
+        "confidence": 0.77712113
+      }
+    ],
+    "startTime": 98.3,
+    "endTime": 98.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "shorten",
+        "confidence": 0.83916193
+      },
+      {
+        "text": "shortened",
+        "confidence": 0.77712113
+      }
+    ],
+    "startTime": 98.8,
+    "endTime": 99.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "sail and",
+        "confidence": 0.9295902220205817
+      }
+    ],
+    "startTime": 99.2,
+    "endTime": 100.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "out.",
+        "confidence": 0.83916193
+      },
+      {
+        "text": "out",
+        "confidence": 0.77712113
+      }
+    ],
+    "startTime": 100.6,
+    "endTime": 100.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "There",
+        "confidence": 0.83916193
+      },
+      {
+        "text": "there",
+        "confidence": 0.77712113
+      }
+    ],
+    "startTime": 100.8,
+    "endTime": 101,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "must tumble,",
+        "confidence": 0.9295902220205817
+      }
+    ],
+    "startTime": 101,
+    "endTime": 101.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "again.",
+        "confidence": 0.9641525927054191
+      }
+    ],
+    "startTime": 101.7,
+    "endTime": 102.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Once more to battle with the hungry",
+        "confidence": 0.7744982025071178
+      }
+    ],
+    "startTime": 102.9,
+    "endTime": 104.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "roaring sees in the Raging wind.",
+        "confidence": 0.803294217499193
+      }
+    ],
+    "startTime": 104.7,
+    "endTime": 107.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So when there has been a long spell",
+        "confidence": 0.7467344499929243
+      }
+    ],
+    "startTime": 107.5,
+    "endTime": 109.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "of bad weather,",
+        "confidence": 0.89626682271475
+      }
+    ],
+    "startTime": 109.4,
+    "endTime": 110.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it is no wonder that the men are",
+        "confidence": 0.7467344499929243
+      }
+    ],
+    "startTime": 110.4,
+    "endTime": 112,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "worn out.",
+        "confidence": 0.9295902220205817
+      }
+    ],
+    "startTime": 112,
+    "endTime": 112.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And when as was the case in Gulliver's",
+        "confidence": 0.7467344499929243
+      }
+    ],
+    "startTime": 113.2,
+    "endTime": 115,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "ship,",
+        "confidence": 0.9641525927054191
+      }
+    ],
+    "startTime": 115,
+    "endTime": 115.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the food also is bad,",
+        "confidence": 0.8331608747170858
+      }
+    ],
+    "startTime": 115.6,
+    "endTime": 117.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it is easy to understand why.",
+        "confidence": 0.803294217499193
+      }
+    ],
+    "startTime": 117.8,
+    "endTime": 119.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So many of the crew had died.",
+        "confidence": 0.7744982025071178
+      }
+    ],
+    "startTime": 119.6,
+    "endTime": 121.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "It was on the fifth of November",
+        "confidence": 0.46592809515672623
+      }
+    ],
+    "startTime": 122.1,
+    "endTime": 123.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "the beginning of summer in latitudes,",
+        "confidence": 0.5196392094036537
+      }
+    ],
+    "startTime": 123.5,
+    "endTime": 126.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "south of the Equator.",
+        "confidence": 0.6463502814172407
+      }
+    ],
+    "startTime": 126.4,
+    "endTime": 127.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The storm had not yet cleared off",
+        "confidence": 0.46592809515672623
+      }
+    ],
+    "startTime": 127.6,
+    "endTime": 130,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "and the weather was very thick.",
+        "confidence": 0.5196392094036537
+      }
+    ],
+    "startTime": 130,
+    "endTime": 131.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The wind coming in Furious squalls,",
+        "confidence": 0.5196392094036537
+      }
+    ],
+    "startTime": 131.4,
+    "endTime": 134.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "that drove the ship along at great",
+        "confidence": 0.46592809515672623
+      }
+    ],
+    "startTime": 134.4,
+    "endTime": 136.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "speed when suddenly from the lookout",
+        "confidence": 0.5196392094036537
+      }
+    ],
+    "startTime": 136.6,
+    "endTime": 138.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "man,",
+        "confidence": 0.89663768
+      }
+    ],
+    "startTime": 138.8,
+    "endTime": 139,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "came a wild cry,",
+        "confidence": 0.6463502814172407
+      }
+    ],
+    "startTime": 139,
+    "endTime": 140.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Breakers ahead.",
+        "confidence": 0.8039591291957824
+      }
+    ],
+    "startTime": 140.6,
+    "endTime": 142,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "But so close at the vessel come",
+        "confidence": 0.46592809515672623
+      }
+    ],
+    "startTime": 142,
+    "endTime": 144.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "to the Rocks before they were seen",
+        "confidence": 0.46592809515672623
+      }
+    ],
+    "startTime": 144.4,
+    "endTime": 146.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "through the thick driving spray",
+        "confidence": 0.5795420167973018
+      }
+    ],
+    "startTime": 146.1,
+    "endTime": 147.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that immediately with a heavy plunge.",
+        "confidence": 0.5196392094036537
+      }
+    ],
+    "startTime": 147.8,
+    "endTime": 150.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "She crashed into",
+        "confidence": 0.7208600484169265
+      }
+    ],
+    "startTime": 150.7,
+    "endTime": 152,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "The reef and split her boughs.",
+        "confidence": 0.39292827674995623
+      }
+    ],
+    "startTime": 152.1,
+    "endTime": 154.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver and six of the crew lowered",
+        "confidence": 0.8970757343527769
+      }
+    ],
+    "startTime": 155.8,
+    "endTime": 157.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "a boat and got clear of the wreck",
+        "confidence": 0.8832637574871971
+      }
+    ],
+    "startTime": 157.8,
+    "endTime": 159.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and of the breakers,",
+        "confidence": 0.9398211305813448
+      }
+    ],
+    "startTime": 159.8,
+    "endTime": 160.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but the men were so weak from overwork",
+        "confidence": 0.8832637574871971
+      }
+    ],
+    "startTime": 161.7,
+    "endTime": 164.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that they could not handle the boat",
+        "confidence": 0.8970757343527769
+      }
+    ],
+    "startTime": 164.4,
+    "endTime": 165.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in such a",
+        "confidence": 0.9545175195176481
+      }
+    ],
+    "startTime": 165.8,
+    "endTime": 166.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "sea",
+        "confidence": 0.89657712
+      },
+      {
+        "text": "see",
+        "confidence": 0.851129
+      }
+    ],
+    "startTime": 166.2,
+    "endTime": 166.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and very soon during a fierce Squall.",
+        "confidence": 0.8970757343527769
+      }
+    ],
+    "startTime": 166.8,
+    "endTime": 170.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "She sank.",
+        "confidence": 0.9694437222352542
+      }
+    ],
+    "startTime": 170.3,
+    "endTime": 171.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "What became of the men Gulliver",
+        "confidence": 0.5785808985241908
+      }
+    ],
+    "startTime": 172.4,
+    "endTime": 174.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "never knew for he saw none of them",
+        "confidence": 0.48211664104647783
+      }
+    ],
+    "startTime": 174.5,
+    "endTime": 177,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "ever again?",
+        "confidence": 0.8332743826770497
+      }
+    ],
+    "startTime": 177,
+    "endTime": 177.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Probably they were drowned at once",
+        "confidence": 0.5785808985241908
+      }
+    ],
+    "startTime": 178.4,
+    "endTime": 180.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "for they were too weak to keep long",
+        "confidence": 0.48211664104647783
+      }
+    ],
+    "startTime": 180.5,
+    "endTime": 182.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "afloat in a sea breaking.",
+        "confidence": 0.6338260379996522
+      }
+    ],
+    "startTime": 182.5,
+    "endTime": 184.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So heavily and indeed Gulliver himself",
+        "confidence": 0.5785808985241908
+      }
+    ],
+    "startTime": 184.2,
+    "endTime": 188.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "was like to have been lost.",
+        "confidence": 0.5785808985241908
+      }
+    ],
+    "startTime": 188.2,
+    "endTime": 189.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He swam till no strength of feeling",
+        "confidence": 0.5281510005388004
+      }
+    ],
+    "startTime": 190.1,
+    "endTime": 192.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "was left in his arms and legs swam",
+        "confidence": 0.48211664104647783
+      }
+    ],
+    "startTime": 192.7,
+    "endTime": 195.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "bravely.",
+        "confidence": 0.91283864
+      }
+    ],
+    "startTime": 195.3,
+    "endTime": 196,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "His breath coming in great sobs,",
+        "confidence": 0.5785808985241908
+      }
+    ],
+    "startTime": 196.2,
+    "endTime": 198.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "his eyes blinded with the salt seas,",
+        "confidence": 0.5281510005388004
+      }
+    ],
+    "startTime": 198.9,
+    "endTime": 201.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that broke over.",
+        "confidence": 0.7606450542297576
+      }
+    ],
+    "startTime": 201.3,
+    "endTime": 202.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "His head still,",
+        "confidence": 0.9626841469888574
+      }
+    ],
+    "startTime": 202.2,
+    "endTime": 203.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "he struggled on utterly spent until",
+        "confidence": 0.926760766863664
+      }
+    ],
+    "startTime": 203.9,
+    "endTime": 207.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "at last in a part where the wind",
+        "confidence": 0.9035597023208396
+      }
+    ],
+    "startTime": 207.2,
+    "endTime": 210,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "seemed to have less force and to",
+        "confidence": 0.9150867077113323
+      }
+    ],
+    "startTime": 210,
+    "endTime": 212.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the Seas swept over him,",
+        "confidence": 0.9385837557905665
+      }
+    ],
+    "startTime": 212.4,
+    "endTime": 213.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "less furiously on letting down his",
+        "confidence": 0.926760766863664
+      }
+    ],
+    "startTime": 213.9,
+    "endTime": 216.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "legs.",
+        "confidence": 0.9874033735892392
+      }
+    ],
+    "startTime": 216.3,
+    "endTime": 216.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He found that he was within his",
+        "confidence": 0.9150867077113323
+      }
+    ],
+    "startTime": 216.6,
+    "endTime": 218.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "depth,",
+        "confidence": 0.89098519
+      },
+      {
+        "text": "depth",
+        "confidence": 0.88445032
+      }
+    ],
+    "startTime": 218.3,
+    "endTime": 219,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but the shore shelved.",
+        "confidence": 0.9505575744376769
+      }
+    ],
+    "startTime": 220,
+    "endTime": 221.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So gradually that for nearly a mile.",
+        "confidence": 0.9150867077113323
+      }
+    ],
+    "startTime": 221.6,
+    "endTime": 224.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "He had to Wade,",
+        "confidence": 0.9505575744376769
+      }
+    ],
+    "startTime": 224.4,
+    "endTime": 225.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "wearily",
+        "confidence": 0.89098519
+      },
+      {
+        "text": "we really",
+        "confidence": 0.88445032
+      }
+    ],
+    "startTime": 225.4,
+    "endTime": 225.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "through the shallow",
+        "confidence": 0.9626841469888574
+      }
+    ],
+    "startTime": 225.6,
+    "endTime": 226.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "water,",
+        "confidence": 0.89098519
+      },
+      {
+        "text": "water",
+        "confidence": 0.88445032
+      }
+    ],
+    "startTime": 226.6,
+    "endTime": 227.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "till fainting,",
+        "confidence": 0.9749654221754107
+      }
+    ],
+    "startTime": 227.1,
+    "endTime": 228.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "almost with fatigue.",
+        "confidence": 0.9626841469888574
+      }
+    ],
+    "startTime": 228.4,
+    "endTime": 229.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He reached dry.",
+        "confidence": 0.9626841469888574
+      }
+    ],
+    "startTime": 229.8,
+    "endTime": 231.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Dry land.",
+        "confidence": 0.8319093720592357
+      }
+    ],
+    "startTime": 232.1,
+    "endTime": 233,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "By this time Darkness was coming",
+        "confidence": 0.5757421839929581
+      }
+    ],
+    "startTime": 233.8,
+    "endTime": 235.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "on and there were no signs of houses",
+        "confidence": 0.47896531875359466
+      }
+    ],
+    "startTime": 235.6,
+    "endTime": 238.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "or of people.",
+        "confidence": 0.7587767682216938
+      }
+    ],
+    "startTime": 238.2,
+    "endTime": 239.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He staggered forward but a little",
+        "confidence": 0.5757421839929581
+      }
+    ],
+    "startTime": 239.5,
+    "endTime": 241.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "distance and then on the short soft",
+        "confidence": 0.5251290685879786
+      }
+    ],
+    "startTime": 241.4,
+    "endTime": 244.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Turf sank down exhausted before",
+        "confidence": 0.6312335047844455
+      }
+    ],
+    "startTime": 244.4,
+    "endTime": 248.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "leaving the ship,",
+        "confidence": 0.7587767682216938
+      }
+    ],
+    "startTime": 248.9,
+    "endTime": 249.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver had drunk a large quantity",
+        "confidence": 0.5757421839929581
+      }
+    ],
+    "startTime": 250.3,
+    "endTime": 252,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of Brandy perhaps that caused him",
+        "confidence": 0.5757421839929581
+      }
+    ],
+    "startTime": 252,
+    "endTime": 255.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to sleep more than usually sound.",
+        "confidence": 0.5757421839929581
+      }
+    ],
+    "startTime": 255.2,
+    "endTime": 257.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "When he woke the Sun was",
+        "confidence": 0.8113549736040653
+      }
+    ],
+    "startTime": 258.7,
+    "endTime": 260.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "shining",
+        "confidence": 0.86241221
+      },
+      {
+        "text": "shining,",
+        "confidence": 0.75112891
+      }
+    ],
+    "startTime": 260.6,
+    "endTime": 261.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and he tried to rise.",
+        "confidence": 0.8401221186914027
+      }
+    ],
+    "startTime": 261.4,
+    "endTime": 262.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "But not by any means could",
+        "confidence": 0.8113549736040653
+      }
+    ],
+    "startTime": 263.5,
+    "endTime": 265.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "heister",
+        "confidence": 0.86241221
+      },
+      {
+        "text": "heaster",
+        "confidence": 0.75112891
+      }
+    ],
+    "startTime": 265.2,
+    "endTime": 265.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "hand or foot.",
+        "confidence": 0.900752448569564
+      }
+    ],
+    "startTime": 265.9,
+    "endTime": 267,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver had fallen asleep lying",
+        "confidence": 0.8401221186914027
+      }
+    ],
+    "startTime": 267.7,
+    "endTime": 269.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "on his",
+        "confidence": 0.9326892422280448
+      }
+    ],
+    "startTime": 269.6,
+    "endTime": 270,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "back",
+        "confidence": 0.86241221
+      },
+      {
+        "text": "back.",
+        "confidence": 0.75112891
+      }
+    ],
+    "startTime": 270,
+    "endTime": 270.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.86241221
+      },
+      {
+        "text": "And",
+        "confidence": 0.75112891
+      }
+    ],
+    "startTime": 270.8,
+    "endTime": 271,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "now he found that his arms and legs",
+        "confidence": 0.7567420555087311
+      }
+    ],
+    "startTime": 271,
+    "endTime": 273.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "were",
+        "confidence": 0.9657583767320089
+      }
+    ],
+    "startTime": 273.4,
+    "endTime": 273.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "tightly",
+        "confidence": 0.86241221
+      },
+      {
+        "text": "tightly,",
+        "confidence": 0.75112891
+      }
+    ],
+    "startTime": 273.5,
+    "endTime": 274,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fastened to the ground across his",
+        "confidence": 0.8113549736040653
+      }
+    ],
+    "startTime": 274,
+    "endTime": 276.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "body were numbers of",
+        "confidence": 0.8699092225679246
+      }
+    ],
+    "startTime": 276.9,
+    "endTime": 278.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "thin",
+        "confidence": 0.86241221
+      },
+      {
+        "text": "thin,",
+        "confidence": 0.75112891
+      }
+    ],
+    "startTime": 278.5,
+    "endTime": 279.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but strong cords and even his hair",
+        "confidence": 0.7835728622613041
+      }
+    ],
+    "startTime": 279.1,
+    "endTime": 282.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "which was very long was pegged down.",
+        "confidence": 0.7835728622613041
+      }
+    ],
+    "startTime": 282.9,
+    "endTime": 285.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So securely,",
+        "confidence": 0.9326892422280448
+      }
+    ],
+    "startTime": 285.1,
+    "endTime": 286,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "that he could not turn his head.",
+        "confidence": 0.7835728622613041
+      }
+    ],
+    "startTime": 286,
+    "endTime": 287.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "All",
+        "confidence": 0.9521389282919555
+      }
+    ],
+    "startTime": 288.7,
+    "endTime": 289,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "around",
+        "confidence": 0.82534742
+      },
+      {
+        "text": "round",
+        "confidence": 0.72596413
+      }
+    ],
+    "startTime": 289,
+    "endTime": 289.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "about him.",
+        "confidence": 0.9065685387689535
+      }
+    ],
+    "startTime": 289.3,
+    "endTime": 289.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "There was a confused sound of voices,",
+        "confidence": 0.7094180788178506
+      }
+    ],
+    "startTime": 289.8,
+    "endTime": 292.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "but he could see nothing except",
+        "confidence": 0.7450783260069804
+      }
+    ],
+    "startTime": 293,
+    "endTime": 294.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the sky and the sun Shone so hot",
+        "confidence": 0.6754645692765663
+      }
+    ],
+    "startTime": 294.7,
+    "endTime": 297.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and fierce into his eyes that he",
+        "confidence": 0.7094180788178506
+      }
+    ],
+    "startTime": 297.4,
+    "endTime": 299.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "could scarcely keep them open.",
+        "confidence": 0.782531103253575
+      }
+    ],
+    "startTime": 299.6,
+    "endTime": 301.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Soon,",
+        "confidence": 0.91283858
+      }
+    ],
+    "startTime": 302.6,
+    "endTime": 303,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "he felt something coming,",
+        "confidence": 0.6943460142710229
+      }
+    ],
+    "startTime": 303,
+    "endTime": 304.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "gently up his left leg and forward",
+        "confidence": 0.5281507575348706
+      }
+    ],
+    "startTime": 304.3,
+    "endTime": 307.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "onto his breast,",
+        "confidence": 0.7606449042403783
+      }
+    ],
+    "startTime": 307.3,
+    "endTime": 308.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "almost to his chin,",
+        "confidence": 0.6943460142710229
+      }
+    ],
+    "startTime": 308.4,
+    "endTime": 309.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "looking down,",
+        "confidence": 0.8332742731364163
+      }
+    ],
+    "startTime": 310.2,
+    "endTime": 310.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "as much as possible.",
+        "confidence": 0.6943460142710229
+      }
+    ],
+    "startTime": 310.8,
+    "endTime": 311.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He saw standing there a very little",
+        "confidence": 0.5281507575348706
+      }
+    ],
+    "startTime": 311.7,
+    "endTime": 314.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "man,",
+        "confidence": 0.91283858
+      }
+    ],
+    "startTime": 314.2,
+    "endTime": 314.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "not more than six inches high armed",
+        "confidence": 0.5281507575348706
+      }
+    ],
+    "startTime": 315,
+    "endTime": 318,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "with a bow and arrows.",
+        "confidence": 0.6338258296958202
+      }
+    ],
+    "startTime": 318,
+    "endTime": 319.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Then many more small.",
+        "confidence": 0.6943460142710229
+      }
+    ],
+    "startTime": 319.8,
+    "endTime": 321.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Men began to swarm over him.",
+        "confidence": 0.5785806703468543
+      }
+    ],
+    "startTime": 321.2,
+    "endTime": 323.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver.",
+        "confidence": 0.91283858
+      }
+    ],
+    "startTime": 324.1,
+    "endTime": 324.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Let out such a roar of Wonder and",
+        "confidence": 0.48211638753405556
+      }
+    ],
+    "startTime": 324.6,
+    "endTime": 326.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "fright that they all turned and",
+        "confidence": 0.5785806703468543
+      }
+    ],
+    "startTime": 326.6,
+    "endTime": 329.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "ran many of them getting bad Falls.",
+        "confidence": 0.5281507575348706
+      }
+    ],
+    "startTime": 329.2,
+    "endTime": 332.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And",
+        "confidence": 0.91283858
+      }
+    ],
+    "startTime": 332.1,
+    "endTime": 332.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Hurry to get out of danger,",
+        "confidence": 0.9645148829492479
+      }
+    ],
+    "startTime": 332.4,
+    "endTime": 334,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "but very quickly.",
+        "confidence": 0.9820971861018888
+      }
+    ],
+    "startTime": 334.4,
+    "endTime": 335.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The little people came back again.",
+        "confidence": 0.9645148829492479
+      }
+    ],
+    "startTime": 335.5,
+    "endTime": 337.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "This time with a great struggle.",
+        "confidence": 0.9645148829492479
+      }
+    ],
+    "startTime": 337.9,
+    "endTime": 339.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver managed to break the",
+        "confidence": 0.9703403946935678
+      }
+    ],
+    "startTime": 340.1,
+    "endTime": 341.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "chords",
+        "confidence": 0.9651113275401302
+      },
+      {
+        "text": "cords",
+        "confidence": 0.82792193
+      }
+    ],
+    "startTime": 341.8,
+    "endTime": 342.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that fastened his left arm and at",
+        "confidence": 0.9587243451040555
+      }
+    ],
+    "startTime": 342.4,
+    "endTime": 344.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the same time by a violent wrench",
+        "confidence": 0.9587243451040555
+      }
+    ],
+    "startTime": 344.9,
+    "endTime": 347.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that hurt him dreadfully.",
+        "confidence": 0.9762010915736312
+      }
+    ],
+    "startTime": 347.2,
+    "endTime": 348.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He slightly loosened the strings",
+        "confidence": 0.9703403946935678
+      }
+    ],
+    "startTime": 348.9,
+    "endTime": 350.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "that fastened his hair so that he",
+        "confidence": 0.9587243451040555
+      }
+    ],
+    "startTime": 350.9,
+    "endTime": 353,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "was able to turn his head.",
+        "confidence": 0.9645148829492479
+      }
+    ],
+    "startTime": 353,
+    "endTime": 354.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "A little to one side.",
+        "confidence": 0.9703403946935678
+      }
+    ],
+    "startTime": 354.2,
+    "endTime": 355.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "But the little",
+        "confidence": 0.9820971861018888
+      }
+    ],
+    "startTime": 355.8,
+    "endTime": 356.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "men",
+        "confidence": 0.9682822363061442
+      },
+      {
+        "text": "man",
+        "confidence": 0.81071883
+      }
+    ],
+    "startTime": 356.5,
+    "endTime": 356.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "were too quick for him and got Out",
+        "confidence": 0.9529685711895491
+      }
+    ],
+    "startTime": 356.8,
+    "endTime": 358.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Of Reach before he could catch any",
+        "confidence": 0.9587243451040555
+      }
+    ],
+    "startTime": 358.7,
+    "endTime": 360.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of them.",
+        "confidence": 0.9880288920743316
+      }
+    ],
+    "startTime": 360.2,
+    "endTime": 360.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Then he heard a great.",
+        "confidence": 0.9703403946935678
+      }
+    ],
+    "startTime": 361.1,
+    "endTime": 362.1,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Shouting followed by a shrill little",
+        "confidence": 0.8873508858923932
+      }
+    ],
+    "startTime": 362.3,
+    "endTime": 364.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "voice that called sharply total",
+        "confidence": 0.9052033572592015
+      }
+    ],
+    "startTime": 364.9,
+    "endTime": 367.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "go phonak immediately arrows.",
+        "confidence": 0.9234149996585402
+      }
+    ],
+    "startTime": 367.6,
+    "endTime": 370.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Like needles were shot into his",
+        "confidence": 0.8873508858923932
+      }
+    ],
+    "startTime": 370.8,
+    "endTime": 372.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "hand and another volley struck him",
+        "confidence": 0.8873508858923932
+      }
+    ],
+    "startTime": 372.6,
+    "endTime": 375.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in the face poor Gulliver covered",
+        "confidence": 0.8873508858923932
+      }
+    ],
+    "startTime": 375.4,
+    "endTime": 377.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "his face with his hand and",
+        "confidence": 0.8873508858923932
+      }
+    ],
+    "startTime": 377.8,
+    "endTime": 379.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "lay",
+        "confidence": 0.8908065
+      },
+      {
+        "text": "leg",
+        "confidence": 0.81938434
+      }
+    ],
+    "startTime": 379.7,
+    "endTime": 379.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "groaning with pain again.",
+        "confidence": 0.9234149996585402
+      }
+    ],
+    "startTime": 379.9,
+    "endTime": 382.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He struggled to get loose but the",
+        "confidence": 0.8698505019668729
+      }
+    ],
+    "startTime": 382.3,
+    "endTime": 384.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "harder he fought for freedom,",
+        "confidence": 0.9052033572592015
+      }
+    ],
+    "startTime": 384.4,
+    "endTime": 386,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the more the little man shot arrows",
+        "confidence": 0.8698505019668729
+      }
+    ],
+    "startTime": 386.4,
+    "endTime": 388.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "into him and some of them even tried",
+        "confidence": 0.8526952615943818
+      }
+    ],
+    "startTime": 388.1,
+    "endTime": 390.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to run their Spears into his.",
+        "confidence": 0.8873508858923932
+      }
+    ],
+    "startTime": 390.5,
+    "endTime": 392.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Hides,",
+        "confidence": 0.9128387
+      }
+    ],
+    "startTime": 392.3,
+    "endTime": 392.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "when he found that the more he struggled,",
+        "confidence": 0.48211689455901635
+      }
+    ],
+    "startTime": 393.4,
+    "endTime": 395.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the more he was hurt,",
+        "confidence": 0.6338262463035386
+      }
+    ],
+    "startTime": 395.8,
+    "endTime": 397.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver lay still thinking to himself",
+        "confidence": 0.578581126701602
+      }
+    ],
+    "startTime": 397.3,
+    "endTime": 399.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that at night,",
+        "confidence": 0.7606452042191563
+      }
+    ],
+    "startTime": 399.9,
+    "endTime": 400.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "at least.",
+        "confidence": 0.83327449221769
+      }
+    ],
+    "startTime": 400.7,
+    "endTime": 401.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Now that his left hand was free.",
+        "confidence": 0.5281512435428256
+      }
+    ],
+    "startTime": 401.5,
+    "endTime": 403.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "He could easily get rid of the rest",
+        "confidence": 0.48211689455901635
+      }
+    ],
+    "startTime": 403.5,
+    "endTime": 405,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "of his bonds.",
+        "confidence": 0.7606452042191563
+      }
+    ],
+    "startTime": 405,
+    "endTime": 405.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "As soon as the little people saw",
+        "confidence": 0.5281512435428256
+      }
+    ],
+    "startTime": 406.6,
+    "endTime": 408.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "that he struggled no more,",
+        "confidence": 0.6338262463035386
+      }
+    ],
+    "startTime": 408.2,
+    "endTime": 409.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "they ceased shooting at him,",
+        "confidence": 0.6338262463035386
+      }
+    ],
+    "startTime": 410.1,
+    "endTime": 411.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but he knew from the increasing",
+        "confidence": 0.578581126701602
+      }
+    ],
+    "startTime": 412.3,
+    "endTime": 413.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "sound of voices,",
+        "confidence": 0.7606452042191563
+      }
+    ],
+    "startTime": 413.7,
+    "endTime": 414.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that more and more of the little",
+        "confidence": 0.5281512435428256
+      }
+    ],
+    "startTime": 415,
+    "endTime": 416.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "soldiers were coming round him.",
+        "confidence": 0.6338262463035386
+      }
+    ],
+    "startTime": 416.5,
+    "endTime": 418.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Soon a few yards from him on the",
+        "confidence": 0.4821153734855343
+      }
+    ],
+    "startTime": 419.4,
+    "endTime": 422,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "right.",
+        "confidence": 0.91283834
+      }
+    ],
+    "startTime": 422,
+    "endTime": 422.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He heard a continued sound of hammering",
+        "confidence": 0.5281497855201112
+      }
+    ],
+    "startTime": 422.9,
+    "endTime": 425.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "and on turning his head to that",
+        "confidence": 0.5281497855201112
+      }
+    ],
+    "startTime": 425.8,
+    "endTime": 427.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "side as far as the strings would",
+        "confidence": 0.5281497855201112
+      }
+    ],
+    "startTime": 427.6,
+    "endTime": 429.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "let him.",
+        "confidence": 0.8332738349739556
+      }
+    ],
+    "startTime": 429.4,
+    "endTime": 430,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He saw that a small wooden stage",
+        "confidence": 0.5281497855201112
+      }
+    ],
+    "startTime": 430.3,
+    "endTime": 432.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "was being built.",
+        "confidence": 0.7606443042830595
+      }
+    ],
+    "startTime": 432.6,
+    "endTime": 433.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "On to",
+        "confidence": 0.9483977274679853
+      },
+      {
+        "text": "Onto",
+        "confidence": 0.74775052
+      }
+    ],
+    "startTime": 434.7,
+    "endTime": 434.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "this",
+        "confidence": 0.9459864393813208
+      },
+      {
+        "text": "this,",
+        "confidence": 0.75901151
+      }
+    ],
+    "startTime": 434.9,
+    "endTime": 435,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "when it was finished",
+        "confidence": 0.948941219756371
+      }
+    ],
+    "startTime": 435,
+    "endTime": 436.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "there",
+        "confidence": 0.9459864393813208
+      },
+      {
+        "text": "their",
+        "confidence": 0.75901151
+      }
+    ],
+    "startTime": 436.4,
+    "endTime": 437.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "climbed by ladders for men.",
+        "confidence": 0.9365891874320633
+      }
+    ],
+    "startTime": 437.2,
+    "endTime": 439.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And one of them who seemed to be",
+        "confidence": 0.9004894385527094
+      }
+    ],
+    "startTime": 439.2,
+    "endTime": 441.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "a very important person for a little",
+        "confidence": 0.9123653760522628
+      }
+    ],
+    "startTime": 441.9,
+    "endTime": 444.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "page boy attended to hold up his",
+        "confidence": 0.9123653760522628
+      }
+    ],
+    "startTime": 444.1,
+    "endTime": 446.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "train immediately gave an order",
+        "confidence": 0.9365891874320633
+      }
+    ],
+    "startTime": 446.2,
+    "endTime": 448.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "at once about,",
+        "confidence": 0.9614561545619246
+      }
+    ],
+    "startTime": 448.3,
+    "endTime": 450,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "50 of the soldiers,",
+        "confidence": 0.948941219756371
+      }
+    ],
+    "startTime": 450,
+    "endTime": 451.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "ran forward and cut the strings",
+        "confidence": 0.9243979371450034
+      }
+    ],
+    "startTime": 451.1,
+    "endTime": 453.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that tied Gulliver's hair to the",
+        "confidence": 0.9243979371450034
+      }
+    ],
+    "startTime": 453.8,
+    "endTime": 456.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "left side,",
+        "confidence": 0.9741361402578035
+      }
+    ],
+    "startTime": 456.3,
+    "endTime": 456.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "so that he could turn his head easily",
+        "confidence": 0.9004894385527094
+      }
+    ],
+    "startTime": 456.7,
+    "endTime": 458.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to the right.",
+        "confidence": 0.9614561545619246
+      }
+    ],
+    "startTime": 458.8,
+    "endTime": 459.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Then the person began to make a",
+        "confidence": 0.5281495425166611
+      }
+    ],
+    "startTime": 460.9,
+    "endTime": 462.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "long speech,",
+        "confidence": 0.8332737254333584
+      }
+    ],
+    "startTime": 462.6,
+    "endTime": 464.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "not one word of which could Gulliver",
+        "confidence": 0.5281495425166611
+      }
+    ],
+    "startTime": 464.2,
+    "endTime": 466.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "understand,",
+        "confidence": 0.91283828
+      }
+    ],
+    "startTime": 466.5,
+    "endTime": 467.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but it seemed to him that sometimes",
+        "confidence": 0.5281495425166611
+      }
+    ],
+    "startTime": 467.6,
+    "endTime": 469.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the little man threatened,",
+        "confidence": 0.694345101497588
+      }
+    ],
+    "startTime": 469.9,
+    "endTime": 471.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and sometimes made offers of kindness",
+        "confidence": 0.5785795294612985
+      }
+    ],
+    "startTime": 471.7,
+    "endTime": 474.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "as well as he could,",
+        "confidence": 0.6338247881774837
+      }
+    ],
+    "startTime": 474.8,
+    "endTime": 476.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver made signs that he submitted",
+        "confidence": 0.5785795294612985
+      }
+    ],
+    "startTime": 476.1,
+    "endTime": 478.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "then Feeling,",
+        "confidence": 0.8332737254333584
+      }
+    ],
+    "startTime": 479.1,
+    "endTime": 479.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "by this time faint with Hunger.",
+        "confidence": 0.5785795294612985
+      }
+    ],
+    "startTime": 479.9,
+    "endTime": 481.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He pointed with his fingers,",
+        "confidence": 0.6338247881774837
+      }
+    ],
+    "startTime": 482.3,
+    "endTime": 483.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "many times to his mouth to show",
+        "confidence": 0.5281495425166611
+      }
+    ],
+    "startTime": 483.7,
+    "endTime": 486.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that he wanted something to eat.",
+        "confidence": 0.5785795294612985
+      }
+    ],
+    "startTime": 486.1,
+    "endTime": 487.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "They understood him very well.",
+        "confidence": 0.6319454153945253
+      }
+    ],
+    "startTime": 488.6,
+    "endTime": 490.1,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Several ladders were put against",
+        "confidence": 0.6319454153945253
+      }
+    ],
+    "startTime": 490.9,
+    "endTime": 492.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver's sides and about a hundred",
+        "confidence": 0.5765214642663884
+      }
+    ],
+    "startTime": 492.6,
+    "endTime": 495.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Little People climbed up and carried",
+        "confidence": 0.5765214642663884
+      }
+    ],
+    "startTime": 495.1,
+    "endTime": 497,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to his mouth,",
+        "confidence": 0.759290105471149
+      }
+    ],
+    "startTime": 497,
+    "endTime": 497.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "all kinds of bread and meat.",
+        "confidence": 0.5765214642663884
+      }
+    ],
+    "startTime": 497.9,
+    "endTime": 499.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "There were things shaped,",
+        "confidence": 0.6926975538479389
+      }
+    ],
+    "startTime": 500.1,
+    "endTime": 501.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "like,",
+        "confidence": 0.9122963
+      }
+    ],
+    "startTime": 501.4,
+    "endTime": 501.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "legs and shoulders.",
+        "confidence": 0.759290105471149
+      }
+    ],
+    "startTime": 501.7,
+    "endTime": 503.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And Saddles of mutton very good.",
+        "confidence": 0.5765214642663884
+      }
+    ],
+    "startTime": 503.6,
+    "endTime": 506,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "They were Gulliver thought,",
+        "confidence": 0.6926975538479389
+      }
+    ],
+    "startTime": 506,
+    "endTime": 507.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "but very small,",
+        "confidence": 0.759290105471149
+      }
+    ],
+    "startTime": 507.3,
+    "endTime": 508.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "no bigger than a lark swings.",
+        "confidence": 0.5765214642663884
+      }
+    ],
+    "startTime": 508.8,
+    "endTime": 510.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And the loaves of bread were about",
+        "confidence": 0.5259583987208083
+      }
+    ],
+    "startTime": 511.3,
+    "endTime": 512.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "the size of bullets,",
+        "confidence": 0.6926975538479389
+      }
+    ],
+    "startTime": 512.9,
+    "endTime": 514.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "so that he could take several at",
+        "confidence": 0.5259583987208083
+      }
+    ],
+    "startTime": 514.5,
+    "endTime": 515.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a mouthful.",
+        "confidence": 0.8322845389936899
+      }
+    ],
+    "startTime": 515.9,
+    "endTime": 516.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The people wondered greatly.",
+        "confidence": 0.6926975538479389
+      }
+    ],
+    "startTime": 516.9,
+    "endTime": 518.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "The at the amount",
+        "confidence": 0.9770453020318911
+      }
+    ],
+    "startTime": 518.4,
+    "endTime": 519.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "of that",
+        "confidence": 0.9749837395791412
+      },
+      {
+        "text": "that",
+        "confidence": 0.7686007
+      }
+    ],
+    "startTime": 519.3,
+    "endTime": 519.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "he ate when he signed that he was",
+        "confidence": 0.9546175222225893
+      }
+    ],
+    "startTime": 519.3,
+    "endTime": 522.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "thirsty.",
+        "confidence": 0.9942112548499956
+      }
+    ],
+    "startTime": 522.3,
+    "endTime": 522.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "They slung up onto his body,",
+        "confidence": 0.9657663098932916
+      }
+    ],
+    "startTime": 522.6,
+    "endTime": 524.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "two of their biggest,",
+        "confidence": 0.9770453020318911
+      }
+    ],
+    "startTime": 524.9,
+    "endTime": 526.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "casks of wine and having rolled",
+        "confidence": 0.9657663098932916
+      }
+    ],
+    "startTime": 526.3,
+    "endTime": 529,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "them forward to his hand.",
+        "confidence": 0.9713894357784194
+      }
+    ],
+    "startTime": 529,
+    "endTime": 530.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "They knocked out the heads of the",
+        "confidence": 0.9601757348508592
+      }
+    ],
+    "startTime": 530.7,
+    "endTime": 532.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "casks Gulliver drank them,",
+        "confidence": 0.9770453020318911
+      }
+    ],
+    "startTime": 532.6,
+    "endTime": 534.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "both off at a draft and asked for",
+        "confidence": 0.9546175222225893
+      }
+    ],
+    "startTime": 534.7,
+    "endTime": 537.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "more",
+        "confidence": 0.9942112548499956
+      }
+    ],
+    "startTime": 537.3,
+    "endTime": 537.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "for",
+        "confidence": 0.964679571830908
+      },
+      {
+        "text": "for.",
+        "confidence": 0.83610773
+      }
+    ],
+    "startTime": 537.5,
+    "endTime": 538.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "they",
+        "confidence": 0.964679571830908
+      },
+      {
+        "text": "They",
+        "confidence": 0.83610773
+      }
+    ],
+    "startTime": 538.3,
+    "endTime": 538.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "held only about a small",
+        "confidence": 0.9713894357784194
+      }
+    ],
+    "startTime": 538.5,
+    "endTime": 539.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Tumblr",
+        "confidence": 0.9749837395791412
+      },
+      {
+        "text": "Tumblr,",
+        "confidence": 0.7686007
+      }
+    ],
+    "startTime": 539.7,
+    "endTime": 540.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fold",
+        "confidence": 0.964679571830908
+      },
+      {
+        "text": "full",
+        "confidence": 0.83610773
+      }
+    ],
+    "startTime": 540.4,
+    "endTime": 540.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "each,",
+        "confidence": 0.9942112548499956
+      }
+    ],
+    "startTime": 540.8,
+    "endTime": 541.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but there was no more to be had.",
+        "confidence": 0.9546175222225893
+      }
+    ],
+    "startTime": 541.3,
+    "endTime": 543.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "As the small people walked to and",
+        "confidence": 0.4688958321392809
+      }
+    ],
+    "startTime": 545,
+    "endTime": 546.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "fro over his body,",
+        "confidence": 0.6486996168287852
+      }
+    ],
+    "startTime": 546.8,
+    "endTime": 548.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver was sorely,",
+        "confidence": 0.7228242779477996
+      }
+    ],
+    "startTime": 548.3,
+    "endTime": 549.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "tempted to seize 40 or 50 of them",
+        "confidence": 0.4208111928738127
+      }
+    ],
+    "startTime": 549.4,
+    "endTime": 551.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and them on the ground and then",
+        "confidence": 0.4688958321392809
+      }
+    ],
+    "startTime": 551.9,
+    "endTime": 554.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to make a further struggle for Liberty.",
+        "confidence": 0.4688958321392809
+      }
+    ],
+    "startTime": 554.5,
+    "endTime": 555.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "But the pain he had already suffered",
+        "confidence": 0.8535814781632834
+      }
+    ],
+    "startTime": 557.7,
+    "endTime": 559.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "from their arrows,",
+        "confidence": 0.9344015798284347
+      }
+    ],
+    "startTime": 559.7,
+    "endTime": 560.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "made him think better of it and",
+        "confidence": 0.8535814781632834
+      }
+    ],
+    "startTime": 560.5,
+    "endTime": 562.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "he wisely lay quiet soon,",
+        "confidence": 0.8930777579293209
+      }
+    ],
+    "startTime": 562.2,
+    "endTime": 565.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "another small man who from His Brilliant",
+        "confidence": 0.8535814781632834
+      }
+    ],
+    "startTime": 565.1,
+    "endTime": 568.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "uniform.",
+        "confidence": 0.9776375065148284
+      }
+    ],
+    "startTime": 568.2,
+    "endTime": 568.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Seemed to be an officer of very",
+        "confidence": 0.8535814781632834
+      }
+    ],
+    "startTime": 568.8,
+    "endTime": 570.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "high rank marched with some others",
+        "confidence": 0.8731063123858748
+      }
+    ],
+    "startTime": 570.6,
+    "endTime": 572.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "onto",
+        "confidence": 0.85081828
+      },
+      {
+        "text": "on to",
+        "confidence": 0.85009897
+      }
+    ],
+    "startTime": 572.8,
+    "endTime": 573,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver's chest and held up to",
+        "confidence": 0.8731063123858748
+      }
+    ],
+    "startTime": 573,
+    "endTime": 574.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "his eyes.",
+        "confidence": 0.9557750941445311
+      }
+    ],
+    "startTime": 574.9,
+    "endTime": 575.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "A paper,",
+        "confidence": 0.9557750941445311
+      }
+    ],
+    "startTime": 575.3,
+    "endTime": 576.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "which Gulliver understood to be",
+        "confidence": 0.8930777579293209
+      }
+    ],
+    "startTime": 576.2,
+    "endTime": 578.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "an order from the king of the country.",
+        "confidence": 0.8344932679187939
+      }
+    ],
+    "startTime": 578.6,
+    "endTime": 580,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The officer made a long speech often",
+        "confidence": 0.8535814781632834
+      }
+    ],
+    "startTime": 580,
+    "endTime": 583.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "pointing towards something a long",
+        "confidence": 0.8930777579293209
+      }
+    ],
+    "startTime": 583.6,
+    "endTime": 585.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "way off.",
+        "confidence": 0.9557750941445311
+      }
+    ],
+    "startTime": 585.6,
+    "endTime": 586.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver afterwards learned told",
+        "confidence": 0.9292164745490955
+      }
+    ],
+    "startTime": 587.4,
+    "endTime": 589.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "him that he was to be taken as a",
+        "confidence": 0.8477406866911635
+      }
+    ],
+    "startTime": 589.6,
+    "endTime": 591.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "prisoner to the city.",
+        "confidence": 0.9292164745490955
+      }
+    ],
+    "startTime": 591.3,
+    "endTime": 592.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The capital of the country.",
+        "confidence": 0.9123177536241291
+      }
+    ],
+    "startTime": 592.8,
+    "endTime": 594.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver asked by signs that his",
+        "confidence": 0.8957263526582051
+      }
+    ],
+    "startTime": 595.4,
+    "endTime": 597.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "bonds might be loosed,",
+        "confidence": 0.9292164745490955
+      }
+    ],
+    "startTime": 597.9,
+    "endTime": 599.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the officers shook his head and",
+        "confidence": 0.8957263526582051
+      }
+    ],
+    "startTime": 600.3,
+    "endTime": 601.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "refused but he allowed some of his",
+        "confidence": 0.8794366827338163
+      }
+    ],
+    "startTime": 601.9,
+    "endTime": 604.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "soldiers to slack,",
+        "confidence": 0.9464282078732676
+      }
+    ],
+    "startTime": 604.4,
+    "endTime": 605.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9818140106338875
+      }
+    ],
+    "startTime": 605.5,
+    "endTime": 605.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "cords",
+        "confidence": 0.88091975
+      },
+      {
+        "text": "chords",
+        "confidence": 0.84727955
+      }
+    ],
+    "startTime": 605.7,
+    "endTime": 606.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "on one side where by Gulliver was",
+        "confidence": 0.8794366827338163
+      }
+    ],
+    "startTime": 606.2,
+    "endTime": 608.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "able to feel more comfortable.",
+        "confidence": 0.9123177536241291
+      }
+    ],
+    "startTime": 608.5,
+    "endTime": 610.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "After",
+        "confidence": 0.9818140106338875
+      }
+    ],
+    "startTime": 610.6,
+    "endTime": 610.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "this,",
+        "confidence": 0.88091975
+      },
+      {
+        "text": "this.",
+        "confidence": 0.84727955
+      }
+    ],
+    "startTime": 610.9,
+    "endTime": 611.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.88091975
+      },
+      {
+        "text": "The",
+        "confidence": 0.84727955
+      }
+    ],
+    "startTime": 611.5,
+    "endTime": 611.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "little people drew out the arrows",
+        "confidence": 0.8957263526582051
+      }
+    ],
+    "startTime": 611.6,
+    "endTime": 613.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that still stuck in his hands and",
+        "confidence": 0.8794366827338163
+      }
+    ],
+    "startTime": 613.5,
+    "endTime": 615.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "face and rubbed the wounds.",
+        "confidence": 0.9123177536241291
+      }
+    ],
+    "startTime": 615.3,
+    "endTime": 617.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "With some pleasant smelling ointment,",
+        "confidence": 0.9342962410581376
+      }
+    ],
+    "startTime": 617.4,
+    "endTime": 619.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "which so soothed,",
+        "confidence": 0.9600431670277796
+      }
+    ],
+    "startTime": 619.6,
+    "endTime": 620.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "his pain that very soon.",
+        "confidence": 0.9342962410581376
+      }
+    ],
+    "startTime": 620.9,
+    "endTime": 623.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He fell sound asleep.",
+        "confidence": 0.9470822151258064
+      }
+    ],
+    "startTime": 623.6,
+    "endTime": 625.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "And this was no great Wonder for",
+        "confidence": 0.9092398092450641
+      }
+    ],
+    "startTime": 626,
+    "endTime": 628.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "as he afterwards,",
+        "confidence": 0.9600431670277796
+      }
+    ],
+    "startTime": 628.3,
+    "endTime": 629.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "understood the",
+        "confidence": 0.9731814913600682
+      }
+    ],
+    "startTime": 629.3,
+    "endTime": 630.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Kings",
+        "confidence": 0.90006655
+      },
+      {
+        "text": "king's",
+        "confidence": 0.86490625
+      }
+    ],
+    "startTime": 630.5,
+    "endTime": 630.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Physicians",
+        "confidence": 0.90006655
+      },
+      {
+        "text": "Physicians,",
+        "confidence": 0.86490625
+      }
+    ],
+    "startTime": 630.9,
+    "endTime": 631.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "had mixed a very strong sleeping",
+        "confidence": 0.9216828825567291
+      }
+    ],
+    "startTime": 631.5,
+    "endTime": 633.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "draft with the wine that had been",
+        "confidence": 0.9092398092450641
+      }
+    ],
+    "startTime": 633.6,
+    "endTime": 635.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "given him.",
+        "confidence": 0.9731814913600682
+      }
+    ],
+    "startTime": 635.8,
+    "endTime": 636.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver awoke with a violent fit",
+        "confidence": 0.5785793012844124
+      }
+    ],
+    "startTime": 637.9,
+    "endTime": 639.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "of sneezing and with the feeling",
+        "confidence": 0.5785793012844124
+      }
+    ],
+    "startTime": 639.8,
+    "endTime": 642.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of small feet running away from",
+        "confidence": 0.5785793012844124
+      }
+    ],
+    "startTime": 642.1,
+    "endTime": 644.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "off his chest.",
+        "confidence": 0.7606440043045185
+      }
+    ],
+    "startTime": 644.6,
+    "endTime": 645.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Where was he bound still without",
+        "confidence": 0.5785793012844124
+      }
+    ],
+    "startTime": 646.2,
+    "endTime": 649.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "doubt but no longer.",
+        "confidence": 0.694344918943009
+      }
+    ],
+    "startTime": 649.4,
+    "endTime": 651.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Did he find himself lying on the",
+        "confidence": 0.5281492995133067
+      }
+    ],
+    "startTime": 651.1,
+    "endTime": 652.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "ground?",
+        "confidence": 0.91283822
+      }
+    ],
+    "startTime": 652.8,
+    "endTime": 653.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "It puzzled him.",
+        "confidence": 0.7606440043045185
+      }
+    ],
+    "startTime": 654,
+    "endTime": 655,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Greatly that now he lay on a sort",
+        "confidence": 0.48211486646197377
+      }
+    ],
+    "startTime": 655,
+    "endTime": 657.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "of platform.",
+        "confidence": 0.8332736158927685
+      }
+    ],
+    "startTime": 657.2,
+    "endTime": 658.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "How had he got there?",
+        "confidence": 0.6338245798739807
+      }
+    ],
+    "startTime": 659.2,
+    "endTime": 660.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Soon he began to realize what had",
+        "confidence": 0.9140703663452437
+      }
+    ],
+    "startTime": 662,
+    "endTime": 663.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "happened and later when he understood",
+        "confidence": 0.9258784335588363
+      }
+    ],
+    "startTime": 663.9,
+    "endTime": 666.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the language.",
+        "confidence": 0.9746559148965122
+      }
+    ],
+    "startTime": 666.7,
+    "endTime": 667.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He learned all that had been done",
+        "confidence": 0.9140703663452437
+      }
+    ],
+    "startTime": 667.7,
+    "endTime": 669.2,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "to him whilst he slept before he",
+        "confidence": 0.9140703663452437
+      }
+    ],
+    "startTime": 669.2,
+    "endTime": 672.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "dropped asleep.",
+        "confidence": 0.9746559148965122
+      }
+    ],
+    "startTime": 672.1,
+    "endTime": 673.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "He had heard a rumbling as if wheels",
+        "confidence": 0.9024128917432371
+      }
+    ],
+    "startTime": 673.2,
+    "endTime": 675.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "and the shouts of many drivers,",
+        "confidence": 0.9258784335588363
+      }
+    ],
+    "startTime": 676,
+    "endTime": 678,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "this,",
+        "confidence": 0.89462876
+      },
+      {
+        "text": "this",
+        "confidence": 0.87896729
+      }
+    ],
+    "startTime": 678.3,
+    "endTime": 678.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it seemed was caused by the arrival",
+        "confidence": 0.9140703663452437
+      }
+    ],
+    "startTime": 678.6,
+    "endTime": 681.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of a huge,",
+        "confidence": 0.9622257705750955
+      }
+    ],
+    "startTime": 681.1,
+    "endTime": 681.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "kind of trolley a few inches high,",
+        "confidence": 0.9140703663452437
+      }
+    ],
+    "startTime": 681.7,
+    "endTime": 684.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but nearly",
+        "confidence": 0.9746559148965122
+      }
+    ],
+    "startTime": 684.6,
+    "endTime": 685.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "seven",
+        "confidence": 0.89462876
+      },
+      {
+        "text": "7",
+        "confidence": 0.87896729
+      }
+    ],
+    "startTime": 685.2,
+    "endTime": 685.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "feet,",
+        "confidence": 0.9872466332667396
+      }
+    ],
+    "startTime": 685.7,
+    "endTime": 686,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "long drawn by 1500 of the Kings",
+        "confidence": 0.9140703663452437
+      }
+    ],
+    "startTime": 686,
+    "endTime": 689.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "largest horses on.",
+        "confidence": 0.9622257705750955
+      }
+    ],
+    "startTime": 689.4,
+    "endTime": 691.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Yes,",
+        "confidence": 0.9644160207281356
+      }
+    ],
+    "startTime": 691.8,
+    "endTime": 692,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "it was meant that he should be taken",
+        "confidence": 0.748368207920435
+      }
+    ],
+    "startTime": 692,
+    "endTime": 693.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to the city by the use of strong",
+        "confidence": 0.748368207920435
+      }
+    ],
+    "startTime": 693.6,
+    "endTime": 696.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "polls",
+        "confidence": 0.81383818
+      },
+      {
+        "text": "poles",
+        "confidence": 0.80885458
+      }
+    ],
+    "startTime": 696.1,
+    "endTime": 696.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fixed in the ground to,",
+        "confidence": 0.8342996876436196
+      }
+    ],
+    "startTime": 696.8,
+    "endTime": 698.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "which were attached,",
+        "confidence": 0.8970016637955507
+      }
+    ],
+    "startTime": 698.8,
+    "endTime": 699.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "many pulleys and the strongest ropes",
+        "confidence": 0.8046119848519862
+      }
+    ],
+    "startTime": 699.8,
+    "endTime": 702.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to be found in the country.",
+        "confidence": 0.8046119848519862
+      }
+    ],
+    "startTime": 702.4,
+    "endTime": 703.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "900 men,",
+        "confidence": 0.9300982610370917
+      }
+    ],
+    "startTime": 704.3,
+    "endTime": 705.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "managed to hoist him as he slept,",
+        "confidence": 0.7759806886611194
+      }
+    ],
+    "startTime": 705.6,
+    "endTime": 708,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "then they put him on the trolley",
+        "confidence": 0.7759806886611194
+      }
+    ],
+    "startTime": 708.6,
+    "endTime": 710.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "where they again.",
+        "confidence": 0.8970016637955507
+      }
+    ],
+    "startTime": 710.9,
+    "endTime": 711.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Tied him fast.",
+        "confidence": 0.8970016637955507
+      }
+    ],
+    "startTime": 711.6,
+    "endTime": 712.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "It was when they were far on their",
+        "confidence": 0.748368207920435
+      }
+    ],
+    "startTime": 713.3,
+    "endTime": 715,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "way to the city that Gulliver awoke.",
+        "confidence": 0.7759806886611194
+      }
+    ],
+    "startTime": 715,
+    "endTime": 717.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The trolley had stopped for a little",
+        "confidence": 0.7759806886611194
+      }
+    ],
+    "startTime": 717.7,
+    "endTime": 719.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "to breathe the horses.",
+        "confidence": 0.8650827751842219
+      }
+    ],
+    "startTime": 719.6,
+    "endTime": 721,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "One",
+        "confidence": 0.9494196529091572
+      },
+      {
+        "text": "And one",
+        "confidence": 0.78161645
+      }
+    ],
+    "startTime": 721.7,
+    "endTime": 721.9,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "of the officers of the",
+        "confidence": 0.945977140659278
+      }
+    ],
+    "startTime": 721.9,
+    "endTime": 722.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "King's Guard",
+        "confidence": 0.78477961
+      },
+      {
+        "text": "kingsguard,",
+        "confidence": 0.78161645
+      },
+      {
+        "text": "kingsguard",
+        "confidence": 0.76498348
+      }
+    ],
+    "startTime": 722.8,
+    "endTime": 724,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "who had not",
+        "confidence": 0.9672269417539131
+      }
+    ],
+    "startTime": 724.3,
+    "endTime": 724.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "before",
+        "confidence": 0.9529994071994154
+      },
+      {
+        "text": "before.",
+        "confidence": 0.76498348
+      }
+    ],
+    "startTime": 724.8,
+    "endTime": 725.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "seen,",
+        "confidence": 0.9529994071994154
+      },
+      {
+        "text": "Seen,",
+        "confidence": 0.76498348
+      }
+    ],
+    "startTime": 725.3,
+    "endTime": 725.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver climbed with some friends",
+        "confidence": 0.945977140659278
+      }
+    ],
+    "startTime": 725.7,
+    "endTime": 728,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "up his",
+        "confidence": 0.9780301807390703
+      }
+    ],
+    "startTime": 728,
+    "endTime": 728.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "body",
+        "confidence": 0.948676258053754
+      },
+      {
+        "text": "body.",
+        "confidence": 0.78477961
+      }
+    ],
+    "startTime": 728.4,
+    "endTime": 728.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "whilst",
+        "confidence": 0.948676258053754
+      },
+      {
+        "text": "Whilst",
+        "confidence": 0.78477961
+      }
+    ],
+    "startTime": 729.8,
+    "endTime": 730.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "looking at his face.",
+        "confidence": 0.9565430344364987
+      }
+    ],
+    "startTime": 730.3,
+    "endTime": 731.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "The officer could not resist the",
+        "confidence": 0.9355279568546276
+      }
+    ],
+    "startTime": 731.8,
+    "endTime": 733.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "temptation of putting the point",
+        "confidence": 0.945977140659278
+      }
+    ],
+    "startTime": 733.4,
+    "endTime": 735.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of his sword",
+        "confidence": 0.9672269417539131
+      }
+    ],
+    "startTime": 735.6,
+    "endTime": 736.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "up,",
+        "confidence": 0.948676258053754
+      },
+      {
+        "text": "up",
+        "confidence": 0.78477961
+      }
+    ],
+    "startTime": 736.5,
+    "endTime": 736.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Gulliver's knows which,",
+        "confidence": 0.9672269417539131
+      }
+    ],
+    "startTime": 736.7,
+    "endTime": 738.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "so tickled him that he woke sneezing",
+        "confidence": 0.9251941938540226
+      }
+    ],
+    "startTime": 738.4,
+    "endTime": 741.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "violently.",
+        "confidence": 0.9889540842420695
+      }
+    ],
+    "startTime": 741.6,
+    "endTime": 742.5,
+    "startParagraph": false
+  }
+]

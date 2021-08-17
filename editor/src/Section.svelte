@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getOptions } from "./align";
   import Dropdown from "./Dropdown.svelte";
-  import { navPlayingSectionsStore } from "./audio";
+  import { playingSectionsStore, playingStore } from "./audio";
   import { editSelectedSectionStore, modeStore, navDragSelectingStore, escPressedStore, selectionStore, selectionStoreSorted, selectionCountStore, outputStore, editDirectionStore } from "./state";
   import type { OutputSection } from "./types";
   import { clamp, modulo, moduloGet, paragraphBounds } from "./utils";
@@ -18,12 +18,16 @@
   let navOnlySelected: boolean;
   $: navOnlySelected = $modeStore === "nav" && selected && $selectionCountStore === 1;
 
-  $: if (!$navDragSelectingStore && $selectionStore.endIdx === section.idx) {
+  $: if (!$navDragSelectingStore && $selectionStore.endIdx === section.idx && !$playingStore) {
     input?.scrollIntoView({ block: "center" });
   }
 
   let navPlaying: boolean;
-  $: navPlaying = $modeStore === "nav" && selected && $navPlayingSectionsStore[section.idx] === true;
+  $: navPlaying = $modeStore === "nav" && selected && $playingSectionsStore[section.idx] === true;
+
+  $: if(navPlaying) {
+    input?.scrollIntoView({ block: "center" });
+  }
 
   let editing: boolean;
   $: editing = $modeStore === "edit" && $editSelectedSectionStore === section;
@@ -182,26 +186,32 @@
 
   let inputFocussed: boolean = false;
 
-  function click(event: MouseEvent) {
+  let wasOnlySelectedBeforeMouseDown: boolean = false;
+  function mouseDown(event: MouseEvent) {
+    wasOnlySelectedBeforeMouseDown = navOnlySelected;
+
     if ($modeStore === "nav") {
       event.preventDefault();
-
       navDragSelectingStore.set(true);
+
       if (event.shiftKey) {
         selectionStore.update(state => {
           if (state === null) return { startIdx: section.idx, endIdx: section.idx }
           return { startIdx: state.startIdx, endIdx: section.idx }
-        })
-      } else {
-        if (navOnlySelected) {
-          modeStore.set("edit");
-        } else {
-          selectionStore.set({ startIdx: section.idx, endIdx: section.idx })
-        }
+        });
+        return;
       }
-    } else {
-      selectionStore.set({ startIdx: section.idx, endIdx: section.idx })
     }
+
+    selectionStore.set({ startIdx: section.idx, endIdx: section.idx })
+  }
+
+  function click(event: MouseEvent) {
+    if ($modeStore !== "nav") return;
+    if (event.shiftKey) return;
+    if (!wasOnlySelectedBeforeMouseDown) return;
+    if ($navDragSelectingStore) return;
+    modeStore.set("edit");
   }
 
   function mouseEnter() {
@@ -225,27 +235,28 @@
   }
 
   input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     padding: 0;
     margin: 0;
     width: calc(100% - 4px);
     border: none;
     outline: none;
-    border-bottom: 1px solid black;
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    border-bottom: 1px solid var(--form-border);
+    background-color: transparent;
   }
 
   .navSelected {
-    background-color: lightblue;
+    background-color: var(--weak-focus);
   }
 
   .editSelected {
-    background-color: lightpink;
+    background-color: var(--strong-focus);
   }
 
   .navPlaying {
-    background-color: lightgreen;
+    background-color: var(--focus);
   }
 
   .wrapper {
@@ -272,15 +283,30 @@
     margin: 0;
     width: calc(100% - 4px);
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.7);
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
+  .labelBackground {
+    z-index: 1;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    background-color: var(--page-background);
+    opacity: 0.7;
+  }
+
+  .labelBackground.navSelected {
+    background-color: var(--weak-focus);
+  }
+
   .label {
-    background-color: lightpink;
+    z-index: 2;
+    background-color: var(--page-background);
     font-size: 8pt;
     padding-left: 2px;
     padding-right: 2px;
@@ -293,7 +319,8 @@
 {/if}
 <div class="wrapper"
   on:keydown={key}
-  on:mousedown|stopPropagation={click}
+  on:mousedown|stopPropagation={mouseDown}
+  on:click={click}
   on:mouseenter={mouseEnter}
 >
   <span class="measurement">{text || "W"}</span>
@@ -309,6 +336,7 @@
   >
   {#if $escPressedStore}
     <div class="labelContainer">
+      <div class="labelBackground" class:navSelected={$modeStore === "nav" && selected}/>
       <span class="label">{section.idx + 1}</span>
     </div>
   {:else}

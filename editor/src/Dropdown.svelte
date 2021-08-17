@@ -31,12 +31,13 @@
     position: absolute;
     top: 100%;
     max-width: 100vw;
-    border: 1px solid black;
+    border: 1px solid var(--form-border);
     z-index: 2;
-    background: white;
+    background: var(--page-background);
     display: flex;
     flex-direction: column;
-    margin-top: 2px
+    margin-top: 2px;
+    border-radius: 4px;
   }
 
   .edit {
@@ -44,7 +45,7 @@
   }
 
   .highlight {
-    background-color: lightpink;
+    background-color: var(--weak-focus);
   }
 
   .option {
@@ -57,7 +58,7 @@
   }
 
   .topBorder {
-    border-top: 1px solid black;
+    border-top: 1px solid var(--form-border);
   }
 </style>
 
@@ -66,7 +67,7 @@
   class="popup"
   class:edit={$modeStore === "edit"} 
   bind:clientWidth={width} 
-  style={`left: min(0px, calc(100vw - 12px - ${popupRight ?? 0}px));`}
+  style={`left: min(0px, calc(100vw - 24px - ${popupRight ?? 0}px));`}
 >
   {#each options as option, idx}
     <span

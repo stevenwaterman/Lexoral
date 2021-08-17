@@ -117,7 +117,7 @@
     const sections = $outputStore;
 
     const currentParagraphBounds = paragraphBounds(sections, cursor);
-    const newCursor = currentParagraphBounds.endIdx;
+    const newCursor = event.ctrlKey ? sections.length - 1 : currentParagraphBounds.endIdx;
 
     if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
@@ -133,7 +133,7 @@
     const sections = $outputStore;
 
     const currentParagraphBounds = paragraphBounds(sections, cursor);
-    const newCursor = currentParagraphBounds.startIdx;
+    const newCursor = event.ctrlKey ? 0 : currentParagraphBounds.startIdx;
 
     if (event.shiftKey) {
       selectionStore.update(state => ({ startIdx: state.startIdx, endIdx: newCursor }))
@@ -143,7 +143,19 @@
   }
 
   function tab(event: KeyboardEvent) {
-    if (event.shiftKey) return left(event);
+    if (event.shiftKey) {
+      event.preventDefault();
+
+      let newCursor: number;
+      if ($selectionStore.startIdx === $selectionStore.endIdx) {
+        newCursor = $selectionStoreSorted.startIdx - 1;
+      } else {
+        newCursor = $selectionStoreSorted.startIdx;
+      }
+
+      const clampedCursor = clamp(newCursor, 0, $outputStore.length - 1)
+      selectionStore.set({ startIdx: clampedCursor, endIdx: clampedCursor });
+    }
     else return right(event);
   }
 
@@ -198,9 +210,6 @@
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-    flex-grow: 1;
-    flex-shrink: 1;
-    max-height: 100%;
   }
 
   .logo {
@@ -218,14 +227,15 @@
     min-height: 0;
     margin-top: 10px;
     margin-bottom: 20px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    border-top: 1px solid var(--form-border);
+    border-bottom: 1px solid var(--form-border);
     overflow-y: auto;
     overflow-x: hidden;
   }
 
   .padding {
     height: 40%;
+    flex-shrink: 0;
   }
 </style>
 
@@ -234,7 +244,7 @@
 <EscOverlay/>
 
 <div class="container">
-  <img class="logo" src="/assets/logo.png" alt="logo"/>
+  <img class="logo" src="/assets/smallBrand.png" alt="logo"/>
 
   <div class="wrapper">
     <div class="padding"/>

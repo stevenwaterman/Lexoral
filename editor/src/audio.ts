@@ -1,30 +1,31 @@
 import * as Tone from "tone";
-import { writable, Writable } from "svelte/store";
+import { writable, Writable, derived, Readable } from "svelte/store";
 import type { Output, OutputSection } from "./types";
 import { navSelectedSectionsStore, modeStore } from "./state";
 import { setOffsetInterval } from "./utils";
 
-export const navPlayingSectionsStore: Writable<Record<number, boolean>> = writable({});
+export const playingSectionsStore: Writable<Record<number, boolean>> = writable({});
 function setPlaying(section: OutputSection) {
-  navPlayingSectionsStore.update(state => {
+  playingSectionsStore.update(state => {
     state[section.idx] = true;
     return state;
   })
 }
 function setNotPlaying(section: OutputSection) {
-  navPlayingSectionsStore.update(state => {
+  playingSectionsStore.update(state => {
     state[section.idx] = false;
     return state;
   })
 }
+
 function resetPlaying() {
-  navPlayingSectionsStore.set({});
+  playingSectionsStore.set({});
 }
 
 const player = new Tone.Player().toDestination();
 player.onstop = () => {
   // TODO there's a couple of frames of delay here before this gets invoked
-  playing = false;
+  playingStore.set(false);
   cancelTimers();
   resetPlaying();
 };
@@ -32,12 +33,15 @@ player.onstop = () => {
 new Tone.ToneAudioBuffer("/assets/audio.mp3", buffer => player.buffer = buffer);
 
 let playing: boolean = false;
+export const playingStore: Writable<boolean> = writable(playing);
+playingStore.subscribe(value => { playing = value });
+
 let cancelTimers: () => void = () => {};
 
 function play(loop: boolean) {
   if (navSelectedSections.length === 0) return;
 
-  playing = true;
+  playingStore.set(true);
 
   const start = navSelectedSections[0].startTime;
   const end = navSelectedSections[navSelectedSections.length - 1].endTime;
