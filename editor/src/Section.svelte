@@ -10,6 +10,9 @@
   let text: string = "";
   let input: HTMLInputElement;
 
+  let placeholder: string;
+  $: placeholder = section.options[0].text;
+
   $: if ($modeStore === "nav") input?.blur();
 
   let selected: boolean;
@@ -79,8 +82,11 @@
       if (event.shiftKey) {
         section.startParagraph = !section.startParagraph;
       } else {
-        acceptOption();
-        next();
+        if (options.length) {
+          acceptOption();
+        } else {
+          next();
+        }
       }
     }
 
@@ -89,7 +95,7 @@
       if (options.length > 1 && !event.shiftKey) {
         selectedIdx++;
       } else {
-        moveDown();
+        // moveDown();
       }
     }
 
@@ -98,7 +104,7 @@
       if (options.length > 1 && !event.shiftKey) {
         selectedIdx--;
       } else {
-        moveUp();
+        // moveUp();
       }
     }
 
@@ -211,6 +217,10 @@
     if (event.shiftKey) return;
     if (!wasOnlySelectedBeforeMouseDown) return;
     if ($navDragSelectingStore) return;
+    selectionStore.update(state => ({
+      startIdx: state.endIdx,
+      endIdx: state.endIdx
+    }));
     modeStore.set("edit");
   }
 
@@ -307,7 +317,7 @@
   .label {
     z-index: 2;
     background-color: var(--page-background);
-    font-size: 8pt;
+    font-size: 12pt;
     padding-left: 2px;
     padding-right: 2px;
     border-radius: 2px;
@@ -323,7 +333,7 @@
   on:click={click}
   on:mouseenter={mouseEnter}
 >
-  <span class="measurement">{text || "W"}</span>
+  <span class="measurement">{text || placeholder || "W"}</span>
   <input
     bind:this={input}
     bind:value={text}
@@ -333,6 +343,7 @@
     class:navPlaying
     on:focus="{() => inputFocussed = true}"
     on:blur="{() => inputFocussed = false}"
+    placeholder={placeholder}
   >
   {#if $escPressedStore}
     <div class="labelContainer">
@@ -341,7 +352,7 @@
     </div>
   {:else}
     {#if navDropdownVisible && options.length}
-      <Dropdown options={options} />
+      <!-- <Dropdown options={options} /> -->
     {/if}
     {#if editDropdownVisible && options.length}
       <Dropdown

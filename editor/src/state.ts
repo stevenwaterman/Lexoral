@@ -12,14 +12,6 @@ export const selectionStore: Writable<{ startIdx: number; endIdx: number }> = ma
   { startIdx: 0, endIdx: 0 }, 
   (last, next) => last.startIdx !== next.startIdx || last.endIdx !== next.endIdx
 );
-modeStore.subscribe(mode => {
-  if (mode === "edit") {
-    selectionStore.update(selection => ({
-      startIdx: selection.endIdx,
-      endIdx: selection.endIdx
-    }))
-  }
-})
 
 export const selectionStoreSorted: Readable<{ startIdx: number; endIdx: number }> = derived(selectionStore, selection => 
   ({startIdx: Math.min(selection.startIdx, selection.endIdx),

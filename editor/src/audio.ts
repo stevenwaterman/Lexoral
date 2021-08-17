@@ -30,7 +30,11 @@ player.onstop = () => {
   resetPlaying();
 };
 
-new Tone.ToneAudioBuffer("/assets/audio.mp3", buffer => player.buffer = buffer);
+let loaded = false;
+new Tone.ToneAudioBuffer("/assets/audio.mp3", buffer => {
+  loaded = true;
+  player.buffer = buffer;
+});
 
 let playing: boolean = false;
 export const playingStore: Writable<boolean> = writable(playing);
@@ -39,6 +43,7 @@ playingStore.subscribe(value => { playing = value });
 let cancelTimers: () => void = () => {};
 
 function play(loop: boolean) {
+  if (!loaded) return; // TODO do something better here
   if (navSelectedSections.length === 0) return;
 
   playingStore.set(true);

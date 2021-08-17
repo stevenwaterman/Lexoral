@@ -179,6 +179,10 @@
         return state;
       });
     } else {
+      selectionStore.update(state => ({
+        startIdx: state.endIdx,
+        endIdx: state.endIdx
+      }));
       modeStore.set("edit");
     }
   }
