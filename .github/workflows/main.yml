@@ -1,9 +1,14 @@
 name: AutomaticHost
 
+
 on:
   push:
     branches: 
       - master
+
+defaults:
+  run:
+    working-directory: editor
 
 jobs:
   build:
