@@ -1,7 +1,5 @@
 # Notes from miller using lexoral for the first time.
 
-
-Filled in by default
 Not obvious you can click the dropdown
 Can't get him to read it again in edit mode
 
@@ -19,3 +17,13 @@ trying to use up + down arrow keys in nav mode
 
 use placeholder text with 1st option
 want to be able to accept and then edit
+
+undo / input onFocus should update selcetion store
++1 for alt to play like spacebar
+enter should select the currently playing bit
+keep as individual words
+clicking in empty space taking you to nav mode is confusing (right click instead?)
+remove underlines
+escape mode if not typing 1st number, assume current
+
+scrolling is really annoying

@@ -253,7 +253,6 @@
     width: calc(100% - 4px);
     border: none;
     outline: none;
-    border-bottom: 1px solid var(--form-border);
     background-color: transparent;
   }
 

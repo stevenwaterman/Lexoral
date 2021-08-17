@@ -81,7 +81,7 @@
   }
 </style>
 
-{#await fetch("assets/data.json").then(data => data.json())}
+{#await fetch("assets/data2.json").then(data => data.json())}
   Fetching data
 {:then data}
   <Editor data={reformat(data)}/>

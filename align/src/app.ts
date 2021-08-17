@@ -198,6 +198,8 @@ function collapseAlternatives(wordAlternatives: WordAlternative[]): WordAlternat
 }
 
 function collapseOneAlternative(collapsed: WordAlternative[], alternative: WordAlternative): WordAlternative[] {
+  return [...collapsed, alternative]; // disable collapsing
+
   if (collapsed.length === 0) return [...collapsed, alternative]; // First one
   if (alternative.words.length > 1) return [...collapsed, alternative]; // More than one option
 
