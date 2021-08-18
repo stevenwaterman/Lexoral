@@ -1,5 +1,4 @@
 import { Readable, derived, writable, Writable } from "svelte/store";
-import type { Output } from "./types";
 
 /**
  * Modulo that makes negative numbers positive
@@ -75,6 +74,12 @@ export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
+export function clampGet<T>(list: T[], idx: number): T | undefined {
+  if (list.length === 0) return undefined;
+  const clampedIdx = clamp(idx, 0, list.length - 1);
+  return list[clampedIdx];
+}
+
 export function setOffsetInterval(callback: () => void, firstDuration: number, latterDuration?: number): () => void {
   const timers: NodeJS.Timeout[] = [];
   timers.push(
@@ -87,37 +92,65 @@ export function setOffsetInterval(callback: () => void, firstDuration: number, l
   return () => timers.forEach(clearTimeout);
 }
 
-export function paragraphBounds(sections: Output, idx: number): { startIdx: number; endIdx: number } | null {
-  if (idx < 0) return null;
-  if (idx >= sections.length) return null;
+// export function paragraphBounds(sections: Output, idx: number): { startIdx: number; endIdx: number } | null {
+//   if (idx < 0) return null;
+//   if (idx >= sections.length) return null;
 
-  let startIdx: number | null = null;
-  let endIdx: number | null = null;
+//   let startIdx: number | null = null;
+//   let endIdx: number | null = null;
 
-  for (let i = idx; i >= 0 && i < sections.length; i--) {
-    const section = sections[i];
-    if (section.startParagraph) {
-      startIdx = i;
-      break;
-    }
-  }
+//   for (let i = idx; i >= 0 && i < sections.length; i--) {
+//     const section = sections[i];
+//     if (section.startParagraph) {
+//       startIdx = i;
+//       break;
+//     }
+//   }
 
-  for (let i = idx + 1; i >= 0 && i < sections.length; i++) {
-    const section = sections[i];
-    if (section.startParagraph) {
-      endIdx = i - 1;
-      break;
-    }
-  }
+//   for (let i = idx + 1; i >= 0 && i < sections.length; i++) {
+//     const section = sections[i];
+//     if (section.startParagraph) {
+//       endIdx = i - 1;
+//       break;
+//     }
+//   }
 
-  if (startIdx === null) {
-    console.log("StartIdx is null - this should never happen");
-    startIdx = sections.length - 1;
-  }
+//   if (startIdx === null) {
+//     console.log("StartIdx is null - this should never happen");
+//     startIdx = sections.length - 1;
+//   }
 
-  if (endIdx === null) {
-    endIdx = sections.length - 1;
-  }
+//   if (endIdx === null) {
+//     endIdx = sections.length - 1;
+//   }
   
-  return { startIdx, endIdx };
+//   return { startIdx, endIdx };
+// }
+
+export function unwrapStore<T, INNER extends Readable<T | null>>(store_2: Readable<INNER | null>, equality: (a: T, b: T) => boolean = (a, b) => a === b): Readable<T | null> {
+  let value: T | null = null;
+  const output: Writable<T | null> = writable(null);
+  let unsubscribe: () => void = () => { };
+  store_2.subscribe((store: INNER | null) => {
+    unsubscribe();
+    if (store !== null) {
+      unsubscribe = store.subscribe((state: T | null) => {
+        if (
+          (value === null && state !== null) ||
+          (value !== null && state === null) ||
+          (value !== null && state !== null && !equality(value, state))
+        ) {
+          value = state;
+          output.set(state);
+        }
+      })
+    } else {
+      unsubscribe = () => { };
+      value = null;
+      output.set(null);
+    }
+  });
+  return output;
 }
+
+

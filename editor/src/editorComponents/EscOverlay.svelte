@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { escPressedStore, selectionStore, outputStore, modeStore } from "./state";
+  import { modeStore } from "../state";
 
   let input: HTMLInputElement;
   $: if (input) input.focus();
@@ -20,31 +20,31 @@
     if (numberSections.some(section => isNaN(section))) return;
     if (numberSections.some(section => section % 1 !== 0)) return;
     if (numberSections.some(section => section <= 0)) return;
-    if (numberSections.some(section => section > $outputStore.length)) return;
+    // if (numberSections.some(section => section > $outputStore.length)) return; TODO
 
     const adjustedSections = numberSections.map(section => section - 1);
 
     const startIdx = adjustedSections[0];
     const endIdx = adjustedSections.length === 1 ? adjustedSections[0] : adjustedSections[1];
-    selectionStore.set({ startIdx, endIdx });
+    // selectionStore.set({ startIdx, endIdx });
   }
 
   function keyDown(event: KeyboardEvent) {
     if (event.key === "Escape" && $modeStore === "nav") {
       text = "";
-      escPressedStore.set(true);
+      // escPressedStore.set(true);
     }
   }
 
   function keyUp(event: KeyboardEvent) {
     if (event.key === "Escape") {
       text = "";
-      escPressedStore.set(false);
+      // escPressedStore.set(false);
     }
   }
 
   function blur() {
-    escPressedStore.set(false);
+    // escPressedStore.set(false);
   }
 </script>
 
@@ -64,7 +64,7 @@
 </style>
 
 <svelte:body on:keydown={keyDown} on:keyup={keyUp}/>
-
+<!-- 
 {#if $escPressedStore}
   <input bind:this={input} bind:value={text} on:blur={blur}>
-{/if}
+{/if} -->

@@ -1,11 +1,6 @@
 <script lang="ts">
-  import Editor from "./EditorWrapper.svelte";
-  import { refineTiming } from "./envelope";
-  import type { JsonOutput, Output } from "./types";
-
-  function reformat(data: JsonOutput): Output {
-    return data.map((section, idx) => ({...section, idx}));
-  }
+  import Editor from "./editorComponents/Editor.svelte";
+  import { initialiseStores } from "./sectionStores";
 </script>
 
 <style>
@@ -81,8 +76,8 @@
   }
 </style>
 
-{#await fetch("assets/data2.json").then(data => data.json())}
+{#await fetch("assets/data2.json").then(data => data.json()).then(data => initialiseStores(data))}
   Fetching data
-{:then data}
-  <Editor data={reformat(data)}/>
+{:then}
+  <Editor/>
 {/await}
