@@ -1,64 +1,80 @@
-import { writable, Readable, Writable, derived } from "svelte/store";
-import { siblingIdx, clampGet } from "./utils";
-import { Paragraph, documentStore, Section } from "./sectionStores";
+import { Writable, writable, Readable, derived } from "svelte/store";
+import { documentStore, ParagraphState, SectionState } from "./sectionStores";
+import { clamp, clampGet, unwrapStore, siblingIdx } from "./utils";
 
-const selectionStore: Writable<null | {start: { row: number; col: number }; end: { row: number; col: number }}> = writable(null);
+type CursorPosition = {
+  row: number;
+  column: number;
+}
 
-const startParagraphStore: Readable<Paragraph | null> = derived([documentStore, selectionStore], ([allParagraphs, selection]) => selection === null ? null : clampGet(allParagraphs, selection.start.row));
-const startSectionStore: Readable<Section | null> = derived([startParagraphStore, selectionStore], ([paragraph, selection]) => {
+type SectionSelection = {
+  from: CursorPosition;
+  to: CursorPosition;
+} | null;
+
+const fromRowIdxStore: Writable<number | null> = writable(null);
+const fromParagraphStore: Readable<ParagraphState | null> = derived([documentStore, fromRowIdxStore], ([allParagraphs, idx]) => idx === null ? null : clampGet(allParagraphs, idx));
+const fromColIdxStore: Writable<number | null> = writable(null);
+const fromSectionStore: Readable<SectionState | null> = derived([fromParagraphStore, fromColIdxStore], ([paragraph, idx]) => {
   if (paragraph === null) return null;
-  if (selection === null) return null;
-  if (paragraph.length === 0) return null;
-
-  let count = 0;
-  for (let section of paragraph) {
-    count += section.text.length + 1;
-    if (count > selection.start.col) return section;
-  }
-
-  return paragraph[paragraph.length - 1];
+  if (idx === null) return null;
+  const section = clampGet(paragraph, idx);
+  if (section === undefined) return null;
+  return section;
+});
+const fromCursorPositionStore: Readable<CursorPosition | null> = derived([fromRowIdxStore, fromColIdxStore], ([row, column]) => {
+  if(row === null) return null;
+  if(column === null) return null;
+  return { row, column }
 });
 
-const endParagraphStore: Readable<Paragraph | null> = derived([documentStore, selectionStore], ([allParagraphs, selection]) => selection === null ? null : clampGet(allParagraphs, selection.end.row));
-const endSectionStore: Readable<Section | null> = derived([endParagraphStore, selectionStore], ([paragraph, selection]) => {
+
+const toRowIdxStore: Writable<number | null> = writable(null);
+const toParagraphStore: Readable<ParagraphState | null> = derived([documentStore, toRowIdxStore], ([allParagraphs, idx]) => idx === null ? null : clampGet(allParagraphs, idx));
+const toColIdxStore: Writable<number | null> = writable(null);
+const toSectionStore: Readable<SectionState | null> = derived([toParagraphStore, toColIdxStore], ([paragraph, idx]) => {
   if (paragraph === null) return null;
-  if (selection === null) return null;
-  if (paragraph.length === 0) return null;
-
-  let count = 0;
-  for (let section of paragraph) {
-    count += section.text.length + 1;
-    if (count > selection.end.col) return section;
-  }
-
-  return paragraph[paragraph.length - 1];
+  if (idx === null) return null;
+  const section = clampGet(paragraph, idx);
+  if (section === undefined) return null;
+  return section;
+});
+const toCursorPositionStore: Readable<CursorPosition | null> = derived([toRowIdxStore, toColIdxStore], ([row, column]) => {
+  if(row === null) return null;
+  if(column === null) return null;
+  return { row, column }
 });
 
-export const selectedTimeRangeStore: Readable<{start: number; end: number} | null> = derived([startSectionStore, endSectionStore], ([start, end]) => {
-  if (start === null) return null;
-  if (end === null) return null;
-  return { start: start.time.start, end: end.time.end }
-});
 
-selectedTimeRangeStore.subscribe(console.log);
+const selectionStore: Readable<SectionSelection> = derived([fromCursorPositionStore, toCursorPositionStore], ([from, to]) => {
+  if (from === null) return null;
+  if (to === null) return null;
+  return { from, to };
+})
+
 
 const singleSelectionStore: Readable<boolean> = derived(selectionStore, selection => 
-  selection !== null &&
-  selection.start.row === selection.end.row && 
-  selection.start.col === selection.end.col
+  selection !== null && 
+  selection.from.column === selection.to.column && 
+  selection.from.row === selection.to.row
 );
 
-export const dropdownSectionStore: Readable<Section | null> = derived([singleSelectionStore, endSectionStore], ([singleSelection, endSection]) => {
-  if (!singleSelection) return null;
-  return endSection;
+export const selectedTimeRangeStore: Readable<{start: number; end: number} | null> = derived([fromSectionStore, toSectionStore], ([start, end]) => {
+  if (start === null) return null;
+  if (end === null) return null;
+  const early = Math.min(start.time.start, end.time.start);
+  const late = Math.max(start.time.end, end.time.end);
+  return { start: early, end: late }
 });
+
+export const dropdownSectionStore: Readable<SectionState | null> = derived([toSectionStore, singleSelectionStore], ([section, single]) => single ? section : null);
+export const dropdownPositionStore: Writable<{top: number; left: number}> = writable({ top: 0, left: 0 });
 
 export function updateSelection() {
   setTimeout(updateSelectionInternal);
 }
 
-let lastStartColIdx: number | null = null;
-let lastEndColIdx: number | null = null;
+let lastSelection: Selection | null = null;
 let lastStartContainer: Node | null = null;
 let lastEndContainer: Node | null = null;
 
@@ -66,52 +82,33 @@ function updateSelectionInternal() {
   const selection = window.getSelection();
 
   const startContainer = selection.anchorNode;
-  const startColIdx = selection.anchorOffset;
-
   const endContainer = selection.focusNode;
-  const endColIdx = selection.focusOffset;
 
-  console.log(startColIdx, endColIdx)
-
-  if (
-    startContainer === lastStartContainer && 
-    endContainer === lastEndContainer &&
-    startColIdx === lastStartColIdx &&
-    endColIdx === lastEndColIdx
-  ) return;
-
-  updateDropdownPosition(selection);
-
+  updateDropdownPosition(endContainer);
+  if (startContainer === lastStartContainer && endContainer === lastEndContainer) return;
   lastStartContainer = startContainer;
-  lastStartColIdx = startColIdx;
-
   lastEndContainer = endContainer;
-  lastEndColIdx = endColIdx;
 
-  const startRowIdx = siblingIdx(startContainer.parentElement);
-  const endRowIdx = siblingIdx(endContainer.parentElement);
 
-  selectionStore.set({
-    start: {
-      row: startRowIdx,
-      col: startColIdx
-    },
-    end: {
-      row: endRowIdx,
-      col: endColIdx
-    }
-  });
+  const fromSpan = startContainer.parentElement;
+  const fromRow = fromSpan.parentElement;
+  const fromColIdx = siblingIdx(fromSpan);
+  const fromRowIdx = siblingIdx(fromRow);
+  fromColIdxStore.set(fromColIdx);
+  fromRowIdxStore.set(fromRowIdx);
+
+  const toSpan = endContainer.parentElement;
+  const toRow = toSpan.parentElement;
+  const toColIdx = siblingIdx(toSpan);
+  const toRowIdx = siblingIdx(toRow);
+  toColIdxStore.set(toColIdx);
+  toRowIdxStore.set(toRowIdx);
 }
 
-export const dropdownPositionStore: Writable<{ left: number; top: number }> = writable({ left: 0, top: 0 });
-
-function updateDropdownPosition(selection: Selection) {
-  const rangeBounds = selection.getRangeAt(0).getBoundingClientRect();
-  const paragraphElement = selection.focusNode.parentElement;
-  const paragraphBounds = paragraphElement.getBoundingClientRect();
-
-  const left = rangeBounds.left + paragraphElement.offsetLeft - paragraphBounds.left;
-  const top = rangeBounds.top + rangeBounds.height + paragraphElement.offsetTop - paragraphBounds.top;
-
-  dropdownPositionStore.set({ left, top });
+function updateDropdownPosition(endContainer: Node) {
+  const span = endContainer.parentElement;
+  dropdownPositionStore.set({
+    top: span.offsetTop + span.offsetHeight,
+    left: span.offsetLeft
+  })
 }

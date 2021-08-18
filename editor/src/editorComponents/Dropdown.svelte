@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getOptions } from "../align";
-  import type { Section } from "../sectionStores";
+  import type { SectionState } from "../sectionStores";
   import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
   import { clamp } from "../utils";
 
-  let section: Section | null;
+  let section: SectionState | null;
   $: section = $dropdownSectionStore;
   
   let visible: boolean;

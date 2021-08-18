@@ -1,11 +1,13 @@
 <script lang="ts">
-  import type { Paragraph } from "../sectionStores";
+  import type { ParagraphState } from "../sectionStores";
   import { documentStore } from "../sectionStores";
-import { selectedTimeRangeStore } from "../selectionStores";
+  import { selectedTimeRangeStore } from "../selectionStores";
+  import Document from "./Document.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
+  import Paragraph from "./Paragraph.svelte";
 
-  function getText(paragraph: Paragraph) {
+  function getText(paragraph: ParagraphState) {
     let text = "";
     for(let section of paragraph) {
       if (text.length) text += " "      
@@ -51,14 +53,7 @@ import { selectedTimeRangeStore } from "../selectionStores";
     position: relative;
   }
 
-  .section {
-    display: inline-block;
-    white-space: pre;
-  }
-
-  .highlight {
-    background-color: var(--weak-focus)
-  }
+  
 </style>
 
 <div class="container">
@@ -67,15 +62,7 @@ import { selectedTimeRangeStore } from "../selectionStores";
   <div class="wrapper">
     <Dropdown/>
     <EditableContainer bind:textContent>
-      {#each $documentStore as paragraph}
-        <p>
-          {#each paragraph as section}
-            <span class="section" class:highlight={selectedTimeRange !== null && selectedTimeRange.start < section.time.end && selectedTimeRange.end >= section.time.start}>
-              {section.text + " "}
-            </span>
-          {/each}
-        </p>
-      {/each}
+      <Document />
     </EditableContainer>
   </div>
 </div>

@@ -4,6 +4,9 @@
   export let textContent: string;
 
   function keyDown(event: KeyboardEvent) {
+    if (event.key === "Backspace") {
+      console.log(event);
+    }
     updateSelection();
   }
 

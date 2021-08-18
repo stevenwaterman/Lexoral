@@ -9,7 +9,7 @@ export type JsonOutputSection = {
 }
 export type JsonOutput = JsonOutputSection[];
 
-export type Section = {
+export type SectionState = {
   time: {
     start: number;
     end: number;
@@ -19,15 +19,15 @@ export type Section = {
   options: string[];
 }
 
-export type Paragraph = Section[];
+export type ParagraphState = SectionState[];
 
-export type Document = Paragraph[];
+export type DocumentState = ParagraphState[];
 
-export const documentStore: Writable<Document> = writable([]);
+export const documentStore: Writable<DocumentState> = writable([]);
 
 export function setDocument(output: JsonOutput): void {
-  const document: Document = [];
-  let paragraph: Paragraph = [];
+  const document: DocumentState = [];
+  let paragraph: ParagraphState = [];
 
   output.forEach((outputSection, idx) => {
     if (idx !== 0 && outputSection.startParagraph) {
@@ -35,7 +35,7 @@ export function setDocument(output: JsonOutput): void {
       paragraph = [];
     }
 
-    const section: Section = {
+    const section: SectionState = {
       time: {
         start: outputSection.startTime,
         end: outputSection.endTime
