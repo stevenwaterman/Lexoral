@@ -1,6 +1,8 @@
 <script lang="ts">
   import { updateSelection } from "../selectionStores";
 
+  export let textContent: string;
+
   function keyDown(event: KeyboardEvent) {
     updateSelection();
   }
@@ -22,12 +24,15 @@
 
 <style>
   div {
+    white-space: pre-wrap;
     outline: none;
+    width: 100%;
   }
 </style>
 
 <div
-  contenteditable={true}
+  contenteditable
+  bind:textContent
   on:keydown={keyDown}
   on:mousedown={mouseDown}
   on:mousemove={mouseMove}

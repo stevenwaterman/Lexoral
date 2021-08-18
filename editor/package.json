@@ -32,6 +32,7 @@
     "seqalign": "^1.0.3",
     "svelte-css-vars": "0.0.2",
     "svelte-navigator": "^3.1.5",
-    "tone": "^14.7.77"
+    "tone": "^14.7.77",
+    "typewriter-editor": "^0.6.30"
   }
 }
