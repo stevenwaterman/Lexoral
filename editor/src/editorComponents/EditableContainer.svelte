@@ -24,7 +24,6 @@
 
 <style>
   div {
-    white-space: pre-wrap;
     outline: none;
     width: 100%;
   }

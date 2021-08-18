@@ -34,6 +34,14 @@ const endSectionStore: Readable<Section | null> = derived([endParagraphStore, se
   return paragraph[paragraph.length - 1];
 });
 
+export const selectedTimeRangeStore: Readable<{start: number; end: number} | null> = derived([startSectionStore, endSectionStore], ([start, end]) => {
+  if (start === null) return null;
+  if (end === null) return null;
+  return { start: start.time.start, end: end.time.end }
+});
+
+selectedTimeRangeStore.subscribe(console.log);
+
 const singleSelectionStore: Readable<boolean> = derived(selectionStore, selection => 
   selection !== null &&
   selection.start.row === selection.end.row && 
@@ -62,6 +70,8 @@ function updateSelectionInternal() {
 
   const endContainer = selection.focusNode;
   const endColIdx = selection.focusOffset;
+
+  console.log(startColIdx, endColIdx)
 
   if (
     startContainer === lastStartContainer && 

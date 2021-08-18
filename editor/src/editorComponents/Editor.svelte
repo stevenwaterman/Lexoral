@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Paragraph } from "../sectionStores";
   import { documentStore } from "../sectionStores";
+import { selectedTimeRangeStore } from "../selectionStores";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
 
@@ -14,6 +15,9 @@
   }
 
   let textContent;
+
+  let selectedTimeRange: { start: number; end: number; } | null;
+  $: selectedTimeRange = $selectedTimeRangeStore;
 </script>
 
 <style>
@@ -46,6 +50,15 @@
     flex-direction: column;
     position: relative;
   }
+
+  .section {
+    display: inline-block;
+    white-space: pre;
+  }
+
+  .highlight {
+    background-color: var(--weak-focus)
+  }
 </style>
 
 <div class="container">
@@ -55,7 +68,13 @@
     <Dropdown/>
     <EditableContainer bind:textContent>
       {#each $documentStore as paragraph}
-        <p>{getText(paragraph)}</p>
+        <p>
+          {#each paragraph as section}
+            <span class="section" class:highlight={selectedTimeRange !== null && selectedTimeRange.start < section.time.end && selectedTimeRange.end >= section.time.start}>
+              {section.text + " "}
+            </span>
+          {/each}
+        </p>
       {/each}
     </EditableContainer>
   </div>
