@@ -1,13 +1,13 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
 import { ParagraphStore, allParagraphsStore, ParagraphState, SectionState, SectionStore } from "./sectionStores";
-import { clamp, clampGet, unwrapStore } from "./utils";
+import { clamp, clampGet, unwrapStore, siblingIdx } from "./utils";
 
 type CursorPosition = {
   row: number;
   column: number;
 }
 
-type Selection = {
+type SectionSelection = {
   from: CursorPosition;
   to: CursorPosition;
 } | null;
@@ -54,7 +54,7 @@ const toCursorPositionStore: Readable<CursorPosition | null> = derived([toRowIdx
 });
 
 
-const selectionStore: Readable<Selection> = derived([fromCursorPositionStore, toCursorPositionStore], ([from, to]) => {
+const selectionStore: Readable<SectionSelection> = derived([fromCursorPositionStore, toCursorPositionStore], ([from, to]) => {
   if (from === null) return null;
   if (to === null) return null;
   return { from, to };
@@ -68,11 +68,47 @@ const singleSelectionStore: Readable<boolean> = derived(selectionStore, selectio
 );
 
 export const dropdownSectionStore: Readable<SectionState | null> = derived([toSelectionStore, singleSelectionStore], ([selection, single]) => single ? selection : null);
-export const dropdownPositionStore: Writable<DOMRect | null> = writable(null);
+export const dropdownPositionStore: Writable<{top: number; left: number}> = writable({ top: 0, left: 0 });
 
-export function updateSelection(selection: Selection) {
-  fromColIdxStore.set(selection.from.column);
-  fromRowIdxStore.set(selection.from.row);
-  toColIdxStore.set(selection.to.column);
-  toRowIdxStore.set(selection.to.row);
+export function updateSelection() {
+  setTimeout(updateSelectionInternal);
+}
+
+let lastSelection: Selection | null = null;
+let lastStartContainer: Node | null = null;
+let lastEndContainer: Node | null = null;
+
+function updateSelectionInternal() {
+  const selection = window.getSelection();
+
+  const startContainer = selection.anchorNode;
+  const endContainer = selection.focusNode;
+
+  updateDropdownPosition(endContainer);
+  if (startContainer === lastStartContainer && endContainer === lastEndContainer) return;
+  lastStartContainer = startContainer;
+  lastEndContainer = endContainer;
+
+
+  const fromSpan = startContainer.parentElement;
+  const fromRow = fromSpan.parentElement;
+  const fromColIdx = siblingIdx(fromSpan);
+  const fromRowIdx = siblingIdx(fromRow);
+  fromColIdxStore.set(fromColIdx);
+  fromRowIdxStore.set(fromRowIdx);
+
+  const toSpan = endContainer.parentElement;
+  const toRow = toSpan.parentElement;
+  const toColIdx = siblingIdx(toSpan);
+  const toRowIdx = siblingIdx(toRow);
+  toColIdxStore.set(toColIdx);
+  toRowIdxStore.set(toRowIdx);
+}
+
+function updateDropdownPosition(endContainer: Node) {
+  const span = endContainer.parentElement;
+  dropdownPositionStore.set({
+    top: span.offsetTop + span.offsetHeight,
+    left: span.offsetLeft
+  })
 }

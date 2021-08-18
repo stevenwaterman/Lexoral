@@ -1,17 +1,45 @@
 <script lang="ts">
-  import { afterUpdate, createEventDispatcher } from "svelte";
-import type { SectionState } from "../sectionStores";
-import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
+  import type { SectionState } from "../sectionStores";
+  import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
   import { modeStore } from "../state";
+import { clamp } from "../utils";
 
   let section: SectionState | null;
   $: section = $dropdownSectionStore;
+  
+  let visible: boolean;
+  $: visible = section !== null;
 
   let left: number;
-  $: left = $dropdownPositionStore?.left ?? 0;
+  $: left = $dropdownPositionStore.left;
 
   let top: number;
-  $: top = ($dropdownPositionStore?.top ?? 0) + ($dropdownPositionStore?.height ?? 0)
+  $: top = $dropdownPositionStore.top;
+
+  let options: string[];
+  $: options = section?.completionOptions;
+
+  let selectedIdx = 0;
+
+  function keyDown(event: KeyboardEvent) {
+    if (!visible) return;
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      const newIdx = selectedIdx - 1;
+      selectedIdx = clamp(newIdx, 0, options.length - 1);
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      const newIdx = selectedIdx + 1;
+      selectedIdx = clamp(newIdx, 0, options.length - 1);
+    }
+  }
+
+  function resetIdx(_: any) {
+    selectedIdx = 0;
+  }
+  $: resetIdx(section);
+
 
   // let visible: boolean;
   // $: visible = $modeStore === "edit";
@@ -29,7 +57,7 @@ import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores"
 
 <style>
   .popup {
-    position: fixed;
+    position: absolute;
     top: 0;
     max-width: 100vw;
     border: 1px solid var(--form-border);
@@ -59,8 +87,10 @@ import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores"
   }
 </style>
 
+<svelte:body on:keydown={keyDown}/>
 
-{#if section !== null}
+
+{#if visible}
   <div 
     class="popup"
     style={`left: ${left}px; top: ${top}px;`}
@@ -69,6 +99,7 @@ import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores"
     {#each section.completionOptions as option, idx}
       <span
         class="option"
+        class:highlight={idx === selectedIdx}
         class:topBorder={idx !== 0}
       >
         {option}

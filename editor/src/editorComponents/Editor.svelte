@@ -7,6 +7,8 @@
   import { allParagraphsStore } from "../sectionStores";
   // import type { paragraphBounds } from "../utils";
   import Dropdown from "./Dropdown.svelte";
+  import { tick } from "svelte";
+import EditableContainer from "./EditableContainer.svelte";
 
   // let sectionComponents: Section[] = [];
 
@@ -240,6 +242,7 @@
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 
   .padding {
@@ -269,14 +272,12 @@
   </div> -->
 
   <div class="wrapper">
-    {#each $allParagraphsStore as paragraphStore, rowIdx (paragraphStore.firstSectionIdx)}
-      <Paragraph paragraphStore={paragraphStore} rowIdx={rowIdx}/>
-    {/each}
-    <!-- <VirtualList items={$allParagraphsStore} let:item>
-      {#key item.firstSectionIdx}
-        <Paragraph paragraphStore={item}/>
-      {/key}
-    </VirtualList> -->
+    <Dropdown/>
+    <EditableContainer>
+      {#each $allParagraphsStore as paragraphStore (paragraphStore.firstSectionIdx)}
+        <Paragraph paragraphStore={paragraphStore}/>
+      {/each}
+    </EditableContainer>
   </div>
   
   <!-- <div>
@@ -284,4 +285,3 @@
   </div> -->
 </div>
 
-<Dropdown/>

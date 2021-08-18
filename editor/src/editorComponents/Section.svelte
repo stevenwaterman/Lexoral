@@ -4,21 +4,11 @@
   // import { modeStore, navDragSelectingStore, escPressedStore, selectionStore, selectionStoreSorted, selectionCountStore, editDirectionStore } from "../state";
   import { clamp, modulo, moduloGet } from "../utils";
   import type { SectionState, SectionStore } from "../sectionStores";
-  import { createEventDispatcher, onMount } from "svelte";
-import { dropdownPositionStore } from "../selectionStores";
+  import { onMount } from "svelte";
 
-  const dispatch = createEventDispatcher();
 
   export let sectionStore: SectionStore;
   let component: HTMLSpanElement;
-
-  let focused = false;
-  function focus() {
-    dropdownPositionStore.set(component.getBoundingClientRect());
-    dispatch("select")
-    focused = true;
-  }
-  function blur() { focused = false; }
 
   let loaded = false;
   onMount(() => { loaded = true; })
@@ -28,7 +18,6 @@ import { dropdownPositionStore } from "../selectionStores";
     if (loaded) sectionStore.setText(text);
   }
   $: updateText(displayText);
-
 
   // let selected: boolean = false;
   // $: selected = $selectionStoreSorted.startIdx <= section.idx && $selectionStoreSorted.endIdx >= section.idx;
@@ -322,8 +311,9 @@ import { dropdownPositionStore } from "../selectionStores";
   }
 
   .section {
-    margin-right: 4px;
-    position: relative;
+    padding-right: 4pt;
+    background-color: var(--weak-focus);
+    border-radius: 10px;
   }
 
   .placeholder {
@@ -365,13 +355,10 @@ import { dropdownPositionStore } from "../selectionStores";
     {/if}
   {/if}
 </div> -->
-
 <span
   bind:this={component}
   class="section"
   class:placeholder={!$sectionStore.edited}
-  contenteditable
-  bind:textContent={displayText}
-  on:focus={focus}
-  on:blur={blur}
-/>
+>
+{displayText}
+</span>

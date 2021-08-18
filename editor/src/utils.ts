@@ -153,4 +153,12 @@ export function unwrapStore<T, INNER extends Readable<T | null>>(store_2: Readab
   return output;
 }
 
-
+export function siblingIdx(node: Element): number {
+  let i = 0;
+  let sib = node.previousElementSibling;
+  while (sib !== null) {
+    sib = sib.previousElementSibling;
+    i++;
+  }
+  return i;
+}
