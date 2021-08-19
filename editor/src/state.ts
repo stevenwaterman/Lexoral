@@ -4,7 +4,7 @@ import { maybeWritable } from "./utils";
 
 export const modeStore: Writable<"nav" | "edit"> = writable("nav");
 
-// export const selectionStore: Writable<Selection> = writable(null);
+// export const selectionStore: Writable<Selection> = writable(undefined);
 
 // export const selectionStore: Writable<{ startIdx: number; endIdx: number }> = maybeWritable(
 //   { startIdx: 0, endIdx: 0 }, 

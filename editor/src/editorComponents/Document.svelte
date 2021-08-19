@@ -3,6 +3,6 @@
   import Paragraph from "./Paragraph.svelte";
 </script>
 
-{#each $documentStore as paragraph}
-  <Paragraph { paragraph }/>
+{#each $documentStore as paragraphStore}
+  <Paragraph paragraphStore={ paragraphStore }/>
 {/each}

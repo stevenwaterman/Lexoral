@@ -1,6 +1,6 @@
 <script lang="ts">
   import Editor from "./editorComponents/Editor.svelte";
-  import { setDocument } from "./sectionStores";
+  import { initialiseStores } from "./sectionStores";
 </script>
 
 <style>
@@ -76,7 +76,9 @@
   }
 </style>
 
-{#await fetch("assets/data2.json").then(data => data.json()).then(data => setDocument(data))}
+<svelte:body tabindex={-1}/>
+
+{#await fetch("assets/data2.json").then(data => data.json()).then(data => initialiseStores(data))}
   Fetching data
 {:then}
   <Editor/>

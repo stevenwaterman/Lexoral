@@ -1,25 +1,9 @@
 <script lang="ts">
-  import type { ParagraphState } from "../sectionStores";
-  import { documentStore } from "../sectionStores";
-  import { selectedTimeRangeStore } from "../selectionStores";
   import Document from "./Document.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
-  import Paragraph from "./Paragraph.svelte";
-
-  function getText(paragraph: ParagraphState) {
-    let text = "";
-    for(let section of paragraph) {
-      if (text.length) text += " "      
-      text += section.text;
-    }
-    return text;
-  }
 
   let textContent;
-
-  let selectedTimeRange: { start: number; end: number; } | null;
-  $: selectedTimeRange = $selectedTimeRangeStore;
 </script>
 
 <style>

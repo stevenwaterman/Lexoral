@@ -55,13 +55,13 @@ export function maybeWritable<T>(
   }
 }
 
-export function lastNonNullDerived<T>(
-  stores: Readable<T | null>,
+export function lastNonUndefinedDerived<T>(
+  stores: Readable<T | undefined>,
   initial: T
 ): Readable<T> {
   let lastValue: T = initial;
   const actualFunc = (value: T, set: (value: T) => void) => {
-    if (value === null) set(lastValue);
+    if (value === undefined) set(lastValue);
     else {
       lastValue = value;
       set(value);
@@ -92,18 +92,18 @@ export function setOffsetInterval(callback: () => void, firstDuration: number, l
   return () => timers.forEach(clearTimeout);
 }
 
-export function unwrapStore<T, INNER extends Readable<T | null>>(store_2: Readable<INNER | null>, equality: (a: T, b: T) => boolean = (a, b) => a === b): Readable<T | null> {
-  let value: T | null = null;
-  const output: Writable<T | null> = writable(null);
+export function unwrapStore<T, INNER extends Readable<T | undefined>>(store_2: Readable<INNER | undefined>, equality: (a: T, b: T) => boolean = (a, b) => a === b): Readable<T | undefined> {
+  let value: T | undefined = undefined;
+  const output: Writable<T | undefined> = writable(undefined);
   let unsubscribe: () => void = () => { };
-  store_2.subscribe((store: INNER | null) => {
+  store_2.subscribe((store: INNER | undefined) => {
     unsubscribe();
-    if (store !== null) {
-      unsubscribe = store.subscribe((state: T | null) => {
+    if (store !== undefined) {
+      unsubscribe = store.subscribe((state: T | undefined) => {
         if (
-          (value === null && state !== null) ||
-          (value !== null && state === null) ||
-          (value !== null && state !== null && !equality(value, state))
+          (value === undefined && state !== undefined) ||
+          (value !== undefined && state === undefined) ||
+          (value !== undefined && state !== undefined && !equality(value, state))
         ) {
           value = state;
           output.set(state);
@@ -111,8 +111,8 @@ export function unwrapStore<T, INNER extends Readable<T | null>>(store_2: Readab
       })
     } else {
       unsubscribe = () => { };
-      value = null;
-      output.set(null);
+      value = undefined;
+      output.set(undefined);
     }
   });
   return output;

@@ -9,44 +9,106 @@ export type JsonOutputSection = {
 }
 export type JsonOutput = JsonOutputSection[];
 
+type DocumentState = ParagraphStore[];
+export type DocumentStore = Readable<DocumentState>;
+
+export type ParagraphState = {
+  sections: { idx: number; store: SectionStore }[];
+};
+export type ParagraphStore = Readable<ParagraphState> & {
+  firstSectionIdx: number;
+  append: (section: SectionStore) => void;
+};
+
 export type SectionState = {
-  time: {
-    start: number;
-    end: number;
-  }
+  idx: number;
+  startTime: number;
+  endTime: number;
+  originalOptions: {text: string; confidence: number}[];
+  completionOptions: string[];
   text: string;
-  // todo edited
-  options: string[];
+  placeholder: string;
+  edited: boolean;
+  spanComponent?: HTMLSpanElement;
+};
+export type SectionStore = Readable<SectionState> & {
+  setText: (text: string) => void;
+  registerComponent: (component: HTMLSpanElement) => void;
 }
 
-export type ParagraphState = SectionState[];
+function createSectionStore(state: JsonOutputSection, idx: number): SectionStore {
+  const internalStore: Writable<SectionState> = writable({
+    idx,
+    startTime: state.startTime,
+    endTime: state.endTime,
+    originalOptions: state.options,
+    completionOptions: getOptions("", state.options),
+    text: "",
+    placeholder: state.options[0].text,
+    edited: false
+  });
 
-export type DocumentState = ParagraphState[];
+  function setText(text: string) {
+    internalStore.update(state => ({
+      ...state,
+      text,
+      completionOptions: getOptions(text, state.originalOptions),
+      edited: true
+    }))
+  }
 
-export const documentStore: Writable<DocumentState> = writable([]);
+  function registerComponent(component: HTMLSpanElement) {
+    internalStore.update(state => ({
+      ...state,
+      spanComponent: component
+    }))
+  }
 
-export function setDocument(output: JsonOutput): void {
-  const document: DocumentState = [];
-  let paragraph: ParagraphState = [];
+  return {
+    subscribe: internalStore.subscribe,
+    setText,
+    registerComponent
+  }
+}
 
-  output.forEach((outputSection, idx) => {
-    if (idx !== 0 && outputSection.startParagraph) {
-      document.push(paragraph);
-      paragraph = [];
-    }
+function createParagraphStore(sections: SectionStore[], firstSectionIdx: number): ParagraphStore {
+  const sectionsWithIndex = sections.map((store, idx) => ({
+    idx: firstSectionIdx + idx,
+    store
+  })) as { idx: number; store: SectionStore }[];
 
-    const section: SectionState = {
-      time: {
-        start: outputSection.startTime,
-        end: outputSection.endTime
-      },
-      text: outputSection.options[0].text,
-      options: outputSection.options.map(option => option.text)
-    }
+  const base: Writable<ParagraphState> = writable({ sections: sectionsWithIndex });
 
-    paragraph.push(section);
-  })
+  function append(store: SectionStore) {
+    base.update(state => {
+      state.sections.push({ idx: state.sections.length + firstSectionIdx, store });
+      return state;
+    });
+  }
 
-  document.push(paragraph);
-  documentStore.set(document);
+  return { 
+    ...base, 
+    firstSectionIdx,
+    append
+   }
+}
+
+const documentStoreInternal: Writable<DocumentState> = writable([]);
+export const documentStore: DocumentStore = documentStoreInternal;
+
+export function initialiseStores(output: JsonOutput) {
+  const paragraphStores = output.reduce((acc, elem, idx) => {
+      const sectionStore = createSectionStore(elem, idx);
+      if (acc.length === 0 || elem.startParagraph) {
+        const paragraphStore = createParagraphStore([sectionStore], idx);
+        acc.push(paragraphStore);
+        return acc;
+      } else {
+        const lastParagraphStore = acc[acc.length - 1];
+        lastParagraphStore.append(sectionStore);
+        return acc;
+      }
+    }, [] as ParagraphStore[]);
+  
+    documentStoreInternal.set(paragraphStores);
 }

@@ -4,11 +4,11 @@
   import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
   import { clamp } from "../utils";
 
-  let section: SectionState | null;
+  let section: SectionState | undefined;
   $: section = $dropdownSectionStore;
   
   let visible: boolean;
-  $: visible = section !== null;
+  $: visible = section !== undefined && options.length > 0;
 
   let left: number;
   $: left = $dropdownPositionStore.left;
@@ -17,10 +17,7 @@
   $: top = $dropdownPositionStore.top;
 
   let options: string[];
-  $: options = section?.options;
-
-  let completionOptions: string[];
-  $: completionOptions = section === null ? [] : getOptions("", options);
+  $: options = section?.completionOptions;
 
   let selectedIdx = 0;
 
@@ -76,7 +73,7 @@
 
 {#if visible}
   <div class="popup" style={`left: ${left}px; top: ${top}px;`}>
-    {#each completionOptions as option, idx}
+    {#each options as option, idx}
       <span
         class="option"
         class:highlight={idx === selectedIdx}

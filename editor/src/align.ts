@@ -4,8 +4,8 @@ const defaultAligner = NWaligner({
   similarityScoreFunction: (char1: string, char2: string) => (char1.toLowerCase() === char2.toLowerCase() ? 1 : -2)
 });
 
-export function getOptions(text: string, options: string[]): string[] {
-  const newOptions = options.map(option => alignOption(text, option));
+export function getOptions(text: string, options: { text: string }[]): string[] {
+  const newOptions = options.map(option => alignOption(text, option.text));
   newOptions.sort((a, b) => b.score - a.score);
   const justText = newOptions.map(option => option.text);
 
