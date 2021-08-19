@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { getOptions } from "../align";
   import type { SectionState } from "../sectionStores";
   import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
-  import { modeStore } from "../state";
-import { clamp } from "../utils";
+  import { clamp } from "../utils";
 
-  let section: SectionState | null;
+  let section: SectionState | undefined;
   $: section = $dropdownSectionStore;
   
   let visible: boolean;
-  $: visible = section !== null;
+  $: visible = section !== undefined && options.length > 0;
 
   let left: number;
   $: left = $dropdownPositionStore.left;
@@ -39,26 +39,11 @@ import { clamp } from "../utils";
     selectedIdx = 0;
   }
   $: resetIdx(section);
-
-
-  // let visible: boolean;
-  // $: visible = $modeStore === "edit";
-
-  // const dispatch = createEventDispatcher();
-
-  // function clicked(idx: number) {
-  //   dispatch("clickedOption", idx);
-  // }
-  
-  // function entered(idx: number) {
-  //   dispatch("selectOption", idx);
-  // }
 </script>
 
 <style>
   .popup {
     position: absolute;
-    top: 0;
     max-width: 100vw;
     border: 1px solid var(--form-border);
     z-index: 2;
@@ -67,10 +52,6 @@ import { clamp } from "../utils";
     flex-direction: column;
     margin-top: 2px;
     border-radius: 4px;
-  }
-
-  .edit {
-    cursor: pointer;
   }
 
   .highlight {
@@ -91,12 +72,8 @@ import { clamp } from "../utils";
 
 
 {#if visible}
-  <div 
-    class="popup"
-    style={`left: ${left}px; top: ${top}px;`}
-    class:edit={$modeStore === "edit"}
-  >
-    {#each section.completionOptions as option, idx}
+  <div class="popup" style={`left: ${left}px; top: ${top}px;`}>
+    {#each options as option, idx}
       <span
         class="option"
         class:highlight={idx === selectedIdx}

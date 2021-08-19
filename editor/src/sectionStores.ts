@@ -9,8 +9,8 @@ export type JsonOutputSection = {
 }
 export type JsonOutput = JsonOutputSection[];
 
-type AllParagraphsState = ParagraphStore[];
-export type AllParagraphsStore = Readable<AllParagraphsState>;
+type DocumentState = ParagraphStore[];
+export type DocumentStore = Readable<DocumentState>;
 
 export type ParagraphState = {
   sections: { idx: number; store: SectionStore }[];
@@ -29,9 +29,11 @@ export type SectionState = {
   text: string;
   placeholder: string;
   edited: boolean;
+  spanComponent?: HTMLSpanElement;
 };
 export type SectionStore = Readable<SectionState> & {
-  setText: (text: string) => void
+  setText: (text: string) => void;
+  registerComponent: (component: HTMLSpanElement) => void;
 }
 
 function createSectionStore(state: JsonOutputSection, idx: number): SectionStore {
@@ -55,9 +57,17 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
     }))
   }
 
+  function registerComponent(component: HTMLSpanElement) {
+    internalStore.update(state => ({
+      ...state,
+      spanComponent: component
+    }))
+  }
+
   return {
     subscribe: internalStore.subscribe,
-    setText
+    setText,
+    registerComponent
   }
 }
 
@@ -83,8 +93,8 @@ function createParagraphStore(sections: SectionStore[], firstSectionIdx: number)
    }
 }
 
-const allParagraphsStoreInternal: Writable<AllParagraphsState> = writable([]);
-export const allParagraphsStore: AllParagraphsStore = allParagraphsStoreInternal;
+const documentStoreInternal: Writable<DocumentState> = writable([]);
+export const documentStore: DocumentStore = documentStoreInternal;
 
 export function initialiseStores(output: JsonOutput) {
   const paragraphStores = output.reduce((acc, elem, idx) => {
@@ -100,5 +110,5 @@ export function initialiseStores(output: JsonOutput) {
       }
     }, [] as ParagraphStore[]);
   
-  allParagraphsStoreInternal.set(paragraphStores);
+    documentStoreInternal.set(paragraphStores);
 }

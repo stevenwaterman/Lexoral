@@ -1,22 +1,20 @@
 <script lang="ts">
-  import type { ParagraphStore } from "../sectionStores";
+  import type { ParagraphState, ParagraphStore } from "../sectionStores";
   import Section from "./Section.svelte";
 
   export let paragraphStore: ParagraphStore;
 </script>
 
 <style>
-  .row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-bottom: 6pt;
-    padding-top: 6pt;
+  p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-block-end: 1em;
   }
 </style>
 
-<div class="row">
-  {#each $paragraphStore.sections as section (section.idx)}
-    <Section sectionStore={section.store}/>
+<p>
+  {#each $paragraphStore.sections as section, idx}
+    <Section sectionStore={ section.store } />
   {/each}
-</div>
+</p>
