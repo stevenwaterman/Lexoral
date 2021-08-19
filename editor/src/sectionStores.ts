@@ -12,11 +12,8 @@ export type JsonOutput = JsonOutputSection[];
 type DocumentState = ParagraphStore[];
 export type DocumentStore = Readable<DocumentState>;
 
-export type ParagraphState = {
-  sections: { idx: number; store: SectionStore }[];
-};
+export type ParagraphState = SectionStore[];
 export type ParagraphStore = Readable<ParagraphState> & {
-  firstSectionIdx: number;
   append: (section: SectionStore) => void;
 };
 
@@ -30,7 +27,7 @@ export type SectionState = {
   placeholder: string;
   edited: boolean;
   spanComponent?: HTMLSpanElement;
-};
+} & Pick<SectionStore, "setText">;
 export type SectionStore = Readable<SectionState> & {
   setText: (text: string) => void;
   registerComponent: (component: HTMLSpanElement) => void;
@@ -45,7 +42,8 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
     completionOptions: getOptions("", state.options),
     text: "",
     placeholder: state.options[0].text,
-    edited: false
+    edited: false,
+    setText
   });
 
   function setText(text: string) {
@@ -71,24 +69,18 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
   }
 }
 
-function createParagraphStore(sections: SectionStore[], firstSectionIdx: number): ParagraphStore {
-  const sectionsWithIndex = sections.map((store, idx) => ({
-    idx: firstSectionIdx + idx,
-    store
-  })) as { idx: number; store: SectionStore }[];
-
-  const base: Writable<ParagraphState> = writable({ sections: sectionsWithIndex });
+function createParagraphStore(sections: SectionStore[]): ParagraphStore {
+  const base: Writable<ParagraphState> = writable(sections);
 
   function append(store: SectionStore) {
     base.update(state => {
-      state.sections.push({ idx: state.sections.length + firstSectionIdx, store });
+      state.push(store);
       return state;
     });
   }
 
   return { 
-    ...base, 
-    firstSectionIdx,
+    ...base,
     append
    }
 }
@@ -100,7 +92,7 @@ export function initialiseStores(output: JsonOutput) {
   const paragraphStores = output.reduce((acc, elem, idx) => {
       const sectionStore = createSectionStore(elem, idx);
       if (acc.length === 0 || elem.startParagraph) {
-        const paragraphStore = createParagraphStore([sectionStore], idx);
+        const paragraphStore = createParagraphStore([sectionStore]);
         acc.push(paragraphStore);
         return acc;
       } else {

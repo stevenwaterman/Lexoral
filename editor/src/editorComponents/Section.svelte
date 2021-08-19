@@ -1,22 +1,19 @@
 <script lang="ts">
   import type { SectionStore } from "../sectionStores";
-  import { focusAtEndStore, focusAtStartStore, selectedTimeRangeStore, updateSelection } from "../selectionStores";
+  import { focusAtEndStore, focusAtStartStore, fromSectionIdxStore, toSectionIdxStore, updateSelection } from "../selectionStores";
+  import { next, prev } from "../utils";
 
   export let sectionStore: SectionStore;
 
   let highlight: boolean;
-  $: highlight = 
-    $selectedTimeRangeStore !== undefined && ((
-      $selectedTimeRangeStore.start < $sectionStore.endTime &&
-      $selectedTimeRangeStore.end > $sectionStore.startTime
-    ) || (
-      $selectedTimeRangeStore.start === $sectionStore.startTime &&
-      $selectedTimeRangeStore.end === $sectionStore.endTime
-    ));
+  $: highlight = $fromSectionIdxStore !== null && $fromSectionIdxStore <= $sectionStore.idx && $toSectionIdxStore !== null && $toSectionIdxStore >= $sectionStore.idx;
 
   let component: HTMLSpanElement;
   $: if (component) sectionStore.registerComponent(component);
   $: if (!highlight && component) updateText();
+
+  let displayText: string;
+  $: displayText = " " + ($sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder);
 
   function updateText() {
     if (component === undefined) return;
@@ -31,18 +28,7 @@
       if ($focusAtEndStore) {
         event.preventDefault();
         event.stopPropagation();
-
-        const node: Node = component.nextElementSibling?.firstChild ?? component.parentElement.nextElementSibling?.firstElementChild?.firstChild;
-        if (node !== null) {
-          const range = document.createRange();
-          range.setStart(node, 1);
-          range.setEnd(node, 1);
-
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-          updateSelection();
-        }
+        next(component);
       }
     }
 
@@ -50,19 +36,15 @@
       if ($focusAtStartStore) {
         event.preventDefault();
         event.stopPropagation();
+        prev(component);
+      }
+    }
 
-        const node: Node = component.previousElementSibling?.firstChild ?? component.parentElement.previousElementSibling?.lastElementChild?.firstChild;
-        console.log(component.previousElementSibling?.firstChild)
-        if (node !== null) {
-          const range = document.createRange();
-          range.setStart(node, node.textContent.length);
-          range.setEnd(node, node.textContent.length);
-
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-          updateSelection();
-        }
+    if (event.key === "ArrowLeft") {
+      if ($focusAtStartStore) {
+        event.preventDefault();
+        event.stopPropagation();
+        prev(component);
       }
     }
 
@@ -77,12 +59,12 @@
     outline: none;
   }
 
-  .section::selection {
-    display: none;
-  }
-
   .highlight {
     background-color: var(--weak-focus);
+  }
+
+  .section.unsure {
+    color: var(--strong-focus)
   }
 
   .placeholder {
@@ -94,10 +76,11 @@
   class="section"
   class:highlight
   class:placeholder={!$sectionStore.edited}
+  class:unsure={!$sectionStore.edited && $sectionStore.completionOptions.length > 1}
   bind:this={component}
   on:keydown={keyDown}
   on:blur={updateText}
   tabindex={$sectionStore.idx}
 >
-  {" " + $sectionStore.placeholder}
+  {displayText}
 </span>

@@ -2,48 +2,48 @@ import { Writable, writable, Readable, derived } from "svelte/store";
 import { ParagraphStore, documentStore, ParagraphState, SectionState, SectionStore } from "./sectionStores";
 import { clampGet, unwrapStore, siblingIdx } from "./utils";
 
-type CursorPosition = {
+export type CursorPosition = {
   paragraph: number;
   section: number;
   offset: number;
 }
 
-type SectionSelection = {
+export type SectionSelection = {
   from: CursorPosition;
   to: CursorPosition;
 } | undefined;
 
-const selectionStore: Writable<SectionSelection> = writable(undefined);
+export const selectionStore: Writable<SectionSelection> = writable(undefined);
 
-const fromParagraphIdxStore: Readable<number | undefined> = derived(selectionStore, selection => selection?.from?.paragraph);
-const fromParagraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, fromParagraphIdxStore], ([document, idx]) => idx === undefined ? undefined : clampGet(document, idx));
-const fromParagraphStore: Readable<ParagraphState> = unwrapStore<ParagraphState | undefined, ParagraphStore | undefined>(fromParagraphStoreWrapped, (a, b) => a === b);
+export function createSelectionStore(inputStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<SectionState | undefined> {
+  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, inputStore], ([document, selection]) => selection === undefined ? undefined : clampGet(document, selection.paragraph));
+  const paragraphStore: Readable<ParagraphState | undefined> = unwrapStore(paragraphStoreWrapped);
+  const sectionStoreWrapped: Readable<SectionStore | undefined> = derived([paragraphStore, inputStore], ([paragraph, selection]) => {
+    if (paragraph === undefined) return undefined;
+    if (selection === undefined) return undefined;
+    return clampGet(paragraph, selection.section);
+  });
+  const sectionStore: Readable<SectionState | undefined> = unwrapStore(sectionStoreWrapped);
+  return sectionStore;
+}
 
-const fromSectionIdxStore: Readable<number | undefined> = derived(selectionStore, selection => selection?.from?.section);
-const fromSectionStoreWrapped: Readable<SectionStore | undefined> = derived([fromParagraphStore, fromSectionIdxStore], ([paragraph, idx]) => {
-  if (paragraph === undefined) return undefined;
-  if (idx === undefined) return undefined;
-  const section = clampGet(paragraph.sections, idx);
-  if (section === undefined) return undefined;
-  return section.store;
-});
-const fromSectionStore: Readable<SectionState | undefined> = unwrapStore<SectionState | undefined, SectionStore | undefined>(fromSectionStoreWrapped, (a, b) => a === b);
+export const fromSectionStore = createSelectionStore(derived(selectionStore, selection => {
+  if (selection === undefined) return undefined;
+  return {
+    paragraph: selection.from.paragraph,
+    section: selection.from.section
+  }
+}));
+export const fromSectionIdxStore = derived(fromSectionStore, section => section?.idx);
 
-
-const toParagraphIdxStore: Readable<number | undefined> = derived(selectionStore, selection => selection?.to?.paragraph);
-const toParagraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, toParagraphIdxStore], ([document, idx]) => idx === undefined ? undefined : clampGet(document, idx));
-const toParagraphStore: Readable<ParagraphState> = unwrapStore<ParagraphState | undefined, ParagraphStore | undefined>(toParagraphStoreWrapped, (a, b) => a === b);
-
-const toSectionIdxStore: Readable<number | undefined> = derived(selectionStore, selection => selection?.to?.section);
-const toSectionStoreWrapped: Readable<SectionStore | undefined> = derived([toParagraphStore, toSectionIdxStore], ([paragraph, idx]) => {
-  if (paragraph === undefined) return undefined;
-  if (idx === undefined) return undefined;
-  const section = clampGet(paragraph.sections, idx);
-  if (section === undefined) return undefined;
-  return section.store;
-});
-const toSectionStore: Readable<SectionState | undefined> = unwrapStore<SectionState | undefined, SectionStore | undefined>(toSectionStoreWrapped, (a, b) => a === b);
-
+export const toSectionStore = createSelectionStore(derived(selectionStore, selection => {
+  if (selection === undefined) return undefined;
+  return {
+    paragraph: selection.to.paragraph,
+    section: selection.to.section
+  }
+}));
+export const toSectionIdxStore = derived(toSectionStore, section => section?.idx);
 
 
 export const singleSelectionStore: Readable<boolean> = derived(selectionStore, selection => 
@@ -52,7 +52,7 @@ export const singleSelectionStore: Readable<boolean> = derived(selectionStore, s
   selection.from.paragraph === selection.to.paragraph
 );
 
-export const dropdownSectionStore: Readable<SectionState | undefined> = derived([toSectionStore, singleSelectionStore], ([selection, single]) => single ? selection : undefined);
+export const dropdownSectionStore: Readable<SectionState | undefined> = derived([toSectionStore, singleSelectionStore], ([state, single]) => single ? state : undefined);
 export const dropdownPositionStore: Writable<{top: number; left: number}> = writable({ top: 0, left: 0 });
 
 const focusStore: Readable<{ component: HTMLSpanElement; offset: number } | null> = derived([dropdownSectionStore, selectionStore], ([section, selection]) => {
@@ -79,14 +79,6 @@ export const focusAtEndStore: Readable<boolean> = derived(focusStore, focus => {
   const length = focus.component.textContent.length;
   return focus.offset === length;
 })
-
-export const selectedTimeRangeStore: Readable<{start: number; end: number} | undefined> = derived([fromSectionStore, toSectionStore], ([start, end]) => {
-  if (start === undefined) return undefined;
-  if (end === undefined) return undefined;
-  const early = Math.min(start.startTime, end.startTime);
-  const late = Math.max(start.endTime, end.endTime);
-  return { start: early, end: late }
-});
 
 export function updateSelection() {
   setTimeout(updateSelectionInternal);

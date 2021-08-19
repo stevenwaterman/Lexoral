@@ -14,7 +14,7 @@
 </style>
 
 <p>
-  {#each $paragraphStore.sections as section, idx}
-    <Section sectionStore={ section.store } />
+  {#each $paragraphStore as section, idx}
+    <Section sectionStore={ section } />
   {/each}
 </p>

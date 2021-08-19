@@ -1,6 +1,7 @@
 import * as Tone from "tone";
 import { writable, Writable, derived, Readable } from "svelte/store";
-import { selectedTimeRangeStore } from "./selectionStores";
+import { createSelectionStore, selectionStore } from "./selectionStores";
+import { SectionState, documentStore } from "./sectionStores";
 
 // export const playingSectionsStore: Writable<Record<number, boolean>> = writable({});
 // function setPlaying(section: SectionState) {
@@ -77,11 +78,6 @@ function play(start: number, end: number, loop: boolean) {
   // }
 }
 
-selectedTimeRangeStore.subscribe(state => {
-  pause();
-  if (state !== undefined) play(state.start, state.end, true);
-})
-
 export function playPause({start, end}: {start: number; end: number}, loop: boolean) {
   if (playing) player.stop();
   else play(start, end, loop)
@@ -90,3 +86,39 @@ export function playPause({start, end}: {start: number; end: number}, loop: bool
 export function pause() {
   player.stop();
 }
+
+const audioSelectionStore: Readable<undefined | { from: { paragraph: number; section: number; }, to: { paragraph: number; section: number; }}> = 
+  derived(selectionStore, 
+    selection => {
+      if (selection === undefined) return undefined;
+      return {
+        from: {
+          paragraph: selection.from.paragraph - 1,
+          section: Number.MAX_SAFE_INTEGER
+        },
+        to: {
+          paragraph: selection.to.paragraph + 1,
+          section: 0
+        }
+      }
+    }
+  );
+
+const startAtZeroStore: Readable<boolean> = derived(audioSelectionStore, state => (state?.from?.paragraph ?? 0) < 0);
+const endAtInfinityStore: Readable<boolean> = derived([audioSelectionStore, documentStore], ([state, document]) => (state?.to?.paragraph ?? 0) >= document.length);
+
+const audioStartSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(audioSelectionStore, selection => selection?.from));
+const audioEndSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(audioSelectionStore, selection => selection?.to));
+const audioTimings: Readable<{ start: number; end: number } | undefined> = derived([audioStartSectionStore, audioEndSectionStore, startAtZeroStore, endAtInfinityStore], ([start, end, startAtZero, endAtInfinity]) => {
+  if (start === undefined) return undefined;
+  if (end === undefined) return undefined;
+  const startTime = startAtZero ? 0 : (start.endTime + 0.2);
+  const endTime = endAtInfinity ? player.buffer.duration : (end.startTime - 0.2);
+  return { start: startTime, end: endTime };
+});
+audioTimings.subscribe(timings => {
+  pause();
+  if (timings !== undefined) {
+    play(timings.start, timings.end, true);
+  }
+})

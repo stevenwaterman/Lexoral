@@ -1,4 +1,5 @@
 import { Readable, derived, writable, Writable } from "svelte/store";
+import { updateSelection } from "./selectionStores";
 
 /**
  * Modulo that makes negative numbers positive
@@ -127,3 +128,60 @@ export function siblingIdx(node: Element): number {
   }
   return i;
 }
+
+export function next(component: HTMLSpanElement) {
+  const node: Node = component.nextElementSibling?.firstChild ?? component.parentElement.nextElementSibling?.firstElementChild?.firstChild;
+  if (node) {
+    const range = document.createRange();
+    range.setStart(node, 1);
+    range.setEnd(node, 1);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}
+
+export function prev(component: HTMLSpanElement) {
+  const node: Node = component.previousElementSibling?.firstChild ?? component.parentElement.previousElementSibling?.lastElementChild?.firstChild;
+  if (node) {
+    const range = document.createRange();
+    range.setStart(node, node.textContent.length);
+    range.setEnd(node, node.textContent.length);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}
+
+export function paragraphStart(component: HTMLSpanElement) {
+  const node: Node = component.parentElement.firstElementChild?.firstChild;
+  if (node) {
+    const range = document.createRange();
+    range.setStart(node, 1);
+    range.setEnd(node, 1);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}
+
+export function paragraphEnd(component: HTMLSpanElement) {
+  const node: Node = component.parentElement.lastElementChild?.firstChild;
+  if (node) {
+    const range = document.createRange();
+    range.setStart(node, node.textContent.length);
+    range.setEnd(node, node.textContent.length);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}
+

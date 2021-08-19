@@ -1,22 +1,44 @@
 <script lang="ts">
-  import { singleSelectionStore, updateSelection } from "../selectionStores";
+  import { fromSectionStore, singleSelectionStore, toSectionStore, updateSelection } from "../selectionStores";
+import { next, paragraphEnd, paragraphStart, prev } from "../utils";
 
   export let textContent: string;
 
   function keyDown(event: KeyboardEvent) {
-    // console.log(event);
-    if (event.key === "Backspace") {
-      if (!$singleSelectionStore) {
-        event.preventDefault();
-        //TODO empty the sections instead
+    if (!$singleSelectionStore) {
+      event.preventDefault();
+      //TODO empty the sections instead
+    }
+
+    if (event.key === "Tab") {
+      event.preventDefault();
+      if (event.shiftKey) {
+        const node = $fromSectionStore?.spanComponent;
+        if (node) prev(node);
+      } else {
+        const node = $toSectionStore?.spanComponent;
+        if (node) next(node);
       }
     }
 
-    if (event.key === "Delete") {
-      if (!$singleSelectionStore) {
-        event.preventDefault();
-      }
+    if (event.key === "Home") {
+      event.preventDefault();
+      const node = $fromSectionStore?.spanComponent;
+      if (node) paragraphStart(node);
     }
+
+    if (event.key === "End") {
+      event.preventDefault();
+      const node = $toSectionStore?.spanComponent;
+      if (node) paragraphEnd(node);
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const node = $toSectionStore?.spanComponent;
+      if (node) next(node);
+    }
+
     updateSelection();
   }
 
@@ -30,7 +52,7 @@
     }
   }
 
-  function input() {
+  function input(event: Event) {
     updateSelection();
   }
 </script>

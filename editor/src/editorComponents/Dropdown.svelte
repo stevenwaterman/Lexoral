@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { getOptions } from "../align";
-  import type { SectionState } from "../sectionStores";
+  import type { SectionState, SectionStore } from "../sectionStores";
   import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
-  import { clamp } from "../utils";
+  import { clamp, next } from "../utils";
 
-  let section: SectionState | undefined;
+  let section: SectionState & Pick<SectionStore, "setText"> | undefined;
   $: section = $dropdownSectionStore;
   
   let visible: boolean;
@@ -22,8 +21,6 @@
   let selectedIdx = 0;
 
   function keyDown(event: KeyboardEvent) {
-    if (!visible) return;
-
     if (event.key === "ArrowUp") {
       event.preventDefault();
       const newIdx = selectedIdx - 1;
@@ -32,6 +29,12 @@
       event.preventDefault();
       const newIdx = selectedIdx + 1;
       selectedIdx = clamp(newIdx, 0, options.length - 1);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      if (options.length > 0) {
+        const selectedOption = options[selectedIdx];
+        section.setText(selectedOption);
+      }
     }
   }
 
@@ -69,7 +72,6 @@
 </style>
 
 <svelte:body on:keydown={keyDown}/>
-
 
 {#if visible}
   <div class="popup" style={`left: ${left}px; top: ${top}px;`}>
