@@ -87,28 +87,28 @@ export function pause() {
   player.stop();
 }
 
-const audioSelectionStore: Readable<undefined | { from: { paragraph: number; section: number; }, to: { paragraph: number; section: number; }}> = 
+const audioSelectionStore: Readable<undefined | { start: { paragraph: number; section: number; }, end: { paragraph: number; section: number; }}> = 
   derived(selectionStore, 
     selection => {
       if (selection === undefined) return undefined;
       return {
-        from: {
-          paragraph: selection.from.paragraph - 1,
+        start: {
+          paragraph: selection.early.paragraph - 1,
           section: Number.MAX_SAFE_INTEGER
         },
-        to: {
-          paragraph: selection.to.paragraph + 1,
+        end: {
+          paragraph: selection.late.paragraph + 1,
           section: 0
         }
       }
     }
   );
 
-const startAtZeroStore: Readable<boolean> = derived(audioSelectionStore, state => (state?.from?.paragraph ?? 0) < 0);
-const endAtInfinityStore: Readable<boolean> = derived([audioSelectionStore, documentStore], ([state, document]) => (state?.to?.paragraph ?? 0) >= document.length);
+const startAtZeroStore: Readable<boolean> = derived(audioSelectionStore, state => (state?.start?.paragraph ?? 0) < 0);
+const endAtInfinityStore: Readable<boolean> = derived([audioSelectionStore, documentStore], ([state, document]) => (state?.end?.paragraph ?? 0) >= document.length);
 
-const audioStartSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(audioSelectionStore, selection => selection?.from));
-const audioEndSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(audioSelectionStore, selection => selection?.to));
+const audioStartSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(audioSelectionStore, selection => selection?.start));
+const audioEndSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(audioSelectionStore, selection => selection?.end));
 const audioTimings: Readable<{ start: number; end: number } | undefined> = derived([audioStartSectionStore, audioEndSectionStore, startAtZeroStore, endAtInfinityStore], ([start, end, startAtZero, endAtInfinity]) => {
   if (start === undefined) return undefined;
   if (end === undefined) return undefined;

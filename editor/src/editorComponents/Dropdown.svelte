@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { SectionState, SectionStore } from "../sectionStores";
   import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
-  import { clamp, next } from "../utils";
+  import { clamp } from "../utils";
 
   let section: SectionState & Pick<SectionStore, "setText"> | undefined;
   $: section = $dropdownSectionStore;

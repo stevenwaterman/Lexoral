@@ -1,42 +1,51 @@
 <script lang="ts">
-  import { fromSectionStore, singleSelectionStore, toSectionStore, updateSelection } from "../selectionStores";
-import { next, paragraphEnd, paragraphStart, prev } from "../utils";
+import { tick } from "svelte";
+
+  import { deleteSelection, earlySectionStore, focusSectionStore, lateSectionStore, selectedSectionsStore, selectionStore, singleSelectionStore, updateSelection } from "../selectionStores";
+  import { selectEnd, selectNext, selectParagraphEnd, selectParagraphStart, selectPrev, selectStart } from "../utils";
 
   export let textContent: string;
 
-  function keyDown(event: KeyboardEvent) {
-    if (!$singleSelectionStore) {
+  async function keyDown(event: KeyboardEvent) {
+    if (event.key === "Backspace" && !$singleSelectionStore) {
       event.preventDefault();
-      //TODO empty the sections instead
+      deleteSelection($selectionStore, $selectedSectionsStore);
+      selectEnd($earlySectionStore.spanComponent);
+    }
+
+    if (event.key === "Delete" && !$singleSelectionStore) {
+      event.preventDefault();
+      deleteSelection($selectionStore, $selectedSectionsStore);
+      selectStart($lateSectionStore.spanComponent);
     }
 
     if (event.key === "Tab") {
       event.preventDefault();
       if (event.shiftKey) {
-        const node = $fromSectionStore?.spanComponent;
-        if (node) prev(node);
+        const node = $earlySectionStore?.spanComponent;
+        if (node) selectPrev(node);
       } else {
-        const node = $toSectionStore?.spanComponent;
-        if (node) next(node);
+        const node = $lateSectionStore?.spanComponent;
+        if (node) selectNext(node);
       }
     }
 
     if (event.key === "Home") {
       event.preventDefault();
-      const node = $fromSectionStore?.spanComponent;
-      if (node) paragraphStart(node);
+      const node = $earlySectionStore?.spanComponent;
+      if (node) selectParagraphStart(node);
     }
 
     if (event.key === "End") {
       event.preventDefault();
-      const node = $toSectionStore?.spanComponent;
-      if (node) paragraphEnd(node);
+      const node = $lateSectionStore?.spanComponent;
+      if (node) selectParagraphEnd(node);
     }
 
     if (event.key === "Enter") {
       event.preventDefault();
-      const node = $toSectionStore?.spanComponent;
-      if (node) next(node);
+      const node = $focusSectionStore?.spanComponent;
+      if (node) selectNext(node);
     }
 
     updateSelection();

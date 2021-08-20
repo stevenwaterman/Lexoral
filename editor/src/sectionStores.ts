@@ -30,6 +30,7 @@ export type SectionState = {
 } & Pick<SectionStore, "setText">;
 export type SectionStore = Readable<SectionState> & {
   setText: (text: string) => void;
+  deleteText: (offsets?: { start?: number, end?: number }) => void;
   registerComponent: (component: HTMLSpanElement) => void;
 }
 
@@ -55,6 +56,29 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
     }))
   }
 
+  function deleteText(offsets?: { start?: number, end?: number }): void {
+    const startOffset = offsets?.start;
+    const endOffset = offsets?.end;
+    internalStore.update(state => {
+      const currentText = state.edited ? state.text : state.placeholder;
+
+      // debugger
+      let newText = "";
+      if (startOffset !== undefined) {
+        newText += currentText.substring(0, startOffset);
+      }
+      if (endOffset !== undefined) {
+        newText += currentText.substring(endOffset);
+      }
+
+      return {
+        ...state,
+        text: newText,
+        completionOptions: getOptions(newText, state.originalOptions),
+        edited: true
+    }})
+  }
+
   function registerComponent(component: HTMLSpanElement) {
     internalStore.update(state => ({
       ...state,
@@ -65,6 +89,7 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
   return {
     subscribe: internalStore.subscribe,
     setText,
+    deleteText,
     registerComponent
   }
 }
@@ -87,10 +112,13 @@ function createParagraphStore(sections: SectionStore[]): ParagraphStore {
 
 const documentStoreInternal: Writable<DocumentState> = writable([]);
 export const documentStore: DocumentStore = documentStoreInternal;
+export const allSectionsStore: Writable<Record<number, SectionStore>> = writable({});
 
 export function initialiseStores(output: JsonOutput) {
+  const sectionStores: Record<number, SectionStore> = {};
   const paragraphStores = output.reduce((acc, elem, idx) => {
       const sectionStore = createSectionStore(elem, idx);
+      sectionStores[idx] = sectionStore;
       if (acc.length === 0 || elem.startParagraph) {
         const paragraphStore = createParagraphStore([sectionStore]);
         acc.push(paragraphStore);
@@ -102,5 +130,6 @@ export function initialiseStores(output: JsonOutput) {
       }
     }, [] as ParagraphStore[]);
   
-    documentStoreInternal.set(paragraphStores);
+  documentStoreInternal.set(paragraphStores);
+  allSectionsStore.set(sectionStores);
 }

@@ -1,5 +1,5 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
-import { ParagraphStore, documentStore, ParagraphState, SectionState, SectionStore } from "./sectionStores";
+import { ParagraphStore, documentStore, ParagraphState, SectionState, SectionStore, allSectionsStore } from "./sectionStores";
 import { clampGet, unwrapStore, siblingIdx } from "./utils";
 
 export type CursorPosition = {
@@ -9,11 +9,14 @@ export type CursorPosition = {
 }
 
 export type SectionSelection = {
-  from: CursorPosition;
-  to: CursorPosition;
-} | undefined;
+  anchor: CursorPosition;
+  focus: CursorPosition;
+  early: CursorPosition;
+  late: CursorPosition;
+  inverted: boolean;
+};
 
-export const selectionStore: Writable<SectionSelection> = writable(undefined);
+export const selectionStore: Writable<SectionSelection | undefined> = writable(undefined);
 
 export function createSelectionStore(inputStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<SectionState | undefined> {
   const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, inputStore], ([document, selection]) => selection === undefined ? undefined : clampGet(document, selection.paragraph));
@@ -27,111 +30,104 @@ export function createSelectionStore(inputStore: Readable<undefined | Omit<Curso
   return sectionStore;
 }
 
-export const fromSectionStore = createSelectionStore(derived(selectionStore, selection => {
+export const anchorSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(selectionStore, selection => {
   if (selection === undefined) return undefined;
   return {
-    paragraph: selection.from.paragraph,
-    section: selection.from.section
+    paragraph: selection.anchor.paragraph,
+    section: selection.anchor.section
   }
 }));
-export const fromSectionIdxStore = derived(fromSectionStore, section => section?.idx);
 
-export const toSectionStore = createSelectionStore(derived(selectionStore, selection => {
+export const focusSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(selectionStore, selection => {
   if (selection === undefined) return undefined;
   return {
-    paragraph: selection.to.paragraph,
-    section: selection.to.section
+    paragraph: selection.focus.paragraph,
+    section: selection.focus.section
   }
 }));
-export const toSectionIdxStore = derived(toSectionStore, section => section?.idx);
 
+export const earlySectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
+export const lateSectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
+// lateSectionStore.subscribe(console.log);
+
+export const anchorSectionIdxStore = derived(anchorSectionStore, section => section?.idx);
+export const focusSectionIdxStore = derived(focusSectionStore, section => section?.idx);
+export const earlySectionIdxStore = derived(earlySectionStore, section => section?.idx);
+export const lateSectionIdxStore = derived(lateSectionStore, section => section?.idx);
 
 export const singleSelectionStore: Readable<boolean> = derived(selectionStore, selection => 
   selection !== undefined && 
-  selection.from.section === selection.to.section && 
-  selection.from.paragraph === selection.to.paragraph
+  selection.anchor.section === selection.focus.section && 
+  selection.anchor.paragraph === selection.focus.paragraph &&
+  selection.anchor.offset === selection.focus.offset
 );
 
-export const dropdownSectionStore: Readable<SectionState | undefined> = derived([toSectionStore, singleSelectionStore], ([state, single]) => single ? state : undefined);
+export const dropdownSectionStore: Readable<SectionState | undefined> = derived([focusSectionStore, singleSelectionStore], ([state, single]) => single ? state : undefined);
+derived([selectionStore, dropdownSectionStore], state => state).subscribe(([_, section]) => section?.spanComponent?.focus());
+
 export const dropdownPositionStore: Writable<{top: number; left: number}> = writable({ top: 0, left: 0 });
 
-const focusStore: Readable<{ component: HTMLSpanElement; offset: number } | null> = derived([dropdownSectionStore, selectionStore], ([section, selection]) => {
-  if (section === undefined) return undefined;
-  if (section.spanComponent === undefined) return undefined;
-  if (selection === undefined) return undefined;
-  return {
-    component: section.spanComponent,
-    offset: selection.to.offset
-  }
-});
-focusStore.subscribe(state => {
-  if (state === undefined) return;
-  state.component.focus();
-});
-
-export const focusAtStartStore: Readable<boolean> = derived(focusStore, focus => {
-  if (focus === undefined) return false;
-  return focus.offset === 1;
-});
-
-export const focusAtEndStore: Readable<boolean> = derived(focusStore, focus => {
-  if (focus === undefined) return false;
-  const length = focus.component.textContent.length;
-  return focus.offset === length;
+export const caretPositionStore: Readable<{start: boolean; end: boolean}> = derived([dropdownSectionStore, selectionStore], ([section, selection]) => {
+  if (section === undefined) return { start: false, end: false };
+  const start = selection.focus.offset === 0;
+  const textLength = section.spanComponent.textContent.length;
+  const end = selection.focus.offset > textLength - 2;
+  return { start, end };
 })
 
 export function updateSelection() {
   setTimeout(updateSelectionInternal);
 }
 
-let lastStartOffset: number | undefined = undefined;
-let lastStartContainer: Node | undefined = undefined;
-let lastEndOffset: number | undefined = undefined;
-let lastEndContainer: Node | undefined = undefined;
+let lastAnchorNode: Node | undefined = undefined;
+let lastFocusNode: Node | undefined = undefined;
+let lastAnchorOffset: number | undefined = undefined;
+let lastFocusOffset: number | undefined = undefined;
 
 function updateSelectionInternal() {
-  const selection = window.getSelection();
+  const { anchorNode, anchorOffset, focusNode, focusOffset } = window.getSelection();
 
-  const startContainer = selection.anchorNode;
-  const endContainer = selection.focusNode;
-
-  const startOffset = selection.anchorOffset;
-  const endOffset = selection.focusOffset;
-
-  updateDropdownPosition(endContainer);
+  updateDropdownPosition(focusNode);
 
   if (
-    startContainer === lastStartContainer && 
-    endContainer === lastEndContainer &&
-    startOffset === lastStartOffset &&
-    endOffset === lastEndOffset
+    anchorNode === lastAnchorNode &&
+    focusNode === lastFocusNode &&
+    anchorOffset === lastAnchorOffset &&
+    focusOffset === lastFocusOffset
   ) return;
 
-  lastStartContainer = startContainer;
-  lastEndContainer = endContainer;
+  lastAnchorNode = anchorNode;
+  lastFocusNode = focusNode;
+  lastAnchorOffset = anchorOffset;
+  lastFocusOffset = focusOffset;
 
-  const fromSpan = startContainer.parentElement;
-  const fromParagraph = fromSpan.parentElement;
-  const fromSectionIdx = siblingIdx(fromSpan);
-  const fromParagraphIdx = siblingIdx(fromParagraph);
+  const anchorSpan = anchorNode.parentElement;
+  const anchorParagraph = anchorSpan.parentElement;
+  const anchorSectionIdx = siblingIdx(anchorSpan);
+  const anchorParagraphIdx = siblingIdx(anchorParagraph);
 
-  const toSpan = endContainer.parentElement;
-  const toParagraph = toSpan.parentElement;
-  const toSectionIdx = siblingIdx(toSpan);
-  const toParagraphIdx = siblingIdx(toParagraph);
+  const focusSpan = focusNode.parentElement;
+  const focusParagraph = focusSpan.parentElement;
+  const focusSectionIdx = siblingIdx(focusSpan);
+  const focusParagraphIdx = siblingIdx(focusParagraph);
 
-  selectionStore.set({
-    from: {
-      paragraph: fromParagraphIdx,
-      section: fromSectionIdx,
-      offset: startOffset
-    }, 
-    to: {
-      paragraph: toParagraphIdx,
-      section: toSectionIdx,
-      offset: endOffset
-    }
-  })
+  const anchor = {
+    paragraph: anchorParagraphIdx,
+    section: anchorSectionIdx,
+    offset: anchorOffset - 1
+  };
+
+  const focus = {
+    paragraph: focusParagraphIdx,
+    section: focusSectionIdx,
+    offset: focusOffset - 1
+  };
+
+  const inverted = isSelectionInverted(anchor, focus);
+  const early = inverted ? focus : anchor;
+  const late = inverted ? anchor : focus;
+
+  selectionStore.set({ anchor, focus, early, late, inverted });
 }
 
 function updateDropdownPosition(endContainer: Node) {
@@ -140,4 +136,41 @@ function updateDropdownPosition(endContainer: Node) {
     top: span.offsetTop + span.offsetHeight,
     left: span.offsetLeft
   })
+}
+
+export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySectionIdxStore, lateSectionIdxStore, allSectionsStore], ([rangeStart, rangeEnd, sections]) => {
+  if (rangeStart === undefined) return [];
+  if (rangeEnd === undefined) return [];
+  const output: SectionStore[] = [];
+  for (let i = rangeStart; i <= rangeEnd; i++) {
+    output.push(sections[i]);
+  }
+  return output;
+})
+
+export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
+  // debugger;
+
+  const earlyOffset = selection.early.offset;
+  const lateOffset = selection.late.offset;
+
+  selectedSectionsStore.forEach((section, idx) => {
+    const sectionIsFirst = idx === 0;
+    const sectionIsLast = idx === selectedSectionsStore.length - 1;
+
+    section.deleteText({
+      start: sectionIsFirst ? earlyOffset : undefined,
+      end: sectionIsLast ? lateOffset : undefined
+    });
+  })
+}
+
+function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boolean {
+  if (focus.paragraph < anchor.paragraph) return true;
+  if (focus.paragraph > anchor.paragraph) return false;
+
+  if (focus.section < anchor.section) return true;
+  if (focus.section > anchor.section) return false;
+
+  return focus.offset < anchor.offset;
 }

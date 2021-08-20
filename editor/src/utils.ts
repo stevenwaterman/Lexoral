@@ -129,54 +129,32 @@ export function siblingIdx(node: Element): number {
   return i;
 }
 
-export function next(component: HTMLSpanElement) {
+export function selectNext(component: HTMLSpanElement) {
   const node: Node = component.nextElementSibling?.firstChild ?? component.parentElement.nextElementSibling?.firstElementChild?.firstChild;
-  if (node) {
-    const range = document.createRange();
-    range.setStart(node, 1);
-    range.setEnd(node, 1);
-
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    updateSelection();
-  }
+  selectStart(node);
 }
 
-export function prev(component: HTMLSpanElement) {
+export function selectPrev(component: HTMLSpanElement) {
   const node: Node = component.previousElementSibling?.firstChild ?? component.parentElement.previousElementSibling?.lastElementChild?.firstChild;
-  if (node) {
-    const range = document.createRange();
-    range.setStart(node, node.textContent.length);
-    range.setEnd(node, node.textContent.length);
-
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    updateSelection();
-  }
+  selectEnd(node);
 }
 
-export function paragraphStart(component: HTMLSpanElement) {
+export function selectParagraphStart(component: HTMLSpanElement) {
   const node: Node = component.parentElement.firstElementChild?.firstChild;
-  if (node) {
-    const range = document.createRange();
-    range.setStart(node, 1);
-    range.setEnd(node, 1);
-
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    updateSelection();
-  }
+  selectStart(node);
 }
 
-export function paragraphEnd(component: HTMLSpanElement) {
+export function selectParagraphEnd(component: HTMLSpanElement) {
   const node: Node = component.parentElement.lastElementChild?.firstChild;
+  selectEnd(node);
+}
+
+export function selectStart(node: Node) {
   if (node) {
+    const textNode = node.hasChildNodes() ? node.firstChild : node;
     const range = document.createRange();
-    range.setStart(node, node.textContent.length);
-    range.setEnd(node, node.textContent.length);
+    range.setStart(textNode, 1);
+    range.setEnd(textNode, 1);
 
     const sel = window.getSelection();
     sel.removeAllRanges();
@@ -185,3 +163,16 @@ export function paragraphEnd(component: HTMLSpanElement) {
   }
 }
 
+export function selectEnd(node: Node) {
+  if (node) {
+    const textNode = node.hasChildNodes() ? node.firstChild : node;
+    const range = document.createRange();
+    range.setStart(textNode, textNode.textContent.length);
+    range.setEnd(textNode, textNode.textContent.length);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}

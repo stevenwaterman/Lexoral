@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { SectionStore } from "../sectionStores";
-  import { focusAtEndStore, focusAtStartStore, fromSectionIdxStore, toSectionIdxStore, updateSelection } from "../selectionStores";
-  import { next, prev } from "../utils";
+  import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore } from "../selectionStores";
+  import { selectNext, selectPrev } from "../utils";
 
   export let sectionStore: SectionStore;
 
   let highlight: boolean;
-  $: highlight = $fromSectionIdxStore !== null && $fromSectionIdxStore <= $sectionStore.idx && $toSectionIdxStore !== null && $toSectionIdxStore >= $sectionStore.idx;
+  $: highlight = $earlySectionIdxStore !== null && $earlySectionIdxStore <= $sectionStore.idx && $lateSectionIdxStore !== null && $lateSectionIdxStore >= $sectionStore.idx;
 
   let component: HTMLSpanElement;
   $: if (component) sectionStore.registerComponent(component);
@@ -25,26 +25,27 @@
 
   function keyDown(event: KeyboardEvent) {
     if (event.key === "Delete") {
-      if ($focusAtEndStore) {
+      if ($caretPositionStore.end) {
         event.preventDefault();
         event.stopPropagation();
-        next(component);
+        selectNext(component);
       }
     }
 
     if (event.key === "Backspace") {
-      if ($focusAtStartStore) {
+      if ($caretPositionStore.start) {
         event.preventDefault();
         event.stopPropagation();
-        prev(component);
+        selectPrev(component);
       }
     }
 
     if (event.key === "ArrowLeft") {
-      if ($focusAtStartStore) {
+      if ($caretPositionStore.start) {
+        // prevent moving caret to start in first section
         event.preventDefault();
         event.stopPropagation();
-        prev(component);
+        selectPrev(component);
       }
     }
 
@@ -57,6 +58,8 @@
     display: inline-block;
     white-space: pre;
     outline: none;
+    border: 1px solid black;
+    border-radius: 4pt;
   }
 
   .highlight {
