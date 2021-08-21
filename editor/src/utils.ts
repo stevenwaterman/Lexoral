@@ -163,6 +163,20 @@ export function selectStart(node: Node) {
   }
 }
 
+export function selectPosition(node: Node, offset: number) {
+  if (node) {
+    const textNode = node.hasChildNodes() ? node.firstChild : node;
+    const range = document.createRange();
+    range.setStart(textNode, offset + 1);
+    range.setEnd(textNode, offset + 1);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}
+
 export function selectEnd(node: Node) {
   if (node) {
     const textNode = node.hasChildNodes() ? node.firstChild : node;

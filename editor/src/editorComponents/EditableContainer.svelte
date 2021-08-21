@@ -2,7 +2,7 @@
 import { tick } from "svelte";
 
   import { deleteSelection, earlySectionStore, focusSectionStore, lateSectionStore, selectedSectionsStore, selectionStore, singleSelectionStore, updateSelection } from "../selectionStores";
-  import { selectEnd, selectNext, selectParagraphEnd, selectParagraphStart, selectPrev, selectStart } from "../utils";
+  import { selectEnd, selectNext, selectParagraphEnd, selectParagraphStart, selectPosition, selectPrev, selectStart } from "../utils";
 
   export let textContent: string;
 
@@ -10,13 +10,19 @@ import { tick } from "svelte";
     if (event.key === "Backspace" && !$singleSelectionStore) {
       event.preventDefault();
       deleteSelection($selectionStore, $selectedSectionsStore);
-      selectEnd($earlySectionStore.spanComponent);
+      await tick();
+      selectPosition($earlySectionStore.spanComponent, $selectionStore.early.offset)
     }
 
     if (event.key === "Delete" && !$singleSelectionStore) {
       event.preventDefault();
       deleteSelection($selectionStore, $selectedSectionsStore);
-      selectStart($lateSectionStore.spanComponent);
+      await tick();
+      if ($selectionStore.early.paragraph === $selectionStore.late.paragraph && $selectionStore.early.section === $selectionStore.late.section) {
+        selectPosition($lateSectionStore.spanComponent, $selectionStore.early.offset)
+      } else {
+        selectStart($lateSectionStore.spanComponent)
+      }
     }
 
     if (event.key === "Tab") {
@@ -85,6 +91,8 @@ import { tick } from "svelte";
   on:drop|preventDefault
   on:drag|preventDefault
   on:dragstart|preventDefault
+  on:cut|preventDefault
+  on:paste|preventDefault
 >
   <slot/>
 </div>

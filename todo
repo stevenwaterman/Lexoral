@@ -9,6 +9,7 @@ Escape mode is slow
 Scroll into view running too often
 
 
-tab doesn't work
 resizing breaks the dropdown positioning
 don't autocomplete anything when current text matches one option
+
+cut and paste are disabled

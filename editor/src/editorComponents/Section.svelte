@@ -1,7 +1,9 @@
 <script lang="ts">
+import { tick } from "svelte";
+
   import type { SectionStore } from "../sectionStores";
   import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore } from "../selectionStores";
-  import { selectNext, selectPrev } from "../utils";
+  import { selectEnd, selectNext, selectPrev } from "../utils";
 
   export let sectionStore: SectionStore;
 
@@ -15,12 +17,19 @@
   let displayText: string;
   $: displayText = " " + ($sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder);
 
-  function updateText() {
+  async function updateText() {
     if (component === undefined) return;
     const textContent = component.textContent.trim();
     if (!$sectionStore.edited && textContent === $sectionStore.placeholder) return;
     if (textContent === $sectionStore.text) return;
-    sectionStore.setText(textContent);
+    if (!$sectionStore.edited && textContent.substring(1) === $sectionStore.placeholder) {
+      sectionStore.setText(textContent.substring(0, 1))
+      await tick();
+      selectEnd(component);
+    }
+    else {
+      sectionStore.setText(textContent);
+    }
   }
 
   function keyDown(event: KeyboardEvent) {
@@ -58,8 +67,6 @@
     display: inline-block;
     white-space: pre;
     outline: none;
-    border: 1px solid black;
-    border-radius: 4pt;
   }
 
   .highlight {
