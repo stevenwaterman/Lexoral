@@ -2,7 +2,6 @@
   import Document from "./Document.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
-  import { playPause } from "../audio";
 
   let textContent;
 </script>

@@ -1,6 +1,6 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
 import { ParagraphStore, documentStore, ParagraphState, SectionState, SectionStore, allSectionsStore } from "./sectionStores";
-import { clampGet, unwrapStore, siblingIdx } from "./utils";
+import { clampGet, unwrapStore, siblingIdx, unwrapRecordStore } from "./utils";
 
 export type CursorPosition = {
   paragraph: number;
@@ -19,14 +19,20 @@ export type SectionSelection = {
 export const selectionStore: Writable<SectionSelection | undefined> = writable(undefined);
 
 export function createSelectionStore(inputStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<SectionState | undefined> {
-  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, inputStore], ([document, selection]) => selection === undefined ? undefined : clampGet(document, selection.paragraph));
+  let input: undefined | Omit<CursorPosition, "offset"> = undefined;
+
+  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, inputStore], ([document, selection]) => {
+    input = selection;
+    return selection === undefined ? undefined : clampGet(document, selection.paragraph);
+  });
   const paragraphStore: Readable<ParagraphState | undefined> = unwrapStore(paragraphStoreWrapped);
-  const sectionStoreWrapped: Readable<SectionStore | undefined> = derived([paragraphStore, inputStore], ([paragraph, selection]) => {
+  const sectionStoreWrapped: Readable<SectionStore | undefined> = derived(paragraphStore, (paragraph) => {
     if (paragraph === undefined) return undefined;
-    if (selection === undefined) return undefined;
-    return clampGet(paragraph, selection.section);
+    if (input === undefined) return undefined;
+    return clampGet(paragraph, input.section);
   });
   const sectionStore: Readable<SectionState | undefined> = unwrapStore(sectionStoreWrapped);
+
   return sectionStore;
 }
 
@@ -48,7 +54,6 @@ export const focusSectionStore: Readable<SectionState | undefined> = createSelec
 
 export const earlySectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
 export const lateSectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
-// lateSectionStore.subscribe(console.log);
 
 export const anchorSectionIdxStore = derived(anchorSectionStore, section => section?.idx);
 export const focusSectionIdxStore = derived(focusSectionStore, section => section?.idx);
@@ -138,6 +143,9 @@ function updateDropdownPosition(endContainer: Node) {
   })
 }
 
+/**
+ * The sections that currently have any of their text selected
+ */
 export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySectionIdxStore, lateSectionIdxStore, allSectionsStore], ([rangeStart, rangeEnd, sections]) => {
   if (rangeStart === undefined) return [];
   if (rangeEnd === undefined) return [];
@@ -147,6 +155,32 @@ export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySec
   }
   return output;
 })
+
+const playingSectionStoresWrapped: Readable<Record<number, SectionStore>> = derived([earlySectionIdxStore, lateSectionIdxStore, allSectionsStore], ([rangeStart, rangeEnd, sections]) => {
+  if (rangeStart === undefined) return [];
+  if (rangeEnd === undefined) return [];
+  const start = rangeStart - 3;
+  const end = rangeStart + 3;
+  const output: Record<number, SectionStore> = {};
+
+  for (let i = start; i <= end; i++) {
+    const section = sections[i];
+    if (section) output[i] = section;
+  }
+  return output;
+})
+
+const playingSectionsRecordStore: Readable<Record<number, SectionState>> = unwrapRecordStore(playingSectionStoresWrapped);
+export const playingSectionsStore: Readable<SectionState[]> = derived(playingSectionsRecordStore, record => {
+  const sections = Object.values(record);
+  sections.sort((a, b) => a.idx - b.idx);
+  return sections;
+})
+
+/**
+ * The secitons that currently have their audio queued to play, but not necessarily actively playing
+ */
+
 
 export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
   // debugger;

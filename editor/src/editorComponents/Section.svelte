@@ -1,5 +1,6 @@
 <script lang="ts">
 import { tick } from "svelte";
+import { activelyPlayingSectionsStore } from "../audio";
 
   import type { SectionStore } from "../sectionStores";
   import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore } from "../selectionStores";
@@ -80,6 +81,10 @@ import { tick } from "svelte";
   .placeholder {
     color: var(--secondary-text);
   }
+
+  .playing {
+    background-color: var(--focus);
+  }
 </style>
 
 <span
@@ -87,6 +92,7 @@ import { tick } from "svelte";
   class:highlight
   class:placeholder={!$sectionStore.edited}
   class:unsure={!$sectionStore.edited && $sectionStore.completionOptions.length > 1}
+  class:playing={$activelyPlayingSectionsStore[$sectionStore.idx]}
   bind:this={component}
   on:keydown={keyDown}
   on:blur={updateText}

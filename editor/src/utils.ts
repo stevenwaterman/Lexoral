@@ -1,4 +1,4 @@
-import { Readable, derived, writable, Writable } from "svelte/store";
+import { Readable, derived, writable, Writable, Unsubscriber } from "svelte/store";
 import { updateSelection } from "./selectionStores";
 
 /**
@@ -22,15 +22,17 @@ export function maybeDerived<S extends Stores, T>(
   stores: S,
   initial: T,
   func: (values: StoresValues<S>) => T,
-  update: (last: T, next: T) => boolean = (a, b) => (a !== b)
+  update: (last: {inputs: StoresValues<S>; output: T}, next: {inputs: StoresValues<S>; output: T}) => boolean = (a, b) => (a.output !== b.output)
 ): Readable<T> {
-  let lastValue: T = initial;
+  let lastInput: StoresValues<S> | undefined = undefined;
+  let lastOutput: T = initial;
   const actualFunc = (stores: StoresValues<S>, set: (value: T) => void) => {
-    const nextValue = func(stores);
-    if (update(lastValue, nextValue)) {
-      lastValue = nextValue;
-      set(nextValue);
+    const nextOutput = func(stores);
+    if (lastInput === undefined || update({inputs: lastInput, output: lastOutput}, {inputs: stores, output: nextOutput})) {
+      lastOutput = nextOutput;
+      set(nextOutput);
     }
+    lastInput = stores;
   };
   return derived(stores, actualFunc, initial);
 }
@@ -82,41 +84,65 @@ export function clampGet<T>(list: T[], idx: number): T | undefined {
 }
 
 export function setOffsetInterval(callback: () => void, firstDuration: number, latterDuration?: number): () => void {
-  const timers: NodeJS.Timeout[] = [];
-  timers.push(
+  const timeouts: NodeJS.Timeout[] = [];
+  const intervals: NodeJS.Timer[] = [];
+  timeouts.push(
     setTimeout(() => {
       callback();
       if (latterDuration !== undefined) {
-        timers.push(setInterval(callback, latterDuration * 1000));
+        intervals.push(setInterval(callback, latterDuration * 1000));
       }
     }, firstDuration * 1000));
-  return () => timers.forEach(clearTimeout);
+  return () => {
+    timeouts.forEach(timer => clearTimeout(timer));
+    intervals.forEach(interval => clearInterval(interval));
+  }
 }
 
-export function unwrapStore<T, INNER extends Readable<T | undefined>>(store_2: Readable<INNER | undefined>, equality: (a: T, b: T) => boolean = (a, b) => a === b): Readable<T | undefined> {
-  let value: T | undefined = undefined;
-  const output: Writable<T | undefined> = writable(undefined);
+export function unwrapStore<T, INNER extends Readable<T | undefined>>(store_2: Readable<INNER | undefined>): Readable<T | undefined> {
   let unsubscribe: () => void = () => { };
-  store_2.subscribe((store: INNER | undefined) => {
+
+  return derived(store_2, (store, set) => {
     unsubscribe();
-    if (store !== undefined) {
-      unsubscribe = store.subscribe((state: T | undefined) => {
-        if (
-          (value === undefined && state !== undefined) ||
-          (value !== undefined && state === undefined) ||
-          (value !== undefined && state !== undefined && !equality(value, state))
-        ) {
-          value = state;
-          output.set(state);
-        }
-      })
-    } else {
-      unsubscribe = () => { };
-      value = undefined;
-      output.set(undefined);
+
+    if (store === undefined) {
+      unsubscribe = () => {};
+      set(undefined);
+      return;
     }
+
+    unsubscribe = store.subscribe(set);
   });
-  return output;
+}
+
+export function unwrapRecordStore<K extends string | number | symbol, V, INNER extends Readable<V | undefined>>(
+  store_2: Readable<Record<K, INNER>>, 
+): Readable<Partial<Record<K, V>>> {
+  const unsubscribers: Partial<Record<K, Unsubscriber>> = {};
+  const record: Partial<Record<K, V>> = {};
+  return derived(store_2, (values: Record<K, INNER>, set: (val: Partial<Record<K, V>>) => void) => {
+    const newKeys = Object.keys(values) as K[];
+    const oldKeys = Object.keys(record) as K[];
+
+    const keysToSubscribe: K[] = newKeys.filter(newKey => record[newKey] === undefined);
+    const keysToUnsubscribe: K[] = oldKeys.filter(oldKey => values[oldKey] === undefined);
+
+    keysToSubscribe.forEach(key => {
+      const innerStore: INNER = values[key];
+      const unsubscribe = innerStore.subscribe(innerValue => {
+        record[key] = innerValue;
+        set(record)
+      });
+      unsubscribers[key] = unsubscribe;
+    });
+
+    keysToUnsubscribe.forEach(key => {
+      unsubscribers[key]();
+      delete unsubscribers[key];
+      delete record[key];
+    });
+    set(record);
+  }, {});
 }
 
 export function siblingIdx(node: Element): number {
