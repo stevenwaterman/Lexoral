@@ -2,24 +2,38 @@ audio:
   disable automatic playback
   add way to play audio manually (loop and not loop)
   add way to play audio automatically (loop and not loop)
-  add way to choose start + end offset and whether to start at start or end of first section
+
+  - add way to play from current position
+  - add way to choose start + end offset and whether to start at start or end of first section
+
+  -- add different play styles - word + offsets, paragraph, sentence, etc
 
 sections:
-  manually split a section
-  manually combine a section
-  manually add a section
-  manually adjust section timings
   manually adjust paragraph boundaries
-  automatically adjust section timings based on audio envelope
-  automatically determine paragraph boundaries based on audio envelope
-  automatically combine sections
 
+  -- automatically adjust section timings based on audio envelope
+  -- automatically determine paragraph boundaries based on audio envelope
+  -- automatically combine sections
+
+  -- manually split a section
+  -- manually combine a section
+  -- manually add a section
+  -- manually delete a section
+  -- manually adjust section timings
+  
 UX:
+  + only show selection when not playing
+  + fix selection styling highlighting spaces at the end of paragraphs
+  + fix click + drag from start of section not selecting range of text
+  + select range then click in range, selection doesn't update
+
   add escape mode
-  add scrolling
   fix dropdown position when resizing
   support cut + paste
-  support firefox + safari + edge
-  allow to click the dropdown
-  make logo background transparent
-  select range then click in range, selection doesn't update
+  Test double / triple click behaviour
+
+  - add scrolling (when playing from current position onwards)
+  - undo / redo support
+
+  -- make logo background transparent
+  -- support firefox + safari + edge

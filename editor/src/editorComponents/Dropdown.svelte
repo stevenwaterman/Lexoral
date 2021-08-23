@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { SectionState, SectionStore } from "../sectionStores";
   import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
-  import { clamp } from "../utils";
+  import { clamp, modulo } from "../utils";
 
   let section: SectionState & Pick<SectionStore, "setText"> | undefined;
   $: section = $dropdownSectionStore;
@@ -16,32 +16,46 @@
   $: top = $dropdownPositionStore.top;
 
   let options: string[];
-  $: options = section?.completionOptions;
+  $: options = section?.completionOptions ?? [];
 
-  let selectedIdx = 0;
+  let selectedIdx: number = 0;
+
+  let highlightIdx: number;
+  $: highlightIdx = modulo(selectedIdx, options.length);
+
+  function resetIdx(_?: any) {
+    selectedIdx = 0;
+  }
+  $: resetIdx(visible);
 
   function keyDown(event: KeyboardEvent) {
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      const newIdx = selectedIdx - 1;
-      selectedIdx = clamp(newIdx, 0, options.length - 1);
+      selectedIdx = (selectedIdx ?? 0) - 1;
     } else if (event.key === "ArrowDown") {
       event.preventDefault();
-      const newIdx = selectedIdx + 1;
-      selectedIdx = clamp(newIdx, 0, options.length - 1);
+      selectedIdx = (selectedIdx ?? -1) + 1;
     } else if (event.key === "Enter") {
       event.preventDefault();
-      if (options.length > 0) {
-        const selectedOption = options[selectedIdx];
-        section.setText(selectedOption);
-      }
+      acceptOption();
     }
   }
 
-  function resetIdx(_: any) {
-    selectedIdx = 0;
+  function mouseEnterOption(idx: number) {
+    selectedIdx = idx;
   }
-  $: resetIdx(section);
+
+  function mouseClick(idx: number) {
+    mouseEnterOption(idx);
+    acceptOption();
+  }
+
+  function acceptOption() {
+    if (options.length > 0 && highlightIdx !== undefined) {
+      const selectedOption = options[highlightIdx];
+      section.setText(selectedOption);
+    }
+  }
 </script>
 
 <style>
@@ -64,6 +78,7 @@
   .option {
     white-space: nowrap;
     padding: 2px;
+    cursor: pointer;
   }
 
   .topBorder {
@@ -74,12 +89,18 @@
 <svelte:body on:keydown={keyDown}/>
 
 {#if visible}
-  <div class="popup" style={`left: ${left}px; top: ${top}px;`}>
+  <div
+    class="popup" 
+    style={`left: ${left}px; top: ${top}px;`}
+    on:mouseleave={resetIdx}
+  >
     {#each options as option, idx}
       <span
         class="option"
-        class:highlight={idx === selectedIdx}
+        class:highlight={idx === highlightIdx}
         class:topBorder={idx !== 0}
+        on:mouseenter="{() => mouseEnterOption(idx)}"
+        on:click="{() => mouseClick(idx)}"
       >
         {option}
       </span>

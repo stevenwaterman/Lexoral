@@ -1,20 +1,21 @@
 <script lang="ts">
 import { tick } from "svelte";
+import { playAudio, stopAudio, playingStore, autoPlayStore } from "../audio";
 
-  import { deleteSelection, earlySectionStore, focusSectionStore, lateSectionStore, selectedSectionsStore, selectionStore, singleSelectionStore, updateSelection } from "../selectionStores";
-  import { selectEnd, selectNext, selectParagraphEnd, selectParagraphStart, selectPosition, selectPrev, selectStart } from "../utils";
+  import { deleteSelection, earlySectionStore, focusSectionStore, isSelectingStore, lateSectionStore, selectedSectionsStore, selectionStore, updateSelection } from "../selectionStores";
+  import { selectNext, selectParagraphEnd, selectParagraphStart, selectPosition, selectPrev, selectStart } from "../utils";
 
   export let textContent: string;
 
   async function keyDown(event: KeyboardEvent) {
-    if (event.key === "Backspace" && !$singleSelectionStore) {
+    if (event.key === "Backspace" && $isSelectingStore) { //TODO delete whole sections when selecting across sections, rather than characters within sections
       event.preventDefault();
       deleteSelection($selectionStore, $selectedSectionsStore);
       await tick();
       selectPosition($earlySectionStore.spanComponent, $selectionStore.early.offset)
     }
 
-    if (event.key === "Delete" && !$singleSelectionStore) {
+    if (event.key === "Delete" && $isSelectingStore) {
       event.preventDefault();
       deleteSelection($selectionStore, $selectedSectionsStore);
       await tick();
@@ -52,6 +53,11 @@ import { tick } from "svelte";
       event.preventDefault();
       const node = $focusSectionStore?.spanComponent;
       if (node) selectNext(node);
+    }
+
+    if (event.key === "Alt" && !$autoPlayStore) {
+      if ($playingStore) stopAudio();
+      else playAudio();
     }
 
     updateSelection();

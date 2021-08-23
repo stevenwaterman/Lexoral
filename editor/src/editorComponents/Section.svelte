@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte";
   import type { Readable } from "svelte/store";
-  import { getAudioCurrentSectionStore } from "../audio";
+  import { getAudioCurrentSectionStore, playingStore } from "../audio";
   import type { SectionStore } from "../sectionStores";
-  import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore } from "../selectionStores";
+  import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore, isSelectingMultipleSectionsStore } from "../selectionStores";
   import { selectEnd, selectNext, selectPrev } from "../utils";
 
   export let sectionStore: SectionStore;
@@ -18,8 +18,8 @@
   let displayText: string;
   $: displayText = " " + ($sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder);
 
-  let playingStore: Readable<boolean>;
-  $: playingStore = getAudioCurrentSectionStore($sectionStore.idx)
+  let sectionPlayingStore: Readable<boolean>;
+  $: sectionPlayingStore = getAudioCurrentSectionStore($sectionStore.idx)
 
   async function updateText() {
     if (component === undefined) return;
@@ -73,19 +73,22 @@
     outline: none;
   }
 
-  .highlight {
-    background-color: var(--weak-focus);
+  .section::selection {}
+
+  .section.nonePlaying::selection {
+    background-color: var(--blue-2);
+    color: var(--light-text);
   }
 
-  .section.unsure {
-    color: var(--strong-focus)
+  .highlight {
+    background-color: var(--weak-focus);
   }
 
   .placeholder {
     color: var(--secondary-text);
   }
 
-  .playing {
+  .sectionPlaying {
     background-color: var(--focus);
   }
 </style>
@@ -94,8 +97,8 @@
   class="section"
   class:highlight
   class:placeholder={!$sectionStore.edited}
-  class:unsure={!$sectionStore.edited && $sectionStore.completionOptions.length > 1}
-  class:playing={$playingStore}
+  class:sectionPlaying={$sectionPlayingStore}
+  class:nonePlaying={!$playingStore}
   bind:this={component}
   on:keydown={keyDown}
   on:blur={updateText}

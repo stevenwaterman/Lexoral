@@ -4,7 +4,7 @@ import { updateSelection } from "./selectionStores"; // TODO move the select fun
 /**
  * Modulo that makes negative numbers positive
  */
-export function modulo(a: number, b: number) {
+export function modulo(a: number, b: number): number {
   return ((a % b) + b) % b;
 }
 
@@ -15,18 +15,18 @@ export function moduloGet<T>(list: T[], idx: number): T | undefined {
 
 
 type Stores = Readable<any> | [Readable<any>, ...Array<Readable<any>>];
-type StoresValues<T> = T extends Readable<infer U> ? U : {
+export type StoreValues<T> = T extends Readable<infer U> ? U : {
   [K in keyof T]: T[K] extends Readable<infer U> ? U : never;
 };
 export function maybeDerived<S extends Stores, T>(
   stores: S,
   initial: T,
-  func: (values: StoresValues<S>) => T,
-  update: (last: {inputs: StoresValues<S>; output: T}, next: {inputs: StoresValues<S>; output: T}) => boolean = (a, b) => (a.output !== b.output)
+  func: (values: StoreValues<S>) => T,
+  update: (last: {inputs: StoreValues<S>; output: T}, next: {inputs: StoreValues<S>; output: T}) => boolean = (a, b) => (a.output !== b.output)
 ): Readable<T> {
-  let lastInput: StoresValues<S> | undefined = undefined;
+  let lastInput: StoreValues<S> | undefined = undefined;
   let lastOutput: T = initial;
-  const actualFunc = (stores: StoresValues<S>, set: (value: T) => void) => {
+  const actualFunc = (stores: StoreValues<S>, set: (value: T) => void) => {
     const nextOutput = func(stores);
     if (lastInput === undefined || update({inputs: lastInput, output: lastOutput}, {inputs: stores, output: nextOutput})) {
       lastOutput = nextOutput;

@@ -60,14 +60,24 @@ export const focusSectionIdxStore = derived(focusSectionStore, section => sectio
 export const earlySectionIdxStore = derived(earlySectionStore, section => section?.idx);
 export const lateSectionIdxStore = derived(lateSectionStore, section => section?.idx);
 
-export const singleSelectionStore: Readable<boolean> = derived(selectionStore, selection => 
-  selection !== undefined && 
-  selection.anchor.section === selection.focus.section && 
-  selection.anchor.paragraph === selection.focus.paragraph &&
-  selection.anchor.offset === selection.focus.offset
-);
+/** Is any text selected */
+export const isSelectingStore: Readable<boolean> = derived(selectionStore, selection => {
+  if (selection === undefined) return false;
+  if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
+  if (selection.anchor.section !== selection.focus.section) return true;
+  if (selection.anchor.offset !== selection.focus.offset) return true;
+  return false;
+});
 
-export const dropdownSectionStore: Readable<SectionState | undefined> = derived([focusSectionStore, singleSelectionStore], ([state, single]) => single ? state : undefined);
+/** Are multiple sections selected */
+export const isSelectingMultipleSectionsStore: Readable<boolean> = derived(selectionStore, selection => {
+  if (selection === undefined) return false;
+  if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
+  if (selection.anchor.section !== selection.focus.section) return true;
+  return false;
+});
+
+export const dropdownSectionStore: Readable<SectionState | undefined> = derived([focusSectionStore, isSelectingStore], ([state, selecting]) => selecting ? undefined : state);
 derived([selectionStore, dropdownSectionStore], state => state).subscribe(([_, section]) => section?.spanComponent?.focus());
 
 export const dropdownPositionStore: Writable<{top: number; left: number}> = writable({ top: 0, left: 0 });
@@ -156,16 +166,10 @@ export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySec
   return output;
 })
 
-const audioStartSectionStoreWrapped: Readable<SectionStore | undefined> = derived([earlySectionIdxStore, allSectionsStore], ([idx, sections]) => idx === undefined ? undefined : sections[Math.max(0, idx - 3)]);
-const audioStartSectionStore: Readable<SectionState | undefined> = unwrapStore(audioStartSectionStoreWrapped);
-
-const audioEndSectionStoreWrapped: Readable<SectionStore | undefined> = derived([lateSectionIdxStore, allSectionsStore], ([idx, sections]) => idx === undefined ? undefined : sections[Math.min(Object.keys(sections).length - 1, idx + 3)]);
-const audioEndSectionStore: Readable<SectionState | undefined> = unwrapStore(audioEndSectionStoreWrapped);
-
-export const audioTimingsStore: Readable<{start: number; end: number} | undefined> = derived([audioStartSectionStore, audioEndSectionStore], ([start, end]) => {
-  if (start === undefined) return undefined;
-  if (end === undefined) return undefined;
-  return {start: start.startTime, end: end.endTime};
+export const selectedSectionsIdxStore: Readable<undefined | { start: number; end: number }> = derived([earlySectionIdxStore, lateSectionIdxStore], ([early, late]) => {
+  if (early === undefined) return undefined;
+  if (late === undefined) return undefined;
+  return { start: early, end: late }
 })
 
 export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {

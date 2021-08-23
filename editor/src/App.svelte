@@ -8,6 +8,7 @@
   :global(:root) {
     --text: #242230;
     --secondary-text: #525666;
+    --light-text: var(--grey4);
     
     --weak-focus: #9CAFD3;
     --focus: #8BA861;
