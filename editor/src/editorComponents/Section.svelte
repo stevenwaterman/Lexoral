@@ -1,7 +1,7 @@
 <script lang="ts">
-import { tick } from "svelte";
-import { activelyPlayingSectionsStore } from "../audio";
-
+  import { tick } from "svelte";
+  import type { Readable } from "svelte/store";
+  import { getAudioCurrentSectionStore } from "../audio";
   import type { SectionStore } from "../sectionStores";
   import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore } from "../selectionStores";
   import { selectEnd, selectNext, selectPrev } from "../utils";
@@ -17,6 +17,9 @@ import { activelyPlayingSectionsStore } from "../audio";
 
   let displayText: string;
   $: displayText = " " + ($sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder);
+
+  let playingStore: Readable<boolean>;
+  $: playingStore = getAudioCurrentSectionStore($sectionStore.idx)
 
   async function updateText() {
     if (component === undefined) return;
@@ -92,7 +95,7 @@ import { activelyPlayingSectionsStore } from "../audio";
   class:highlight
   class:placeholder={!$sectionStore.edited}
   class:unsure={!$sectionStore.edited && $sectionStore.completionOptions.length > 1}
-  class:playing={$activelyPlayingSectionsStore[$sectionStore.idx]}
+  class:playing={$playingStore}
   bind:this={component}
   on:keydown={keyDown}
   on:blur={updateText}

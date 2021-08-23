@@ -1,5 +1,5 @@
 import { Readable, derived, writable, Writable, Unsubscriber } from "svelte/store";
-import { updateSelection } from "./selectionStores";
+import { updateSelection } from "./selectionStores"; // TODO move the select functions into here
 
 /**
  * Modulo that makes negative numbers positive
@@ -35,6 +35,30 @@ export function maybeDerived<S extends Stores, T>(
     lastInput = stores;
   };
   return derived(stores, actualFunc, initial);
+}
+
+export function zipWithLast<T>(
+  store: Readable<T>
+): Readable<{last?: T; current: T}> {
+  let last: T | undefined = undefined;
+  return derived(store, current => {
+    const value = { last, current };
+    last = current;
+    return value;
+  })
+}
+
+export function debounce<T>(
+  store: Readable<T>,
+  delay: number,
+): Readable<T> {
+  let timeout: NodeJS.Timeout | undefined = undefined;
+  return derived(store, (state, set) => {
+    if (timeout !== undefined) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      set(state);
+    }, delay * 1000)
+  })
 }
 
 export function maybeWritable<T>(

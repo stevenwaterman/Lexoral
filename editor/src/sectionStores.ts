@@ -114,10 +114,12 @@ const documentStoreInternal: Writable<DocumentState> = writable([]);
 export const documentStore: DocumentStore = documentStoreInternal;
 export const allSectionsStore: Writable<Record<number, SectionStore>> = writable({});
 
-export function initialiseStores(output: JsonOutput) {
+export function initialiseStores(output: JsonOutput): Record<number, { startTime: number; endTime: number }> {
+  const audioTimings: Record<number, { startTime: number; endTime: number }> = {};
   const sectionStores: Record<number, SectionStore> = {};
   const paragraphStores = output.reduce((acc, elem, idx) => {
       const sectionStore = createSectionStore(elem, idx);
+      audioTimings[idx] = elem;
       sectionStores[idx] = sectionStore;
       if (acc.length === 0 || elem.startParagraph) {
         const paragraphStore = createParagraphStore([sectionStore]);
@@ -132,4 +134,5 @@ export function initialiseStores(output: JsonOutput) {
   
   documentStoreInternal.set(paragraphStores);
   allSectionsStore.set(sectionStores);
+  return audioTimings;
 }

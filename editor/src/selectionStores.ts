@@ -156,35 +156,19 @@ export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySec
   return output;
 })
 
-const playingSectionStoresWrapped: Readable<Record<number, SectionStore>> = derived([earlySectionIdxStore, lateSectionIdxStore, allSectionsStore], ([rangeStart, rangeEnd, sections]) => {
-  if (rangeStart === undefined) return [];
-  if (rangeEnd === undefined) return [];
-  const start = rangeStart - 3;
-  const end = rangeEnd + 3;
-  const output: Record<number, SectionStore> = {};
+const audioStartSectionStoreWrapped: Readable<SectionStore | undefined> = derived([earlySectionIdxStore, allSectionsStore], ([idx, sections]) => idx === undefined ? undefined : sections[Math.max(0, idx - 3)]);
+const audioStartSectionStore: Readable<SectionState | undefined> = unwrapStore(audioStartSectionStoreWrapped);
 
-  for (let i = start; i <= end; i++) {
-    const section = sections[i];
-    if (section) output[i] = section;
-  }
-  return output;
+const audioEndSectionStoreWrapped: Readable<SectionStore | undefined> = derived([lateSectionIdxStore, allSectionsStore], ([idx, sections]) => idx === undefined ? undefined : sections[Math.min(Object.keys(sections).length - 1, idx + 3)]);
+const audioEndSectionStore: Readable<SectionState | undefined> = unwrapStore(audioEndSectionStoreWrapped);
+
+export const audioTimingsStore: Readable<{start: number; end: number} | undefined> = derived([audioStartSectionStore, audioEndSectionStore], ([start, end]) => {
+  if (start === undefined) return undefined;
+  if (end === undefined) return undefined;
+  return {start: start.startTime, end: end.endTime};
 })
-
-const playingSectionsRecordStore: Readable<Record<number, SectionState>> = unwrapRecordStore(playingSectionStoresWrapped);
-export const playingSectionsStore: Readable<SectionState[]> = derived(playingSectionsRecordStore, record => {
-  const sections = Object.values(record);
-  sections.sort((a, b) => a.idx - b.idx);
-  return sections;
-})
-
-/**
- * The secitons that currently have their audio queued to play, but not necessarily actively playing
- */
-
 
 export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
-  // debugger;
-
   const earlyOffset = selection.early.offset;
   const lateOffset = selection.late.offset;
 

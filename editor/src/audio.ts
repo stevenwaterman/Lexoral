@@ -1,103 +1,62 @@
 import * as Tone from "tone";
-import { writable, Writable } from "svelte/store";
-import { playingSectionsStore } from "./selectionStores";
-import type { SectionState } from "./sectionStores";
-import { setOffsetInterval, maybeDerived } from "./utils";
+import { Writable, Readable, writable } from "svelte/store";
+import { audioTimingsStore } from "./selectionStores";
+import { zipWithLast, debounce } from "./utils";
 
-/**
- * The sections that you can currently hear
- */
-export const activelyPlayingSectionsStore: Writable<Record<number, boolean>> = writable({});
-function setPlaying(section: SectionState) {
-  // console.log(section.idx, "playing")
-  activelyPlayingSectionsStore.update(state => {
-    state[section.idx] = true;
-    return state;
-  })
-}
-function setNotPlaying(section: SectionState) {
-  // console.log(section.idx, "stopped")
-  activelyPlayingSectionsStore.update(state => {
-    state[section.idx] = false;
-    return state;
-  })
-}
-
-function resetPlaying() {
-  activelyPlayingSectionsStore.set({});
-}
-
-const player = new Tone.Player().toDestination();
-player.onstop = () => {
-  // TODO there's a couple of frames of delay here before this gets invoked
-  
-};
-
-let loaded = false;
-new Tone.ToneAudioBuffer("/assets/audio.mp3", buffer => {
-  loaded = true;
-  player.buffer = buffer;
-});
-
-let playing: boolean = false;
-export const playingStore: Writable<boolean> = writable(playing);
-playingStore.subscribe(value => { playing = value });
-
-let cancelTimers: () => void = () => {};
-
-function play(sections: SectionState[], loop: boolean) {
-  if (!loaded) return; // TODO do something better here
-  if (sections.length === 0) return;
-
-  playingStore.set(true);
-
-  const start = sections[0].startTime;
-  const end = sections[sections.length - 1].endTime;
-  const loopLength = loop ? end - start : undefined;
-
-  player.loopStart = start;
-  player.loopEnd = end;
-  player.loop = loop;
-
-  if (loop) {
-    player.start(undefined, start);
-  } else {
-    player.start(undefined, start, end - start)
-  }
-
-  const cancellationCallbacks: (() => void)[] = [];
-
-  sections.forEach(section => {
-    const sectionStartOffset = section.startTime - start;
-    const sectionEndOffset = section.endTime - start;
-    cancellationCallbacks.push(
-      setOffsetInterval(() => setPlaying(section), sectionStartOffset, loopLength),
-      setOffsetInterval(() => setNotPlaying(section), sectionEndOffset, loopLength)
-    );
-  })
-
-  cancelTimers = () => {
-    // console.log("cancelling")
-    cancellationCallbacks.forEach(func => func());
-    cancelTimers = () => {};
-  }
-}
-
-function playPause(sections: SectionState[], loop: boolean) {
-  if (playing) player.stop();
-  else play(sections, loop)
-}
-
-function pause() {
-  player.stop();
-  playingStore.set(false);
-  cancelTimers();
-  resetPlaying();
-}
-
-playingSectionsStore.subscribe(sections => {
-  pause();
-  if (sections.length === 0) return;
-  play(sections, true);
+const audioCurrentSectionStore: Writable<string | undefined> = writable(undefined);
+zipWithLast(audioCurrentSectionStore).subscribe(({ last, current }) => {
+  if (last !== undefined) setAudioCurrentSectionStore(last, false);
+  if (current !== undefined) setAudioCurrentSectionStore(current, true);
 })
+
+const audioCurrentSectionStores: Record<string, Writable<boolean>> = {};
+
+export function getAudioCurrentSectionStore(idx: number | string): Readable<boolean> {
+  const store = audioCurrentSectionStores[idx];
+  if (store === undefined) {
+    audioCurrentSectionStores[idx] = writable(false);
+  }
+  return audioCurrentSectionStores[idx];
+}
+
+function setAudioCurrentSectionStore(idx: number | string, current: boolean) {
+  const store = audioCurrentSectionStores[idx];
+  if (store === undefined) {
+    audioCurrentSectionStores[idx] = writable(current);
+  } else {
+    store.set(current);
+  }
+}
+
+async function createPlayer(): Promise<Tone.Player> {
+  return new Promise(resolve => {
+    const player = new Tone.Player(
+      "/assets/audio.mp3", 
+      () => { resolve(player) }
+    ).sync().start(0).toDestination();
+  })
+}
+
+export async function initAudio(allSections: Record<number, {startTime: number; endTime: number}>) {
+  const player = await createPlayer();
+  Tone.Transport.loop = true;
+  Tone.Transport.loopEnd = player.buffer.duration;
+
+  Object.entries(allSections).forEach(([idx, section]) => {
+    Tone.Transport.schedule(() => audioCurrentSectionStore.set(idx), section.startTime);
+    Tone.Transport.schedule(() => audioCurrentSectionStore.set(idx), section.endTime);
+  })
+}
+
+debounce(audioTimingsStore, 0.05).subscribe(timings => {
+  if (!timings) return;
   
+  Tone.Transport.pause();
+  Tone.Transport.setLoopPoints(timings.start, timings.end);
+  const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
+  if (current < timings.start) {
+    Tone.Transport.start(undefined, timings.start);
+  } else {
+    Tone.Transport.start();
+  }
+});

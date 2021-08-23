@@ -1,11 +1,8 @@
 audio:
-  changing playing sections shouldn't restart audio if the current audio time is within the new audio time
   disable automatic playback
   add way to play audio manually (loop and not loop)
   add way to play audio automatically (loop and not loop)
   add way to choose start + end offset and whether to start at start or end of first section
-  * simplify the timer + interval based system by running code with the tonejs functions
-  await loading the audio
 
 sections:
   manually split a section
@@ -25,3 +22,4 @@ UX:
   support firefox + safari + edge
   allow to click the dropdown
   make logo background transparent
+  select range then click in range, selection doesn't update

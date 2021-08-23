@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { initAudio } from "./audio";
   import Editor from "./editorComponents/Editor.svelte";
   import { initialiseStores } from "./sectionStores";
 </script>
@@ -78,7 +79,7 @@
 
 <svelte:body tabindex={-1}/>
 
-{#await fetch("assets/data2.json").then(data => data.json()).then(data => initialiseStores(data))}
+{#await fetch("assets/data2.json").then(data => data.json()).then(data => initialiseStores(data)).then(initAudio)}
   Fetching data
 {:then}
   <Editor/>
