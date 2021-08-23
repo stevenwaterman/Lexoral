@@ -95,17 +95,7 @@ function pause() {
   resetPlaying();
 }
 
-maybeDerived(playingSectionsStore, undefined, a => a, (a, b) => {
-  const aIdxs = a.output.map(e => e.idx);
-  const bIdxs = b.output.map(e => e.idx);
-  aIdxs.sort((a, b) => a - b);
-  bIdxs.sort((a, b) => a - b);
-  if (aIdxs.length !== bIdxs.length) return true;
-  for (let i = 0; i < aIdxs.length; i++) {
-    if (aIdxs[i] !== bIdxs[i]) return true;
-  }
-  return false;
-}).subscribe(sections => {
+playingSectionsStore.subscribe(sections => {
   pause();
   if (sections.length === 0) return;
   play(sections, true);

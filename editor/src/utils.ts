@@ -129,9 +129,14 @@ export function unwrapRecordStore<K extends string | number | symbol, V, INNER e
 
     keysToSubscribe.forEach(key => {
       const innerStore: INNER = values[key];
+      let firstRun = true;
       const unsubscribe = innerStore.subscribe(innerValue => {
         record[key] = innerValue;
-        set(record)
+        if (firstRun) {
+          firstRun = false;
+        } else {
+          set(record)
+        }
       });
       unsubscribers[key] = unsubscribe;
     });

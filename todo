@@ -1,15 +1,27 @@
-holding right in edit mode is deafening
-manually split a section (move collapsing to frontend)
-manually change timing of sections
-automatically refine timing without making it overlap
-Offset start and end time
-Autoplay
-Manaul way to play in edit mode (alt?)
-Escape mode is slow
-Scroll into view running too often
+audio:
+  changing playing sections shouldn't restart audio if the current audio time is within the new audio time
+  disable automatic playback
+  add way to play audio manually (loop and not loop)
+  add way to play audio automatically (loop and not loop)
+  add way to choose start + end offset and whether to start at start or end of first section
+  * simplify the timer + interval based system by running code with the tonejs functions
+  await loading the audio
 
+sections:
+  manually split a section
+  manually combine a section
+  manually add a section
+  manually adjust section timings
+  manually adjust paragraph boundaries
+  automatically adjust section timings based on audio envelope
+  automatically determine paragraph boundaries based on audio envelope
+  automatically combine sections
 
-resizing breaks the dropdown positioning
-don't autocomplete anything when current text matches one option
-
-cut and paste are disabled
+UX:
+  add escape mode
+  add scrolling
+  fix dropdown position when resizing
+  support cut + paste
+  support firefox + safari + edge
+  allow to click the dropdown
+  make logo background transparent

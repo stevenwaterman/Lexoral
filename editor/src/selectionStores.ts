@@ -160,7 +160,7 @@ const playingSectionStoresWrapped: Readable<Record<number, SectionStore>> = deri
   if (rangeStart === undefined) return [];
   if (rangeEnd === undefined) return [];
   const start = rangeStart - 3;
-  const end = rangeStart + 3;
+  const end = rangeEnd + 3;
   const output: Record<number, SectionStore> = {};
 
   for (let i = start; i <= end; i++) {
