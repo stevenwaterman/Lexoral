@@ -1,8 +1,18 @@
 import * as Tone from "tone";
-import { Writable, Readable, writable, derived } from "svelte/store";
-import { isSelectingMultipleSectionsStore, selectedSectionsIdxStore } from "./selectionStores";
-import { zipWithLast, debounce, unwrapStore, StoreValues } from "./utils";
-import { SectionStore, SectionState, allSectionsStore } from "./sectionStores";
+import { Writable, Readable, writable } from "svelte/store";
+import { zipWithLast, StoreValues, clamp } from "./utils";
+import { audioTimingsStore } from "./audioStores";
+
+const playingStoreInternal: Writable<boolean> = writable(false);
+Tone.Transport.on("start", () => playingStoreInternal.set(true));
+Tone.Transport.on("stop", () => playingStoreInternal.set(false));
+export const playingStore: Readable<boolean> = playingStoreInternal;
+
+let autoPlay: boolean = false;
+export const autoPlayStore: Writable<boolean> = writable(autoPlay);
+
+let loop: boolean = false;
+export const loopStore: Writable<boolean> = writable(loop);
 
 const audioCurrentSectionStore: Writable<string | undefined> = writable(undefined);
 zipWithLast(audioCurrentSectionStore).subscribe(({ last, current }) => {
@@ -38,8 +48,9 @@ async function createPlayer(): Promise<Tone.Player> {
   })
 }
 
+let player: Tone.Player;
 export async function initAudio(allSections: Record<number, {startTime: number; endTime: number}>) {
-  const player = await createPlayer();
+  player = await createPlayer();
   Tone.Transport.loop = true;
   Tone.Transport.loopEnd = player.buffer.duration;
 
@@ -49,49 +60,37 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
   })
 
   Tone.Transport.on("stop", () => audioCurrentSectionStore.set(undefined));
-  // Tone.Transport.on("loopEnd", () => {
-  //   if (!autoPlay) { // todo add loop store
-  //     Tone.Transport.pause();
-  //   }
-  // })
 }
 
-const audioStartSectionStoreWrapped: Readable<SectionStore | undefined> = derived([isSelectingMultipleSectionsStore, selectedSectionsIdxStore, allSectionsStore], ([multiple, idx, sections]) => {
-  if (idx === undefined) return undefined;
-  const start = idx.start;
-  const desiredIdx = multiple ? start : start - 3;
-  const clampedIdx = Math.max(0, desiredIdx);
-  const store = sections[clampedIdx];
-  return store;
-});
-const audioStartSectionStore: Readable<SectionState | undefined> = unwrapStore(audioStartSectionStoreWrapped);
 
-const audioEndSectionStoreWrapped: Readable<SectionStore | undefined> = derived([isSelectingMultipleSectionsStore, selectedSectionsIdxStore, allSectionsStore], ([multiple, idx, sections]) => {
-  if (idx === undefined) return undefined;
-  const end = idx.end;
-  const desiredIdx = multiple ? end : end + 3;
-  const clampedIdx = Math.min(Object.keys(sections).length, desiredIdx);
-  const store = sections[clampedIdx];
-  return store;
-});
-const audioEndSectionStore: Readable<SectionState | undefined> = unwrapStore(audioEndSectionStoreWrapped);
+export function playAudio() {
+  if (audioTimings === undefined) return;
 
-export const audioTimingsStore: Readable<{start: number; end: number} | undefined> = derived([audioStartSectionStore, audioEndSectionStore], ([start, end]) => {
-  if (start === undefined) return undefined;
-  if (end === undefined) return undefined;
-  return {start: start.startTime, end: end.endTime};
-})
+  const fileDuration = player.buffer.duration;
+  const start = clamp(audioTimings.start, 0, fileDuration);
+  const end = clamp(audioTimings.end, 0, fileDuration);
 
-const playingStoreInternal: Writable<boolean> = writable(false);
-Tone.Transport.on("start", () => playingStoreInternal.set(true));
-Tone.Transport.on("stop", () => playingStoreInternal.set(false));
-export const playingStore: Readable<boolean> = playingStoreInternal;
+  Tone.Transport.pause();
+  Tone.Transport.setLoopPoints(start, end);
+  Tone.Transport.loop = loop;
 
-let autoPlay: boolean = false;
-export const autoPlayStore: Writable<boolean> = writable(autoPlay);
+  const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
+  if (current < start || !loop) {
+    Tone.Transport.start(undefined, start);
+  } else {
+    Tone.Transport.start();
+  }
 
-let loop: boolean = false;
-export const loopStore: Writable<boolean> = writable(loop);
+  if (!loop) {
+    const duration = end - start;
+    Tone.Transport.stop(`+${duration}`);
+  }
+}
+
+export function stopAudio() {
+  Tone.Transport.stop();
+}
+
 
 let audioTimings: StoreValues<typeof audioTimingsStore> = undefined;
 audioTimingsStore.subscribe(state => {
@@ -102,35 +101,3 @@ audioTimingsStore.subscribe(state => {
     stopAudio();
   }
 });
-
-let playCounter: number = 0;
-export function playAudio() {
-  if (audioTimings === undefined) return;
-  playCounter++;
-  const playCounterCapture = playCounter;
-
-  Tone.Transport.pause();
-  Tone.Transport.setLoopPoints(audioTimings.start, audioTimings.end);
-  Tone.Transport.loop = loop;
-
-  if (!loop) {
-    Tone.Transport.scheduleOnce(() => {
-      if (playCounter === playCounterCapture) {
-        Tone.Transport.stop();
-      }
-    }, audioTimings.end - 0.1);
-  }
-
-  const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
-  if (current < audioTimings.start) {
-    Tone.Transport.start(undefined, audioTimings.start);
-  } else {
-    Tone.Transport.start();
-  }
-}
-
-export function stopAudio() {
-  Tone.Transport.stop();
-}
-
-type PlayStyle = "word" | "sentence" | "paragraph" | "onwards";

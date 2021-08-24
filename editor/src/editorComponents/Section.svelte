@@ -3,8 +3,7 @@
   import type { Readable } from "svelte/store";
   import { getAudioCurrentSectionStore, playingStore } from "../audio";
   import type { SectionStore } from "../sectionStores";
-  import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore, isSelectingMultipleSectionsStore } from "../selectionStores";
-  import { selectEnd, selectNext, selectPrev } from "../utils";
+  import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../selectionStores";
 
   export let sectionStore: SectionStore;
 
@@ -97,7 +96,7 @@
   class="section"
   class:highlight
   class:placeholder={!$sectionStore.edited}
-  class:sectionPlaying={$sectionPlayingStore}
+  class:sectionPlaying={$sectionPlayingStore && $playingStore}
   class:nonePlaying={!$playingStore}
   bind:this={component}
   on:keydown={keyDown}

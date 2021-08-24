@@ -1,5 +1,4 @@
 import { Readable, derived, writable, Writable, Unsubscriber } from "svelte/store";
-import { updateSelection } from "./selectionStores"; // TODO move the select functions into here
 
 /**
  * Modulo that makes negative numbers positive
@@ -182,66 +181,4 @@ export function siblingIdx(node: Element): number {
     i++;
   }
   return i;
-}
-
-export function selectNext(component: HTMLSpanElement) {
-  const node: Node = component.nextElementSibling?.firstChild ?? component.parentElement.nextElementSibling?.firstElementChild?.firstChild;
-  selectStart(node);
-}
-
-export function selectPrev(component: HTMLSpanElement) {
-  const node: Node = component.previousElementSibling?.firstChild ?? component.parentElement.previousElementSibling?.lastElementChild?.firstChild;
-  selectEnd(node);
-}
-
-export function selectParagraphStart(component: HTMLSpanElement) {
-  const node: Node = component.parentElement.firstElementChild?.firstChild;
-  selectStart(node);
-}
-
-export function selectParagraphEnd(component: HTMLSpanElement) {
-  const node: Node = component.parentElement.lastElementChild?.firstChild;
-  selectEnd(node);
-}
-
-export function selectStart(node: Node) {
-  if (node) {
-    const textNode = node.hasChildNodes() ? node.firstChild : node;
-    const range = document.createRange();
-    range.setStart(textNode, 1);
-    range.setEnd(textNode, 1);
-
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    updateSelection();
-  }
-}
-
-export function selectPosition(node: Node, offset: number) {
-  if (node) {
-    const textNode = node.hasChildNodes() ? node.firstChild : node;
-    const range = document.createRange();
-    range.setStart(textNode, offset + 1);
-    range.setEnd(textNode, offset + 1);
-
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    updateSelection();
-  }
-}
-
-export function selectEnd(node: Node) {
-  if (node) {
-    const textNode = node.hasChildNodes() ? node.firstChild : node;
-    const range = document.createRange();
-    range.setStart(textNode, textNode.textContent.length);
-    range.setEnd(textNode, textNode.textContent.length);
-
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    updateSelection();
-  }
 }

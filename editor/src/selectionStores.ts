@@ -69,14 +69,6 @@ export const isSelectingStore: Readable<boolean> = derived(selectionStore, selec
   return false;
 });
 
-/** Are multiple sections selected */
-export const isSelectingMultipleSectionsStore: Readable<boolean> = derived(selectionStore, selection => {
-  if (selection === undefined) return false;
-  if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
-  if (selection.anchor.section !== selection.focus.section) return true;
-  return false;
-});
-
 export const dropdownSectionStore: Readable<SectionState | undefined> = derived([focusSectionStore, isSelectingStore], ([state, selecting]) => selecting ? undefined : state);
 derived([selectionStore, dropdownSectionStore], state => state).subscribe(([_, section]) => section?.spanComponent?.focus());
 
@@ -195,4 +187,66 @@ function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boo
   if (focus.section > anchor.section) return false;
 
   return focus.offset < anchor.offset;
+}
+
+export function selectNext(component: HTMLSpanElement) {
+  const node: Node = component.nextElementSibling?.firstChild ?? component.parentElement.nextElementSibling?.firstElementChild?.firstChild;
+  selectStart(node);
+}
+
+export function selectPrev(component: HTMLSpanElement) {
+  const node: Node = component.previousElementSibling?.firstChild ?? component.parentElement.previousElementSibling?.lastElementChild?.firstChild;
+  selectEnd(node);
+}
+
+export function selectParagraphStart(component: HTMLSpanElement) {
+  const node: Node = component.parentElement.firstElementChild?.firstChild;
+  selectStart(node);
+}
+
+export function selectParagraphEnd(component: HTMLSpanElement) {
+  const node: Node = component.parentElement.lastElementChild?.firstChild;
+  selectEnd(node);
+}
+
+export function selectStart(node: Node) {
+  if (node) {
+    const textNode = node.hasChildNodes() ? node.firstChild : node;
+    const range = document.createRange();
+    range.setStart(textNode, 1);
+    range.setEnd(textNode, 1);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}
+
+export function selectPosition(node: Node, offset: number) {
+  if (node) {
+    const textNode = node.hasChildNodes() ? node.firstChild : node;
+    const range = document.createRange();
+    range.setStart(textNode, offset + 1);
+    range.setEnd(textNode, offset + 1);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
+}
+
+export function selectEnd(node: Node) {
+  if (node) {
+    const textNode = node.hasChildNodes() ? node.firstChild : node;
+    const range = document.createRange();
+    range.setStart(textNode, textNode.textContent.length);
+    range.setEnd(textNode, textNode.textContent.length);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    updateSelection();
+  }
 }
