@@ -1,7 +1,6 @@
 audio:
-  disable automatic playback
-  add way to play audio manually (loop and not loop)
-  add way to play audio automatically (loop and not loop)
+  add way to enable / disable looping
+  add way to enable / disable automatic playback
 
   - add way to play from current position
   - add way to choose start + end offset and whether to start at start or end of first section
