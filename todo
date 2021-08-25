@@ -22,10 +22,7 @@ sections:
   -- manually adjust section timings
   
 UX:
-  + only show selection when not playing
-  + fix selection styling highlighting spaces at the end of paragraphs
   + fix click + drag from start of section not selecting range of text
-  + select range then click in range, selection doesn't update
 
   add escape mode
   fix dropdown position when resizing

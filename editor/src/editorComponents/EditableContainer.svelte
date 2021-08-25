@@ -65,6 +65,10 @@
     updateSelection();
   }
 
+  function mouseUp(event: MouseEvent) {
+    updateSelection();
+  }
+
   function mouseMove(event: MouseEvent) {
     if (event.buttons === 1) {
       updateSelection();
@@ -88,6 +92,7 @@
   tabindex={-1}
   bind:textContent
   on:keydown={keyDown}
+  on:mouseup={mouseUp}
   on:mousedown={mouseDown}
   on:mousemove={mouseMove}
   on:input={input}

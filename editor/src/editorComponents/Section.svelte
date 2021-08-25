@@ -75,7 +75,7 @@
   .section::selection {}
 
   .section.nonePlaying::selection {
-    background-color: var(--blue-2);
+    background-color: rgba(76, 108, 169, 0.99);
     color: var(--light-text);
   }
 
