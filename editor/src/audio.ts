@@ -1,8 +1,9 @@
 import * as Tone from "tone";
 import { Writable, Readable, writable, derived } from "svelte/store";
-import { zipWithLast, StoreValues, clamp, unwrapStore, deriveLastDefined } from "./utils";
+import { zipWithLast, StoreValues, clamp, unwrapStore, deriveLastDefined, debounce } from "./utils";
 import { audioTimingsStore } from "./audioStores";
 import { SectionStore, allSectionsStore, SectionState } from "./sectionStores";
+import { stat } from "fs";
 
 let playing: boolean = false;
 const playingStoreInternal: Writable<boolean> = writable(playing);
@@ -92,15 +93,11 @@ export function playAudio() {
     end += 0.2;
   };
 
-  const wasPlaying = playing;
-
-  Tone.Transport.pause();
   Tone.Transport.setLoopPoints(start, end);
 
-  const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
-  if (wasPlaying && current >= start && current < end) {
-    Tone.Transport.start();
-  } else {
+  if (needsRestart(start, end)) {
+    console.log("restart");
+    Tone.Transport.pause();
     Tone.Transport.start(undefined, start);
   }
 }
@@ -116,19 +113,22 @@ let audioTimings: StoreValues<typeof audioTimingsStore> = undefined;
 audioTimingsStore.subscribe(state => {
   audioTimings = state;
   if (state === undefined) return stopAudio();
-  
+
   if (autoPlay) return playAudio();
 
-  // If the new timings overlap, start playing
-  const oldStart = Tone.Transport.loopStart;
-  const oldEnd = Tone.Transport.loopEnd;
-  const newStart = state.start;
-  const newEnd = state.end;
-
-  const overlap = oldEnd > newStart && oldStart < newEnd;
-  if (playing && overlap) {
+  if (playing && !needsRestart(state.start, state.end)) {
     playAudio();
   } else {
     stopAudio();
   }
 });
+
+function needsRestart(start: number, end: number) {
+  const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
+  const restart = (
+    !playing ||
+    current < start ||
+    current >= end
+  );
+  return restart;
+}

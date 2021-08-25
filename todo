@@ -1,4 +1,5 @@
 audio:
+  control mutationStore via modeStore
   fix the next word going green and starting to play when not looping
   fix audio playing multiple times sometimes
   add some visual indication that we're playing

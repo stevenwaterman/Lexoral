@@ -82,7 +82,9 @@
     outline: none;
   }
 
-  .section::selection {}
+  .section::selection {
+    background: none;
+  }
 
   .section.nonePlaying::selection {
     background-color: rgba(76, 108, 169, 0.99);

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio";
-  import { mutationStore } from "../audioStores";
+  import { modeStore } from "../audioStores";
   import { selectEnd } from "../selectionStores";
+  import ToastController from "../toast/ToastController.svelte";
+  import { sendToast } from "../toast/toasts";
 
   import Document from "./Document.svelte";
   import Dropdown from "./Dropdown.svelte";
@@ -36,80 +38,43 @@
   }
 
   function wordMode() {
-    mutationStore.set({
-      start: {
-        sectionOffset: 0,
-        constrainWithinParagraph: false,
-        addGap: false,
-        timeOffset: 0
-      },
-      end: {
-        sectionOffset: 0,
-        constrainWithinParagraph: false,
-        addGap: false,
-        timeOffset: 0
-      }
-    })
+    if ($modeStore === "word") return;
+    modeStore.set("word");
+    sendToast("Enabled audio mode: word");
   }
 
   function contextMode() {
-    mutationStore.set({
-      start: {
-        sectionOffset: 3,
-        constrainWithinParagraph: true,
-        addGap: true,
-        timeOffset: 0
-      },
-      end: {
-        sectionOffset: 3,
-        constrainWithinParagraph: true,
-        addGap: true,
-        timeOffset: 0
-      }
-    })
+    if ($modeStore === "context") return;
+    modeStore.set("context");
+    sendToast("Enabled audio mode: context");
   }
 
   function paragraphMode() {
-    mutationStore.set({
-      start: {
-        sectionOffset: Number.MAX_SAFE_INTEGER,
-        constrainWithinParagraph: true,
-        addGap: true,
-        timeOffset: 0
-      },
-      end: {
-        sectionOffset: Number.MAX_SAFE_INTEGER,
-        constrainWithinParagraph: true,
-        addGap: true,
-        timeOffset: 0
-      }
-    })
+    if ($modeStore === "paragraph") return;
+    modeStore.set("paragraph");
+    sendToast("Enabled audio mode: paragraph");
   }
 
   function onwardMode() {
-    mutationStore.set({
-      start: {
-        sectionOffset: 0,
-        constrainWithinParagraph: false,
-        addGap: false,
-        timeOffset: 0
-      },
-      end: {
-        sectionOffset: Number.MAX_SAFE_INTEGER,
-        constrainWithinParagraph: false,
-        addGap: true,
-        timeOffset: 0
-      }
-    })
+    if ($modeStore === "onward") return;
+    modeStore.set("onward");
+    sendToast("Enabled audio mode: onward");
   }
 
   function toggleAutoPlay() {
-    autoPlayStore.update(autoPlay => !autoPlay);
+    autoPlayStore.update(autoPlay => {
+      if (autoPlay) sendToast("Auto-play disabled")
+      else sendToast("Auto-play enabled")
+      return !autoPlay;
+    });
   }
 
   function toggleLoop() {
-    console.log("loop")
-    loopStore.update(loop => !loop);
+    loopStore.update(loop => {
+      if (loop) sendToast("Looping disabled")
+      else sendToast("Looping enabled")
+      return !loop
+    });
   }
 </script>
 
@@ -133,7 +98,6 @@
   .wrapper {
     flex-grow: 1;
     margin-top: 10px;
-    margin-bottom: 20px;
     border-top: 1px solid var(--form-border);
     border-bottom: 1px solid var(--form-border);
     padding: 8px;
@@ -146,6 +110,8 @@
 </style>
 
 <svelte:body on:keydown={keyDown} on:keyup={keyUp}/>
+
+<ToastController/>
 
 <div class="container">
   <img class="logo" src="/assets/smallBrand.png" alt="logo"/>

@@ -1,8 +1,9 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectedSectionsIdxStore, selectionStore } from "./selectionStores";
 import { allSectionsStore, documentStore, ParagraphStore, ParagraphState, SectionStore, SectionState } from "./sectionStores";
-import * as Tone from "tone";
 import { clampGet, unwrapStore, clamp } from "./utils";
+
+export const modeStore: Writable<"context" | "word" | "paragraph" | "onward"> = writable("context");
 
 /**
  * These mutations are applied in order.
@@ -23,7 +24,23 @@ type AudioSelectionMutation = {
   start: AudioSelectionSideMutation;
   end: AudioSelectionSideMutation;
 }
-let mutation: AudioSelectionMutation = {
+
+const wordMode: AudioSelectionMutation = {
+  start: {
+    sectionOffset: 0,
+    constrainWithinParagraph: false,
+    addGap: false,
+    timeOffset: 0
+  },
+  end: {
+    sectionOffset: 0,
+    constrainWithinParagraph: false,
+    addGap: false,
+    timeOffset: 0
+  }
+};
+
+const contextMode: AudioSelectionMutation = {
   start: {
     sectionOffset: 3,
     constrainWithinParagraph: true,
@@ -37,8 +54,45 @@ let mutation: AudioSelectionMutation = {
     timeOffset: 0
   }
 }
-export const mutationStore: Writable<AudioSelectionMutation> = writable(mutation);
-mutationStore.subscribe(state => mutation = state);
+
+const paragraphMode: AudioSelectionMutation = {
+  start: {
+    sectionOffset: Number.MAX_SAFE_INTEGER,
+    constrainWithinParagraph: true,
+    addGap: true,
+    timeOffset: 0
+  },
+  end: {
+    sectionOffset: Number.MAX_SAFE_INTEGER,
+    constrainWithinParagraph: true,
+    addGap: true,
+    timeOffset: 0
+  }
+}
+
+const onwardMode: AudioSelectionMutation = {
+  start: {
+    sectionOffset: 0,
+    constrainWithinParagraph: false,
+    addGap: false,
+    timeOffset: 0
+  },
+  end: {
+    sectionOffset: Number.MAX_SAFE_INTEGER,
+    constrainWithinParagraph: false,
+    addGap: true,
+    timeOffset: 0
+  }
+}
+
+const mutationStore: Readable<AudioSelectionMutation> = derived(modeStore, mode => {
+  switch(mode) {
+    case "word": return wordMode;
+    case "context": return contextMode;
+    case "paragraph": return paragraphMode;
+    case "onward": return onwardMode;
+  }
+})
 
 
 
