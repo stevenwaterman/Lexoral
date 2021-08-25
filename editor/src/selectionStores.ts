@@ -1,6 +1,6 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
 import { ParagraphStore, documentStore, ParagraphState, SectionState, SectionStore, allSectionsStore } from "./sectionStores";
-import { clampGet, unwrapStore, siblingIdx, unwrapRecordStore } from "./utils";
+import { clampGet, unwrapStore, siblingIdx, maybeDerived } from "./utils";
 
 export type CursorPosition = {
   paragraph: number;
@@ -19,20 +19,16 @@ export type SectionSelection = {
 export const selectionStore: Writable<SectionSelection | undefined> = writable(undefined);
 
 export function createSelectionStore(inputStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<SectionState | undefined> {
-  let input: undefined | Omit<CursorPosition, "offset"> = undefined;
-
-  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, inputStore], ([document, selection]) => {
-    input = selection;
+  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = maybeDerived([documentStore, inputStore], undefined, ([document, selection]) => {
     return selection === undefined ? undefined : clampGet(document, selection.paragraph);
   });
   const paragraphStore: Readable<ParagraphState | undefined> = unwrapStore(paragraphStoreWrapped);
-  const sectionStoreWrapped: Readable<SectionStore | undefined> = derived(paragraphStore, (paragraph) => {
+  const sectionStoreWrapped: Readable<SectionStore | undefined> = maybeDerived([paragraphStore, inputStore], undefined, ([paragraph, selection]) => {
     if (paragraph === undefined) return undefined;
-    if (input === undefined) return undefined;
-    return clampGet(paragraph, input.section);
+    if (selection === undefined) return undefined;
+    return clampGet(paragraph, selection.section);
   });
   const sectionStore: Readable<SectionState | undefined> = unwrapStore(sectionStoreWrapped);
-
   return sectionStore;
 }
 
@@ -70,7 +66,7 @@ export const isSelectingStore: Readable<boolean> = derived(selectionStore, selec
 });
 
 export const dropdownSectionStore: Readable<SectionState | undefined> = derived([focusSectionStore, isSelectingStore], ([state, selecting]) => selecting ? undefined : state);
-derived([selectionStore, dropdownSectionStore], state => state).subscribe(([_, section]) => section?.spanComponent?.focus());
+derived([dropdownSectionStore], state => state).subscribe(([section]) => section?.spanComponent?.focus());
 
 export const dropdownPositionStore: Writable<{top: number; left: number}> = writable({ top: 0, left: 0 });
 

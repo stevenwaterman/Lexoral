@@ -3,7 +3,7 @@
   import type { Readable } from "svelte/store";
   import { getAudioCurrentSectionStore, playingStore } from "../audio";
   import type { SectionStore } from "../sectionStores";
-  import { caretPositionStore, earlySectionIdxStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../selectionStores";
+  import { caretPositionStore, dropdownSectionStore, earlySectionIdxStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../selectionStores";
 
   export let sectionStore: SectionStore;
 
@@ -63,6 +63,15 @@
 
     setTimeout(updateText);
   }
+
+  async function onBlur() {
+    setTimeout(() => {
+      if ($dropdownSectionStore === $sectionStore) {
+        component.focus();
+      }
+    })
+    
+  }
 </script>
 
 <style>
@@ -100,7 +109,7 @@
   class:nonePlaying={!$playingStore}
   bind:this={component}
   on:keydown={keyDown}
-  on:blur={updateText}
+  on:blur={onBlur}
   tabindex={$sectionStore.idx}
 >
   {displayText}

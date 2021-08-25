@@ -56,7 +56,6 @@
   }
 
   :global(body) {
-    user-select: none;
     color: var(--text);
     background-color: var(--page-background);
     margin: 0;
@@ -67,14 +66,6 @@
     position: relative;
     width: 100%;
     height: 100%;
-  }
-  
-  :global(input) {
-    font-family: inherit;
-    font-size: inherit;
-    border-color: var(--border);
-    outline-color: var(--form-border);
-    border-radius: 2px;
   }
 </style>
 

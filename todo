@@ -22,8 +22,6 @@ sections:
   -- manually adjust section timings
   
 UX:
-  + fix click + drag from start of section not selecting range of text
-
   add escape mode
   fix dropdown position when resizing
   support cut + paste
