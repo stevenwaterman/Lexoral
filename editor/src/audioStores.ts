@@ -37,7 +37,7 @@ let mutation: AudioSelectionMutation = {
     timeOffset: 0
   }
 }
-const mutationStore: Writable<AudioSelectionMutation> = writable(mutation);
+export const mutationStore: Writable<AudioSelectionMutation> = writable(mutation);
 mutationStore.subscribe(state => mutation = state);
 
 
@@ -96,6 +96,7 @@ const gapsStartSectionStoreWrapped: Readable<SectionStore | undefined> = derived
 const gapsStartSectionStore: Readable<SectionState | undefined> = unwrapStore(gapsStartSectionStoreWrapped);
 const startTimeStore: Readable<number | undefined> = derived([gapsStartSectionStore, mutationStore], ([start, mutation]) => {
   if (start === undefined) return undefined;
+  if (start.idx === 0 && mutation.start.addGap) return start.startTime - 2;
   if (mutation.start.addGap) return start.endTime - mutation.start.timeOffset;
   else return start.startTime - mutation.start.timeOffset;
 })
@@ -109,8 +110,9 @@ const gapsEndSectionStoreWrapped: Readable<SectionStore | undefined> = derived([
   return store;
 })
 const gapsEndSectionStore: Readable<SectionState | undefined> = unwrapStore(gapsEndSectionStoreWrapped);
-const endTimeStore: Readable<number | undefined> = derived([gapsEndSectionStore, mutationStore], ([end, mutation]) => {
+const endTimeStore: Readable<number | undefined> = derived([gapsEndSectionStore, mutationStore, allSectionsStore], ([end, mutation, sections]) => {
   if (end === undefined) return undefined;
+  if (end.idx === Object.keys(sections).length - 1 && mutation.start.addGap) return end.endTime + 2;
   if (mutation.start.addGap) return end.startTime + mutation.end.timeOffset;
   else return end.endTime + mutation.end.timeOffset;
 })

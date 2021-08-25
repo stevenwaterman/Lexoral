@@ -1,6 +1,5 @@
 <script lang="ts">
   import { tick } from "svelte";
-  import { playAudio, stopAudio, playingStore, autoPlayStore } from "../audio";
   import { deleteSelection, earlySectionStore, focusSectionStore, isSelectingStore, lateSectionStore, selectedSectionsStore, selectionStore, updateSelection, selectNext, selectParagraphEnd, selectParagraphStart, selectPosition, selectPrev, selectStart } from "../selectionStores";
 
   export let textContent: string;
@@ -51,11 +50,6 @@
       event.preventDefault();
       const node = $focusSectionStore?.spanComponent;
       if (node) selectNext(node);
-    }
-
-    if (event.key === "Alt" && !$autoPlayStore) {
-      if ($playingStore) stopAudio();
-      else playAudio();
     }
 
     updateSelection();

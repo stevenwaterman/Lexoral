@@ -3,21 +3,28 @@ import { Writable, Readable, writable } from "svelte/store";
 import { zipWithLast, StoreValues, clamp } from "./utils";
 import { audioTimingsStore } from "./audioStores";
 
-const playingStoreInternal: Writable<boolean> = writable(false);
+let playing: boolean = false;
+const playingStoreInternal: Writable<boolean> = writable(playing);
+playingStoreInternal.subscribe(state => playing = state);
 Tone.Transport.on("start", () => playingStoreInternal.set(true));
 Tone.Transport.on("stop", () => playingStoreInternal.set(false));
 export const playingStore: Readable<boolean> = playingStoreInternal;
 
 let autoPlay: boolean = false;
 export const autoPlayStore: Writable<boolean> = writable(autoPlay);
+autoPlayStore.subscribe(state => autoPlay = state);
 
 let loop: boolean = false;
 export const loopStore: Writable<boolean> = writable(loop);
+loopStore.subscribe(state => loop = state);
 
 const audioCurrentSectionStore: Writable<string | undefined> = writable(undefined);
 zipWithLast(audioCurrentSectionStore).subscribe(({ last, current }) => {
   if (last !== undefined) setAudioCurrentSectionStore(last, false);
   if (current !== undefined) setAudioCurrentSectionStore(current, true);
+})
+playingStore.subscribe(playing => {
+  if (!playing) audioCurrentSectionStore.set(undefined);
 })
 
 const audioCurrentSectionStores: Record<string, Writable<boolean>> = {};
@@ -59,7 +66,9 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
     Tone.Transport.schedule(() => audioCurrentSectionStore.set(idx), section.endTime);
   })
 
-  Tone.Transport.on("stop", () => audioCurrentSectionStore.set(undefined));
+  Tone.Transport.on("loop", () => {
+    if (!loop) Tone.Transport.stop();
+  })
 }
 
 
@@ -67,28 +76,31 @@ export function playAudio() {
   if (audioTimings === undefined) return;
 
   const fileDuration = player.buffer.duration;
-  const start = clamp(audioTimings.start, 0, fileDuration);
-  const end = clamp(audioTimings.end, 0, fileDuration);
+  let start = clamp(audioTimings.start, 0, fileDuration);
+  let end = clamp(audioTimings.end, 0, fileDuration);
+
+  if (start === end) {
+    start -= 0.2;
+    end += 0.2;
+  };
+
+  const wasPlaying = playing;
 
   Tone.Transport.pause();
   Tone.Transport.setLoopPoints(start, end);
-  Tone.Transport.loop = loop;
 
   const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
-  if (current < start || !loop) {
-    Tone.Transport.start(undefined, start);
-  } else {
+  if (wasPlaying && loop && current >= start) {
     Tone.Transport.start();
-  }
-
-  if (!loop) {
-    const duration = end - start;
-    Tone.Transport.stop(`+${duration}`);
+  } else {
+    Tone.Transport.start(undefined, start);
   }
 }
 
 export function stopAudio() {
-  Tone.Transport.stop();
+  if (playing) {
+    Tone.Transport.stop();
+  }
 }
 
 
