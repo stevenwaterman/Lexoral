@@ -1,6 +1,7 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
 import { ParagraphStore, documentStore, ParagraphState, SectionState, SectionStore, allSectionsStore } from "./sectionStores";
 import { clampGet, unwrapStore, siblingIdx, maybeDerived } from "./utils";
+import { tick } from "svelte";
 
 export type CursorPosition = {
   paragraph: number;
@@ -47,6 +48,7 @@ export const focusSectionStore: Readable<SectionState | undefined> = createSelec
     section: selection.focus.section
   }
 }));
+derived([focusSectionStore], state => state).subscribe(([section]) => section?.spanComponent?.focus());
 
 export const earlySectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
 export const lateSectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
@@ -65,32 +67,33 @@ export const isSelectingStore: Readable<boolean> = derived(selectionStore, selec
   return false;
 });
 
-export const dropdownSectionStore: Readable<SectionState | undefined> = derived([focusSectionStore, isSelectingStore], ([state, selecting]) => selecting ? undefined : state);
-derived([dropdownSectionStore], state => state).subscribe(([section]) => section?.spanComponent?.focus());
 
-export const dropdownPositionStore: Writable<{top: number; left: number}> = writable({ top: 0, left: 0 });
-
-export const caretPositionStore: Readable<{start: boolean; end: boolean}> = derived([dropdownSectionStore, selectionStore], ([section, selection]) => {
-  if (section === undefined) return { start: false, end: false };
+export const caretPositionStore: Readable<{start: boolean; end: boolean}> = derived([focusSectionStore, selectionStore], ([section, selection]) => {
+  if (section === undefined || selection === undefined) return { start: false, end: false };
   const start = selection.focus.offset === 0;
-  const textLength = section.spanComponent.textContent.length;
+  const textLength = section?.spanComponent?.textContent?.length ?? 0;
   const end = selection.focus.offset > textLength - 2;
   return { start, end };
 })
 
-export function updateSelection() {
-  setTimeout(updateSelectionInternal);
+export async function updateSelection(): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(async () => {
+      await updateSelectionInternal();
+      resolve();
+    });
+  })
 }
 
-let lastAnchorNode: Node | undefined = undefined;
-let lastFocusNode: Node | undefined = undefined;
+let lastAnchorNode: Node | null = null;
+let lastFocusNode: Node | null = null;
 let lastAnchorOffset: number | undefined = undefined;
 let lastFocusOffset: number | undefined = undefined;
 
-function updateSelectionInternal() {
-  const { anchorNode, anchorOffset, focusNode, focusOffset } = window.getSelection();
-
-  updateDropdownPosition(focusNode);
+async function updateSelectionInternal() {
+  const selection = window.getSelection();
+  if (selection === null) return;
+  const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
 
   if (
     anchorNode === lastAnchorNode &&
@@ -104,13 +107,17 @@ function updateSelectionInternal() {
   lastAnchorOffset = anchorOffset;
   lastFocusOffset = focusOffset;
 
-  const anchorSpan = anchorNode.parentElement;
-  const anchorParagraph = anchorSpan.parentElement;
+  const anchorSpan = anchorNode?.parentElement ?? undefined;
+  const anchorParagraph = anchorSpan?.parentElement ?? undefined;
+  if (anchorSpan === undefined || anchorParagraph === undefined) return;
+
+  const focusSpan = focusNode?.parentElement ?? undefined;
+  const focusParagraph = focusSpan?.parentElement ?? undefined;
+  if (focusSpan === undefined || focusParagraph === undefined) return;
+
   const anchorSectionIdx = siblingIdx(anchorSpan);
   const anchorParagraphIdx = siblingIdx(anchorParagraph);
 
-  const focusSpan = focusNode.parentElement;
-  const focusParagraph = focusSpan.parentElement;
   const focusSectionIdx = siblingIdx(focusSpan);
   const focusParagraphIdx = siblingIdx(focusParagraph);
 
@@ -131,14 +138,7 @@ function updateSelectionInternal() {
   const late = inverted ? anchor : focus;
 
   selectionStore.set({ anchor, focus, early, late, inverted });
-}
-
-function updateDropdownPosition(endContainer: Node) {
-  const span = endContainer.parentElement;
-  dropdownPositionStore.set({
-    top: span.offsetTop + span.offsetHeight,
-    left: span.offsetLeft
-  })
+  await tick();
 }
 
 /**
@@ -185,64 +185,80 @@ function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boo
   return focus.offset < anchor.offset;
 }
 
-export function selectNext(component: HTMLSpanElement) {
-  const node: Node = component.nextElementSibling?.firstChild ?? component.parentElement.nextElementSibling?.firstElementChild?.firstChild;
-  selectStart(node);
+export async function selectNext(component: HTMLSpanElement) {
+  const node: ChildNode | undefined = component.nextElementSibling?.firstChild ?? component?.parentElement?.nextElementSibling?.firstElementChild?.firstChild ?? undefined;
+  if (node === undefined) return;
+  await selectStart(node);
 }
 
-export function selectPrev(component: HTMLSpanElement) {
-  const node: Node = component.previousElementSibling?.firstChild ?? component.parentElement.previousElementSibling?.lastElementChild?.firstChild;
-  selectEnd(node);
+export async function selectPrev(component: HTMLSpanElement) {
+  const node: ChildNode | undefined = component.previousElementSibling?.firstChild ?? component?.parentElement?.previousElementSibling?.lastElementChild?.firstChild ?? undefined;
+  if (node === undefined) return;
+  await selectEnd(node);
 }
 
-export function selectParagraphStart(component: HTMLSpanElement) {
-  const node: Node = component.parentElement.firstElementChild?.firstChild;
-  selectStart(node);
+export async function selectParagraphStart(component: HTMLSpanElement) {
+  const node: ChildNode | undefined = component?.parentElement?.firstElementChild?.firstChild ?? undefined;
+  if (node === undefined) return;
+  await selectStart(node);
 }
 
-export function selectParagraphEnd(component: HTMLSpanElement) {
-  const node: Node = component.parentElement.lastElementChild?.firstChild;
-  selectEnd(node);
+export async function selectParagraphEnd(component: HTMLSpanElement) {
+  const node: ChildNode | undefined = component?.parentElement?.lastElementChild?.firstChild ?? undefined;
+  if (node === undefined) return;
+  await selectEnd(node);
 }
 
-export function selectStart(node: Node) {
+export async function selectStart(node: Node) {
   if (node) {
     const textNode = node.hasChildNodes() ? node.firstChild : node;
+    if (textNode === null) return;
+
     const range = document.createRange();
     range.setStart(textNode, 1);
     range.setEnd(textNode, 1);
 
     const sel = window.getSelection();
+    if (sel === null) return;
     sel.removeAllRanges();
     sel.addRange(range);
-    updateSelection();
+    await updateSelection();
   }
 }
 
-export function selectPosition(node: Node, offset: number) {
+export async function selectPosition(node: Node, offset: number) {
   if (node) {
     const textNode = node.hasChildNodes() ? node.firstChild : node;
+    if (textNode === null) return;
+
     const range = document.createRange();
     range.setStart(textNode, offset + 1);
     range.setEnd(textNode, offset + 1);
 
     const sel = window.getSelection();
+    if (sel === null) return;
     sel.removeAllRanges();
     sel.addRange(range);
-    updateSelection();
+    await updateSelection();
   }
 }
 
-export function selectEnd(node: Node) {
+export async function selectEnd(node: Node) {
   if (node) {
     const textNode = node.hasChildNodes() ? node.firstChild : node;
+    if (textNode === null) return;
+
+    const textLength = textNode.textContent?.length;
+    if (textLength === undefined) return;
+
     const range = document.createRange();
-    range.setStart(textNode, textNode.textContent.length);
-    range.setEnd(textNode, textNode.textContent.length);
+    range.setStart(textNode, textLength);
+    range.setEnd(textNode, textLength);
 
     const sel = window.getSelection();
+    if (sel === null) return;
     sel.removeAllRanges();
     sel.addRange(range);
-    updateSelection();
+    await updateSelection();
   }
 }

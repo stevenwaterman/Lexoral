@@ -1,19 +1,20 @@
 <script lang="ts">
-  import type { SectionState, SectionStore } from "../sectionStores";
-  import { dropdownPositionStore, dropdownSectionStore } from "../selectionStores";
-  import { clamp, modulo } from "../utils";
+  import { playingStore } from "../audio";
+  import type { SectionState } from "../sectionStores";
+  import { focusSectionStore, isSelectingStore } from "../selectionStores";
+  import { modulo } from "../utils";
 
-  let section: SectionState & Pick<SectionStore, "setText"> | undefined;
-  $: section = $dropdownSectionStore;
+  let section: SectionState | undefined;
+  $: section = $focusSectionStore;
   
   let visible: boolean;
-  $: visible = section !== undefined && options.length > 0;
+  $: visible = !$playingStore && !$isSelectingStore && section !== undefined && options.length > 0;
 
   let left: number;
-  $: left = $dropdownPositionStore.left;
+  $: left = section?.spanComponent?.offsetLeft ?? 0;
 
   let top: number;
-  $: top = $dropdownPositionStore.top;
+  $: top = (section?.spanComponent?.offsetTop ?? 0) + (section?.spanComponent?.offsetHeight ?? 0);
 
   let options: string[];
   $: options = section?.completionOptions ?? [];
@@ -51,7 +52,7 @@
   }
 
   function acceptOption() {
-    if (options.length > 0 && highlightIdx !== undefined) {
+    if (section !== undefined && options.length > 0 && highlightIdx !== undefined) {
       const selectedOption = options[highlightIdx];
       section.setText(selectedOption);
     }
@@ -97,7 +98,7 @@
     {#each options as option, idx}
       <span
         class="option"
-        class:highlight={idx === highlightIdx}
+        class:highlight={!$playingStore && idx === highlightIdx}
         class:topBorder={idx !== 0}
         on:mouseenter="{() => mouseEnterOption(idx)}"
         on:click="{() => mouseClick(idx)}"

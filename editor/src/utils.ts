@@ -81,12 +81,12 @@ export function maybeWritable<T>(
   }
 }
 
-export function lastNonUndefinedDerived<T>(
+export function deriveLastDefined<T>(
   stores: Readable<T | undefined>,
   initial: T
 ): Readable<T> {
   let lastValue: T = initial;
-  const actualFunc = (value: T, set: (value: T) => void) => {
+  const actualFunc = (value: T | undefined, set: (value: T) => void) => {
     if (value === undefined) set(lastValue);
     else {
       lastValue = value;
@@ -165,7 +165,8 @@ export function unwrapRecordStore<K extends string | number | symbol, V, INNER e
     });
 
     keysToUnsubscribe.forEach(key => {
-      unsubscribers[key]();
+      const unsubscriber = unsubscribers[key];
+      if (unsubscriber !== undefined) unsubscriber();
       delete unsubscribers[key];
       delete record[key];
     });

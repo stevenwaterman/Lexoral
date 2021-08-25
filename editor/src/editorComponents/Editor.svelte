@@ -1,6 +1,7 @@
 <script lang="ts">
-import { autoPlayStore, loopStore, playAudio, playingStore, stopAudio } from "../audio";
-import { mutationStore } from "../audioStores";
+  import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio";
+  import { mutationStore } from "../audioStores";
+  import { selectEnd } from "../selectionStores";
 
   import Document from "./Document.svelte";
   import Dropdown from "./Dropdown.svelte";
@@ -13,7 +14,15 @@ import { mutationStore } from "../audioStores";
     }
   }
 
-  function keyDown(event: KeyboardEvent) {
+  async function keyDown(event: KeyboardEvent) {
+    if (event.key === "Escape" && $playingStore) {
+      const component = $lastPlayedSectionStore?.spanComponent;
+      if (component) {
+        await selectEnd(component);
+        stopAudio();
+      }
+    }
+
     if (event.altKey) {
       switch(event.key) {
         case "w": return wordMode();

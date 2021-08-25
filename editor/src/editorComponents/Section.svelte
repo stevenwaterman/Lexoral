@@ -3,12 +3,12 @@
   import type { Readable } from "svelte/store";
   import { getAudioCurrentSectionStore, playingStore } from "../audio";
   import type { SectionStore } from "../sectionStores";
-  import { caretPositionStore, dropdownSectionStore, earlySectionIdxStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../selectionStores";
+  import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../selectionStores";
 
   export let sectionStore: SectionStore;
 
   let highlight: boolean;
-  $: highlight = $earlySectionIdxStore !== null && $earlySectionIdxStore <= $sectionStore.idx && $lateSectionIdxStore !== null && $lateSectionIdxStore >= $sectionStore.idx;
+  $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;
 
   let component: HTMLSpanElement;
   $: if (component) sectionStore.registerComponent(component);
@@ -21,8 +21,9 @@
   $: sectionPlayingStore = getAudioCurrentSectionStore($sectionStore.idx)
 
   async function updateText() {
-    if (component === undefined) return;
-    const textContent = component.textContent.trim();
+    const textContent = component?.textContent?.trim();
+    if (textContent === undefined) return;
+
     if (!$sectionStore.edited && textContent === $sectionStore.placeholder) return;
     if (textContent === $sectionStore.text) return;
     if (!$sectionStore.edited && textContent.substring(1) === $sectionStore.placeholder) {
@@ -66,7 +67,7 @@
 
   async function onBlur() {
     setTimeout(() => {
-      if ($dropdownSectionStore === $sectionStore) {
+      if ($focusSectionStore === $sectionStore) {
         component.focus();
       }
     })

@@ -1,25 +1,40 @@
 <script lang="ts">
   import { tick } from "svelte";
   import { deleteSelection, earlySectionStore, focusSectionStore, isSelectingStore, lateSectionStore, selectedSectionsStore, selectionStore, updateSelection, selectNext, selectParagraphEnd, selectParagraphStart, selectPosition, selectPrev, selectStart } from "../selectionStores";
-
-  export let textContent: string;
+  import type { SectionSelection } from "../selectionStores";
 
   async function keyDown(event: KeyboardEvent) {
     if (event.key === "Backspace" && $isSelectingStore) { //TODO delete whole sections when selecting across sections, rather than characters within sections
       event.preventDefault();
-      deleteSelection($selectionStore, $selectedSectionsStore);
+
+      const selection: SectionSelection | undefined = $selectionStore;
+      if (selection === undefined) return;
+      deleteSelection(selection, $selectedSectionsStore);
+
       await tick();
-      selectPosition($earlySectionStore.spanComponent, $selectionStore.early.offset)
+
+      const component = $earlySectionStore?.spanComponent;
+      if (component === undefined) return;
+      selectPosition(component, selection.early.offset)
     }
 
     if (event.key === "Delete" && $isSelectingStore) {
       event.preventDefault();
-      deleteSelection($selectionStore, $selectedSectionsStore);
+
+      const selection: SectionSelection | undefined = $selectionStore;
+      if (selection === undefined) return;
+      deleteSelection(selection, $selectedSectionsStore);
+
       await tick();
-      if ($selectionStore.early.paragraph === $selectionStore.late.paragraph && $selectionStore.early.section === $selectionStore.late.section) {
-        selectPosition($lateSectionStore.spanComponent, $selectionStore.early.offset)
+
+      const component = $lateSectionStore?.spanComponent;
+      if (component === undefined) return;
+
+      const singleSection = $selectionStore?.early?.paragraph === $selectionStore?.late?.paragraph && $selectionStore?.early?.section === $selectionStore?.late?.section;
+      if (singleSection) {
+        selectPosition(component, selection.early.offset)
       } else {
-        selectStart($lateSectionStore.spanComponent)
+        selectStart(component)
       }
     }
 
@@ -84,7 +99,6 @@
 <div
   contenteditable
   tabindex={-1}
-  bind:textContent
   on:keydown={keyDown}
   on:mouseup={mouseUp}
   on:mousedown={mouseDown}

@@ -1,7 +1,8 @@
 import * as Tone from "tone";
-import { Writable, Readable, writable } from "svelte/store";
-import { zipWithLast, StoreValues, clamp } from "./utils";
+import { Writable, Readable, writable, derived } from "svelte/store";
+import { zipWithLast, StoreValues, clamp, unwrapStore, deriveLastDefined } from "./utils";
 import { audioTimingsStore } from "./audioStores";
+import { SectionStore, allSectionsStore, SectionState } from "./sectionStores";
 
 let playing: boolean = false;
 const playingStoreInternal: Writable<boolean> = writable(playing);
@@ -18,14 +19,21 @@ let loop: boolean = false;
 export const loopStore: Writable<boolean> = writable(loop);
 loopStore.subscribe(state => loop = state);
 
-const audioCurrentSectionStore: Writable<string | undefined> = writable(undefined);
-zipWithLast(audioCurrentSectionStore).subscribe(({ last, current }) => {
+const audioCurrentSectionIdxStore: Writable<string | undefined> = writable(undefined);
+zipWithLast(audioCurrentSectionIdxStore).subscribe(({ last, current }) => {
   if (last !== undefined) setAudioCurrentSectionStore(last, false);
   if (current !== undefined) setAudioCurrentSectionStore(current, true);
 })
 playingStore.subscribe(playing => {
-  if (!playing) audioCurrentSectionStore.set(undefined);
+  if (!playing) audioCurrentSectionIdxStore.set(undefined);
+});
+
+const audioCurrentSectionStoreWrapped: Readable<SectionStore | undefined> = derived([audioCurrentSectionIdxStore, allSectionsStore], ([idx, sections]) => {
+  if (idx === undefined) return undefined;
+  return sections[idx as any];
 })
+export const currentlyPlayingSectionStore: Readable<SectionState | undefined> = unwrapStore(audioCurrentSectionStoreWrapped);
+export const lastPlayedSectionStore: Readable<SectionState | undefined> = deriveLastDefined(currentlyPlayingSectionStore, undefined);
 
 const audioCurrentSectionStores: Record<string, Writable<boolean>> = {};
 
@@ -62,8 +70,8 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
   Tone.Transport.loopEnd = player.buffer.duration;
 
   Object.entries(allSections).forEach(([idx, section]) => {
-    Tone.Transport.schedule(() => audioCurrentSectionStore.set(idx), section.startTime);
-    Tone.Transport.schedule(() => audioCurrentSectionStore.set(idx), section.endTime);
+    Tone.Transport.schedule(() => audioCurrentSectionIdxStore.set(idx), section.startTime);
+    Tone.Transport.schedule(() => audioCurrentSectionIdxStore.set(undefined), section.endTime);
   })
 
   Tone.Transport.on("loop", () => {
@@ -90,7 +98,7 @@ export function playAudio() {
   Tone.Transport.setLoopPoints(start, end);
 
   const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
-  if (wasPlaying && loop && current >= start) {
+  if (wasPlaying && current >= start && current < end) {
     Tone.Transport.start();
   } else {
     Tone.Transport.start(undefined, start);
@@ -107,7 +115,18 @@ export function stopAudio() {
 let audioTimings: StoreValues<typeof audioTimingsStore> = undefined;
 audioTimingsStore.subscribe(state => {
   audioTimings = state;
-  if (autoPlay) {
+  if (state === undefined) return stopAudio();
+  
+  if (autoPlay) return playAudio();
+
+  // If the new timings overlap, start playing
+  const oldStart = Tone.Transport.loopStart;
+  const oldEnd = Tone.Transport.loopEnd;
+  const newStart = state.start;
+  const newEnd = state.end;
+
+  const overlap = oldEnd > newStart && oldStart < newEnd;
+  if (playing && overlap) {
     playAudio();
   } else {
     stopAudio();

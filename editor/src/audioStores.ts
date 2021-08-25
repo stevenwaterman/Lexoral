@@ -60,6 +60,9 @@ const endParagraphStore: Readable<ParagraphState | undefined> = unwrapStore(endP
 const offsetSelectionStore: Readable<{ start: SectionStore; end: SectionStore } | undefined> = derived([selectedSectionsIdxStore, selectionStore, mutationStore, startParagraphStore, endParagraphStore, allSectionsStore], ([selectedIdxs, selection, mutation, startParagraph, endParagraph, sections]) => {
   // Nothing selected
   if (selectedIdxs === undefined) return undefined;
+  if (startParagraph === undefined) return undefined;
+  if (endParagraph === undefined) return undefined;
+  if (selection === undefined) return undefined;
 
   const rangeSelected = selectedIdxs.start !== selectedIdxs.end;
   if (rangeSelected) return {
@@ -67,17 +70,19 @@ const offsetSelectionStore: Readable<{ start: SectionStore; end: SectionStore } 
     end: sections[selectedIdxs.end]
   }
 
-  const startSectionStore: SectionStore = mutation.start.constrainWithinParagraph
+  const startSectionStore: SectionStore | undefined = mutation.start.constrainWithinParagraph
                                             ?
                                           clampGet(startParagraph, selection.early.section - mutation.start.sectionOffset)
                                             :
                                           sections[clamp(selectedIdxs.start - mutation.start.sectionOffset, 0, Object.keys(sections).length - 1)];
+  if (startSectionStore === undefined) return undefined;
 
-  const endSectionStore: SectionStore = mutation.end.constrainWithinParagraph
+  const endSectionStore: SectionStore | undefined = mutation.end.constrainWithinParagraph
                                           ?
                                         clampGet(endParagraph, selection.late.section + mutation.end.sectionOffset)
                                           :
                                         sections[clamp(selectedIdxs.end + mutation.end.sectionOffset, 0, Object.keys(sections).length - 1)];
+  if (endSectionStore === undefined) return undefined;
 
   return {
     start: startSectionStore,
@@ -117,4 +122,8 @@ const endTimeStore: Readable<number | undefined> = derived([gapsEndSectionStore,
   else return end.endTime + mutation.end.timeOffset;
 })
 
-export const audioTimingsStore: Readable<{ start: number; end: number } | undefined> = derived([startTimeStore, endTimeStore], ([start, end]) => ({ start, end }))
+export const audioTimingsStore: Readable<{ start: number; end: number } | undefined> = derived([startTimeStore, endTimeStore], ([start, end]) => {
+  if (start === undefined) return undefined;
+  if (end === undefined) return undefined;
+  return { start, end };
+});
