@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte";
   import type { Readable } from "svelte/store";
-  import { getAudioCurrentSectionStore, playingStore } from "../audio";
-  import type { SectionStore } from "../sectionStores";
-  import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../selectionStores";
+  import { getAudioCurrentSectionStore, playingStore } from "../audio/audio";
+  import type { SectionStore } from "./textState";
+  import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../input/selectionState";
 
   export let sectionStore: SectionStore;
 

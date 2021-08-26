@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ParagraphState, ParagraphStore } from "../sectionStores";
+  import type { Paragraph, ParagraphStore } from "../sectionStores";
   import Section from "./Section.svelte";
 
   export let paragraphStore: ParagraphStore;

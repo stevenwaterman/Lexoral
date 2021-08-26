@@ -1,5 +1,5 @@
 import { writable, Readable, derived, Writable } from "svelte/store";
-import { getOptions } from "./align";
+import { getOptions } from "../preprocess/align";
 
 export type JsonOutputSection = {
   startTime: number;
@@ -9,15 +9,15 @@ export type JsonOutputSection = {
 }
 export type JsonOutput = JsonOutputSection[];
 
-type DocumentState = ParagraphStore[];
-export type DocumentStore = Readable<DocumentState>;
+type Document = ParagraphStore[];
+export type DocumentStore = Readable<Document>;
 
-export type ParagraphState = SectionStore[];
-export type ParagraphStore = Readable<ParagraphState> & {
+export type Paragraph = SectionStore[];
+export type ParagraphStore = Readable<Paragraph> & {
   append: (section: SectionStore) => void;
 };
 
-export type SectionState = {
+export type Section = {
   idx: number;
   startTime: number;
   endTime: number;
@@ -28,14 +28,14 @@ export type SectionState = {
   edited: boolean;
   spanComponent?: HTMLSpanElement;
 } & Pick<SectionStore, "setText">;
-export type SectionStore = Readable<SectionState> & {
+export type SectionStore = Readable<Section> & {
   setText: (text: string) => void;
   deleteText: (offsets?: { start?: number, end?: number }) => void;
   registerComponent: (component: HTMLSpanElement) => void;
 }
 
 function createSectionStore(state: JsonOutputSection, idx: number): SectionStore {
-  const internalStore: Writable<SectionState> = writable({
+  const internalStore: Writable<Section> = writable({
     idx,
     startTime: state.startTime,
     endTime: state.endTime,
@@ -95,7 +95,7 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
 }
 
 function createParagraphStore(sections: SectionStore[]): ParagraphStore {
-  const base: Writable<ParagraphState> = writable(sections);
+  const base: Writable<Paragraph> = writable(sections);
 
   function append(store: SectionStore) {
     base.update(state => {
@@ -110,7 +110,7 @@ function createParagraphStore(sections: SectionStore[]): ParagraphStore {
    }
 }
 
-const documentStoreInternal: Writable<DocumentState> = writable([]);
+const documentStoreInternal: Writable<Document> = writable([]);
 export const documentStore: DocumentStore = documentStoreInternal;
 export const allSectionsStore: Writable<Record<number, SectionStore>> = writable({});
 

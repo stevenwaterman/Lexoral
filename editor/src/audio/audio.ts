@@ -1,9 +1,9 @@
 import * as Tone from "tone";
 import { Writable, Readable, writable, derived } from "svelte/store";
-import { zipWithLast, StoreValues, clamp, unwrapStore, deriveLastDefined, debounce } from "./utils";
-import { audioTimingsStore } from "./audioStores";
-import { SectionStore, allSectionsStore, SectionState } from "./sectionStores";
-import { stat } from "fs";
+import { deriveWithPrevious, StoreValues, deriveUnwrap, deriveLastDefined, deriveDebounced } from "../utils/stores";
+import { audioTimingsStore } from "./audioSelection";
+import { SectionStore, allSectionsStore, Section } from "../text/textState";
+import { clamp } from "../utils/list";
 
 let playing: boolean = false;
 const playingStoreInternal: Writable<boolean> = writable(playing);
@@ -21,7 +21,7 @@ export const loopStore: Writable<boolean> = writable(loop);
 loopStore.subscribe(state => loop = state);
 
 const audioCurrentSectionIdxStore: Writable<string | undefined> = writable(undefined);
-zipWithLast(audioCurrentSectionIdxStore).subscribe(({ last, current }) => {
+deriveWithPrevious(audioCurrentSectionIdxStore).subscribe(({ last, current }) => {
   if (last !== undefined) setAudioCurrentSectionStore(last, false);
   if (current !== undefined) setAudioCurrentSectionStore(current, true);
 })
@@ -33,8 +33,8 @@ const audioCurrentSectionStoreWrapped: Readable<SectionStore | undefined> = deri
   if (idx === undefined) return undefined;
   return sections[idx as any];
 })
-export const currentlyPlayingSectionStore: Readable<SectionState | undefined> = unwrapStore(audioCurrentSectionStoreWrapped);
-export const lastPlayedSectionStore: Readable<SectionState | undefined> = deriveLastDefined(currentlyPlayingSectionStore, undefined);
+export const currentlyPlayingSectionStore: Readable<Section | undefined> = deriveUnwrap(audioCurrentSectionStoreWrapped);
+export const lastPlayedSectionStore: Readable<Section | undefined> = deriveLastDefined(currentlyPlayingSectionStore, undefined);
 
 const audioCurrentSectionStores: Record<string, Writable<boolean>> = {};
 

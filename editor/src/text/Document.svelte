@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { documentStore } from "../sectionStores";
+  import { documentStore } from "../text/textState";
   import Paragraph from "./Paragraph.svelte";
 </script>
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { initAudio } from "./audio";
-  import Editor from "./editorComponents/Editor.svelte";
-  import { initialiseStores } from "./sectionStores";
+  import { initAudio } from "./audio/audio";
+  import Editor from "./input/Editor.svelte";
+  import { initialiseStores } from "./text/textState";
 </script>
 
 <style>

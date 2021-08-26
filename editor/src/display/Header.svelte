@@ -1,5 +1,5 @@
 <script lang="ts">
-import { playingStore } from "../audio";
+import { playingStore } from "../audio/audio";
 
 
 </script>

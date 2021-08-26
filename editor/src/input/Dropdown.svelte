@@ -1,14 +1,14 @@
 <script lang="ts">
-  import type { SectionState } from "../sectionStores";
-  import { focusSectionStore, isSelectingStore } from "../selectionStores";
-  import { modulo } from "../utils";
+  import type { Section } from "../text/textState";
+  import { focusSectionStore, isTextSelectedStore } from "./selectionState";
+  import { modulo } from "../utils/list";
 
-  let section: SectionState | undefined;
+  let section: Section | undefined;
   $: section = $focusSectionStore;
-  $: if (!$isSelectingStore) section?.spanComponent?.focus();
+  $: if (!$isTextSelectedStore) section?.spanComponent?.focus();
 
   let visible: boolean;
-  $: visible = !$isSelectingStore && section !== undefined && options.length > 0;
+  $: visible = !$isTextSelectedStore && section !== undefined && options.length > 0;
 
   let left: number;
   let top: number;

@@ -1,10 +1,25 @@
 <script lang="ts">
   import { tick } from "svelte";
-  import { deleteSelection, earlySectionStore, focusSectionStore, isSelectingStore, lateSectionStore, selectedSectionsStore, selectionStore, updateSelection, selectNext, selectParagraphEnd, selectParagraphStart, selectPosition, selectPrev, selectStart } from "../selectionStores";
-  import type { SectionSelection } from "../selectionStores";
-
+  import {
+    deleteSelection, 
+    earlySectionStore,
+    focusSectionStore,
+    isTextSelectedStore,
+    lateSectionStore,
+    selectedSectionsStore,
+    selectionStore,
+    updateSelection, 
+    selectNext,
+    selectParagraphEnd,
+    selectParagraphStart,
+    selectPosition, 
+    selectPrev,
+    selectStart
+  } from "./selectionState";
+  import type { SectionSelection } from "./selectionState";
+  
   async function keyDown(event: KeyboardEvent) {
-    if (event.key === "Backspace" && $isSelectingStore) { //TODO delete whole sections when selecting across sections, rather than characters within sections
+    if (event.key === "Backspace" && $isTextSelectedStore) {
       event.preventDefault();
 
       const selection: SectionSelection | undefined = $selectionStore;
@@ -18,7 +33,7 @@
       selectPosition(component, selection.early.offset)
     }
 
-    if (event.key === "Delete" && $isSelectingStore) {
+    if (event.key === "Delete" && $isTextSelectedStore) {
       event.preventDefault();
 
       const selection: SectionSelection | undefined = $selectionStore;

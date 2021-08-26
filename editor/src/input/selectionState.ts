@@ -1,7 +1,8 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
-import { ParagraphStore, documentStore, ParagraphState, SectionState, SectionStore, allSectionsStore } from "./sectionStores";
-import { clampGet, unwrapStore, siblingIdx, maybeDerived } from "./utils";
+import { ParagraphStore, documentStore, Paragraph, Section, SectionStore, allSectionsStore } from "../text/textState";
+import { deriveUnwrap, deriveConditionally } from "../utils/stores";
 import { tick } from "svelte";
+import { clampGet } from "../utils/list";
 
 export type CursorPosition = {
   paragraph: number;
@@ -19,38 +20,29 @@ export type SectionSelection = {
 
 export const selectionStore: Writable<SectionSelection | undefined> = writable(undefined);
 
-export function createSelectionStore(inputStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<SectionState | undefined> {
-  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = maybeDerived([documentStore, inputStore], undefined, ([document, selection]) => {
-    return selection === undefined ? undefined : clampGet(document, selection.paragraph);
-  });
-  const paragraphStore: Readable<ParagraphState | undefined> = unwrapStore(paragraphStoreWrapped);
-  const sectionStoreWrapped: Readable<SectionStore | undefined> = maybeDerived([paragraphStore, inputStore], undefined, ([paragraph, selection]) => {
+export function createSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<Section | undefined> {
+  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, cursorPositionStore], ([document, cursorPosition]) => 
+    cursorPosition === undefined ? undefined : clampGet(document, cursorPosition.paragraph));
+
+  const sectionStoreWrapped: Readable<SectionStore | undefined> = derived(
+    [ deriveUnwrap(paragraphStoreWrapped), cursorPositionStore],
+    ([paragraph,                          cursorPosition]
+  ) => {
     if (paragraph === undefined) return undefined;
-    if (selection === undefined) return undefined;
-    return clampGet(paragraph, selection.section);
+    if (cursorPosition === undefined) return undefined;
+    return clampGet(paragraph, cursorPosition.section);
   });
-  const sectionStore: Readable<SectionState | undefined> = unwrapStore(sectionStoreWrapped);
-  return sectionStore;
+  const sectionStore: Readable<Section | undefined> = deriveUnwrap(sectionStoreWrapped);
+  return deriveConditionally(sectionStore, undefined);
 }
 
-export const anchorSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(selectionStore, selection => {
-  if (selection === undefined) return undefined;
-  return {
-    paragraph: selection.anchor.paragraph,
-    section: selection.anchor.section
-  }
-}));
+const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
+const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);
 
-export const focusSectionStore: Readable<SectionState | undefined> = createSelectionStore(derived(selectionStore, selection => {
-  if (selection === undefined) return undefined;
-  return {
-    paragraph: selection.focus.paragraph,
-    section: selection.focus.section
-  }
-}));
-
-export const earlySectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
-export const lateSectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
+export const anchorSectionStore: Readable<Section | undefined> = createSectionSelectionStore(anchorCursorPositionStore);
+export const focusSectionStore: Readable<Section | undefined> = createSectionSelectionStore(focusCursorPositionStore);
+export const earlySectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
+export const lateSectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
 
 export const anchorSectionIdxStore = derived(anchorSectionStore, section => section?.idx);
 export const focusSectionIdxStore = derived(focusSectionStore, section => section?.idx);
@@ -58,7 +50,7 @@ export const earlySectionIdxStore = derived(earlySectionStore, section => sectio
 export const lateSectionIdxStore = derived(lateSectionStore, section => section?.idx);
 
 /** Is any text selected */
-export const isSelectingStore: Readable<boolean> = derived(selectionStore, selection => {
+export const isTextSelectedStore: Readable<boolean> = derived(selectionStore, selection => {
   if (selection === undefined) return false;
   if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
   if (selection.anchor.section !== selection.focus.section) return true;
@@ -66,7 +58,15 @@ export const isSelectingStore: Readable<boolean> = derived(selectionStore, selec
   return false;
 });
 
+/** Are multiple sections selected */
+export const areMultipleSectionsSelectedStore: Readable<boolean> = derived(selectionStore, selection => {
+  if (selection === undefined) return false;
+  if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
+  if (selection.anchor.section !== selection.focus.section) return true;
+  return false;
+});
 
+/** Is the cursor at the start / end of the current section */
 export const caretPositionStore: Readable<{start: boolean; end: boolean}> = derived([focusSectionStore, selectionStore], ([section, selection]) => {
   if (section === undefined || selection === undefined) return { start: false, end: false };
   const start = selection.focus.offset === 0;
@@ -180,11 +180,11 @@ export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySec
   return output;
 })
 
-export const selectedSectionsIdxStore: Readable<undefined | { start: number; end: number }> = derived([earlySectionIdxStore, lateSectionIdxStore], ([early, late]) => {
-  if (early === undefined) return undefined;
-  if (late === undefined) return undefined;
-  return { start: early, end: late }
-})
+// export const selectedSectionsIdxStore: Readable<undefined | { start: number; end: number }> = derived([earlySectionIdxStore, lateSectionIdxStore], ([early, late]) => {
+//   if (early === undefined) return undefined;
+//   if (late === undefined) return undefined;
+//   return { start: early, end: late }
+// })
 
 export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
   const earlyOffset = selection.early.offset;
@@ -287,4 +287,14 @@ export async function selectEnd(node: Node) {
     sel.addRange(range);
     await updateSelection();
   }
+}
+
+export function siblingIdx(node: Element): number {
+  let i = 0;
+  let sib = node.previousElementSibling;
+  while (sib !== null) {
+    sib = sib.previousElementSibling;
+    i++;
+  }
+  return i;
 }

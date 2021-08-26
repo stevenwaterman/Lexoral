@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio";
-  import { modeStore } from "../audioStores";
-  import { selectEnd } from "../selectionStores";
-  import ToastController from "../toast/ToastController.svelte";
-  import { sendToast } from "../toast/toasts";
-  import Header from "./Header.svelte";
+  import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio/audio";
+  import { audioModeStore } from "../audio/audioSelection";
+  import { selectEnd } from "./selectionState";
+  import ToastController from "../display/toast/ToastController.svelte";
+  import { sendToast } from "../display/toast/toasts";
+  import Header from "../display/Header.svelte";
 
-  import Document from "./Document.svelte";
+  import Document from "../text/Document.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
 
@@ -39,26 +39,26 @@
   }
 
   function wordMode() {
-    if ($modeStore === "word") return;
-    modeStore.set("word");
+    if ($audioModeStore === "word") return;
+    audioModeStore.set("word");
     sendToast("Enabled audio mode: word");
   }
 
   function contextMode() {
-    if ($modeStore === "context") return;
-    modeStore.set("context");
+    if ($audioModeStore === "context") return;
+    audioModeStore.set("context");
     sendToast("Enabled audio mode: context");
   }
 
   function paragraphMode() {
-    if ($modeStore === "paragraph") return;
-    modeStore.set("paragraph");
+    if ($audioModeStore === "paragraph") return;
+    audioModeStore.set("paragraph");
     sendToast("Enabled audio mode: paragraph");
   }
 
   function onwardMode() {
-    if ($modeStore === "onward") return;
-    modeStore.set("onward");
+    if ($audioModeStore === "onward") return;
+    audioModeStore.set("onward");
     sendToast("Enabled audio mode: onward");
   }
 
