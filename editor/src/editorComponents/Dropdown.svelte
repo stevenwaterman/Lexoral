@@ -1,8 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { slide } from "svelte/transition";
-
-  import { playingStore } from "../audio";
   import type { SectionState } from "../sectionStores";
   import { focusSectionStore, isSelectingStore } from "../selectionStores";
   import { modulo } from "../utils";
@@ -13,7 +9,6 @@
 
   let visible: boolean;
   $: visible = !$isSelectingStore && section !== undefined && options.length > 0;
-
 
   let left: number;
   let top: number;
@@ -38,6 +33,8 @@
   $: resetIdx(visible);
 
   function keyDown(event: KeyboardEvent) {
+    if (!visible) return;
+
     if (event.key === "ArrowUp") {
       event.preventDefault();
       selectedIdx = (selectedIdx ?? 0) - 1;
@@ -99,12 +96,10 @@
 <svelte:window on:resize={resize}/>
 
 {#if visible}
-{#key section?.idx}
   <div
     class="popup" 
     style={`left: ${left}px; top: ${top}px;`}
     on:mouseleave={resetIdx}
-    transition:slide={{duration: 200}}
   >
     {#each options as option, idx}
       <span
@@ -118,5 +113,4 @@
       </span>
     {/each}
   </div>
-  {/key}
 {/if}
