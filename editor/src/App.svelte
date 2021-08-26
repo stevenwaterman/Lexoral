@@ -67,12 +67,21 @@
     width: 100%;
     height: 100%;
   }
+
+  .loading {
+    position: fixed;
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+  }
 </style>
 
 <svelte:body tabindex={-1}/>
 
 {#await fetch("assets/data2.json").then(data => data.json()).then(data => initialiseStores(data)).then(initAudio)}
-  Fetching data
+  <span class="loading">
+    Fetching data...
+  </span>
 {:then}
   <Editor/>
 {/await}

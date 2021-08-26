@@ -4,6 +4,7 @@
   import { selectEnd } from "../selectionStores";
   import ToastController from "../toast/ToastController.svelte";
   import { sendToast } from "../toast/toasts";
+  import Header from "./Header.svelte";
 
   import Document from "./Document.svelte";
   import Dropdown from "./Dropdown.svelte";
@@ -85,21 +86,8 @@
     height: 100%;
   }
 
-  .logo {
-    max-width:100%;
-    max-height:60px;
-    width: auto;
-    height: auto;
-    margin: 10px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .wrapper {
     flex-grow: 1;
-    margin-top: 10px;
-    border-top: 1px solid var(--form-border);
-    border-bottom: 1px solid var(--form-border);
     padding: 8px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -114,7 +102,8 @@
 <ToastController/>
 
 <div class="container">
-  <img class="logo" src="/assets/smallBrand.png" alt="logo"/>
+  <Header/>
+  
 
   <div class="wrapper">
     <Dropdown/>

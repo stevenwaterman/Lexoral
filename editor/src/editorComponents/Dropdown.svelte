@@ -1,5 +1,6 @@
 <script lang="ts">
-import { onMount } from "svelte";
+  import { onMount } from "svelte";
+  import { slide } from "svelte/transition";
 
   import { playingStore } from "../audio";
   import type { SectionState } from "../sectionStores";
@@ -8,11 +9,11 @@ import { onMount } from "svelte";
 
   let section: SectionState | undefined;
   $: section = $focusSectionStore;
+  $: if (!$isSelectingStore) section?.spanComponent?.focus();
 
   let visible: boolean;
-  $: visible = !$playingStore && !$isSelectingStore && section !== undefined && options.length > 0;
+  $: visible = !$isSelectingStore && section !== undefined && options.length > 0;
 
-  $: if (visible) section?.spanComponent?.focus();
 
   let left: number;
   let top: number;
@@ -98,15 +99,17 @@ import { onMount } from "svelte";
 <svelte:window on:resize={resize}/>
 
 {#if visible}
+{#key section?.idx}
   <div
     class="popup" 
     style={`left: ${left}px; top: ${top}px;`}
     on:mouseleave={resetIdx}
+    transition:slide={{duration: 200}}
   >
     {#each options as option, idx}
       <span
         class="option"
-        class:highlight={!$playingStore && idx === highlightIdx}
+        class:highlight={idx === highlightIdx}
         class:topBorder={idx !== 0}
         on:mouseenter="{() => mouseEnterOption(idx)}"
         on:click="{() => mouseClick(idx)}"
@@ -115,4 +118,5 @@ import { onMount } from "svelte";
       </span>
     {/each}
   </div>
+  {/key}
 {/if}

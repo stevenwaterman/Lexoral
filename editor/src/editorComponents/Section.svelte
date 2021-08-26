@@ -79,7 +79,8 @@
   .section {
     display: inline-block;
     white-space: pre;
-    outline: none;
+    /* outline: none; */
+    transition: background 0.2s;
   }
 
   .section::selection {
