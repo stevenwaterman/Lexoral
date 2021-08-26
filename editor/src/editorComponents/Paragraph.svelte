@@ -6,14 +6,14 @@
 </script>
 
 <style>
-  p {
+  .paragraph {
     margin-block-start: 0;
     margin-block-end: 0;
     padding-block-end: 1em;
   }
 </style>
 
-<p>
+<p class="paragraph">
   {#each $paragraphStore as section, idx}
     <Section sectionStore={ section } />
   {/each}

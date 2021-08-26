@@ -8,9 +8,11 @@ import { onMount } from "svelte";
 
   let section: SectionState | undefined;
   $: section = $focusSectionStore;
-  
+
   let visible: boolean;
   $: visible = !$playingStore && !$isSelectingStore && section !== undefined && options.length > 0;
+
+  $: if (visible) section?.spanComponent?.focus();
 
   let left: number;
   let top: number;

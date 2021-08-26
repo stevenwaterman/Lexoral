@@ -48,7 +48,6 @@ export const focusSectionStore: Readable<SectionState | undefined> = createSelec
     section: selection.focus.section
   }
 }));
-derived([focusSectionStore], state => state).subscribe(([section]) => section?.spanComponent?.focus());
 
 export const earlySectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
 export const lateSectionStore: Readable<SectionState | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
@@ -93,25 +92,31 @@ let lastFocusOffset: number | undefined = undefined;
 async function updateSelectionInternal() {
   const selection = window.getSelection();
   if (selection === null) return;
+
   const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
+  if (anchorNode === null) return;
+  if (focusNode === null) return;
+
+  const anchorTextNode = document.createNodeIterator(anchorNode, NodeFilter.SHOW_TEXT).nextNode();
+  const focusTextNode = document.createNodeIterator(focusNode, NodeFilter.SHOW_TEXT).nextNode();
 
   if (
-    anchorNode === lastAnchorNode &&
-    focusNode === lastFocusNode &&
+    anchorTextNode === lastAnchorNode &&
+    focusTextNode === lastFocusNode &&
     anchorOffset === lastAnchorOffset &&
     focusOffset === lastFocusOffset
   ) return;
 
-  lastAnchorNode = anchorNode;
-  lastFocusNode = focusNode;
+  lastAnchorNode = anchorTextNode;
+  lastFocusNode = focusTextNode;
   lastAnchorOffset = anchorOffset;
   lastFocusOffset = focusOffset;
 
-  const anchorSpan = anchorNode?.parentElement ?? undefined;
+  const anchorSpan = anchorTextNode?.parentElement ?? undefined;
   const anchorParagraph = anchorSpan?.parentElement ?? undefined;
   if (anchorSpan === undefined || anchorParagraph === undefined) return;
 
-  const focusSpan = focusNode?.parentElement ?? undefined;
+  const focusSpan = focusTextNode?.parentElement ?? undefined;
   const focusParagraph = focusSpan?.parentElement ?? undefined;
   if (focusSpan === undefined || focusParagraph === undefined) return;
 
@@ -127,13 +132,34 @@ async function updateSelectionInternal() {
     offset: anchorOffset - 1
   };
 
-  const focus = {
+  let focus = {
     paragraph: focusParagraphIdx,
     section: focusSectionIdx,
     offset: focusOffset - 1
   };
 
   const inverted = isSelectionInverted(anchor, focus);
+  
+  if ( // we are selecting something forwards and it ends at the very start of a new line
+    !inverted &&
+    focusSectionIdx === 0 &&
+    focusOffset === 0 && (
+      focusParagraphIdx !== anchorParagraphIdx ||
+      focusSectionIdx !== anchorSectionIdx ||
+      focusOffset !== anchorOffset
+    )
+  ) { // Then select the end of the previous paragraph instead
+    const prevParagraph = focusParagraph.previousElementSibling;
+    const lastChild = prevParagraph?.lastElementChild;
+    if (lastChild) { // If this isn't defined, it's because we're on the first paragraph already
+      focus = {
+        paragraph: focusParagraphIdx - 1,
+        section: siblingIdx(lastChild),
+        offset: (lastChild.textContent?.length ?? 1) - 1
+      }
+    }
+  }
+
   const early = inverted ? focus : anchor;
   const late = inverted ? anchor : focus;
 
