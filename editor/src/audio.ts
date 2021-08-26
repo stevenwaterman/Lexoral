@@ -83,6 +83,7 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
 
 export function playAudio() {
   if (audioTimings === undefined) return;
+  Tone.start();
 
   const fileDuration = player.buffer.duration;
   let start = clamp(audioTimings.start, 0, fileDuration);
@@ -96,7 +97,6 @@ export function playAudio() {
   Tone.Transport.setLoopPoints(start, end);
 
   if (needsRestart(start, end)) {
-    console.log("restart");
     Tone.Transport.pause();
     Tone.Transport.start(undefined, start);
   }

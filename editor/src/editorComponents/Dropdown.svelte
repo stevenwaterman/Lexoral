@@ -1,4 +1,6 @@
 <script lang="ts">
+import { onMount } from "svelte";
+
   import { playingStore } from "../audio";
   import type { SectionState } from "../sectionStores";
   import { focusSectionStore, isSelectingStore } from "../selectionStores";
@@ -11,10 +13,13 @@
   $: visible = !$playingStore && !$isSelectingStore && section !== undefined && options.length > 0;
 
   let left: number;
-  $: left = section?.spanComponent?.offsetLeft ?? 0;
-
   let top: number;
-  $: top = (section?.spanComponent?.offsetTop ?? 0) + (section?.spanComponent?.offsetHeight ?? 0);
+
+  function resize(...deps: any[]) {
+    left = section?.spanComponent?.offsetLeft ?? 0;
+    top = (section?.spanComponent?.offsetTop ?? 0) + (section?.spanComponent?.offsetHeight ?? 0);
+  }
+  $: resize(section);
 
   let options: string[];
   $: options = section?.completionOptions ?? [];
@@ -88,6 +93,7 @@
 </style>
 
 <svelte:body on:keydown={keyDown}/>
+<svelte:window on:resize={resize}/>
 
 {#if visible}
   <div

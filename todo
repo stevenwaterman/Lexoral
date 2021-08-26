@@ -1,17 +1,16 @@
 audio:
-  control mutationStore via modeStore
   fix the next word going green and starting to play when not looping
   fix audio playing multiple times sometimes
   add some visual indication that we're playing
   call Tone.start after user input
 
 sections:
-  manually adjust paragraph boundaries
 
   - automatically adjust section timings based on audio envelope
   - automatically determine paragraph boundaries based on audio envelope
   - automatically combine sections
 
+  -- manually adjust paragraph boundaries
   -- manually split a section
   -- manually combine a section
   -- manually add a section
@@ -22,7 +21,6 @@ UX:
   fix dropdown position when resizing
   support cut + paste
   Test double / triple click behaviour
-  toast notifications when you press buttons
 
   - add scrolling (when playing from current position onwards)
   - undo / redo support
