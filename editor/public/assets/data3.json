@@ -1,0 +1,1658 @@
+[
+  {
+    "options": [
+      {
+        "text": "It",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 0.2,
+    "endTime": 0.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "takes",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 0.3,
+    "endTime": 0.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 0.5,
+    "endTime": 0.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "little",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 0.6,
+    "endTime": 0.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "bit",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 0.8,
+    "endTime": 1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 1,
+    "endTime": 1.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "travel",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 1.1,
+    "endTime": 1.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "time",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 1.5,
+    "endTime": 1.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "for",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 1.7,
+    "endTime": 1.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 1.8,
+    "endTime": 2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Arrow",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 2,
+    "endTime": 2.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 2.3,
+    "endTime": 2.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "actually",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 2.4,
+    "endTime": 2.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Hit",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 2.7,
+    "endTime": 2.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 2.8,
+    "endTime": 2.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Target.",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 2.9,
+    "endTime": 3.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 3.3,
+    "endTime": 3.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "I'm",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 3.4,
+    "endTime": 3.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "hoping",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 3.5,
+    "endTime": 3.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "like",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 3.9,
+    "endTime": 4.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "people",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 4.1,
+    "endTime": 4.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "will",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 4.3,
+    "endTime": 4.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "be",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 4.4,
+    "endTime": 4.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "around",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 4.6,
+    "endTime": 5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "here",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 5,
+    "endTime": 5.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "before.",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 6.1,
+    "endTime": 6.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "They",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 6.4,
+    "endTime": 6.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "realize,",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 6.6,
+    "endTime": 7.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "oh",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 7.1,
+    "endTime": 7.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "I",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 7.3,
+    "endTime": 7.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "missed",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 7.4,
+    "endTime": 8.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 8.3,
+    "endTime": 8.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "then",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 8.4,
+    "endTime": 8.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "they",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 8.6,
+    "endTime": 8.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "try",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 8.7,
+    "endTime": 8.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 8.8,
+    "endTime": 8.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "go",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 8.9,
+    "endTime": 9.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "back",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 9.1,
+    "endTime": 9.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 10.4,
+    "endTime": 10.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "then",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 10.5,
+    "endTime": 10.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "I",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 10.7,
+    "endTime": 10.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "got",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 10.7,
+    "endTime": 10.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 10.9,
+    "endTime": 11,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fence",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 11,
+    "endTime": 11.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "here",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 11.3,
+    "endTime": 11.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 11.5,
+    "endTime": 11.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "kind",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 11.6,
+    "endTime": 11.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 11.8,
+    "endTime": 11.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "catch",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 11.9,
+    "endTime": 12.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you.",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 12.2,
+    "endTime": 12.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "It's",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 13.7,
+    "endTime": 13.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "like,",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 13.8,
+    "endTime": 14.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "oh",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 14.1,
+    "endTime": 14.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "darn,",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 14.3,
+    "endTime": 14.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "this",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 14.6,
+    "endTime": 14.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fence",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 14.7,
+    "endTime": 15,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "is",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 15,
+    "endTime": 15.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 15.1,
+    "endTime": 15.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "my",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 15.2,
+    "endTime": 15.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "way.",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 15.3,
+    "endTime": 15.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 15.4,
+    "endTime": 15.5,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "it'll",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 15.5,
+    "endTime": 15.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "waste",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 15.7,
+    "endTime": 16,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 16,
+    "endTime": 16.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "couple",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 16.1,
+    "endTime": 16.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "seconds,",
+        "confidence": 0.9883302603033228
+      },
+      {
+        "text": "seconds.",
+        "confidence": 0.9881086625358559
+      }
+    ],
+    "startTime": 16.4,
+    "endTime": 16.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "hopefully",
+        "confidence": 0.9883302603033228
+      },
+      {
+        "text": "Hopefully",
+        "confidence": 0.9881086625358559
+      }
+    ],
+    "startTime": 16.7,
+    "endTime": 17.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "for",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 17.8,
+    "endTime": 17.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "them",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 17.9,
+    "endTime": 18.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 18.1,
+    "endTime": 18.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "give",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 18.2,
+    "endTime": 18.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "up",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 18.4,
+    "endTime": 18.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 18.6,
+    "endTime": 18.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "get",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 18.7,
+    "endTime": 18.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "back",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 18.9,
+    "endTime": 19.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "over",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 19.1,
+    "endTime": 19.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "here",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 19.4,
+    "endTime": 19.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "if",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 19.8,
+    "endTime": 20.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "if",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 20.4,
+    "endTime": 20.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "they",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 20.6,
+    "endTime": 20.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "do",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 20.7,
+    "endTime": 21,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "miss.",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 21,
+    "endTime": 21.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 21.7,
+    "endTime": 22.3,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "there",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 22.8,
+    "endTime": 23.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "is",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 23.1,
+    "endTime": 23.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 23.2,
+    "endTime": 23.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "penalty.",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 23.3,
+    "endTime": 23.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "If",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 23.8,
+    "endTime": 24.1,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 24.1,
+    "endTime": 24.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "try",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 24.2,
+    "endTime": 24.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 24.6,
+    "endTime": 24.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 24.8,
+    "endTime": 25,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 25,
+    "endTime": 25.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fail",
+        "confidence": 0.9987624790933969
+      },
+      {
+        "text": "fail,",
+        "confidence": 0.88786548
+      }
+    ],
+    "startTime": 25.1,
+    "endTime": 25.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it's",
+        "confidence": 0.9987773724582318
+      },
+      {
+        "text": "there's",
+        "confidence": 0.88649952
+      }
+    ],
+    "startTime": 27.5,
+    "endTime": 27.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "like",
+        "confidence": 0.9890967782109545
+      },
+      {
+        "text": "like,",
+        "confidence": 0.9872726781554304
+      }
+    ],
+    "startTime": 27.7,
+    "endTime": 27.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "oh",
+        "confidence": 0.9998612311871481
+      }
+    ],
+    "startTime": 27.9,
+    "endTime": 28.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "wait.",
+        "confidence": 0.9987624790933969
+      },
+      {
+        "text": "wait,",
+        "confidence": 0.88786548
+      }
+    ],
+    "startTime": 28.1,
+    "endTime": 28.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Oh",
+        "confidence": 0.9987624790933969
+      },
+      {
+        "text": "no",
+        "confidence": 0.88786548
+      }
+    ],
+    "startTime": 28.5,
+    "endTime": 28.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "no",
+        "confidence": 0.9987624790933969
+      },
+      {
+        "text": "no,",
+        "confidence": 0.88786548
+      }
+    ],
+    "startTime": 28.7,
+    "endTime": 29,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fence.",
+        "confidence": 0.9987624790933969
+      },
+      {
+        "text": "no fence.",
+        "confidence": 0.88786548
+      }
+    ],
+    "startTime": 29,
+    "endTime": 29.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Oh,",
+        "confidence": 0.9883302603033228
+      },
+      {
+        "text": "Oh, yeah.",
+        "confidence": 0.9881086625358559
+      }
+    ],
+    "startTime": 29.5,
+    "endTime": 29.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "Are",
+        "confidence": 0.9780325978921754
+      },
+      {
+        "text": "There",
+        "confidence": 0.71106482
+      }
+    ],
+    "startTime": 30,
+    "endTime": 30,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "we",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 30,
+    "endTime": 30.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "go?",
+        "confidence": 0.9780325978921754
+      },
+      {
+        "text": "go.",
+        "confidence": 0.71106482
+      }
+    ],
+    "startTime": 30.1,
+    "endTime": 30.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "You",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 30.7,
+    "endTime": 30.8,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "could",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 30.8,
+    "endTime": 31.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "like",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 31.1,
+    "endTime": 31.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "stop",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 31.3,
+    "endTime": 31.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 31.7,
+    "endTime": 31.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "shoot",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 31.9,
+    "endTime": 32.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it,",
+        "confidence": 0.9780325978921754
+      },
+      {
+        "text": "it.",
+        "confidence": 0.71106482
+      }
+    ],
+    "startTime": 32.2,
+    "endTime": 32.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but",
+        "confidence": 0.9780325978921754
+      },
+      {
+        "text": "But",
+        "confidence": 0.71106482
+      }
+    ],
+    "startTime": 33.7,
+    "endTime": 33.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "then",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 33.8,
+    "endTime": 34,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 34,
+    "endTime": 34,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "waste",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 34,
+    "endTime": 34.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "time",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 34.3,
+    "endTime": 34.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "stopping",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 34.5,
+    "endTime": 34.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 34.9,
+    "endTime": 35,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "shoot",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 35,
+    "endTime": 35.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it,",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 35.3,
+    "endTime": 35.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "right?",
+        "confidence": 0.9780325978921754
+      },
+      {
+        "text": "right.",
+        "confidence": 0.71106482
+      }
+    ],
+    "startTime": 35.4,
+    "endTime": 35.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 35.9,
+    "endTime": 36.4,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "there",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 36.8,
+    "endTime": 36.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "are",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 36.9,
+    "endTime": 37.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "ways",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 37.1,
+    "endTime": 37.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 37.3,
+    "endTime": 37.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "getting",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 37.4,
+    "endTime": 37.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "through,",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 37.6,
+    "endTime": 38,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 38.2,
+    "endTime": 38.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "like,",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 38.4,
+    "endTime": 38.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 38.6,
+    "endTime": 38.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "do",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 38.7,
+    "endTime": 38.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "it",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 38.8,
+    "endTime": 39,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "smoothly",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 39,
+    "endTime": 39.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "without",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 39.6,
+    "endTime": 39.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "stopping,",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 39.9,
+    "endTime": 40.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "while",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 40.5,
+    "endTime": 40.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you're",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 40.6,
+    "endTime": 40.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "going",
+        "confidence": 0.9559259056552987
+      },
+      {
+        "text": "going,",
+        "confidence": 0.85598898
+      }
+    ],
+    "startTime": 40.8,
+    "endTime": 41,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fast",
+        "confidence": 0.9583901500143164
+      },
+      {
+        "text": "fast.",
+        "confidence": 0.84746027
+      }
+    ],
+    "startTime": 41,
+    "endTime": 41.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "is",
+        "confidence": 0.9583901500143164
+      },
+      {
+        "text": "It is",
+        "confidence": 0.84746027
+      }
+    ],
+    "startTime": 41.6,
+    "endTime": 41.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "quite",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 41.9,
+    "endTime": 42.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "challenging.",
+        "confidence": 0.9936528447178433
+      }
+    ],
+    "startTime": 42.2,
+    "endTime": 42.7,
+    "startParagraph": false
+  }
+]

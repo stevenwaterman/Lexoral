@@ -78,7 +78,7 @@
 
 <svelte:body tabindex={-1}/>
 
-{#await fetch("assets/data2.json").then(data => data.json()).then(data => initialiseStores(data)).then(initAudio)}
+{#await fetch("assets/data3.json").then(data => data.json()).then(data => initialiseStores(data)).then(initAudio)}
   <span class="loading">
     Fetching data...
   </span>

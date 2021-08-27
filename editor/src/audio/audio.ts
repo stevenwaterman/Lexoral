@@ -87,19 +87,21 @@ export function playAudio() {
   if (audioTimings === undefined) return;
   Tone.start();
 
-  let start = clamp(audioTimings.start, 0, duration);
-  let end = clamp(audioTimings.end, 0, duration);
+  let start = clamp(audioTimings.start.time, 0, duration);
+  let end = clamp(audioTimings.end.time, 0, duration);
 
   if (start === end) {
     start -= 0.2;
     end += 0.2;
   };
 
-  Tone.Transport.setLoopPoints(start, end);
-
   if (needsRestart(start, end)) {
     Tone.Transport.pause();
+    currentlyPlayingSectionIdxStore.set(audioTimings.start.sectionIdx);
+    Tone.Transport.setLoopPoints(start, end);
     Tone.Transport.start(undefined, start);
+  } else {
+    Tone.Transport.setLoopPoints(start, end);
   }
 }
 
@@ -120,7 +122,7 @@ audioTimingsStore.subscribe(state => {
   if (state === undefined) return stopAudio(); // Stop if the new state contains no timings
   if (autoPlay) return playAudio(); // Start if autoplay is enabled
 
-  if (playing && !needsRestart(state.start, state.end)) {
+  if (playing && !needsRestart(state.start.time, state.end.time)) {
     // Start if audio is currently playing and the current time is within the new audio bounds
     playAudio();
   } else {

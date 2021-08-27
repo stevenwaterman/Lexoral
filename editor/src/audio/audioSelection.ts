@@ -1,6 +1,6 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
-import { allSectionsStore, documentStore, ParagraphStore, SectionStore } from "../text/textState";
+import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section } from "../text/textState";
 import { deriveUnwrap } from "../utils/stores";
 import { clampGet, clamp } from "../utils/list";
 
@@ -17,7 +17,7 @@ import { clampGet, clamp } from "../utils/list";
  * Paragraph: Play the entire paragraph that contains the current selection.
  * Onward: Play from the selection until the end of the audio.
  */
-export const audioModeStore: Writable<"word" | "context" | "paragraph" | "onward"> = writable("context");
+export const audioModeStore: Writable<"word" | "context" | "paragraph" | "onward"> = writable("onward");
 
 /**
  * These mutations are applied in order to the start or end of the section selection.
@@ -69,13 +69,13 @@ const contextMode: AudioSelectionMutation = {
     sectionOffset: -3,
     constrainWithinParagraph: true,
     addGap: true,
-    timeOffset: 0
+    timeOffset: 0.1
   },
   end: {
     sectionOffset: 3,
     constrainWithinParagraph: true,
     addGap: true,
-    timeOffset: 0
+    timeOffset: -0.1
   }
 }
 
@@ -127,7 +127,7 @@ const mutationStore: Readable<AudioSelectionMutation> = derived(audioModeStore, 
   }
 })
 
-function applyMutations(side: "start" | "end") {
+function applyMutations(side: "start" | "end"): Readable<{ time: number; sectionIdx: number } | undefined> {
   const earlyLate: "early" | "late" = side === "start" ? "early" : "late";
   const sectionIdxStore: Readable<number | undefined> = earlyLate === "early" ? earlySectionIdxStore : lateSectionIdxStore;
   const addGapsOffset = side === "start" ? -1 : 1;
@@ -162,12 +162,14 @@ function applyMutations(side: "start" | "end") {
     }                                          
   });
 
+  const offsetSectionStore: Readable<Section | undefined> = deriveUnwrap(offsetSectionStoreWrapped);
+
   /**
    * Store containing the section store for the section at the [start / end] of the audio after applying the `sectionOffset`, `constrainWithinParagraph`, and `addGaps` mutations.
    */
   const gapsSectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ deriveUnwrap(offsetSectionStoreWrapped), mutationStore,  allSectionsStore], 
-    ([offsetSection,                          mutation,       allSections]
+    [ offsetSectionStore, mutationStore,  allSectionsStore], 
+    ([offsetSection,      mutation,       allSections]
   ) => {
     if (offsetSection === undefined) return undefined;
     const offset = mutation.start.addGap ? addGapsOffset : 0;
@@ -176,30 +178,41 @@ function applyMutations(side: "start" | "end") {
     return allSections[clamp(desiredIdx, 0, maxIdx)];
   })
 
+  let timeStore: Readable<number | undefined>;
+
   if (side === "start") {
-    return derived(
+    timeStore = derived(
       [ deriveUnwrap(gapsSectionStoreWrapped), mutationStore],
       ([gapsSection,                          mutation]
     ) => {
       if (gapsSection === undefined) return undefined;
       if (gapsSection.idx === 0 && mutation.start.addGap) return gapsSection.startTime - 2; // Very first section
-      if (mutation.start.addGap) return gapsSection.endTime - mutation.start.timeOffset;
-      else return gapsSection.startTime - mutation.start.timeOffset;
+      if (mutation.start.addGap) return gapsSection.endTime + mutation.start.timeOffset;
+      else return gapsSection.startTime + mutation.start.timeOffset;
     })
   } else {
-    return derived(
+    timeStore = derived(
       [ deriveUnwrap(gapsSectionStoreWrapped), mutationStore,  allSectionsStore], 
       ([gapsSection,                          mutation,       allSections]) => {
       if (gapsSection === undefined) return undefined;
-      const maxIdx = Object.keys(allSectionsStore).length - 1;
+      const maxIdx = Object.keys(allSections).length - 1;
       if (gapsSection.idx === maxIdx && mutation.end.addGap) return gapsSection.endTime + 2; // Very last section
-      if (mutation.end.addGap) return gapsSection.startTime + mutation.end.timeOffset;
-      else return gapsSection.endTime + mutation.end.timeOffset;
+      if (mutation.end.addGap) return gapsSection.endTime + mutation.end.timeOffset;
+      else return gapsSection.startTime + mutation.end.timeOffset;
     })
   }
+  
+  return derived([offsetSectionStore, timeStore], ([offsetSection, time]) => {
+    if (offsetSection === undefined) return undefined;
+    if (time === undefined) return undefined;
+    return { 
+      time,
+      sectionIdx: offsetSection.idx 
+    };
+  })
 }
 
-export const audioTimingsStore: Readable<{ start: number; end: number } | undefined> = derived(
+export const audioTimingsStore: Readable<{ start: { sectionIdx: number; time: number }; end: { sectionIdx: number; time: number }} | undefined> = derived(
   [ applyMutations("start"),  applyMutations("end")], 
   ([start,                    end]
 ) => {

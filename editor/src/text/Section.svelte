@@ -3,7 +3,7 @@
   import { playingStore, currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "./textState";
   import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore } from "../input/selectionState";
-import { selectEnd, selectNext, selectPrev } from "../input/select";
+  import { selectEnd, selectNext, selectPrev } from "../input/select";
 
   export let sectionStore: SectionStore;
 

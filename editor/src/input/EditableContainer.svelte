@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte";
-  
+
   import {
     deleteSelection, 
     earlySectionStore,
@@ -23,37 +23,55 @@
   } from "./select";
   
   async function keyDown(event: KeyboardEvent) {
-    if (event.key === "Backspace" && $isTextSelectedStore) {
+    if ($isTextSelectedStore) {
       event.preventDefault();
 
-      const selection: SectionSelection | undefined = $selectionStore;
-      if (selection === undefined) return;
-      deleteSelection(selection, $selectedSectionsStore);
+      if (event.key === "Backspace") {
+        const selection: SectionSelection | undefined = $selectionStore;
+        if (selection === undefined) return;
+        deleteSelection(selection, $selectedSectionsStore);
 
-      await tick();
+        await tick();
 
-      const component = $earlySectionStore?.spanComponent;
-      if (component === undefined) return;
-      selectPosition(component, selection.early.offset)
-    }
-
-    if (event.key === "Delete" && $isTextSelectedStore) {
-      event.preventDefault();
-
-      const selection: SectionSelection | undefined = $selectionStore;
-      if (selection === undefined) return;
-      deleteSelection(selection, $selectedSectionsStore);
-
-      await tick();
-
-      const component = $lateSectionStore?.spanComponent;
-      if (component === undefined) return;
-
-      const singleSection = $selectionStore?.early?.paragraph === $selectionStore?.late?.paragraph && $selectionStore?.early?.section === $selectionStore?.late?.section;
-      if (singleSection) {
+        const component = $earlySectionStore?.spanComponent;
+        if (component === undefined) return;
         selectPosition(component, selection.early.offset)
-      } else {
-        selectStart(component)
+      }
+
+      if (event.key === "Delete") {
+        event.preventDefault();
+
+        const selection: SectionSelection | undefined = $selectionStore;
+        if (selection === undefined) return;
+        deleteSelection(selection, $selectedSectionsStore);
+
+        await tick();
+
+        const component = $lateSectionStore?.spanComponent;
+        if (component === undefined) return;
+
+        const singleSection = $selectionStore?.early?.paragraph === $selectionStore?.late?.paragraph && $selectionStore?.early?.section === $selectionStore?.late?.section;
+        if (singleSection) {
+          selectPosition(component, selection.early.offset)
+        } else {
+          selectStart(component)
+        }
+      }
+
+      if (event.key === "ArrowLeft") {
+        const component = $earlySectionStore?.spanComponent;
+        const offset = $selectionStore?.early?.offset;
+        if (component !== undefined && offset !== undefined) {
+          selectPosition(component, offset);
+        }
+      }
+
+      if (event.key === "ArrowRight") {
+        const component = $lateSectionStore?.spanComponent;
+        const offset = $selectionStore?.late?.offset;
+        if (component !== undefined && offset !== undefined) {
+          selectPosition(component, offset);
+        }
       }
     }
 

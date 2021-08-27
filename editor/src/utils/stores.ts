@@ -86,11 +86,7 @@ export function deriveUnwrap<T>(store_2: Readable<Readable<T> | undefined>): Rea
       return;
     }
 
-    const unsubscribe = store.subscribe(set);
-    return () => {
-      console.log("unsubscribing")
-      unsubscribe();
-    }
+    return store.subscribe(set);
   });
 }
 
