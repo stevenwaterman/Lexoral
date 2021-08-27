@@ -1,6 +1,6 @@
 audio:
   fix the next word going green and starting to play when not looping
-  fix audio playing multiple times sometimes
+  fix audio playing multiple times sometimes when skipping around quickly
 
 sections:
   - automatically adjust section timings based on audio envelope
@@ -21,3 +21,7 @@ UX:
   -- make logo background transparent
   -- support cut + paste
   -- support firefox + safari + edge
+
+
+Performance:
+  Slow when selecting and deselecting lots of sections

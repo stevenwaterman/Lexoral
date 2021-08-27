@@ -1,5 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte";
+  
   import {
     deleteSelection, 
     earlySectionStore,
@@ -8,15 +9,18 @@
     lateSectionStore,
     selectedSectionsStore,
     selectionStore,
-    updateSelection, 
+    updateSelection
+  } from "./selectionState";
+  import type { SectionSelection } from "./selectionState";
+
+  import { 
     selectNext,
     selectParagraphEnd,
     selectParagraphStart,
     selectPosition, 
     selectPrev,
     selectStart
-  } from "./selectionState";
-  import type { SectionSelection } from "./selectionState";
+  } from "./select";
   
   async function keyDown(event: KeyboardEvent) {
     if (event.key === "Backspace" && $isTextSelectedStore) {

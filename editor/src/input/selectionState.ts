@@ -4,12 +4,22 @@ import { deriveUnwrap, deriveConditionally } from "../utils/stores";
 import { tick } from "svelte";
 import { clampGet } from "../utils/list";
 
+/** Represents the start or end of a selection */
 export type CursorPosition = {
   paragraph: number;
   section: number;
   offset: number;
 }
 
+/**
+ * Represents a full selection
+ * 
+ * `anchor` is where the user started selecting from
+ * `focus` is where the user ended the selection
+ * `early` is the side of the selection that is earliest in the text
+ * `late` is the side of the selection that is latest in the text
+ * `inverted` is true if the user selected right-to-left, ie `anchor === late`
+ */
 export type SectionSelection = {
   anchor: CursorPosition;
   focus: CursorPosition;
@@ -18,12 +28,18 @@ export type SectionSelection = {
   inverted: boolean;
 };
 
+/** Store containing the current selection */
 export const selectionStore: Writable<SectionSelection | undefined> = writable(undefined);
 
-export function createSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<Section | undefined> {
+/**
+ * Derive a store containing the selected section based from a store containing a cursor position
+*/
+export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<Section | undefined> {
+  // Use the paragraph idx from the cursor position to derive a store containing the paragraph store for the paragraph containing the cursor
   const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, cursorPositionStore], ([document, cursorPosition]) => 
     cursorPosition === undefined ? undefined : clampGet(document, cursorPosition.paragraph));
 
+  // Use the section idx from the cursor position and the above store to derive a store containing the section store for the section containing the cursor
   const sectionStoreWrapped: Readable<SectionStore | undefined> = derived(
     [ deriveUnwrap(paragraphStoreWrapped), cursorPositionStore],
     ([paragraph,                          cursorPosition]
@@ -32,24 +48,38 @@ export function createSectionSelectionStore(cursorPositionStore: Readable<undefi
     if (cursorPosition === undefined) return undefined;
     return clampGet(paragraph, cursorPosition.section);
   });
-  const sectionStore: Readable<Section | undefined> = deriveUnwrap(sectionStoreWrapped);
-  return deriveConditionally(sectionStore, undefined);
+
+  // Unwrap the above section store to remove the nesting and suppress any superfluous updates, then return that
+  return deriveConditionally(deriveUnwrap(sectionStoreWrapped), undefined);
 }
 
+/** Extracts the anchor position from the current selection */
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
+
+/** Extracts the focus position from the current selection */
 const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);
 
-export const anchorSectionStore: Readable<Section | undefined> = createSectionSelectionStore(anchorCursorPositionStore);
-export const focusSectionStore: Readable<Section | undefined> = createSectionSelectionStore(focusCursorPositionStore);
-export const earlySectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
-export const lateSectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
-
+/** Store containing the section under the selection anchor */
+export const anchorSectionStore: Readable<Section | undefined> = deriveSectionSelectionStore(anchorCursorPositionStore);
+/** Store containing the section idx of the section under the selection anchor */
 export const anchorSectionIdxStore = derived(anchorSectionStore, section => section?.idx);
+
+/** Store containing the section under the selection focus */
+export const focusSectionStore: Readable<Section | undefined> = deriveSectionSelectionStore(focusCursorPositionStore);
+/** Store containing the section idx of the section under the selection focus */
 export const focusSectionIdxStore = derived(focusSectionStore, section => section?.idx);
+
+/** Store containing the section under the selection early position */
+export const earlySectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
+/** Store containing the section idx of the section under the selection early position */
 export const earlySectionIdxStore = derived(earlySectionStore, section => section?.idx);
+
+/** Store containing the section under the selection late position */
+export const lateSectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
+/** Store containing the section idx of the section under the selection late position */
 export const lateSectionIdxStore = derived(lateSectionStore, section => section?.idx);
 
-/** Is any text selected */
+/** Store indicating whether the selection is non-empty, ie are one or more characters selected */
 export const isTextSelectedStore: Readable<boolean> = derived(selectionStore, selection => {
   if (selection === undefined) return false;
   if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
@@ -58,7 +88,7 @@ export const isTextSelectedStore: Readable<boolean> = derived(selectionStore, se
   return false;
 });
 
-/** Are multiple sections selected */
+/** Store indicating whether the section selection is non-empty, ie are multiple sections selected */
 export const areMultipleSectionsSelectedStore: Readable<boolean> = derived(selectionStore, selection => {
   if (selection === undefined) return false;
   if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
@@ -66,7 +96,7 @@ export const areMultipleSectionsSelectedStore: Readable<boolean> = derived(selec
   return false;
 });
 
-/** Is the cursor at the start / end of the current section */
+/** Store indicating whether the caret is at the start / end of the current section */
 export const caretPositionStore: Readable<{start: boolean; end: boolean}> = derived([focusSectionStore, selectionStore], ([section, selection]) => {
   if (section === undefined || selection === undefined) return { start: false, end: false };
   const start = selection.focus.offset === 0;
@@ -75,6 +105,11 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
   return { start, end };
 })
 
+/**
+ * Update the selection state based on the current text selection in browser.
+ * Runs with the next microtasks, after any updates have occurred.
+ * Resolves once the updates are complete.
+ */
 export async function updateSelection(): Promise<void> {
   return new Promise(resolve => {
     setTimeout(async () => {
@@ -167,10 +202,9 @@ async function updateSelectionInternal() {
   await tick();
 }
 
-/**
- * The sections that currently have any of their text selected
- */
+/** The sections that currently have any of their text selected */
 export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySectionIdxStore, lateSectionIdxStore, allSectionsStore], ([rangeStart, rangeEnd, sections]) => {
+  // TODO this is probably a source of performance issues
   if (rangeStart === undefined) return [];
   if (rangeEnd === undefined) return [];
   const output: SectionStore[] = [];
@@ -180,12 +214,7 @@ export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySec
   return output;
 })
 
-// export const selectedSectionsIdxStore: Readable<undefined | { start: number; end: number }> = derived([earlySectionIdxStore, lateSectionIdxStore], ([early, late]) => {
-//   if (early === undefined) return undefined;
-//   if (late === undefined) return undefined;
-//   return { start: early, end: late }
-// })
-
+/** Delete the text inside of the provided selection */
 export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
   const earlyOffset = selection.early.offset;
   const lateOffset = selection.late.offset;
@@ -201,6 +230,7 @@ export function deleteSelection(selection: SectionSelection, selectedSectionsSto
   })
 }
 
+/** Is the selection inverted, ie right-to-left, ie `anchor === late` */
 function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boolean {
   if (focus.paragraph < anchor.paragraph) return true;
   if (focus.paragraph > anchor.paragraph) return false;
@@ -211,85 +241,8 @@ function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boo
   return focus.offset < anchor.offset;
 }
 
-export async function selectNext(component: HTMLSpanElement) {
-  const node: ChildNode | undefined = component.nextElementSibling?.firstChild ?? component?.parentElement?.nextElementSibling?.firstElementChild?.firstChild ?? undefined;
-  if (node === undefined) return;
-  await selectStart(node);
-}
-
-export async function selectPrev(component: HTMLSpanElement) {
-  const node: ChildNode | undefined = component.previousElementSibling?.firstChild ?? component?.parentElement?.previousElementSibling?.lastElementChild?.firstChild ?? undefined;
-  if (node === undefined) return;
-  await selectEnd(node);
-}
-
-export async function selectParagraphStart(component: HTMLSpanElement) {
-  const node: ChildNode | undefined = component?.parentElement?.firstElementChild?.firstChild ?? undefined;
-  if (node === undefined) return;
-  await selectStart(node);
-}
-
-export async function selectParagraphEnd(component: HTMLSpanElement) {
-  const node: ChildNode | undefined = component?.parentElement?.lastElementChild?.firstChild ?? undefined;
-  if (node === undefined) return;
-  await selectEnd(node);
-}
-
-export async function selectStart(node: Node) {
-  if (node) {
-    const textNode = node.hasChildNodes() ? node.firstChild : node;
-    if (textNode === null) return;
-
-    const range = document.createRange();
-    range.setStart(textNode, 1);
-    range.setEnd(textNode, 1);
-
-    const sel = window.getSelection();
-    if (sel === null) return;
-    sel.removeAllRanges();
-    sel.addRange(range);
-    await updateSelection();
-  }
-}
-
-export async function selectPosition(node: Node, offset: number) {
-  if (node) {
-    const textNode = node.hasChildNodes() ? node.firstChild : node;
-    if (textNode === null) return;
-
-    const range = document.createRange();
-    range.setStart(textNode, offset + 1);
-    range.setEnd(textNode, offset + 1);
-
-    const sel = window.getSelection();
-    if (sel === null) return;
-    sel.removeAllRanges();
-    sel.addRange(range);
-    await updateSelection();
-  }
-}
-
-export async function selectEnd(node: Node) {
-  if (node) {
-    const textNode = node.hasChildNodes() ? node.firstChild : node;
-    if (textNode === null) return;
-
-    const textLength = textNode.textContent?.length;
-    if (textLength === undefined) return;
-
-    const range = document.createRange();
-    range.setStart(textNode, textLength);
-    range.setEnd(textNode, textLength);
-
-    const sel = window.getSelection();
-    if (sel === null) return;
-    sel.removeAllRanges();
-    sel.addRange(range);
-    await updateSelection();
-  }
-}
-
-export function siblingIdx(node: Element): number {
+/** What number sibling is the provided node? */
+function siblingIdx(node: Element): number {
   let i = 0;
   let sib = node.previousElementSibling;
   while (sib !== null) {

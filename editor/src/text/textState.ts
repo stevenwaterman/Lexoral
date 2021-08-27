@@ -1,22 +1,28 @@
 import { writable, Readable, derived, Writable } from "svelte/store";
 import { getOptions } from "../preprocess/align";
 
+/** The format of one section as returned from the API */
 export type JsonOutputSection = {
   startTime: number;
   endTime: number;
   options: {text: string; confidence: number}[];
   startParagraph: boolean
 }
+
+/** The format of the entire document as returned from the API */
 export type JsonOutput = JsonOutputSection[];
 
-type Document = ParagraphStore[];
+/** Represents the entire text file */
+export type Document = ParagraphStore[];
 export type DocumentStore = Readable<Document>;
 
+/** Represents one paragraph of text */
 export type Paragraph = SectionStore[];
 export type ParagraphStore = Readable<Paragraph> & {
   append: (section: SectionStore) => void;
 };
 
+/** Represents one section of text, usually one word */
 export type Section = {
   idx: number;
   startTime: number;
@@ -34,6 +40,7 @@ export type SectionStore = Readable<Section> & {
   registerComponent: (component: HTMLSpanElement) => void;
 }
 
+/** Hydrate the section as returned from the api and load it into a newly created section store */
 function createSectionStore(state: JsonOutputSection, idx: number): SectionStore {
   const internalStore: Writable<Section> = writable({
     idx,
@@ -94,6 +101,7 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
   }
 }
 
+/** Create a store containing a paragraph made up of the provided sections */
 function createParagraphStore(sections: SectionStore[]): ParagraphStore {
   const base: Writable<Paragraph> = writable(sections);
 
@@ -112,8 +120,10 @@ function createParagraphStore(sections: SectionStore[]): ParagraphStore {
 
 const documentStoreInternal: Writable<Document> = writable([]);
 export const documentStore: DocumentStore = documentStoreInternal;
+/** A store containing all sections, mapped by their section index */
 export const allSectionsStore: Writable<Record<number, SectionStore>> = writable({});
 
+/** Initialise the text state of the app using the data returned from the API */
 export function initialiseStores(output: JsonOutput): Record<number, { startTime: number; endTime: number }> {
   const audioTimings: Record<number, { startTime: number; endTime: number }> = {};
   const sectionStores: Record<number, SectionStore> = {};

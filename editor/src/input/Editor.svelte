@@ -1,7 +1,7 @@
 <script lang="ts">
   import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio/audio";
   import { audioModeStore } from "../audio/audioSelection";
-  import { selectEnd } from "./selectionState";
+  import { selectEnd } from "./select";
   import ToastController from "../display/toast/ToastController.svelte";
   import { sendToast } from "../display/toast/toasts";
   import Header from "../display/Header.svelte";

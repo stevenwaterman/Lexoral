@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte";
-  import type { Readable } from "svelte/store";
-  import { getAudioCurrentSectionStore, playingStore } from "../audio/audio";
+  import { playingStore, currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "./textState";
-  import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore, selectEnd, selectNext, selectPrev } from "../input/selectionState";
+  import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore } from "../input/selectionState";
+import { selectEnd, selectNext, selectPrev } from "../input/select";
 
   export let sectionStore: SectionStore;
 
@@ -17,9 +17,6 @@
   let displayText: string;
   $: displayText = " " + ($sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder);
 
-  let sectionPlayingStore: Readable<boolean>;
-  $: sectionPlayingStore = getAudioCurrentSectionStore($sectionStore.idx)
-
   async function updateText() {
     const textContent = component?.textContent?.trim();
     if (textContent === undefined) return;
@@ -30,8 +27,7 @@
       sectionStore.setText(textContent.substring(0, 1))
       await tick();
       selectEnd(component);
-    }
-    else {
+    } else {
       sectionStore.setText(textContent);
     }
   }
@@ -109,7 +105,7 @@
   class="section"
   class:highlight
   class:placeholder={!$sectionStore.edited}
-  class:sectionPlaying={$sectionPlayingStore && $playingStore}
+  class:sectionPlaying={$currentlyPlayingSectionIdxStore === $sectionStore.idx}
   class:nonePlaying={!$playingStore}
   bind:this={component}
   on:keydown={keyDown}

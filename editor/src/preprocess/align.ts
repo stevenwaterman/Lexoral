@@ -4,6 +4,9 @@ const defaultAligner = NWaligner({
   similarityScoreFunction: (char1: string, char2: string) => (char1.toLowerCase() === char2.toLowerCase() ? 1 : -2)
 });
 
+/**
+ * Correct the initial autocomplete suggestions based on the current text input
+ */
 export function getOptions(text: string, options: { text: string }[]): string[] {
   const newOptions = options.map(option => alignOption(text, option.text));
   newOptions.sort((a, b) => b.score - a.score);
@@ -19,6 +22,9 @@ export function getOptions(text: string, options: { text: string }[]): string[] 
   return deduped;
 }
 
+/**
+ * Align two strings and return a similarity score
+ */
 function alignOption(inputText: string, optionText: string): { text: string; score: number } {
   if (!inputText) return { text: optionText, score: 0 };
 
