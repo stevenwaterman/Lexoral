@@ -98,12 +98,6 @@
       if (node) selectParagraphEnd(node);
     }
 
-    if (event.key === "Enter") {
-      event.preventDefault();
-      const node = $focusSectionStore?.spanComponent;
-      if (node) selectNext(node);
-    }
-
     updateSelection();
   }
 

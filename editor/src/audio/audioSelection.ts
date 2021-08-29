@@ -1,7 +1,7 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
 import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section } from "../text/textState";
-import { deriveUnwrap, deriveDebounced } from "../utils/stores";
+import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
 import { clampGet, clamp } from "../utils/list";
 
 /**
@@ -226,4 +226,12 @@ const audioTimingsStoreBouncy: Readable<{ start: { sectionIdx: number; time: num
   return { start, end };
 });
 
-export const audioTimingsStore = deriveDebounced(audioTimingsStoreBouncy, 0.05);
+const audioTimingsStoreSuppressed: typeof audioTimingsStoreBouncy = deriveConditionally(
+  audioTimingsStoreBouncy, 
+  undefined, 
+  (a, b) => 
+    a?.start?.sectionIdx !== b?.start?.sectionIdx || 
+    a?.end?.sectionIdx !== b?.end?.sectionIdx
+);
+
+export const audioTimingsStore = deriveDebounced(audioTimingsStoreSuppressed, 0.05);

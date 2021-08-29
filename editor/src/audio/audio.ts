@@ -4,7 +4,6 @@ import { StoreValues, deriveUnwrap, deriveLastDefined } from "../utils/stores";
 import { audioTimingsStore } from "./audioSelection";
 import { SectionStore, allSectionsStore, Section } from "../text/textState";
 import { clamp } from "../utils/list";
-import { ToneOscillatorNode } from "tone";
 
 /** Is the audio actively playing */
 let playing: boolean = false;
@@ -25,14 +24,20 @@ export const loopStore: Writable<boolean> = writable(loop);
 loopStore.subscribe(state => loop = state);
 
 /** Which section idx is currently playing? */
-export const currentlyPlayingSectionIdxStore: Writable<number | undefined> = writable(undefined);
-playingStore.subscribe(playing => {
-  // When we stop playing, update such that no sections are currently playing
-  if (!playing) currentlyPlayingSectionIdxStore.set(undefined);
-});
+const currentlyPlayingSectionIdxStoreInternal: Writable<number | undefined> = writable(undefined);
+export const currentlyPlayingSectionIdxStore: Readable<number | undefined> = derived(
+  [ playingStore, currentlyPlayingSectionIdxStoreInternal,  audioTimingsStore], 
+  ([playing,      currentIdx,                               audioTimings]) => {
+  if (!playing) return undefined;
+  if (!currentIdx) return undefined;
+  if (!audioTimings) return undefined;
+  if (currentIdx < audioTimings.start.sectionIdx) return undefined;
+  if (currentIdx > audioTimings.end.sectionIdx) return undefined;
+  return currentIdx;
+})
 
 /** Which section store is currently playing? */
-const audioCurrentSectionStoreWrapped: Readable<SectionStore | undefined> = derived([currentlyPlayingSectionIdxStore, allSectionsStore], ([idx, sections]) => {
+const audioCurrentSectionStoreWrapped: Readable<SectionStore | undefined> = derived([currentlyPlayingSectionIdxStoreInternal, allSectionsStore], ([idx, sections]) => {
   if (idx === undefined) return undefined;
   return sections[idx as any];
 })
@@ -68,10 +73,12 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
 
   Object.entries(allSections).forEach(([idxString, section]) => {
     const idx = parseInt(idxString);
-    Tone.Transport.schedule(() => currentlyPlayingSectionIdxStore.set(idx), section.startTime);
-    Tone.Transport.schedule(() => currentlyPlayingSectionIdxStore.set(undefined), section.endTime);
+    Tone.Transport.schedule(() => currentlyPlayingSectionIdxStoreInternal.set(idx), section.startTime);
+    Tone.Transport.schedule(() => currentlyPlayingSectionIdxStoreInternal.set(undefined), section.endTime);
   })
 }
+
+let desiredEnd: number | undefined = undefined;
 
 /** 
  * Plays the audio based on the current state.
@@ -83,7 +90,6 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
 export function playAudio() {
   if (audioTimings === undefined) return;
   Tone.start();
-  Tone.Transport.stop();
 
   let start = clamp(audioTimings.start.time, 0, duration);
   let end = clamp(audioTimings.end.time, 0, duration);
@@ -93,13 +99,27 @@ export function playAudio() {
     end += 0.2;
   };
 
-  const playDuration = end - start;
+  Tone.Transport.loop = false;
 
+  if (Tone.Transport.state === "started") {
+    Tone.Transport.seconds = start;
+  } else {
+    Tone.Transport.start(undefined, start);
+  }
+
+  Tone.Transport.loopStart = start;
+  Tone.Transport.loopEnd = end;
   Tone.Transport.loop = loop;
-  Tone.Transport.start(undefined, start);
-  Tone.Transport.stop(`+${playDuration}`);
-  
-  currentlyPlayingSectionIdxStore.set(audioTimings.start.sectionIdx);
+
+  currentlyPlayingSectionIdxStoreInternal.set(audioTimings.start.sectionIdx);
+
+  if (!loop) {
+    desiredEnd = end;
+    Tone.Transport.scheduleOnce(() => {
+      if (desiredEnd !== end) return; // Changed desired end, do nothing.
+      Tone.Transport.stop();
+    }, end)
+  }
 }
 
 /** Stop the audio if currently playing */

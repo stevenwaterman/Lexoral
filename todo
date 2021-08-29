@@ -1,9 +1,6 @@
 audio:
+  loud when click + drag
   Option to continue / restart
-  When playing, if you select a non-overlapping audio selection sometimes a section stays green
-  Expect it to automatically play
-  fix the next word going green and starting to play when not looping
-  fix audio playing multiple times sometimes when skipping around quickly
 
 sections:
   - automatically adjust section timings based on audio envelope

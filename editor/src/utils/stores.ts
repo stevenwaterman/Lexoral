@@ -20,7 +20,10 @@ export function deriveConditionally<T>(
 ): Readable<T> {
   let oldState: T = initialState;
   return derived(baseStore, (newState, set) => {
-    if (accept(newState, oldState)) set(newState);
+    if (accept(newState, oldState)) {
+      oldState = newState;
+      set(newState);
+    }
   }, oldState);
 }
 
@@ -64,17 +67,8 @@ export function deriveDebounced<T>(
   baseStore: Readable<T>,
   delay: number,
 ): Readable<T> {
-  let i = 0;
   return derived(baseStore, (state, set) => {
-    i++;
-    const iCapture = i;
-    const timeout = setTimeout(() => {
-      if (i === iCapture) {
-        set(state);
-      } else {
-        console.log("prevented running")
-      }
-    }, delay * 1000);
+    const timeout = setTimeout(() => set(state), delay * 1000);
     return () => clearTimeout(timeout);
   })
 }

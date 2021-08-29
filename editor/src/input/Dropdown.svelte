@@ -1,7 +1,7 @@
 <script lang="ts">
   import { focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
-  import { selectEnd } from "./select";
+  import { selectEnd, selectNext } from "./select";
   import type { Section } from "../text/textState";
 
   let section: Section | undefined;
@@ -45,14 +45,12 @@
   $: resetIdx(visible);
 
   function keyDown(event: KeyboardEvent) {
-    if (!visible) return;
-
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      selectedIdx = (selectedIdx ?? 0) - 1;
+      if (visible) selectedIdx = (selectedIdx ?? 0) - 1;
     } else if (event.key === "ArrowDown") {
       event.preventDefault();
-      selectedIdx = (selectedIdx ?? -1) + 1;
+      if (visible) selectedIdx = (selectedIdx ?? -1) + 1;
     } else if (event.key === "Enter") {
       event.preventDefault();
       acceptOption();
@@ -69,11 +67,11 @@
   }
 
   function acceptOption() {
-    if (section !== undefined && options.length > 0 && highlightIdx !== undefined) {
-      const selectedOption = options[highlightIdx];
-      section.setText(selectedOption);
-      selectEnd(section.spanComponent)
-    }
+    if (visible && section !== undefined && options.length > 0 && highlightIdx !== undefined) {
+        const selectedOption = options[highlightIdx];
+        section.setText(selectedOption);
+    } 
+    selectNext(section?.spanComponent)
   }
 </script>
 
