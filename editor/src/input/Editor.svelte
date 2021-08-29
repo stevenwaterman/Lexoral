@@ -12,6 +12,7 @@
 
   function keyUp(event: KeyboardEvent) {
     if (event.key === "Alt") {
+      event.preventDefault();
       if ($playingStore) stopAudio();
       else playAudio();
     }
@@ -21,12 +22,14 @@
     if (event.key === "Escape" && $playingStore) {
       const component = $lastPlayedSectionStore?.spanComponent;
       if (component) {
+        event.preventDefault();
         await selectEnd(component);
         stopAudio();
       }
     }
 
     if (event.altKey) {
+      event.preventDefault();
       switch(event.key) {
         case "w": return wordMode();
         case "c": return contextMode();
