@@ -17,7 +17,7 @@ import { clampGet, clamp } from "../utils/list";
  * Paragraph: Play the entire paragraph that contains the current selection.
  * Onward: Play from the selection until the end of the audio.
  */
-export const audioModeStore: Writable<"word" | "context" | "paragraph" | "onward"> = writable("onward");
+export const audioModeStore: Writable<"word" | "context" | "paragraph" | "onward"> = writable("context");
 
 /**
  * These mutations are applied in order to the start or end of the section selection.
@@ -69,13 +69,13 @@ const contextMode: AudioSelectionMutation = {
     sectionOffset: -3,
     constrainWithinParagraph: true,
     addGap: true,
-    timeOffset: 0.1
+    timeOffset: 0
   },
   end: {
     sectionOffset: 3,
     constrainWithinParagraph: true,
     addGap: true,
-    timeOffset: -0.1
+    timeOffset: 0
   }
 }
 
@@ -161,52 +161,57 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
       return allSections[clamp(offsetIdx, 0, maxIdx)];
     }                                          
   });
-
   const offsetSectionStore: Readable<Section | undefined> = deriveUnwrap(offsetSectionStoreWrapped);
 
   /**
-   * Store containing the section store for the section at the [start / end] of the audio after applying the `sectionOffset`, `constrainWithinParagraph`, and `addGaps` mutations.
+   * Store containing the section before/after the offsetSection.
    */
   const gapsSectionStoreWrapped: Readable<SectionStore | undefined> = derived(
     [ offsetSectionStore, mutationStore,  allSectionsStore], 
     ([offsetSection,      mutation,       allSections]
   ) => {
     if (offsetSection === undefined) return undefined;
-    const offset = mutation.start.addGap ? addGapsOffset : 0;
-    const desiredIdx = offsetSection.idx + offset;
+    const desiredIdx = offsetSection.idx + addGapsOffset;
     const maxIdx = Object.keys(allSections).length - 1;
     return allSections[clamp(desiredIdx, 0, maxIdx)];
   })
+  const gapsSectionStore: Readable<Section | undefined> = deriveUnwrap(gapsSectionStoreWrapped);
 
   let timeStore: Readable<number | undefined>;
 
   if (side === "start") {
     timeStore = derived(
-      [ deriveUnwrap(gapsSectionStoreWrapped), mutationStore],
-      ([gapsSection,                          mutation]
+      [ offsetSectionStore, gapsSectionStore, mutationStore],
+      ([offsetSection,      gapsSection,      mutation]
     ) => {
+      if (offsetSection === undefined) return undefined;
       if (gapsSection === undefined) return undefined;
-      if (gapsSection.idx === 0 && mutation.start.addGap) return gapsSection.startTime - 2; // Very first section
-      if (mutation.start.addGap) return gapsSection.endTime + mutation.start.timeOffset;
-      else return gapsSection.startTime + mutation.start.timeOffset;
+      if (offsetSection.idx === gapsSection.idx && mutation.start.addGap) return offsetSection.startTime - 2; // Very first section
+      if (mutation.start.addGap) return (offsetSection.startTime + gapsSection.endTime) / 2; // Return middle of gap
+      else return offsetSection.startTime; // Return start of section
     })
   } else {
     timeStore = derived(
-      [ deriveUnwrap(gapsSectionStoreWrapped), mutationStore,  allSectionsStore], 
-      ([gapsSection,                          mutation,       allSections]) => {
+      [ offsetSectionStore, gapsSectionStore, mutationStore], 
+      ([offsetSection,      gapsSection,      mutation]) => {
+      if (offsetSection === undefined) return undefined;
       if (gapsSection === undefined) return undefined;
-      const maxIdx = Object.keys(allSections).length - 1;
-      if (gapsSection.idx === maxIdx && mutation.end.addGap) return gapsSection.endTime + 2; // Very last section
-      if (mutation.end.addGap) return gapsSection.endTime + mutation.end.timeOffset;
-      else return gapsSection.startTime + mutation.end.timeOffset;
+      if (offsetSection.idx === gapsSection.idx && mutation.end.addGap) return offsetSection.endTime + 2; // Very last section
+      if (mutation.end.addGap) return (offsetSection.endTime + gapsSection.startTime) / 2; // Return middle of gap
+      else return offsetSection.endTime; // Return end of section
     })
   }
-  
-  return derived([offsetSectionStore, timeStore], ([offsetSection, time]) => {
-    if (offsetSection === undefined) return undefined;
+
+  const offsetTimeStore: Readable<number | undefined> = derived([timeStore, mutationStore], ([time, mutation]) => {
     if (time === undefined) return undefined;
+    return time + mutation[side].timeOffset
+  })
+  
+  return derived([offsetSectionStore, offsetTimeStore], ([offsetSection, offsetTime]) => {
+    if (offsetSection === undefined) return undefined;
+    if (offsetTime === undefined) return undefined;
     return { 
-      time,
+      time: offsetTime,
       sectionIdx: offsetSection.idx 
     };
   })

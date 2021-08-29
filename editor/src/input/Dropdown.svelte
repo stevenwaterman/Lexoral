@@ -2,6 +2,7 @@
   import type { Section } from "../text/textState";
   import { focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
+import { selectEnd } from "./select";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
@@ -19,8 +20,20 @@
   }
   $: resize(section);
 
+  let completionOptions: string[];
+  $: completionOptions = section?.completionOptions ?? [];
+
+  let currentText: string;
+  $: currentText = section?.text ?? "";
+
+  let filteredOptions: string[];
+  $: filteredOptions = completionOptions.filter(option => option !== currentText);
+
   let options: string[];
-  $: options = section?.completionOptions ?? [];
+  $: options = [
+    ...(currentText.length === 0 ? [] : [currentText]),
+    ...filteredOptions
+  ]
 
   let selectedIdx: number = 0;
 
@@ -60,6 +73,7 @@
     if (section !== undefined && options.length > 0 && highlightIdx !== undefined) {
       const selectedOption = options[highlightIdx];
       section.setText(selectedOption);
+      selectEnd(section.spanComponent)
     }
   }
 </script>
