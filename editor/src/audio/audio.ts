@@ -4,6 +4,7 @@ import { StoreValues, deriveUnwrap, deriveLastDefined } from "../utils/stores";
 import { audioTimingsStore } from "./audioSelection";
 import { SectionStore, allSectionsStore, Section } from "../text/textState";
 import { clamp } from "../utils/list";
+import { ToneOscillatorNode } from "tone";
 
 /** Is the audio actively playing */
 let playing: boolean = false;
@@ -70,10 +71,6 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
     Tone.Transport.schedule(() => currentlyPlayingSectionIdxStore.set(idx), section.startTime);
     Tone.Transport.schedule(() => currentlyPlayingSectionIdxStore.set(undefined), section.endTime);
   })
-
-  Tone.Transport.on("loop", () => {
-    if (!loop) Tone.Transport.stop();
-  })
 }
 
 /** 
@@ -86,6 +83,7 @@ export async function initAudio(allSections: Record<number, {startTime: number; 
 export function playAudio() {
   if (audioTimings === undefined) return;
   Tone.start();
+  Tone.Transport.stop();
 
   let start = clamp(audioTimings.start.time, 0, duration);
   let end = clamp(audioTimings.end.time, 0, duration);
@@ -95,14 +93,13 @@ export function playAudio() {
     end += 0.2;
   };
 
-  if (needsRestart(start, end)) {
-    Tone.Transport.pause();
-    currentlyPlayingSectionIdxStore.set(audioTimings.start.sectionIdx);
-    Tone.Transport.setLoopPoints(start, end);
-    Tone.Transport.start(undefined, start);
-  } else {
-    Tone.Transport.setLoopPoints(start, end);
-  }
+  const playDuration = end - start;
+
+  Tone.Transport.loop = loop;
+  Tone.Transport.start(undefined, start);
+  Tone.Transport.stop(`+${playDuration}`);
+  
+  currentlyPlayingSectionIdxStore.set(audioTimings.start.sectionIdx);
 }
 
 /** Stop the audio if currently playing */
@@ -121,23 +118,5 @@ audioTimingsStore.subscribe(state => {
 
   if (state === undefined) return stopAudio(); // Stop if the new state contains no timings
   if (autoPlay) return playAudio(); // Start if autoplay is enabled
-
-  if (playing && !needsRestart(state.start.time, state.end.time)) {
-    // Start if audio is currently playing and the current time is within the new audio bounds
-    playAudio();
-  } else {
-    // Stop if we'd need to restart the audio
-    stopAudio();
-  }
+  else stopAudio();
 });
-
-/** Determine whether the current audio time is between the specified start and end times */
-function needsRestart(start: number, end: number) {
-  const current = Tone.Transport.getSecondsAtTime(Tone.Transport.now());
-  const restart = (
-    !playing ||
-    current < start ||
-    current >= end
-  );
-  return restart;
-}

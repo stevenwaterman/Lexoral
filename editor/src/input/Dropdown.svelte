@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Section } from "../text/textState";
   import { focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
-import { selectEnd } from "./select";
+  import { selectEnd } from "./select";
+  import type { Section } from "../text/textState";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
@@ -20,20 +20,19 @@ import { selectEnd } from "./select";
   }
   $: resize(section);
 
-  let completionOptions: string[];
-  $: completionOptions = section?.completionOptions ?? [];
-
-  let currentText: string;
-  $: currentText = section?.text ?? "";
-
-  let filteredOptions: string[];
-  $: filteredOptions = completionOptions.filter(option => option !== currentText);
-
   let options: string[];
-  $: options = [
-    ...(currentText.length === 0 ? [] : [currentText]),
-    ...filteredOptions
-  ]
+  $: options = getOptions(section)
+  function getOptions(section: Section | undefined): string[] {
+    if (!section) return [];
+    const {completionOptions, text, edited} = section;
+
+    let options: string[] = completionOptions;
+    if (!edited && text.length > 0) {
+      options = options.filter(option => option !== text);
+      options.unshift(text);
+    }
+    return options;
+  }
 
   let selectedIdx: number = 0;
 

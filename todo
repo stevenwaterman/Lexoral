@@ -1,4 +1,5 @@
 audio:
+  Option to continue / restart
   When playing, if you select a non-overlapping audio selection sometimes a section stays green
   Expect it to automatically play
   fix the next word going green and starting to play when not looping
@@ -20,7 +21,6 @@ UX:
   Should be able to select nothing
   Should have nothing selected at first
   up + down arrows when no dropdown shouldn't do anything
-  When accepting drop down option, cursor moves to start of the doc
   Reenable key presses when text is selected
   Shift + arrow keys doesn’t select text
   Hard to tell difference between primary and secondary text colours

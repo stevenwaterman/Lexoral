@@ -1,4 +1,5 @@
 import { Readable, derived, writable, Writable, Unsubscriber } from "svelte/store";
+import { time } from "console";
 
 type Stores = Readable<any> | [Readable<any>, ...Array<Readable<any>>];
 
@@ -63,12 +64,18 @@ export function deriveDebounced<T>(
   baseStore: Readable<T>,
   delay: number,
 ): Readable<T> {
-  let timeout: NodeJS.Timeout | undefined = undefined;
+  let i = 0;
   return derived(baseStore, (state, set) => {
-    if (timeout !== undefined) clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      set(state);
+    i++;
+    const iCapture = i;
+    const timeout = setTimeout(() => {
+      if (i === iCapture) {
+        set(state);
+      } else {
+        console.log("prevented running")
+      }
     }, delay * 1000);
+    return () => clearTimeout(timeout);
   })
 }
 

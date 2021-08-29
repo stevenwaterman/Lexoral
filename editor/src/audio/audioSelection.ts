@@ -1,7 +1,7 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
 import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section } from "../text/textState";
-import { deriveUnwrap } from "../utils/stores";
+import { deriveUnwrap, deriveDebounced } from "../utils/stores";
 import { clampGet, clamp } from "../utils/list";
 
 /**
@@ -217,7 +217,7 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
   })
 }
 
-export const audioTimingsStore: Readable<{ start: { sectionIdx: number; time: number }; end: { sectionIdx: number; time: number }} | undefined> = derived(
+const audioTimingsStoreBouncy: Readable<{ start: { sectionIdx: number; time: number }; end: { sectionIdx: number; time: number }} | undefined> = derived(
   [ applyMutations("start"),  applyMutations("end")], 
   ([start,                    end]
 ) => {
@@ -225,3 +225,5 @@ export const audioTimingsStore: Readable<{ start: { sectionIdx: number; time: nu
   if (end === undefined) return undefined;
   return { start, end };
 });
+
+export const audioTimingsStore = deriveDebounced(audioTimingsStoreBouncy, 0.05);
