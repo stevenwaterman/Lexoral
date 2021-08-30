@@ -3,11 +3,12 @@ audio:
   Option to continue / restart
 
 sections:
+  manually adjust paragraph boundaries
+  
   - automatically adjust section timings based on audio envelope
   - automatically determine paragraph boundaries based on audio envelope
   - automatically combine sections
 
-  -- manually adjust paragraph boundaries
   -- manually split a section
   -- manually combine a section
   -- manually add a section

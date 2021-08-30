@@ -1,5 +1,4 @@
 import { Readable, derived, writable, Writable, Unsubscriber } from "svelte/store";
-import { time } from "console";
 
 type Stores = Readable<any> | [Readable<any>, ...Array<Readable<any>>];
 

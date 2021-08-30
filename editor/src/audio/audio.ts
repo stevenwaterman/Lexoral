@@ -100,15 +100,18 @@ export function playAudio() {
   };
 
   Tone.Transport.loop = false;
+  Tone.Transport.loopStart = start;
+  Tone.Transport.loopEnd = end;
+
+  // console.log(Tone.Transport.state)
 
   if (Tone.Transport.state === "started") {
     Tone.Transport.seconds = start;
   } else {
+    console.log(start)
     Tone.Transport.start(undefined, start);
   }
 
-  Tone.Transport.loopStart = start;
-  Tone.Transport.loopEnd = end;
   Tone.Transport.loop = loop;
 
   currentlyPlayingSectionIdxStoreInternal.set(audioTimings.start.sectionIdx);

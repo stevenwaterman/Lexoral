@@ -226,12 +226,15 @@ const audioTimingsStoreBouncy: Readable<{ start: { sectionIdx: number; time: num
   return { start, end };
 });
 
+
 const audioTimingsStoreSuppressed: typeof audioTimingsStoreBouncy = deriveConditionally(
   audioTimingsStoreBouncy, 
   undefined, 
   (a, b) => 
     a?.start?.sectionIdx !== b?.start?.sectionIdx || 
-    a?.end?.sectionIdx !== b?.end?.sectionIdx
+    a?.end?.sectionIdx !== b?.end?.sectionIdx ||
+    a?.start?.time !== b?.start?.time ||
+    a?.end?.time !== b?.end?.time
 );
 
 export const audioTimingsStore = deriveDebounced(audioTimingsStoreSuppressed, 0.05);
