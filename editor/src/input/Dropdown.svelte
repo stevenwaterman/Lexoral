@@ -3,6 +3,7 @@
   import { modulo } from "../utils/list";
   import { selectEnd, selectNext } from "./select";
   import type { Section } from "../text/textState";
+import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
@@ -51,7 +52,7 @@
     } else if (event.key === "ArrowDown") {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? -1) + 1;
-    } else if (event.key === "Enter") {
+    } else if (event.key === "Enter" && !event.ctrlKey) {
       event.preventDefault();
       acceptOption();
     }
@@ -67,9 +68,9 @@
   }
 
   function acceptOption() {
-    if (visible && section !== undefined && options.length > 0 && highlightIdx !== undefined) {
+    if (visible && options.length > 0 && highlightIdx !== undefined) {
         const selectedOption = options[highlightIdx];
-        section.setText(selectedOption);
+        new MaybeSectionMutator(focusSectionStore).setText(selectedOption);
     } 
     selectNext(section?.spanComponent)
   }

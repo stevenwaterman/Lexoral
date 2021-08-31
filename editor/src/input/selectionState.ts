@@ -1,8 +1,9 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
-import { ParagraphStore, documentStore, Paragraph, Section, SectionStore, allSectionsStore } from "../text/textState";
-import { deriveUnwrap, deriveConditionally } from "../utils/stores";
+import { ParagraphStore, documentStore, Paragraph, Section, SectionStore, allSectionsStore, MaybeParagraphStore, MaybeSectionStore } from "../text/textState";
+import { deriveUnwrap, deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
 import { tick } from "svelte";
-import { clampGet } from "../utils/list";
+import { clampGet, clampGetRecord } from "../utils/list";
+import { SectionMutator } from "../text/storeMutators";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -34,49 +35,50 @@ export const selectionStore: Writable<SectionSelection | undefined> = writable(u
 /**
  * Derive a store containing the selected section based from a store containing a cursor position
 */
-export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): Readable<Section | undefined> {
+export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): {
+  paragraph: MaybeParagraphStore;
+  section: MaybeSectionStore;
+} {
   // Use the paragraph idx from the cursor position to derive a store containing the paragraph store for the paragraph containing the cursor
   const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, cursorPositionStore], ([document, cursorPosition]) => 
     cursorPosition === undefined ? undefined : clampGet(document, cursorPosition.paragraph));
+  const paragraphStore: MaybeParagraphStore = deriveUnwrapWritable(paragraphStoreWrapped);
+  const paragraphStoreSuppressed: MaybeParagraphStore = makeWritable(paragraphStore, deriveConditionally(paragraphStore, undefined));
 
   // Use the section idx from the cursor position and the above store to derive a store containing the section store for the section containing the cursor
   const sectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ deriveUnwrap(paragraphStoreWrapped), cursorPositionStore],
-    ([paragraph,                          cursorPosition]
+    [ paragraphStoreSuppressed, cursorPositionStore],
+    ([paragraph,                cursorPosition]
   ) => {
     if (paragraph === undefined) return undefined;
     if (cursorPosition === undefined) return undefined;
     return clampGet(paragraph, cursorPosition.section);
   });
+  const sectionStore: MaybeSectionStore = deriveUnwrapWritable(sectionStoreWrapped);
+  const sectionStoreSuppressed: MaybeSectionStore = makeWritable(sectionStore, deriveConditionally(sectionStore, undefined));
 
-  // Unwrap the above section store to remove the nesting and suppress any superfluous updates, then return that
-  return deriveConditionally(deriveUnwrap(sectionStoreWrapped), undefined);
+  return {
+    section: sectionStoreSuppressed,
+    paragraph: paragraphStoreSuppressed
+  }
 }
 
-/** Extracts the anchor position from the current selection */
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
-
-/** Extracts the focus position from the current selection */
 const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);
 
-/** Store containing the section under the selection anchor */
-export const anchorSectionStore: Readable<Section | undefined> = deriveSectionSelectionStore(anchorCursorPositionStore);
-/** Store containing the section idx of the section under the selection anchor */
+const anchorStores = deriveSectionSelectionStore(anchorCursorPositionStore);
+export const anchorSectionStore: MaybeSectionStore = anchorStores.section;
 export const anchorSectionIdxStore = derived(anchorSectionStore, section => section?.idx);
+export const anchorParagraphStore: MaybeParagraphStore = anchorStores.paragraph;
 
-/** Store containing the section under the selection focus */
-export const focusSectionStore: Readable<Section | undefined> = deriveSectionSelectionStore(focusCursorPositionStore);
-/** Store containing the section idx of the section under the selection focus */
+const focusStores = deriveSectionSelectionStore(focusCursorPositionStore);
+export const focusSectionStore: MaybeSectionStore = focusStores.section;
 export const focusSectionIdxStore = derived(focusSectionStore, section => section?.idx);
+export const focusParagraphStore: MaybeParagraphStore = focusStores.paragraph;
 
-/** Store containing the section under the selection early position */
 export const earlySectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
-/** Store containing the section idx of the section under the selection early position */
 export const earlySectionIdxStore = derived(earlySectionStore, section => section?.idx);
-
-/** Store containing the section under the selection late position */
 export const lateSectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
-/** Store containing the section idx of the section under the selection late position */
 export const lateSectionIdxStore = derived(lateSectionStore, section => section?.idx);
 
 /** Store indicating whether the selection is non-empty, ie are one or more characters selected */
@@ -223,7 +225,7 @@ export function deleteSelection(selection: SectionSelection, selectedSectionsSto
     const sectionIsFirst = idx === 0;
     const sectionIsLast = idx === selectedSectionsStore.length - 1;
 
-    section.deleteText({
+    new SectionMutator(section).deleteText({
       start: sectionIsFirst ? earlyOffset : undefined,
       end: sectionIsLast ? lateOffset : undefined
     });

@@ -61,3 +61,14 @@ export function clampGet<T>(list: T[], idx: number): T | undefined {
   const clampedIdx = clamp(idx, 0, list.length - 1);
   return list[clampedIdx];
 }
+
+export function clampGetRecord<V>(record: Record<number, V>, idx: number): V | undefined {
+  const keys = Object.keys(record).map(key => parseInt(key));
+  const minKey = Math.min(...keys);
+  const maxKey = Math.max(...keys);
+  const clampedKey = clamp(idx, minKey, maxKey);
+
+  let i = clampedKey;
+  while (!(i in record)) i++;
+  return record[i];
+}

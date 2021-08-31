@@ -1,10 +1,10 @@
 audio:
-  loud when click + drag
+  When dragging, don't update audio until release
   Option to continue / restart
 
 sections:
   manually adjust paragraph boundaries
-  
+
   - automatically adjust section timings based on audio envelope
   - automatically determine paragraph boundaries based on audio envelope
   - automatically combine sections
@@ -16,13 +16,12 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Should be able to select nothing
-  Should have nothing selected at first
-  up + down arrows when no dropdown shouldn't do anything
+  * Should be able to select nothing
+  * Should have nothing selected at first
   Reenable key presses when text is selected
   Shift + arrow keys doesn’t select text
   Hard to tell difference between primary and secondary text colours
-  Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
+  * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
   
   - add scrolling (when playing from current position onwards)
   - undo / redo support

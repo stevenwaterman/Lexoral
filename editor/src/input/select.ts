@@ -1,5 +1,9 @@
 import { updateSelection } from "./selectionState";
 
+export async function findSectionNode(idx: number): Promise<Element | undefined> {
+  return document.querySelector(`[data-sectionIdx="${idx}"]`) ?? undefined
+}
+
 /** 
  * Select the start of the section after the provided component.
  * The provided component should be a section's `Span` element

@@ -2,7 +2,7 @@ import * as Tone from "tone";
 import { Writable, Readable, writable, derived } from "svelte/store";
 import { StoreValues, deriveUnwrap, deriveLastDefined } from "../utils/stores";
 import { audioTimingsStore } from "./audioSelection";
-import { SectionStore, allSectionsStore, Section } from "../text/textState";
+import { SectionStore, allSectionsStore, Section, MaybeSectionStore } from "../text/textState";
 import { clamp } from "../utils/list";
 
 /** Is the audio actively playing */
@@ -103,12 +103,9 @@ export function playAudio() {
   Tone.Transport.loopStart = start;
   Tone.Transport.loopEnd = end;
 
-  // console.log(Tone.Transport.state)
-
   if (Tone.Transport.state === "started") {
     Tone.Transport.seconds = start;
   } else {
-    console.log(start)
     Tone.Transport.start(undefined, start);
   }
 

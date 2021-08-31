@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { tick } from "svelte";
+  import { onMount, tick } from "svelte";
   import { playingStore, currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "./textState";
   import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore } from "../input/selectionState";
   import { selectEnd, selectNext, selectPrev } from "../input/select";
+  import { SectionMutator } from "./storeMutators";
 
   export let sectionStore: SectionStore;
 
@@ -11,7 +12,7 @@
   $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;
 
   let component: HTMLSpanElement;
-  $: if (component) sectionStore.registerComponent(component);
+  $: if (component) new SectionMutator(sectionStore).registerComponent(component);
   $: if (!highlight && component) updateText();
 
   let displayText: string;
@@ -24,11 +25,11 @@
     if (!$sectionStore.edited && textContent === $sectionStore.placeholder) return;
     if (textContent === $sectionStore.text) return;
     if (!$sectionStore.edited && textContent.substring(1) === $sectionStore.placeholder) {
-      sectionStore.setText(textContent.substring(0, 1))
+      new SectionMutator(sectionStore).setText(textContent.substring(0, 1))
       await tick();
       selectEnd(component);
     } else {
-      sectionStore.setText(textContent);
+      new SectionMutator(sectionStore).setText(textContent);
     }
   }
 
@@ -110,7 +111,7 @@
   bind:this={component}
   on:keydown={keyDown}
   on:blur={onBlur}
-  tabindex={$sectionStore.idx}
+  data-sectionIdx={$sectionStore.idx}
 >
   {displayText}
 </span>

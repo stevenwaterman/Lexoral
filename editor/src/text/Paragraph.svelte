@@ -1,8 +1,11 @@
 <script lang="ts">
-  import type { Paragraph, ParagraphStore } from "../sectionStores";
   import Section from "./Section.svelte";
+import type { Paragraph, ParagraphStore } from "./textState";
 
   export let paragraphStore: ParagraphStore;
+
+  let paragraph: Paragraph;
+  $: paragraph = $paragraphStore;
 </script>
 
 <style>
@@ -14,7 +17,7 @@
 </style>
 
 <p class="paragraph">
-  {#each $paragraphStore as section, idx}
-    <Section sectionStore={ section } />
+  {#each Object.entries(paragraph) as [idx, sectionStore] (idx)}
+    <Section sectionStore={ sectionStore } />
   {/each}
 </p>

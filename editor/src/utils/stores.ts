@@ -91,6 +91,40 @@ export function deriveUnwrap<T>(store_2: Readable<Readable<T> | undefined>): Rea
 }
 
 /**
+ * Unwrap a nested store, deriving a store `Readable<T>` from a base store of `Readable<Readable<T>>`
+ * 
+ * This breaks svelte's automatice DAG resolution and can cause additional updates to happen out of order.
+ * All stores will still settle onto the right value eventually, they will just update multiple times.
+ * 
+ */
+export function deriveUnwrapWritable<T>(store_2: Readable<Writable<T> | undefined>): Writable<T | undefined> {
+  const noopSubscribe: Writable<T>["subscribe"] = () => () => {};
+  const noopSet: Writable<T>["set"] = () => {};
+  const noopUpdate: Writable<T>["update"] = () => {};
+
+  const output: Readable<T | undefined> & Omit<Writable<T>, "subscribe"> = {
+    subscribe: noopSubscribe,
+    set: noopSet,
+    update: noopUpdate
+  };
+
+  const {subscribe} = derived(store_2, (store, set: (value: T | undefined) => void) => {
+    if (store === undefined) {
+      set(undefined);
+      return;
+    }
+
+    output.set = store.set;
+    output.update = store.update;
+
+    return store.subscribe(set);
+  });
+  output.subscribe = subscribe;
+
+  return output;
+}
+
+/**
  * Unwrap a store containing a record of indexed stores into a store containing a record of indexed states
  * 
  * Ex: Readable<{ 1: Readable<T>, 2: Readable<T> }> => Readable<{ 1: T, 2: T }>
@@ -133,4 +167,12 @@ export function deriveUnwrapRecord<K extends string | number | symbol, V, INNER 
     });
     set(record);
   }, {});
+}
+
+export function makeWritable<T>(baseStore: Writable<T>, derivedStore: Readable<T>): Writable<T> {
+  return {
+    subscribe: (func: (value: T) => void) => derivedStore.subscribe(func),
+    set: (value: T) => baseStore.set(value),
+    update: (updater: (value: T) => T) => baseStore.update(updater)
+  }
 }

@@ -1,8 +1,8 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
-import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section } from "../text/textState";
+import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section, MaybeSectionStore } from "../text/textState";
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
-import { clampGet, clamp } from "../utils/list";
+import { clampGet, clampGetRecord } from "../utils/list";
 
 /**
  * The audio mode determines how to translate the section selection into the audio selection
@@ -157,8 +157,7 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
       return clampGet(paragraph, offsetIdx)
     } else {
       const offsetIdx = sectionIdx + mutation[side].sectionOffset;
-      const maxIdx = Object.keys(allSections).length - 1;
-      return allSections[clamp(offsetIdx, 0, maxIdx)];
+      return clampGetRecord(allSections, offsetIdx);
     }                                          
   });
   const offsetSectionStore: Readable<Section | undefined> = deriveUnwrap(offsetSectionStoreWrapped);
@@ -172,8 +171,7 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
   ) => {
     if (offsetSection === undefined) return undefined;
     const desiredIdx = offsetSection.idx + addGapsOffset;
-    const maxIdx = Object.keys(allSections).length - 1;
-    return allSections[clamp(desiredIdx, 0, maxIdx)];
+    return clampGetRecord(allSections, desiredIdx);
   })
   const gapsSectionStore: Readable<Section | undefined> = deriveUnwrap(gapsSectionStoreWrapped);
 

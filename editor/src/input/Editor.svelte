@@ -1,7 +1,7 @@
 <script lang="ts">
   import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio/audio";
   import { audioModeStore } from "../audio/audioSelection";
-  import { selectEnd } from "./select";
+  import { findSectionNode, selectEnd, selectStart } from "./select";
   import ToastController from "../display/toast/ToastController.svelte";
   import { sendToast } from "../display/toast/toasts";
   import Header from "../display/Header.svelte";
@@ -9,6 +9,9 @@
   import Document from "../text/Document.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
+  import { areMultipleSectionsSelectedStore, focusParagraphStore, focusSectionIdxStore, focusSectionStore, selectionStore } from "./selectionState";
+  import { MaybeParagraphMutator } from "../text/storeMutators";
+import { tick } from "svelte";
 
   function keyUp(event: KeyboardEvent) {
     if (event.key === "Alt") {
@@ -19,6 +22,20 @@
   }
 
   async function keyDown(event: KeyboardEvent) {
+    if (event.key === "Enter" && event.ctrlKey && !$areMultipleSectionsSelectedStore) {
+      const sectionIdx = $focusSectionIdxStore;
+      const cursor = $selectionStore?.focus;
+      if (cursor !== undefined && sectionIdx !== undefined) {
+        if (cursor.section === 0) {
+          console.log("would recombine here")
+        } else {
+          new MaybeParagraphMutator(focusParagraphStore).split(cursor);
+        }
+        await tick();
+        selectStart(await findSectionNode(sectionIdx))
+      }
+    }
+
     if (event.key === "Escape" && $playingStore) {
       const component = $lastPlayedSectionStore?.spanComponent;
       if (component) {
