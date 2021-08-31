@@ -16,6 +16,7 @@ sections:
   -- manually adjust section timings
   
 UX:
+  shouldn't be able to select the start of a paragraph
   * Should be able to select nothing
   * Should have nothing selected at first
   Reenable key presses when text is selected

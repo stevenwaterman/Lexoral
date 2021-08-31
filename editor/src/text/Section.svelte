@@ -3,7 +3,7 @@
   import { playingStore, currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "./textState";
   import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore } from "../input/selectionState";
-  import { selectEnd, selectNext, selectPrev } from "../input/select";
+  import { selectEnd, selectSectionEnd, selectSectionStart } from "../input/select";
   import { SectionMutator } from "./storeMutators";
 
   export let sectionStore: SectionStore;
@@ -12,13 +12,13 @@
   $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;
 
   let component: HTMLSpanElement;
-  $: if (component) new SectionMutator(sectionStore).registerComponent(component);
   $: if (!highlight && component) updateText();
 
   let displayText: string;
   $: displayText = " " + ($sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder);
 
   async function updateText() {
+    await tick();
     const textContent = component?.textContent?.trim();
     if (textContent === undefined) return;
 
@@ -38,7 +38,7 @@
       if ($caretPositionStore.end) {
         event.preventDefault();
         event.stopPropagation();
-        selectNext(component);
+        selectSectionStart($sectionStore.idx + 1);
       }
     }
 
@@ -46,7 +46,7 @@
       if ($caretPositionStore.start) {
         event.preventDefault();
         event.stopPropagation();
-        selectPrev(component);
+        selectSectionEnd($sectionStore.idx - 1);
       }
     }
 
@@ -55,7 +55,7 @@
         // prevent moving caret to start in first section
         event.preventDefault();
         event.stopPropagation();
-        selectPrev(component);
+        selectSectionEnd($sectionStore.idx - 1);
       }
     }
 

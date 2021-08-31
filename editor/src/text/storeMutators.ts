@@ -2,6 +2,7 @@ import { SectionStore, MaybeSectionStore, Section, Paragraph, documentStore } fr
 import { getOptions } from "../preprocess/align";
 import { Writable, writable } from "svelte/store";
 import type { CursorPosition } from "../input/selectionState";
+import { get_store_value } from "svelte/internal";
 
 abstract class BaseSectionMutator<S> {
   protected readonly underlying: Writable<S>;
@@ -17,19 +18,13 @@ abstract class BaseSectionMutator<S> {
   abstract update(func: (state: Section) => Section): this;
 
   setText(text: string): this {
+    debugger;
     return this.update(section => ({
       ...section,
       text,
       completionOptions: getOptions(text, section.originalOptions),
       edited: true
     }))
-  }
-
-  registerComponent(component: HTMLSpanElement): this {
-    return this.update(section => ({
-      ...section,
-      spanComponent: component
-    }));
   }
 
   deleteText(offsets?: { start?: number, end?: number }): this {
@@ -110,6 +105,19 @@ abstract class BaseParagraphMutator<S> {
       })
   
       return remainingSections;
+    })
+  }
+
+  combine(position: CursorPosition) {
+    documentStore.update(document => {
+      const [deletedParagraph] = document.splice(position.paragraph - 1, 1);
+      //TODO this is slow, but maybe ok?
+      const deletedParagraphValue = get_store_value(deletedParagraph);
+      this.update(state => {
+        state.unshift(...deletedParagraphValue);
+        return state;
+      })
+      return document;
     })
   }
 }

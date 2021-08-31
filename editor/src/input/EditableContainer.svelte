@@ -14,12 +14,13 @@
   import type { SectionSelection } from "./selectionState";
 
   import { 
-    selectNext,
+findSectionNode,
     selectParagraphEnd,
     selectParagraphStart,
     selectPosition, 
-    selectPrev,
-    selectStart
+selectSectionEnd, 
+selectSectionStart, 
+                selectStart
   } from "./select";
   
   async function keyDown(event: KeyboardEvent) {
@@ -33,7 +34,7 @@
 
         await tick();
 
-        const component = $earlySectionStore?.spanComponent;
+        const component = findSectionNode($earlySectionStore?.idx)
         if (component === undefined) return;
         selectPosition(component, selection.early.offset)
       }
@@ -47,7 +48,7 @@
 
         await tick();
 
-        const component = $lateSectionStore?.spanComponent;
+        const component = findSectionNode($lateSectionStore?.idx);
         if (component === undefined) return;
 
         const singleSection = $selectionStore?.early?.paragraph === $selectionStore?.late?.paragraph && $selectionStore?.early?.section === $selectionStore?.late?.section;
@@ -59,7 +60,7 @@
       }
 
       if (event.key === "ArrowLeft") {
-        const component = $earlySectionStore?.spanComponent;
+        const component = findSectionNode($earlySectionStore?.idx);
         const offset = $selectionStore?.early?.offset;
         if (component !== undefined && offset !== undefined) {
           selectPosition(component, offset);
@@ -67,7 +68,7 @@
       }
 
       if (event.key === "ArrowRight") {
-        const component = $lateSectionStore?.spanComponent;
+        const component = findSectionNode($lateSectionStore?.idx);
         const offset = $selectionStore?.late?.offset;
         if (component !== undefined && offset !== undefined) {
           selectPosition(component, offset);
@@ -78,24 +79,22 @@
     if (event.key === "Tab") {
       event.preventDefault();
       if (event.shiftKey) {
-        const node = $earlySectionStore?.spanComponent;
-        if (node) selectPrev(node);
+        const idx = $earlySectionStore?.idx
+        if (idx !== undefined) selectSectionEnd(idx - 1);        
       } else {
-        const node = $lateSectionStore?.spanComponent;
-        if (node) selectNext(node);
+        const idx = $lateSectionStore?.idx;
+        if (idx !== undefined) selectSectionStart(idx + 1);
       }
     }
 
     if (event.key === "Home") {
       event.preventDefault();
-      const node = $earlySectionStore?.spanComponent;
-      if (node) selectParagraphStart(node);
+      selectParagraphStart($earlySectionStore?.idx);
     }
 
     if (event.key === "End") {
       event.preventDefault();
-      const node = $lateSectionStore?.spanComponent;
-      if (node) selectParagraphEnd(node);
+      selectParagraphEnd($lateSectionStore?.idx);
     }
 
     updateSelection();

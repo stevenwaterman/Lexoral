@@ -31,7 +31,6 @@ export type Section = {
   text: string;
   placeholder: string;
   edited: boolean;
-  spanComponent?: HTMLSpanElement;
 };
 export type SectionStore = Writable<Section>;
 export type MaybeSectionStore = Writable<Section | undefined>;

@@ -27,7 +27,7 @@ import { tick } from "svelte";
       const cursor = $selectionStore?.focus;
       if (cursor !== undefined && sectionIdx !== undefined) {
         if (cursor.section === 0) {
-          console.log("would recombine here")
+          new MaybeParagraphMutator(focusParagraphStore).combine(cursor);
         } else {
           new MaybeParagraphMutator(focusParagraphStore).split(cursor);
         }
@@ -37,11 +37,14 @@ import { tick } from "svelte";
     }
 
     if (event.key === "Escape" && $playingStore) {
-      const component = $lastPlayedSectionStore?.spanComponent;
-      if (component) {
-        event.preventDefault();
-        await selectEnd(component);
-        stopAudio();
+      const idx = $lastPlayedSectionStore?.idx;
+      if (idx !== undefined) {
+        const component = findSectionNode(idx);
+        if (component) {
+          event.preventDefault();
+          await selectEnd(component);
+          stopAudio();
+        }
       }
     }
 

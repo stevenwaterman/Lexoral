@@ -1,32 +1,35 @@
 import { updateSelection } from "./selectionState";
 
-export async function findSectionNode(idx: number): Promise<Element | undefined> {
-  return document.querySelector(`[data-sectionIdx="${idx}"]`) ?? undefined
+export function findSectionNode(idx: number | undefined): HTMLSpanElement | undefined {
+  if (idx === undefined) return undefined;
+  const queryResult = document.querySelector(`[data-sectionIdx="${idx}"]`) as HTMLSpanElement | null;
+  return queryResult ?? undefined;
 }
 
 /** 
  * Select the start of the section after the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectNext(component: HTMLSpanElement | undefined) {
-  const node: ChildNode | undefined = component?.nextElementSibling?.firstChild ?? component?.parentElement?.nextElementSibling?.firstElementChild?.firstChild ?? undefined;
-  await selectStart(node);
+export async function selectSectionStart(idx: number | undefined) {
+  const component = findSectionNode(idx);
+  await selectStart(component);
 }
 
 /** 
  * Select the end of the section before the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectPrev(component: HTMLSpanElement | undefined) {
-  const node: ChildNode | undefined = component?.previousElementSibling?.firstChild ?? component?.parentElement?.previousElementSibling?.lastElementChild?.firstChild ?? undefined;
-  await selectEnd(node);
+export async function selectSectionEnd(idx: number | undefined) {
+  const component = findSectionNode(idx);
+  await selectEnd(component);
 }
 
 /** 
  * Select the start of the first section in the paragraph that contains the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectParagraphStart(component: HTMLSpanElement | undefined) {
+export async function selectParagraphStart(idx: number | undefined) {
+  const component = findSectionNode(idx);
   const node: ChildNode | undefined = component?.parentElement?.firstElementChild?.firstChild ?? undefined;
   await selectStart(node);
 }
@@ -35,7 +38,8 @@ export async function selectParagraphStart(component: HTMLSpanElement | undefine
  * Select the end of the last section in the paragraph that contains the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectParagraphEnd(component: HTMLSpanElement | undefined) {
+export async function selectParagraphEnd(idx: number | undefined) {
+  const component = findSectionNode(idx);
   const node: ChildNode | undefined = component?.parentElement?.lastElementChild?.firstChild ?? undefined;
   await selectEnd(node);
 }

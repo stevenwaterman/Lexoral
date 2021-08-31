@@ -4,6 +4,7 @@ import { deriveUnwrap, deriveConditionally, deriveUnwrapWritable, makeWritable }
 import { tick } from "svelte";
 import { clampGet, clampGetRecord } from "../utils/list";
 import { SectionMutator } from "../text/storeMutators";
+import { findSectionNode } from "./select";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -102,7 +103,7 @@ export const areMultipleSectionsSelectedStore: Readable<boolean> = derived(selec
 export const caretPositionStore: Readable<{start: boolean; end: boolean}> = derived([focusSectionStore, selectionStore], ([section, selection]) => {
   if (section === undefined || selection === undefined) return { start: false, end: false };
   const start = selection.focus.offset === 0;
-  const textLength = section?.spanComponent?.textContent?.length ?? 0;
+  const textLength = findSectionNode(section.idx)?.textContent?.length ?? 0;
   const end = selection.focus.offset > textLength - 2;
   return { start, end };
 })

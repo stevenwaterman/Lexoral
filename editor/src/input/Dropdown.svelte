@@ -1,13 +1,13 @@
 <script lang="ts">
   import { focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
-  import { selectEnd, selectNext } from "./select";
+  import { findSectionNode, selectEnd, selectSectionStart } from "./select";
   import type { Section } from "../text/textState";
 import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
-  $: if (!$isTextSelectedStore) section?.spanComponent?.focus();
+  $: if (!$isTextSelectedStore) findSectionNode(section?.idx)?.focus();
 
   let visible: boolean;
   $: visible = !$isTextSelectedStore && section !== undefined && options.length > 0;
@@ -16,8 +16,10 @@ import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
   let top: number;
 
   function resize(...deps: any[]) {
-    left = section?.spanComponent?.offsetLeft ?? 0;
-    top = (section?.spanComponent?.offsetTop ?? 0) + (section?.spanComponent?.offsetHeight ?? 0);
+    const component = findSectionNode(section?.idx);
+    if (!component) return;
+    left = component.offsetLeft ?? 0;
+    top = (component.offsetTop ?? 0) + (component.offsetHeight ?? 0);
   }
   $: resize(section);
 
@@ -71,8 +73,9 @@ import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
     if (visible && options.length > 0 && highlightIdx !== undefined) {
         const selectedOption = options[highlightIdx];
         new MaybeSectionMutator(focusSectionStore).setText(selectedOption);
-    } 
-    selectNext(section?.spanComponent)
+    }
+    const idx = section?.idx;
+    if (idx !== undefined) selectSectionStart(idx + 1);
   }
 </script>
 
