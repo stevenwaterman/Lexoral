@@ -1,6 +1,6 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
-import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section, MaybeSectionStore } from "../text/textState";
+import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section } from "../text/textState";
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
 import { clampGet, clampGetRecord } from "../utils/list";
 

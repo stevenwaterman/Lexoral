@@ -1,7 +1,7 @@
 <script lang="ts">
   import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio/audio";
   import { audioModeStore } from "../audio/audioSelection";
-  import { findSectionNode, selectEnd, selectSectionStart, selectStart } from "./select";
+  import { findSectionNode, selectEnd } from "./select";
   import ToastController from "../display/toast/ToastController.svelte";
   import { sendToast } from "../display/toast/toasts";
   import Header from "../display/Header.svelte";
@@ -9,10 +9,8 @@
   import Document from "../text/Document.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
-  import { areMultipleSectionsSelectedStore, focusParagraphStore, focusSectionIdxStore, focusSectionStore, selectionStore } from "./selectionState";
-  import { MaybeParagraphMutator } from "../text/storeMutators";
-  import { tick } from "svelte";
-import { toggleParagraph } from "./paragraphs";
+  import { areMultipleSectionsSelectedStore } from "./selectionState";
+  import { toggleParagraph } from "./paragraphs";
 
   function keyUp(event: KeyboardEvent) {
     if (event.key === "Alt") {

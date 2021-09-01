@@ -1,8 +1,8 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
-import { ParagraphStore, documentStore, Paragraph, Section, SectionStore, allSectionsStore, MaybeParagraphStore, MaybeSectionStore } from "../text/textState";
-import { deriveUnwrap, deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
+import { ParagraphStore, documentStore, Section, SectionStore, allSectionsStore, MaybeParagraphStore, MaybeSectionStore } from "../text/textState";
+import { deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
 import { tick } from "svelte";
-import { clampGet, clampGetRecord } from "../utils/list";
+import { clampGet } from "../utils/list";
 import { SectionMutator } from "../text/storeMutators";
 import { findSectionNode } from "./select";
 

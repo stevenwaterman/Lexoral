@@ -1,14 +1,9 @@
 <script lang="ts">
-  import { tick } from "svelte";
   import { playingStore, currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "./textState";
-  import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore } from "../input/selectionState";
-  import { selectEnd, selectSectionEnd, selectSectionStart, selectStart } from "../input/select";
-  import { SectionMutator } from "./storeMutators";
-  import { toggleParagraph } from "../input/paragraphs";
+  import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 
   export let sectionStore: SectionStore;
-  export let first: boolean;
   export let last: boolean;
 
   let highlight: boolean;
@@ -22,7 +17,6 @@
   .section {
     display: inline;
     white-space: pre-wrap;
-    /* outline: none; */
     transition: background 0.2s;
   }
 

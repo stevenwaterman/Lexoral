@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { areMultipleSectionsSelectedStore, focusSectionStore, isTextSelectedStore } from "./selectionState";
+  import { focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
-  import { findSectionNode, selectEnd, selectSectionStart } from "./select";
+  import { findSectionNode, selectSectionStart } from "./select";
   import type { Section } from "../text/textState";
-import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
+  import { MaybeSectionMutator } from "../text/storeMutators";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
-  // $: if (!$areMultipleSectionsSelectedStore) findSectionNode(section?.idx)?.focus();
 
   let visible: boolean;
   $: visible = !$isTextSelectedStore && section !== undefined && options.length > 0;

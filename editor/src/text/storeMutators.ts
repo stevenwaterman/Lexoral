@@ -1,4 +1,4 @@
-import { SectionStore, MaybeSectionStore, Section, Paragraph, documentStore } from "./textState";
+import { SectionStore, Section, Paragraph, documentStore } from "./textState";
 import { getOptions } from "../preprocess/align";
 import { Writable, writable } from "svelte/store";
 import type { CursorPosition } from "../input/selectionState";

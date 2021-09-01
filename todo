@@ -14,6 +14,7 @@ sections:
   -- manually adjust section timings
   
 UX:
+  ctrl-backspace deletes whole span
   can we detect selection type using document.getSelection().type or .isCollapsed maybe?
   Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
   Some kind of button help

@@ -1,6 +1,4 @@
-import { Readable, derived, writable, Writable, Unsubscriber } from "svelte/store";
-
-type Stores = Readable<any> | [Readable<any>, ...Array<Readable<any>>];
+import { Readable, derived, Writable, Unsubscriber } from "svelte/store";
 
 export type StoreValues<T> = T extends Readable<infer U> ? U : {
   [K in keyof T]: T[K] extends Readable<infer U> ? U : never;

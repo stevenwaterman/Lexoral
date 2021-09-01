@@ -15,6 +15,6 @@
 
 <p class="paragraph">
   {#each $paragraphStore as sectionStore, idx}
-    <Section sectionStore={ sectionStore } first={idx === 0} last={idx === $paragraphStore.length - 1}/>
+    <Section sectionStore={ sectionStore } last={idx === $paragraphStore.length - 1}/>
   {/each}
 </p>
