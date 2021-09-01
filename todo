@@ -14,8 +14,6 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Reenable key presses when text is selected
-  Hard to tell difference between primary and secondary text colours
   Home & End don't work
   Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
   ctrl + left takes 2 presses
@@ -23,7 +21,10 @@ UX:
   Some kind of button help
   Alt up/down should control volume
   Alt left/right should control context
+
+  When combining a paragraph, it selects the next paragraph for a second
   
+  * Hard to tell difference between primary and secondary text colours
   * Should entering first character on placeholder replace it?
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
   * Should be able to select nothing
@@ -34,6 +35,7 @@ UX:
 
   -- make logo background transparent
   -- support cut + paste
+  -- Reenable key presses when text is selected
   -- support firefox + safari + edge
 
 
