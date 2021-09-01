@@ -14,15 +14,23 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Can't copy
-  * Should be able to select nothing
-  * Should have nothing selected at first
   Reenable key presses when text is selected
   Hard to tell difference between primary and secondary text colours
+  Home & End don't work
+  Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
+  ctrl + left takes 2 presses
+  ctrl + up / down should move up and down lines
+  Some kind of button help
+  Alt up/down should control volume
+  Alt left/right should control context
+  
+  * Should entering first character on placeholder replace it?
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
+  * Should be able to select nothing
+  * Should have nothing selected at first
   
   - add scrolling (when playing from current position onwards)
-  - undo / redo support
+  - undo / redo support / disable
 
   -- make logo background transparent
   -- support cut + paste

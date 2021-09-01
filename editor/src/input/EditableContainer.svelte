@@ -101,6 +101,12 @@ selectSectionPosition,
     }
   }
 
+  async function cKey(event: KeyboardEvent) {
+    if (!event.ctrlKey) {
+      event.preventDefault();
+    }
+  }
+
   const keyFuncs: Partial<Record<string, (event: KeyboardEvent) => Promise<void>>> = {
     "Backspace": backspace,
     "Delete": deleteKey,
@@ -108,7 +114,8 @@ selectSectionPosition,
     "ArrowRight": rightArrow,
     "Tab": tab,
     "Home": home,
-    "End": end
+    "End": end,
+    "c": cKey
   };
   
   async function keyDown(event: KeyboardEvent) {
