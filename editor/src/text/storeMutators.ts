@@ -18,7 +18,6 @@ abstract class BaseSectionMutator<S> {
   abstract update(func: (state: Section) => Section): this;
 
   setText(text: string): this {
-    debugger;
     return this.update(section => ({
       ...section,
       text,
@@ -33,7 +32,6 @@ abstract class BaseSectionMutator<S> {
     return this.update(state => {
       const currentText = state.edited ? state.text : state.placeholder;
 
-      // debugger
       let newText = "";
       if (startOffset !== undefined) {
         newText += currentText.substring(0, startOffset);

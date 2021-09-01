@@ -3,8 +3,6 @@ audio:
   Option to continue / restart
 
 sections:
-  manually adjust paragraph boundaries
-
   - automatically adjust section timings based on audio envelope
   - automatically determine paragraph boundaries based on audio envelope
   - automatically combine sections
@@ -16,7 +14,6 @@ sections:
   -- manually adjust section timings
   
 UX:
-  shouldn't be able to select the start of a paragraph
   * Should be able to select nothing
   * Should have nothing selected at first
   Reenable key presses when text is selected

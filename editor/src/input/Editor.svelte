@@ -1,7 +1,7 @@
 <script lang="ts">
   import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio/audio";
   import { audioModeStore } from "../audio/audioSelection";
-  import { findSectionNode, selectEnd, selectStart } from "./select";
+  import { findSectionNode, selectEnd, selectSectionStart, selectStart } from "./select";
   import ToastController from "../display/toast/ToastController.svelte";
   import { sendToast } from "../display/toast/toasts";
   import Header from "../display/Header.svelte";
@@ -11,7 +11,8 @@
   import EditableContainer from "./EditableContainer.svelte";
   import { areMultipleSectionsSelectedStore, focusParagraphStore, focusSectionIdxStore, focusSectionStore, selectionStore } from "./selectionState";
   import { MaybeParagraphMutator } from "../text/storeMutators";
-import { tick } from "svelte";
+  import { tick } from "svelte";
+import { toggleParagraph } from "./paragraphs";
 
   function keyUp(event: KeyboardEvent) {
     if (event.key === "Alt") {
@@ -23,17 +24,7 @@ import { tick } from "svelte";
 
   async function keyDown(event: KeyboardEvent) {
     if (event.key === "Enter" && event.ctrlKey && !$areMultipleSectionsSelectedStore) {
-      const sectionIdx = $focusSectionIdxStore;
-      const cursor = $selectionStore?.focus;
-      if (cursor !== undefined && sectionIdx !== undefined) {
-        if (cursor.section === 0) {
-          new MaybeParagraphMutator(focusParagraphStore).combine(cursor);
-        } else {
-          new MaybeParagraphMutator(focusParagraphStore).split(cursor);
-        }
-        await tick();
-        selectStart(await findSectionNode(sectionIdx))
-      }
+      await toggleParagraph();
     }
 
     if (event.key === "Escape" && $playingStore) {

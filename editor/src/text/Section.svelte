@@ -1,12 +1,15 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
+  import { tick } from "svelte";
   import { playingStore, currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "./textState";
   import { caretPositionStore, earlySectionIdxStore, focusSectionStore, lateSectionIdxStore } from "../input/selectionState";
-  import { selectEnd, selectSectionEnd, selectSectionStart } from "../input/select";
+  import { selectEnd, selectSectionEnd, selectSectionStart, selectStart } from "../input/select";
   import { SectionMutator } from "./storeMutators";
+  import { toggleParagraph } from "../input/paragraphs";
 
   export let sectionStore: SectionStore;
+  export let first: boolean;
+  export let last: boolean;
 
   let highlight: boolean;
   $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;
@@ -33,29 +36,38 @@
     }
   }
 
-  function keyDown(event: KeyboardEvent) {
+  async function keyDown(event: KeyboardEvent) {
     if (event.key === "Delete") {
       if ($caretPositionStore.end) {
         event.preventDefault();
-        event.stopPropagation();
-        selectSectionStart($sectionStore.idx + 1);
+        await selectSectionStart($sectionStore.idx + 1)
+        if (last) await toggleParagraph();
       }
     }
 
     if (event.key === "Backspace") {
       if ($caretPositionStore.start) {
         event.preventDefault();
-        event.stopPropagation();
-        selectSectionEnd($sectionStore.idx - 1);
+        if (first) await toggleParagraph();
+        else await selectSectionEnd($sectionStore.idx - 1);
       }
     }
 
+    console.log(event.key);
+
     if (event.key === "ArrowLeft") {
       if ($caretPositionStore.start) {
-        // prevent moving caret to start in first section
+        // prevent moving caret to start in first section of document
         event.preventDefault();
-        event.stopPropagation();
-        selectSectionEnd($sectionStore.idx - 1);
+        await selectSectionEnd($sectionStore.idx - 1);
+      }
+    }
+
+    if (event.key === "ArrowRight") {
+      if ($caretPositionStore.end) {
+        // prevent moving caret to start in first section of paragraph
+        event.preventDefault();
+        await selectSectionStart($sectionStore.idx + 1);
       }
     }
 
@@ -111,6 +123,7 @@
   bind:this={component}
   on:keydown={keyDown}
   on:blur={onBlur}
+  tabindex={$sectionStore.idx}
   data-sectionIdx={$sectionStore.idx}
 >
   {displayText}

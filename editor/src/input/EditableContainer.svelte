@@ -4,7 +4,6 @@
   import {
     deleteSelection, 
     earlySectionStore,
-    focusSectionStore,
     isTextSelectedStore,
     lateSectionStore,
     selectedSectionsStore,
