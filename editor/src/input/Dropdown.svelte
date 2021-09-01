@@ -48,10 +48,10 @@ import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
   $: resetIdx(visible, section);
 
   function keyDown(event: KeyboardEvent) {
-    if (event.key === "ArrowUp") {
+    if (event.key === "ArrowUp" && !event.ctrlKey) {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? 0) - 1;
-    } else if (event.key === "ArrowDown") {
+    } else if (event.key === "ArrowDown" && !event.ctrlKey) {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? -1) + 1;
     } else if (event.key === "Enter" && !event.ctrlKey) {
