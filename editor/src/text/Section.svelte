@@ -80,8 +80,8 @@
 
 <style>
   .section {
-    /* display: inline-block; */
-    white-space: pre;
+    display: inline;
+    white-space: pre-wrap;
     outline: none;
     transition: background 0.2s;
   }
