@@ -19,6 +19,15 @@ export async function selectSectionStart(idx: number | undefined) {
  * Select the end of the section before the provided component.
  * The provided component should be a section's `Span` element
  */
+export async function selectSectionPosition(idx: number | undefined, offset: number) {
+  const component = findSectionNode(idx);
+  await selectPosition(component, offset);
+}
+
+/** 
+ * Select the end of the section before the provided component.
+ * The provided component should be a section's `Span` element
+ */
 export async function selectSectionEnd(idx: number | undefined) {
   const component = findSectionNode(idx);
   await selectEnd(component);

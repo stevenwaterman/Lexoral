@@ -14,7 +14,7 @@ Tone.Transport.on("start", () => playingStoreInternal.set(true));
 Tone.Transport.on("stop", () => playingStoreInternal.set(false));
 
 /** Should audio start playing when you select a new section? */
-let autoPlay: boolean = true;
+let autoPlay: boolean = false;
 export const autoPlayStore: Writable<boolean> = writable(autoPlay);
 autoPlayStore.subscribe(state => autoPlay = state);
 

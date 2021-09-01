@@ -2,6 +2,7 @@
   import { tick } from "svelte";
 
   import {
+areMultipleSectionsSelectedStore,
     deleteSelection, 
     earlySectionStore,
     isTextSelectedStore,
@@ -13,69 +14,66 @@
   import type { SectionSelection } from "./selectionState";
 
   import { 
-findSectionNode,
+    findSectionNode,
     selectParagraphEnd,
     selectParagraphStart,
     selectPosition, 
-selectSectionEnd, 
-selectSectionStart, 
-                selectStart
+    selectSectionEnd,
+selectSectionPosition,
+        selectSectionStart,
+    selectStart
   } from "./select";
-  
-  async function keyDown(event: KeyboardEvent) {
+
+  async function backspace(event: KeyboardEvent) {
     if ($isTextSelectedStore) {
       event.preventDefault();
 
-      if (event.key === "Backspace") {
-        const selection: SectionSelection | undefined = $selectionStore;
-        if (selection === undefined) return;
-        deleteSelection(selection, $selectedSectionsStore);
+      const selection: SectionSelection | undefined = $selectionStore;
+      if (selection === undefined) return;
+      deleteSelection(selection, $selectedSectionsStore);
 
-        await tick();
-
-        const component = findSectionNode($earlySectionStore?.idx)
-        if (component === undefined) return;
-        selectPosition(component, selection.early.offset)
-      }
-
-      if (event.key === "Delete") {
-        event.preventDefault();
-
-        const selection: SectionSelection | undefined = $selectionStore;
-        if (selection === undefined) return;
-        deleteSelection(selection, $selectedSectionsStore);
-
-        await tick();
-
-        const component = findSectionNode($lateSectionStore?.idx);
-        if (component === undefined) return;
-
-        const singleSection = $selectionStore?.early?.paragraph === $selectionStore?.late?.paragraph && $selectionStore?.early?.section === $selectionStore?.late?.section;
-        if (singleSection) {
-          selectPosition(component, selection.early.offset)
-        } else {
-          selectStart(component)
-        }
-      }
-
-      if (event.key === "ArrowLeft") {
-        const component = findSectionNode($earlySectionStore?.idx);
-        const offset = $selectionStore?.early?.offset;
-        if (component !== undefined && offset !== undefined) {
-          selectPosition(component, offset);
-        }
-      }
-
-      if (event.key === "ArrowRight") {
-        const component = findSectionNode($lateSectionStore?.idx);
-        const offset = $selectionStore?.late?.offset;
-        if (component !== undefined && offset !== undefined) {
-          selectPosition(component, offset);
-        }
-      }
+      await tick();
+      await selectSectionPosition($earlySectionStore?.idx, selection.early.offset);
     }
+  }
 
-    if (event.key === "Tab") {
+  async function deleteKey(event: KeyboardEvent) {
+    if ($isTextSelectedStore) {
+      event.preventDefault();
+
+      const multiSelection = $areMultipleSectionsSelectedStore;
+      const selection: SectionSelection | undefined = $selectionStore;
+      if (selection === undefined) return;
+      deleteSelection(selection, $selectedSectionsStore);
+
+      await tick();
+      if (multiSelection) await selectSectionStart($lateSectionStore?.idx);
+      else await selectSectionPosition($lateSectionStore?.idx, selection.early.offset);
+    }
+  }
+
+  async function leftArrow(event: KeyboardEvent) {
+    // if ($isTextSelectedStore && !event.shiftKey) {
+    //   const component = findSectionNode($earlySectionStore?.idx);
+    //   const offset = $selectionStore?.early?.offset;
+    //   if (component !== undefined && offset !== undefined) {
+    //     selectPosition(component, offset);
+    //   }
+    // }
+  }
+
+  async function rightArrow(event: KeyboardEvent) {
+    // if ($isTextSelectedStore && !event.shiftKey) {
+    //   const component = findSectionNode($lateSectionStore?.idx);
+    //   const offset = $selectionStore?.late?.offset;
+    //   if (component !== undefined && offset !== undefined) {
+    //     selectPosition(component, offset);
+    //   }
+    // }
+  }
+
+  async function tab(event: KeyboardEvent) {
+    if ($isTextSelectedStore) {
       event.preventDefault();
       if (event.shiftKey) {
         const idx = $earlySectionStore?.idx
@@ -85,18 +83,39 @@ selectSectionStart,
         if (idx !== undefined) selectSectionStart(idx + 1);
       }
     }
+  }
 
-    if (event.key === "Home") {
+  async function home(event: KeyboardEvent) {
+    if ($isTextSelectedStore) {
       event.preventDefault();
       selectParagraphStart($earlySectionStore?.idx);
+      updateSelection();
     }
+  }
 
-    if (event.key === "End") {
+  async function end(event: KeyboardEvent) {
+    if ($isTextSelectedStore) {
       event.preventDefault();
       selectParagraphEnd($lateSectionStore?.idx);
+      updateSelection();
     }
+  }
 
-    updateSelection();
+  const keyFuncs: Partial<Record<string, (event: KeyboardEvent) => Promise<void>>> = {
+    "Backspace": backspace,
+    "Delete": deleteKey,
+    "ArrowLeft": leftArrow,
+    "ArrowRight": rightArrow,
+    "Tab": tab,
+    "Home": home,
+    "End": end
+  };
+  
+  async function keyDown(event: KeyboardEvent) {
+    const func = keyFuncs[event.key];
+    if (func !== undefined) func(event);
+    else if ($isTextSelectedStore) event.preventDefault();
+    await updateSelection();
   }
 
   function mouseDown(event: MouseEvent) {

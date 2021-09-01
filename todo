@@ -14,10 +14,10 @@ sections:
   -- manually adjust section timings
   
 UX:
+  Can't copy
   * Should be able to select nothing
   * Should have nothing selected at first
   Reenable key presses when text is selected
-  Shift + arrow keys doesn’t select text
   Hard to tell difference between primary and secondary text colours
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
   

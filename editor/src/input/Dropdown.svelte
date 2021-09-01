@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { focusSectionStore, isTextSelectedStore } from "./selectionState";
+  import { areMultipleSectionsSelectedStore, focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
   import { findSectionNode, selectEnd, selectSectionStart } from "./select";
   import type { Section } from "../text/textState";
@@ -7,7 +7,7 @@ import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
-  $: if (!$isTextSelectedStore) findSectionNode(section?.idx)?.focus();
+  $: if (!$areMultipleSectionsSelectedStore) findSectionNode(section?.idx)?.focus();
 
   let visible: boolean;
   $: visible = !$isTextSelectedStore && section !== undefined && options.length > 0;
@@ -42,10 +42,10 @@ import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
   let highlightIdx: number;
   $: highlightIdx = modulo(selectedIdx, options.length);
 
-  function resetIdx(_?: any) {
+  function resetIdx(..._: any[]) {
     selectedIdx = 0;
   }
-  $: resetIdx(visible);
+  $: resetIdx(visible, section);
 
   function keyDown(event: KeyboardEvent) {
     if (event.key === "ArrowUp") {

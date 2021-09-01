@@ -53,22 +53,16 @@
       }
     }
 
-    console.log(event.key);
-
-    if (event.key === "ArrowLeft") {
-      if ($caretPositionStore.start) {
-        // prevent moving caret to start in first section of document
-        event.preventDefault();
-        await selectSectionEnd($sectionStore.idx - 1);
-      }
+    if (event.key === "ArrowLeft" && !event.shiftKey && $caretPositionStore.start) {
+      // prevent moving caret to start in first section of document
+      event.preventDefault();
+      await selectSectionEnd($sectionStore.idx - 1);
     }
 
-    if (event.key === "ArrowRight") {
-      if ($caretPositionStore.end) {
-        // prevent moving caret to start in first section of paragraph
-        event.preventDefault();
-        await selectSectionStart($sectionStore.idx + 1);
-      }
+    if (event.key === "ArrowRight" && !event.shiftKey && $caretPositionStore.end) {
+      // prevent moving caret to start in first section of paragraph
+      event.preventDefault();
+      await selectSectionStart($sectionStore.idx + 1);
     }
 
     setTimeout(updateText);

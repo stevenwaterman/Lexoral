@@ -12,9 +12,8 @@ export function getOptions(text: string, options: { text: string }[]): string[] 
   newOptions.sort((a, b) => b.score - a.score);
   const justText = newOptions.map(option => option.text);
 
-  const deduped: string[] = []
+  const deduped: string[] = text.length === 0 ? [] : [text];
   justText.filter(str => {
-    if (text === str) return false;
     if (deduped.includes(str)) return false;
     deduped.push(str);
     return true;
