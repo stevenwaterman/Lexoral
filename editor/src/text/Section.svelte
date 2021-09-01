@@ -14,75 +14,15 @@
   let highlight: boolean;
   $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;
 
-  let component: HTMLSpanElement;
-  $: if (!highlight && component) updateText();
-
-  let displayText: string;
-  $: displayText = " " + ($sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder);
-
-  async function updateText() {
-    await tick();
-    const textContent = component?.textContent?.trim();
-    if (textContent === undefined) return;
-
-    if (!$sectionStore.edited && textContent === $sectionStore.placeholder) return;
-    if (textContent === $sectionStore.text) return;
-    if (!$sectionStore.edited && textContent.substring(1) === $sectionStore.placeholder) {
-      new SectionMutator(sectionStore).setText(textContent.substring(0, 1))
-      await tick();
-      selectEnd(component);
-    } else {
-      new SectionMutator(sectionStore).setText(textContent);
-    }
-  }
-
-  async function keyDown(event: KeyboardEvent) {
-    if (event.key === "Delete") {
-      if ($caretPositionStore.end) {
-        event.preventDefault();
-        await selectSectionStart($sectionStore.idx + 1)
-        if (last) await toggleParagraph();
-      }
-    }
-
-    if (event.key === "Backspace") {
-      if ($caretPositionStore.start) {
-        event.preventDefault();
-        if (first) await toggleParagraph();
-        else await selectSectionEnd($sectionStore.idx - 1);
-      }
-    }
-
-    if (event.key === "ArrowLeft" && !event.shiftKey && $caretPositionStore.start) {
-      // prevent moving caret to start in first section of document
-      event.preventDefault();
-      await selectSectionEnd($sectionStore.idx - 1);
-    }
-
-    if (event.key === "ArrowRight" && !event.shiftKey && $caretPositionStore.end) {
-      // prevent moving caret to start in first section of paragraph
-      event.preventDefault();
-      await selectSectionStart($sectionStore.idx + 1);
-    }
-
-    setTimeout(updateText);
-  }
-
-  async function onBlur() {
-    setTimeout(() => {
-      if ($focusSectionStore === $sectionStore) {
-        component.focus();
-      }
-    })
-    
-  }
+  let desiredText: string;
+  $: desiredText = $sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder;
 </script>
 
 <style>
   .section {
     display: inline;
     white-space: pre-wrap;
-    outline: none;
+    /* outline: none; */
     transition: background 0.2s;
   }
 
@@ -114,11 +54,8 @@
   class:placeholder={!$sectionStore.edited}
   class:sectionPlaying={$currentlyPlayingSectionIdxStore === $sectionStore.idx}
   class:nonePlaying={!$playingStore}
-  bind:this={component}
-  on:keydown={keyDown}
-  on:blur={onBlur}
-  tabindex={$sectionStore.idx}
   data-sectionIdx={$sectionStore.idx}
 >
-  {displayText}
+  {desiredText.length === 0 ? "_" : desiredText}
 </span>
+{last ? "" : " "}

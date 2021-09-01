@@ -104,7 +104,7 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
   if (section === undefined || selection === undefined) return { start: false, end: false };
   const start = selection.focus.offset === 0;
   const textLength = findSectionNode(section.idx)?.textContent?.length ?? 0;
-  const end = selection.focus.offset > textLength - 2;
+  const end = selection.focus.offset > textLength - 1;
   return { start, end };
 })
 
@@ -122,8 +122,8 @@ export async function updateSelection(): Promise<void> {
   })
 }
 
-let lastAnchorNode: Node | null = null;
-let lastFocusNode: Node | null = null;
+let lastAnchorNode: Text | undefined = undefined;
+let lastFocusNode: Text | undefined = undefined;
 let lastAnchorOffset: number | undefined = undefined;
 let lastFocusOffset: number | undefined = undefined;
 
@@ -131,12 +131,13 @@ async function updateSelectionInternal() {
   const selection = window.getSelection();
   if (selection === null) return;
 
-  const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
+  let { anchorOffset, focusOffset } = selection;
+  const { anchorNode, focusNode } = selection;
   if (anchorNode === null) return;
   if (focusNode === null) return;
 
-  const anchorTextNode = document.createNodeIterator(anchorNode, NodeFilter.SHOW_TEXT).nextNode();
-  const focusTextNode = document.createNodeIterator(focusNode, NodeFilter.SHOW_TEXT).nextNode();
+  const anchorTextNode = findTextNode(anchorNode);
+  const focusTextNode = findTextNode(focusNode);
 
   if (
     anchorTextNode === lastAnchorNode &&
@@ -150,30 +151,52 @@ async function updateSelectionInternal() {
   lastAnchorOffset = anchorOffset;
   lastFocusOffset = focusOffset;
 
-  const anchorSpan = anchorTextNode?.parentElement ?? undefined;
+  const anchorParent = anchorTextNode?.parentElement ?? undefined;
+  let anchorSpan: Element | undefined = anchorParent;
+  const anchorIsSpace = anchorParent?.classList?.contains("paragraph") ?? false;
+  if (anchorIsSpace) {
+    anchorSpan = anchorTextNode?.nextElementSibling ?? undefined;
+    anchorOffset = 0;
+  }
   const anchorParagraph = anchorSpan?.parentElement ?? undefined;
   if (anchorSpan === undefined || anchorParagraph === undefined) return;
-
-  const focusSpan = focusTextNode?.parentElement ?? undefined;
-  const focusParagraph = focusSpan?.parentElement ?? undefined;
-  if (focusSpan === undefined || focusParagraph === undefined) return;
-
   const anchorSectionIdx = siblingIdx(anchorSpan);
   const anchorParagraphIdx = siblingIdx(anchorParagraph);
 
+  const focusParent = focusTextNode?.parentElement ?? undefined;
+  let focusSpan: Element | undefined = focusParent;
+  const focusIsSpace = focusParent?.classList?.contains("paragraph") ?? false;
+  if (focusIsSpace) {
+    focusSpan = focusTextNode?.nextElementSibling ?? undefined;
+    focusOffset = 0;
+  }
+  const focusParagraph = focusSpan?.parentElement ?? undefined;
+  if (focusSpan === undefined || focusParagraph === undefined) return;
   const focusSectionIdx = siblingIdx(focusSpan);
   const focusParagraphIdx = siblingIdx(focusParagraph);
 
+  if (anchorIsSpace || focusIsSpace) {
+    const range = document.createRange();
+    const rangeAnchor = findTextNode(anchorSpan);
+    const rangeFocus = findTextNode(focusSpan);
+    if (rangeAnchor !== undefined && rangeFocus !== undefined) {
+      range.setStart(rangeAnchor, anchorOffset);
+      range.setEnd(rangeFocus, focusOffset);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+  
   const anchor = {
     paragraph: anchorParagraphIdx,
     section: anchorSectionIdx,
-    offset: anchorOffset - 1
+    offset: anchorOffset
   };
 
   let focus = {
     paragraph: focusParagraphIdx,
     section: focusSectionIdx,
-    offset: focusOffset - 1
+    offset: focusOffset
   };
 
   const inverted = isSelectionInverted(anchor, focus);
@@ -193,7 +216,7 @@ async function updateSelectionInternal() {
       focus = {
         paragraph: focusParagraphIdx - 1,
         section: siblingIdx(lastChild),
-        offset: (lastChild.textContent?.length ?? 1) - 1
+        offset: lastChild.textContent?.length ?? 0
       }
     }
   }
@@ -253,4 +276,11 @@ function siblingIdx(node: Element): number {
     i++;
   }
   return i;
+}
+
+function findTextNode(node: Node | undefined): Text | undefined {
+  if (node === undefined) return undefined;
+  const text = document.createNodeIterator(node, NodeFilter.SHOW_TEXT).nextNode();
+  if (text === null) return undefined;
+  return text as Text;
 }

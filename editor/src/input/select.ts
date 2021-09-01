@@ -63,8 +63,8 @@ export async function selectStart(node: Node | undefined) {
   if (textNode === null) return;
 
   const range = document.createRange();
-  range.setStart(textNode, 1);
-  range.setEnd(textNode, 1);
+  range.setStart(textNode, 0);
+  range.setEnd(textNode, 0);
 
   const sel = window.getSelection();
   if (sel === null) return;
@@ -84,8 +84,8 @@ export async function selectPosition(node: Node | undefined, offset: number) {
   if (textNode === null) return;
 
   const range = document.createRange();
-  range.setStart(textNode, offset + 1);
-  range.setEnd(textNode, offset + 1);
+  range.setStart(textNode, offset);
+  range.setEnd(textNode, offset);
 
   const sel = window.getSelection();
   if (sel === null) return;

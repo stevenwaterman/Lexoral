@@ -14,10 +14,8 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Home & End don't work
+  can we detect selection type using document.getSelection().type or .isCollapsed maybe?
   Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
-  ctrl + left takes 2 presses
-  ctrl + up / down should move up and down lines
   Some kind of button help
   Alt up/down should control volume
   Alt left/right should control context

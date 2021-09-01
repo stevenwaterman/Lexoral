@@ -7,7 +7,7 @@ import { MaybeSectionMutator, SectionMutator } from "../text/storeMutators";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
-  $: if (!$areMultipleSectionsSelectedStore) findSectionNode(section?.idx)?.focus();
+  // $: if (!$areMultipleSectionsSelectedStore) findSectionNode(section?.idx)?.focus();
 
   let visible: boolean;
   $: visible = !$isTextSelectedStore && section !== undefined && options.length > 0;
