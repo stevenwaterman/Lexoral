@@ -14,7 +14,6 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Can't use right arrow at end of line within paragraph,
   Can't click + drag if the selection starts with a space & can't select backwards
   When combining a paragraph, it selects the next paragraph for a second
   Some kind of button help
