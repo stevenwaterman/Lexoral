@@ -68,7 +68,7 @@
       }
     } else if ($caretPositionStore.end) {
       const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
-      if (textContent?.length === 1) {
+      if (textContent?.length === 1 || event.ctrlKey) {
         event.preventDefault();
         new MaybeSectionMutator(focusSectionStore).setText("");
         const oldIdx = $focusSectionIdxStore ?? 1;
@@ -101,7 +101,7 @@
       }
     } else if ($caretPositionStore.start) {
       const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
-      if (textContent?.length === 1) {
+      if (textContent?.length === 1 || event.ctrlKey) {
         event.preventDefault();
         new MaybeSectionMutator(focusSectionStore).setText("");
         const oldIdx = $focusSectionIdxStore ?? 1;

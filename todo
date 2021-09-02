@@ -14,7 +14,6 @@ sections:
   -- manually adjust section timings
   
 UX:
-  ctrl-backspace deletes whole span
   can we detect selection type using document.getSelection().type or .isCollapsed maybe?
   Some kind of button help
   Alt up/down should control volume
