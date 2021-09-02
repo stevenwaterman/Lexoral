@@ -14,7 +14,7 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Selection color doesn't work on the spaces between sections
+  Can't click + drag if the selection starts with a space
   Some kind of button help
   When combining a paragraph, it selects the next paragraph for a second
   
