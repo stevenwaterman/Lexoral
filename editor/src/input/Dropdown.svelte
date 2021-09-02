@@ -4,6 +4,7 @@
   import { findSectionNode, selectSectionStart } from "./select";
   import type { Section } from "../text/textState";
   import { MaybeSectionMutator } from "../text/storeMutators";
+import { playingStore } from "../audio/audio";
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
@@ -47,6 +48,7 @@
   $: resetIdx(visible, section);
 
   function keyDown(event: KeyboardEvent) {
+    makeOpaque();
     if (event.key === "ArrowUp" && !event.ctrlKey && !event.altKey) {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? 0) - 1;
@@ -76,6 +78,30 @@
     const idx = section?.idx;
     if (idx !== undefined) selectSectionStart(idx + 1);
   }
+
+  let mouseInside = false;
+  function mouseEnter() {
+    mouseInside = true;
+    makeOpaque();
+  }
+  function mouseLeave() {
+    mouseInside = false;
+    resetIdx();
+  }
+
+  let timeout: NodeJS.Timeout | undefined = undefined;
+  let transparent: boolean = false;
+  $: if ($playingStore && !transparent && !mouseInside) {
+    timeout = setTimeout(() => {
+      transparent = true;
+    }, 1500)
+  }
+
+  function makeOpaque() {
+    if (timeout !== undefined) clearTimeout(timeout);
+    transparent = false;
+  }
+  $: if (!$playingStore) makeOpaque();
 </script>
 
 <style>
@@ -89,6 +115,13 @@
     flex-direction: column;
     margin-top: 2px;
     border-radius: 4px;
+
+    transition-property: opacity;
+    transition-duration: 500ms;
+  }
+
+  .transparent {
+    opacity: 25%;
   }
 
   .highlight {
@@ -111,9 +144,11 @@
 
 {#if visible}
   <div
-    class="popup" 
+    class="popup"
+    class:transparent
     style={`left: ${left}px; top: ${top}px;`}
-    on:mouseleave={resetIdx}
+    on:mouseenter={mouseEnter}
+    on:mouseleave={mouseLeave}
   >
     {#each options as option, idx}
       <span

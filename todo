@@ -15,8 +15,6 @@ sections:
   
 UX:
   Some kind of button help
-  Fade out dropdown when covering currently playing word
-
   When combining a paragraph, it selects the next paragraph for a second
   
   * Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
@@ -37,5 +35,3 @@ UX:
 
 Performance:
   Slow when selecting and deselecting lots of sections
-
-
