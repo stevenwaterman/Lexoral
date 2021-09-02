@@ -15,7 +15,6 @@ sections:
   
 UX:
   Some kind of button help
-  Alt up/down should control volume
   Fade out dropdown when covering currently playing word
 
   When combining a paragraph, it selects the next paragraph for a second

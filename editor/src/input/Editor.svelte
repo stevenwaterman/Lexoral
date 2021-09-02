@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio/audio";
+  import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio, volumeStore } from "../audio/audio";
   import { audioModeStore, contextAmountStore } from "../audio/audioSelection";
   import { findSectionNode, selectEnd } from "./select";
   import ToastController from "../display/toast/ToastController.svelte";
@@ -47,8 +47,43 @@
         case "a": return toggleAutoPlay();
         case "ArrowLeft": return decreaseContext();
         case "ArrowRight": return increaseContext();
+        case "ArrowUp": return increaseVolume();
+        case "ArrowDown": return decreaseVolume();
       }
     }
+  }
+
+  function getVolumeDecreaseAmount(volume: number): number {
+    if (volume <= 1) return 0;
+    if (volume <= 10) return 1;
+    if (volume <= 50) return 5;
+    if (volume <= 150) return 10;
+    if (volume <= 400) return 25;
+    return 100;
+  }
+
+  function getVolumeIncreaseAmount(volume: number): number {
+    if (volume >= 400) return 100;
+    if (volume >= 150) return 25;
+    if (volume >= 50) return 10;
+    if (volume >= 10) return 5;
+    return 1;
+  }
+
+  function decreaseVolume() {
+    volumeStore.update(volume => {
+      const newVolume = volume - getVolumeDecreaseAmount(volume);
+      if (volume !== newVolume) sendToast(`Set volume: ${Math.round(newVolume)}%`);
+      return newVolume;
+    })
+  }
+
+  function increaseVolume() {
+    volumeStore.update(volume => {
+      const newVolume = volume + getVolumeIncreaseAmount(volume);
+      if (volume !== newVolume) sendToast(`Set volume: ${Math.round(newVolume)}%`);
+      return newVolume;
+    })
   }
 
   function decreaseContext() {

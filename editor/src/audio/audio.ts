@@ -13,6 +13,9 @@ playingStoreInternal.subscribe(state => playing = state);
 Tone.Transport.on("start", () => playingStoreInternal.set(true));
 Tone.Transport.on("stop", () => playingStoreInternal.set(false));
 
+/** How loud should the audio play? (%) */
+export const volumeStore: Writable<number> = writable(100);
+
 /** Should audio start playing when you select a new section? */
 let autoPlay: boolean = false;
 export const autoPlayStore: Writable<boolean> = writable(autoPlay);
@@ -53,6 +56,9 @@ let duration: number;
 
 /** Load the audio into the Tone.js transport */
 async function createPlayer(): Promise<Tone.Player> {
+  const gainNode = new Tone.Gain(1).toDestination();
+  volumeStore.subscribe(volume => gainNode.gain.value = volume / 100);
+
   return new Promise(resolve => {
     const player = new Tone.Player(
       "/assets/audio.mp3", 
@@ -60,7 +66,7 @@ async function createPlayer(): Promise<Tone.Player> {
         duration = player.buffer.duration;
         resolve(player);
       }
-    ).sync().start(0).toDestination();
+    ).sync().start(0).connect(gainNode);
   })
 }
 

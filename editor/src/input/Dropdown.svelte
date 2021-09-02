@@ -47,10 +47,10 @@
   $: resetIdx(visible, section);
 
   function keyDown(event: KeyboardEvent) {
-    if (event.key === "ArrowUp" && !event.ctrlKey) {
+    if (event.key === "ArrowUp" && !event.ctrlKey && !event.altKey) {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? 0) - 1;
-    } else if (event.key === "ArrowDown" && !event.ctrlKey) {
+    } else if (event.key === "ArrowDown" && !event.ctrlKey && !event.altKey) {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? -1) + 1;
     } else if (event.key === "Enter" && !event.ctrlKey) {
