@@ -31,7 +31,9 @@ export type SectionSelection = {
 };
 
 /** Store containing the current selection */
-export const selectionStore: Writable<SectionSelection | undefined> = writable(undefined);
+const selectionStoreInternal: Writable<SectionSelection | undefined> = writable(undefined);
+selectionStoreInternal.subscribe(console.log);
+export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(selectionStoreInternal, undefined);
 
 /**
  * Derive a store containing the selected section based from a store containing a cursor position
@@ -122,12 +124,8 @@ export async function updateSelection(): Promise<void> {
   })
 }
 
-let lastAnchorNode: Text | undefined = undefined;
-let lastFocusNode: Text | undefined = undefined;
-let lastAnchorOffset: number | undefined = undefined;
-let lastFocusOffset: number | undefined = undefined;
-
 async function updateSelectionInternal() {
+  // TODO this code is ridiculously dense and also probably slow
   const selection = window.getSelection();
   if (selection === null) return;
 
@@ -138,18 +136,6 @@ async function updateSelectionInternal() {
 
   const anchorTextNode = findTextNode(anchorNode);
   const focusTextNode = findTextNode(focusNode);
-
-  if (
-    anchorTextNode === lastAnchorNode &&
-    focusTextNode === lastFocusNode &&
-    anchorOffset === lastAnchorOffset &&
-    focusOffset === lastFocusOffset
-  ) return;
-
-  lastAnchorNode = anchorTextNode;
-  lastFocusNode = focusTextNode;
-  lastAnchorOffset = anchorOffset;
-  lastFocusOffset = focusOffset;
 
   const anchorParent = anchorTextNode?.parentElement ?? undefined;
   let anchorSpan: Element | undefined = anchorParent;
@@ -242,7 +228,7 @@ async function updateSelectionInternal() {
   const early = inverted ? focus : anchor;
   const late = inverted ? anchor : focus;
 
-  selectionStore.set({ anchor, focus, early, late, inverted });
+  selectionStoreInternal.set({ anchor, focus, early, late, inverted });
   await tick();
 }
 
