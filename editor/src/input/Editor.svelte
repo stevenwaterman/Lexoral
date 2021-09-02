@@ -48,6 +48,7 @@
     }
 
     if (event.key !== "Alt" && event.altKey) {
+      event.preventDefault();
       altReleaseShouldPlay = false;
       switch(event.key) {
         case "c": return contextMode();
