@@ -1,0 +1,61 @@
+# Text Editing:
+
+left arrow       = move cursor one character left
+  + ctrl         = move cursor one word left
+  + shift        = select one character left
+  + ctrl + shift = select one word left
+
+right arrow      = move cursor one character right
+  + ctrl         = move cursor one word right
+  + shift        = select one character right
+  + ctrl + shift = select one word right
+
+up arrow         = select previous autocomplete option
+  + ctrl         = move cursor one line up
+  + ctrl + shift = select one line up
+
+down arrow       = select next autocomplete option
+  + ctrl         = move cursor one line down
+  + ctrl + shift = select one line down
+
+tab              = move cursor one word right
+  + shift        = move cursor one word left
+
+home             = move cursor to start of line
+  + ctrl         = move cursor to start of document
+  + shift        = select start of line
+  + ctrl + shift = select start of document
+
+end              = move cursor to end of line
+  + ctrl         = move cursor to end of document
+  + shift        = select end of line
+  + ctrl + shift = select end of document
+
+enter            = accept current autocomplete option
+  + ctrl         = add / remove line break
+
+backspace        = delete character before cursor
+  + ctrl         = delete word before cursor
+
+delete           = delete character after cursor
+  + ctrl         = delete word after cursor
+
+
+
+# Audio Control:
+
+alt              = play/pause audio
+  + up arrow     = increase volume
+  + down arrow   = decrease volume
+
+  + L            = toggle looping on/off (whether the audio restarts when it would normally stop)
+  + A            = toggle autoplay on/off (whether the audio starts automatically when you select a new section)
+
+  + C            = (default) select 'context' audio mode (plays a few words either side of the current word)
+  + P            = select 'paragraph' audio mode (plays the paragraph containing the current word)
+  + O            = select 'onward' audio mode (plays from the current word to the end of the document)
+
+  + left arrow   = decrease the amount of context in 'context' audio mode
+  + right arrow  = increase the amount of context in 'context' audio mode
+
+escape           = pause audio and move cursor to last played word
