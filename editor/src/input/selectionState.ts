@@ -4,7 +4,7 @@ import { deriveConditionally, deriveUnwrapWritable, makeWritable } from "../util
 import { tick } from "svelte";
 import { clampGet } from "../utils/list";
 import { SectionMutator } from "../text/storeMutators";
-import { findSectionNode } from "./select";
+import { findSectionNode } from "../text/selector";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -32,7 +32,6 @@ export type SectionSelection = {
 
 /** Store containing the current selection */
 const selectionStoreInternal: Writable<SectionSelection | undefined> = writable(undefined);
-selectionStoreInternal.subscribe(console.log);
 export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(selectionStoreInternal, undefined);
 
 /**

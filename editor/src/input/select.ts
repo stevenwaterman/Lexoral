@@ -1,10 +1,5 @@
 import { updateSelection } from "./selectionState";
-
-export function findSectionNode(idx: number | undefined): HTMLSpanElement | undefined {
-  if (idx === undefined) return undefined;
-  const queryResult = document.querySelector(`[data-sectionIdx="${idx}"]`) as HTMLSpanElement | null;
-  return queryResult ?? undefined;
-}
+import { findSectionNode } from "../text/selector";
 
 /** 
  * Select the start of the section after the provided component.

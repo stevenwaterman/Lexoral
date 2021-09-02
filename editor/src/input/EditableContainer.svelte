@@ -17,7 +17,6 @@
   import type { SectionSelection } from "./selectionState";
 
   import {
-    findSectionNode,
 selectNextSection,
         selectParagraphEnd,
     selectParagraphStart,
@@ -28,6 +27,7 @@ selectPrevSection,
   } from "./select";
 
   import { MaybeSectionMutator } from "../text/storeMutators";
+import { findSectionNode } from "../text/selector";
 
   async function updateText() {
     await tick();

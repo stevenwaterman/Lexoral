@@ -1,7 +1,7 @@
 <script lang="ts">
   import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio, volumeStore } from "../audio/audio";
   import { audioModeStore, contextAmountStore } from "../audio/audioSelection";
-  import { findSectionNode, selectEnd } from "./select";
+  import { selectEnd } from "./select";
   import ToastController from "../display/toast/ToastController.svelte";
   import { sendToast } from "../display/toast/toasts";
   import Header from "../display/Header.svelte";
@@ -11,6 +11,7 @@
   import EditableContainer from "./EditableContainer.svelte";
   import { areMultipleSectionsSelectedStore } from "./selectionState";
   import { toggleParagraph } from "./paragraphs";
+import { findSectionNode } from "../text/selector";
 
   let altReleaseShouldPlay = false;
 
@@ -148,6 +149,8 @@
       return !loop
     });
   }
+
+  let wrapper: HTMLDivElement;
 </script>
 
 <style>
@@ -176,8 +179,8 @@
   <Header/>
   
 
-  <div class="wrapper">
-    <Dropdown/>
+  <div class="wrapper" bind:this={wrapper}>
+    <Dropdown wrapper={wrapper}/>
     <EditableContainer>
       <Document />
     </EditableContainer>

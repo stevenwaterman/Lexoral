@@ -1,10 +1,13 @@
 <script lang="ts">
   import { focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
-  import { findSectionNode, selectNextSection, selectSectionStart } from "./select";
+  import { selectNextSection, selectSectionStart } from "./select";
   import type { Section } from "../text/textState";
   import { MaybeSectionMutator } from "../text/storeMutators";
-import { playingStore } from "../audio/audio";
+  import { playingStore } from "../audio/audio";
+import { findSectionNode } from "../text/selector";
+
+  export let wrapper: HTMLDivElement | undefined;
 
   let section: Section | undefined;
   $: section = $focusSectionStore;
@@ -16,10 +19,12 @@ import { playingStore } from "../audio/audio";
   let top: number;
 
   function resize(...deps: any[]) {
-    const component = findSectionNode(section?.idx);
-    if (!component) return;
-    left = component.offsetLeft ?? 0;
-    top = (component.offsetTop ?? 0) + (component.offsetHeight ?? 0);
+    const popupBox = findSectionNode(section?.idx)?.getBoundingClientRect();
+    const wrapperBox = wrapper?.getBoundingClientRect();
+    if (wrapperBox === undefined || popupBox === undefined) return;
+
+    left = popupBox.left - wrapperBox.left
+    top = popupBox.top + popupBox.height - wrapperBox.top - wrapperBox.height;
   }
   $: resize(section);
 
