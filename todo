@@ -14,7 +14,7 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Can't click + drag if the selection starts with a space
+  Can't click + drag if the selection starts with a space & can't select backwards
   Some kind of button help
   When combining a paragraph, it selects the next paragraph for a second
   

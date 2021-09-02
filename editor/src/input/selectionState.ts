@@ -155,8 +155,17 @@ async function updateSelectionInternal() {
   let anchorSpan: Element | undefined = anchorParent;
   const anchorIsSpace = anchorParent?.classList?.contains("paragraph") ?? false;
   if (anchorIsSpace) {
-    anchorSpan = anchorTextNode?.nextElementSibling ?? undefined;
-    anchorOffset = 0;
+    const prevSpan = anchorTextNode?.previousElementSibling ?? undefined;
+    const nextSpan = anchorTextNode?.nextElementSibling ?? undefined;
+    if (prevSpan?.getBoundingClientRect()?.top === nextSpan?.getBoundingClientRect()?.top) {
+      // Not at end of line
+      anchorSpan = nextSpan;
+      anchorOffset = 0;
+    } else {
+      // At end of line
+      anchorSpan = prevSpan;
+      anchorOffset = prevSpan?.textContent?.length ?? 0;
+    }
   }
   const anchorParagraph = anchorSpan?.parentElement ?? undefined;
   if (anchorSpan === undefined || anchorParagraph === undefined) return;
@@ -167,8 +176,17 @@ async function updateSelectionInternal() {
   let focusSpan: Element | undefined = focusParent;
   const focusIsSpace = focusParent?.classList?.contains("paragraph") ?? false;
   if (focusIsSpace) {
-    focusSpan = focusTextNode?.nextElementSibling ?? undefined;
-    focusOffset = 0;
+    const prevSpan = focusTextNode?.previousElementSibling ?? undefined;
+    const nextSpan = focusTextNode?.nextElementSibling ?? undefined;
+    if (prevSpan?.getBoundingClientRect()?.top === nextSpan?.getBoundingClientRect()?.top) {
+      // Not at end of line
+      focusSpan = nextSpan;
+      focusOffset = 0;
+    } else {
+      // At end of line
+      focusSpan = prevSpan;
+      focusOffset = prevSpan?.textContent?.length ?? 0;
+    }
   }
   const focusParagraph = focusSpan?.parentElement ?? undefined;
   if (focusSpan === undefined || focusParagraph === undefined) return;
