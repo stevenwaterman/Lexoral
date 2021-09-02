@@ -18,9 +18,11 @@
 
   import {
     findSectionNode,
-    selectParagraphEnd,
+selectNextSection,
+        selectParagraphEnd,
     selectParagraphStart,
-    selectSectionEnd,
+selectPrevSection,
+        selectSectionEnd,
     selectSectionPosition,
     selectSectionStart,
   } from "./select";
@@ -62,17 +64,13 @@
       );
     } else if ($caretPositionStore.start) {
       event.preventDefault();
-      const currentIdx = $focusSectionIdxStore;
-      if (currentIdx !== undefined) {
-        await selectSectionEnd(currentIdx - 1);
-      }
+      await selectPrevSection($focusSectionIdxStore);
     } else if ($caretPositionStore.end) {
       const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
       if (textContent?.length === 1 || event.ctrlKey) {
         event.preventDefault();
         new MaybeSectionMutator(focusSectionStore).setText("");
-        const oldIdx = $focusSectionIdxStore ?? 1;
-        await selectSectionEnd(oldIdx - 1);
+        await selectPrevSection($focusSectionIdxStore)
       };
     }
   }
@@ -88,41 +86,38 @@
 
       await tick();
       if (multiSelection) await selectSectionStart($lateSectionStore?.idx);
-      else
-        await selectSectionPosition(
-          $lateSectionStore?.idx,
-          selection.early.offset
-        );
+      else await selectSectionPosition($lateSectionStore?.idx, selection.early.offset);
     } else if ($caretPositionStore.end) {
       event.preventDefault();
-      const currentIdx = $focusSectionIdxStore;
-      if (currentIdx !== undefined) {
-        await selectSectionStart(currentIdx + 1);
-      }
+      await selectNextSection($focusSectionIdxStore);
     } else if ($caretPositionStore.start) {
       const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
       if (textContent?.length === 1 || event.ctrlKey) {
         event.preventDefault();
         new MaybeSectionMutator(focusSectionStore).setText("");
-        const oldIdx = $focusSectionIdxStore ?? 1;
-        await selectSectionStart(oldIdx + 1);
+        await selectNextSection($focusSectionIdxStore);
       };
     }
   }
 
-  async function leftArrow(event: KeyboardEvent) {}
+  async function leftArrow(event: KeyboardEvent) {
+    if ($caretPositionStore.start && !$isTextSelectedStore) {
+      event.preventDefault();
+      await selectPrevSection($focusSectionIdxStore);
+    }
+  }
 
-  async function rightArrow(event: KeyboardEvent) {}
+  async function rightArrow(event: KeyboardEvent) {
+    if ($caretPositionStore.end && !$isTextSelectedStore) {
+      event.preventDefault();
+      await selectNextSection($focusSectionIdxStore);
+    }
+  }
 
   async function tab(event: KeyboardEvent) {
     event.preventDefault();
-    if (event.shiftKey) {
-      const idx = $earlySectionStore?.idx;
-      if (idx !== undefined) selectSectionEnd(idx - 1);
-    } else {
-      const idx = $lateSectionStore?.idx;
-      if (idx !== undefined) selectSectionStart(idx + 1);
-    }
+    if (event.shiftKey) await selectPrevSection($earlySectionStore?.idx);
+    else await selectNextSection($lateSectionStore?.idx);
   }
 
   async function home(event: KeyboardEvent) {

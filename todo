@@ -14,9 +14,11 @@ sections:
   -- manually adjust section timings
   
 UX:
+  Can't use right arrow at end of line within paragraph,
   Can't click + drag if the selection starts with a space & can't select backwards
-  Some kind of button help
   When combining a paragraph, it selects the next paragraph for a second
+  Some kind of button help
+  dropdown placement when a section goes across 2 lines is v weird
   
   * Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
   * Hard to tell difference between primary and secondary text colours
@@ -36,3 +38,6 @@ UX:
 
 Performance:
   Slow when selecting and deselecting lots of sections
+
+
+Add export functionality

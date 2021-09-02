@@ -33,6 +33,16 @@ export async function selectSectionEnd(idx: number | undefined) {
   await selectEnd(component);
 }
 
+export async function selectNextSection(idx: number | undefined) {
+  if (idx === undefined) return undefined;
+  return selectSectionStart(idx + 1);
+}
+
+export async function selectPrevSection(idx: number | undefined) {
+  if (idx === undefined) return undefined;
+  return selectSectionEnd(idx - 1);
+}
+
 /** 
  * Select the start of the first section in the paragraph that contains the provided component.
  * The provided component should be a section's `Span` element

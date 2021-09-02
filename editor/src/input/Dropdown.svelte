@@ -1,7 +1,7 @@
 <script lang="ts">
   import { focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { modulo } from "../utils/list";
-  import { findSectionNode, selectSectionStart } from "./select";
+  import { findSectionNode, selectNextSection, selectSectionStart } from "./select";
   import type { Section } from "../text/textState";
   import { MaybeSectionMutator } from "../text/storeMutators";
 import { playingStore } from "../audio/audio";
@@ -70,13 +70,12 @@ import { playingStore } from "../audio/audio";
     acceptOption();
   }
 
-  function acceptOption() {
+  async function acceptOption() {
     if (visible && options.length > 0 && highlightIdx !== undefined) {
         const selectedOption = options[highlightIdx];
         new MaybeSectionMutator(focusSectionStore).setText(selectedOption);
     }
-    const idx = section?.idx;
-    if (idx !== undefined) selectSectionStart(idx + 1);
+    await selectNextSection(section?.idx);
   }
 
   let mouseInside = false;
