@@ -12,15 +12,25 @@
   import { areMultipleSectionsSelectedStore } from "./selectionState";
   import { toggleParagraph } from "./paragraphs";
 
+  let altReleaseShouldPlay = false;
+
   function keyUp(event: KeyboardEvent) {
     if (event.key === "Alt") {
       event.preventDefault();
-      if ($playingStore) stopAudio();
-      else playAudio();
+      if (altReleaseShouldPlay) {
+        altReleaseShouldPlay = false;
+        if ($playingStore) stopAudio();
+        else playAudio();
+      }
     }
   }
 
   async function keyDown(event: KeyboardEvent) {
+    if (event.key === "Alt") {
+      event.preventDefault();
+      altReleaseShouldPlay = true;
+    }
+
     if (event.key === "Enter" && event.ctrlKey && !$areMultipleSectionsSelectedStore) {
       await toggleParagraph();
     }
@@ -37,8 +47,8 @@
       }
     }
 
-    if (event.altKey) {
-      event.preventDefault();
+    if (event.key !== "Alt" && event.altKey) {
+      altReleaseShouldPlay = false;
       switch(event.key) {
         case "c": return contextMode();
         case "p": return paragraphMode();

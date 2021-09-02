@@ -24,7 +24,11 @@ autoPlayStore.subscribe(state => autoPlay = state);
 /** Should audio restart when ending? */
 let loop: boolean = false;
 export const loopStore: Writable<boolean> = writable(loop);
-loopStore.subscribe(state => loop = state);
+loopStore.subscribe(state => {
+  loop = state;
+  Tone.Transport.loop = loop;
+  if (!loop) stopAudio();
+})
 
 /** Which section idx is currently playing? */
 const currentlyPlayingSectionIdxStoreInternal: Writable<number | undefined> = writable(undefined);
@@ -123,6 +127,7 @@ export function playAudio() {
     desiredEnd = end;
     Tone.Transport.scheduleOnce(() => {
       if (desiredEnd !== end) return; // Changed desired end, do nothing.
+      if (loop) return;
       Tone.Transport.stop();
     }, end)
   }
