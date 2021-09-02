@@ -105,7 +105,7 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
   if (section === undefined || selection === undefined) return { start: false, end: false };
   const start = selection.focus.offset === 0;
   const textLength = findSectionNode(section.idx)?.textContent?.length ?? 0;
-  const end = selection.focus.offset > textLength - 1;
+  const end = selection.focus.offset >= textLength - 2;
   return { start, end };
 })
 
@@ -124,112 +124,70 @@ export async function updateSelection(): Promise<void> {
 }
 
 async function updateSelectionInternal() {
-  // TODO this code is ridiculously dense and also probably slow
   const selection = window.getSelection();
   if (selection === null) return;
 
-  let { anchorOffset, focusOffset } = selection;
-  const { anchorNode, focusNode } = selection;
-  if (anchorNode === null) return;
-  if (focusNode === null) return;
+  const normalisedAnchor = normaliseCursor(selection.anchorNode, selection.anchorOffset);
+  const normalisedFocus = normaliseCursor(selection.focusNode, selection.focusOffset);
+  if (normalisedAnchor === undefined) return;
+  if (normalisedFocus === undefined) return;
 
-  const anchorTextNode = findTextNode(anchorNode);
-  const focusTextNode = findTextNode(focusNode);
-
-  const anchorParent = anchorTextNode?.parentElement ?? undefined;
-  let anchorSpan: Element | undefined = anchorParent;
-  const anchorIsSpace = anchorParent?.classList?.contains("paragraph") ?? false;
-  if (anchorIsSpace) {
-    const prevSpan = anchorTextNode?.previousElementSibling ?? undefined;
-    const nextSpan = anchorTextNode?.nextElementSibling ?? undefined;
-    if (prevSpan?.getBoundingClientRect()?.top === nextSpan?.getBoundingClientRect()?.top) {
-      // Not at end of line
-      anchorSpan = nextSpan;
-      anchorOffset = 0;
-    } else {
-      // At end of line
-      anchorSpan = prevSpan;
-      anchorOffset = prevSpan?.textContent?.length ?? 0;
-    }
-  }
-  const anchorParagraph = anchorSpan?.parentElement ?? undefined;
-  if (anchorSpan === undefined || anchorParagraph === undefined) return;
-  const anchorSectionIdx = siblingIdx(anchorSpan);
-  const anchorParagraphIdx = siblingIdx(anchorParagraph);
-
-  const focusParent = focusTextNode?.parentElement ?? undefined;
-  let focusSpan: Element | undefined = focusParent;
-  const focusIsSpace = focusParent?.classList?.contains("paragraph") ?? false;
-  if (focusIsSpace) {
-    const prevSpan = focusTextNode?.previousElementSibling ?? undefined;
-    const nextSpan = focusTextNode?.nextElementSibling ?? undefined;
-    if (prevSpan?.getBoundingClientRect()?.top === nextSpan?.getBoundingClientRect()?.top) {
-      // Not at end of line
-      focusSpan = nextSpan;
-      focusOffset = 0;
-    } else {
-      // At end of line
-      focusSpan = prevSpan;
-      focusOffset = prevSpan?.textContent?.length ?? 0;
-    }
-  }
-  const focusParagraph = focusSpan?.parentElement ?? undefined;
-  if (focusSpan === undefined || focusParagraph === undefined) return;
-  const focusSectionIdx = siblingIdx(focusSpan);
-  const focusParagraphIdx = siblingIdx(focusParagraph);
-
-  if (anchorIsSpace || focusIsSpace) {
-    const range = document.createRange();
-    const rangeAnchor = findTextNode(anchorSpan);
-    const rangeFocus = findTextNode(focusSpan);
-    if (rangeAnchor !== undefined && rangeFocus !== undefined) {
-      range.setStart(rangeAnchor, anchorOffset);
-      range.setEnd(rangeFocus, focusOffset);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-  }
+  const anchor = normalisedAnchor.position;
+  const focus = normalisedFocus.position;
   
-  const anchor = {
-    paragraph: anchorParagraphIdx,
-    section: anchorSectionIdx,
-    offset: anchorOffset
-  };
-
-  let focus = {
-    paragraph: focusParagraphIdx,
-    section: focusSectionIdx,
-    offset: focusOffset
-  };
-
   const inverted = isSelectionInverted(anchor, focus);
-  
-  if ( // we are selecting something forwards and it ends at the very start of a new line
-    !inverted &&
-    focusSectionIdx === 0 &&
-    focusOffset === 0 && (
-      focusParagraphIdx !== anchorParagraphIdx ||
-      focusSectionIdx !== anchorSectionIdx ||
-      focusOffset !== anchorOffset
-    )
-  ) { // Then select the end of the previous paragraph instead
-    const prevParagraph = focusParagraph.previousElementSibling;
-    const lastChild = prevParagraph?.lastElementChild;
-    if (lastChild) { // If this isn't defined, it's because we're on the first paragraph already
-      focus = {
-        paragraph: focusParagraphIdx - 1,
-        section: siblingIdx(lastChild),
-        offset: lastChild.textContent?.length ?? 0
-      }
-    }
-  }
 
   const early = inverted ? focus : anchor;
   const late = inverted ? anchor : focus;
 
   selectionStoreInternal.set({ anchor, focus, early, late, inverted });
   await tick();
+
+  const newAnchorNode = normalisedAnchor.newNode ?? selection.anchorNode;
+  const newFocusNode = normalisedFocus.newNode ?? selection.focusNode;
+  if (newAnchorNode !== null && newFocusNode !== null) {
+    if (normalisedAnchor.newNode !== null || normalisedFocus.newNode !== null) {
+      const range = document.createRange();
+      range.setStart(newAnchorNode, normalisedAnchor.position.offset);
+      range.setEnd(newFocusNode, normalisedFocus.position.offset);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
 }
+
+function normaliseCursor(node: Node | null, offset: number): { position: CursorPosition, newNode: Node | null } | undefined {
+  let span: HTMLSpanElement;
+  let spanOffset: number;
+
+  if (node?.parentElement?.classList?.contains("section")) {
+    // Inside the span
+    span = node.parentElement;
+    spanOffset = offset - 1;
+  } else if (node?.parentElement?.classList?.contains("paragraph")) {
+    // Between spans
+    span = (node as Text).nextElementSibling as HTMLSpanElement;
+    spanOffset = 0;
+  } else {
+    console.log("Unrecognised element selected", node);
+    return undefined;
+  }
+
+  const newNode = span.firstChild;
+
+  const paragraph = span.parentElement;
+  if (paragraph === null) return undefined;
+
+  return {
+    newNode: node === newNode ? null : newNode,
+    position: {
+      paragraph: siblingIdx(paragraph),
+      section: siblingIdx(span),
+      offset: spanOffset
+    }
+  }
+}
+
 
 /** The sections that currently have any of their text selected */
 export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySectionIdxStore, lateSectionIdxStore, allSectionsStore], ([rangeStart, rangeEnd, sections]) => {
@@ -279,11 +237,4 @@ function siblingIdx(node: Element): number {
     i++;
   }
   return i;
-}
-
-function findTextNode(node: Node | undefined): Text | undefined {
-  if (node === undefined) return undefined;
-  const text = document.createNodeIterator(node, NodeFilter.SHOW_TEXT).nextNode();
-  if (text === null) return undefined;
-  return text as Text;
 }

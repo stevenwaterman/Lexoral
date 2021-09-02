@@ -1,5 +1,5 @@
 <script lang="ts">
-import { playingStore } from "../audio/audio";
+  import { playingStore } from "../audio/audio";
 
   import Section from "./Section.svelte";
   import type { ParagraphStore } from "./textState";

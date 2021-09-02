@@ -11,6 +11,9 @@
 
   let desiredText: string;
   $: desiredText = $sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder;
+
+  let innerText: string;
+  $: innerText = desiredText.length === 0 ? "_" : desiredText;
 </script>
 
 <style>
@@ -50,6 +53,6 @@
   class:nonePlaying={!$playingStore}
   data-sectionIdx={$sectionStore.idx}
 >
-  {desiredText.length === 0 ? "_" : desiredText}
+  {`\u200b${innerText}\u200b`}
 </span>
 {last ? "" : " "}

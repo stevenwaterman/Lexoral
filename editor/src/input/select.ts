@@ -63,19 +63,7 @@ export async function selectParagraphEnd(idx: number | undefined) {
  * It should either be a section's `Span` element or its contained `TextNode`
  */
 export async function selectStart(node: Node | undefined) {
-  if (node === undefined) return;
-  const textNode = node.hasChildNodes() ? node.firstChild : node;
-  if (textNode === null) return;
-
-  const range = document.createRange();
-  range.setStart(textNode, 0);
-  range.setEnd(textNode, 0);
-
-  const sel = window.getSelection();
-  if (sel === null) return;
-  sel.removeAllRanges();
-  sel.addRange(range);
-  await updateSelection();
+  return selectPosition(node, 1);
 }
 
 /** 
@@ -104,20 +92,37 @@ export async function selectPosition(node: Node | undefined, offset: number) {
  * It should either be a section's `Span` element or its contained `TextNode`
  */
 export async function selectEnd(node: Node | undefined) {
-  if (node === undefined) return;
-  const textNode = node.hasChildNodes() ? node.firstChild : node;
-  if (textNode === null) return;
+  const textLength = node?.textContent?.length ?? 1;
+  return selectPosition(node, textLength - 1);
+}
 
-  const textLength = textNode.textContent?.length;
-  if (textLength === undefined) return;
+let savedSelection: undefined | {
+  startContainer: Node;
+  startOffset: number;
+  endContainer: Node;
+  endOffset: number;
+} = undefined;
+
+export function saveSelection() {
+  const selection = window.getSelection();
+  if (!selection) return;
+
+  const {startContainer, startOffset, endContainer, endOffset} = selection.getRangeAt(0);
+  console.log(endOffset);
+  console.log(startContainer.textContent);
+  savedSelection = {startContainer, startOffset, endContainer, endOffset};
+}
+
+export function restoreSelection() {
+  if (!savedSelection) return;
+  const selection = window.getSelection();
+  if (!selection) return;
 
   const range = document.createRange();
-  range.setStart(textNode, textLength);
-  range.setEnd(textNode, textLength);
+  range.setStart(savedSelection.startContainer, savedSelection.startOffset);
+  range.setEnd(savedSelection.endContainer, savedSelection.endOffset);
+  selection.removeAllRanges();
+  selection.addRange(range);
 
-  const sel = window.getSelection();
-  if (sel === null) return;
-  sel.removeAllRanges();
-  sel.addRange(range);
-  await updateSelection();
+  savedSelection = undefined;
 }

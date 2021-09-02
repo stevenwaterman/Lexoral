@@ -5,7 +5,7 @@
   import type { Section } from "../text/textState";
   import { MaybeSectionMutator } from "../text/storeMutators";
   import { playingStore } from "../audio/audio";
-import { findSectionNode } from "../text/selector";
+  import { findSectionNode } from "../text/selector";
 
   export let wrapper: HTMLDivElement | undefined;
 
@@ -24,7 +24,7 @@ import { findSectionNode } from "../text/selector";
     if (wrapperBox === undefined || popupBox === undefined) return;
 
     left = popupBox.left - wrapperBox.left
-    top = popupBox.top + popupBox.height - wrapperBox.top - wrapperBox.height;
+    top = popupBox.top + popupBox.height - wrapperBox.top;
   }
   $: resize(section);
 
