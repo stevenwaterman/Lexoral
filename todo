@@ -14,10 +14,9 @@ sections:
   -- manually adjust section timings
   
 UX:
-  can we detect selection type using document.getSelection().type or .isCollapsed maybe?
   Some kind of button help
   Alt up/down should control volume
-  Alt left/right should control context
+  Fade out dropdown when covering currently playing word
 
   When combining a paragraph, it selects the next paragraph for a second
   

@@ -4,6 +4,8 @@ import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section 
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
 import { clampGet, clampGetRecord } from "../utils/list";
 
+export const contextAmountStore: Writable<number> = writable(3);
+
 /**
  * The audio mode determines how to translate the section selection into the audio selection
  * 
@@ -17,7 +19,7 @@ import { clampGet, clampGetRecord } from "../utils/list";
  * Paragraph: Play the entire paragraph that contains the current selection.
  * Onward: Play from the selection until the end of the audio.
  */
-export const audioModeStore: Writable<"word" | "context" | "paragraph" | "onward"> = writable("context");
+export const audioModeStore: Writable<"context" | "paragraph" | "onward"> = writable("context");
 
 /**
  * These mutations are applied in order to the start or end of the section selection.
@@ -44,25 +46,7 @@ type AudioSelectionMutation = {
 }
 
 /**
- * Play exactly what is selected.
- */
-const wordMode: AudioSelectionMutation = {
-  start: {
-    sectionOffset: 0,
-    constrainWithinParagraph: false,
-    addGap: false,
-    timeOffset: 0
-  },
-  end: {
-    sectionOffset: 0,
-    constrainWithinParagraph: false,
-    addGap: false,
-    timeOffset: 0
-  }
-};
-
-/**
- * Play 3 words either side of the selected word, as long as they're in the same paragraph.
+ * Play X words either side of the selected word, as long as they're in the same paragraph.
  */
 const contextMode: AudioSelectionMutation = {
   start: {
@@ -118,10 +102,18 @@ const onwardMode: AudioSelectionMutation = {
 /**
  * Supplies the set of mutations to apply onto the section selection based on the audio mode.
  */
-const mutationStore: Readable<AudioSelectionMutation> = derived(audioModeStore, mode => {
+const mutationStore: Readable<AudioSelectionMutation> = derived([audioModeStore, contextAmountStore], ([mode, contextAmount]) => {
   switch(mode) {
-    case "word": return wordMode;
-    case "context": return contextMode;
+    case "context": return {
+      start: {
+        ...contextMode.start,
+        sectionOffset: -contextAmount
+      },
+      end: {
+        ...contextMode.end,
+        sectionOffset: contextAmount
+      }
+    };
     case "paragraph": return paragraphMode;
     case "onward": return onwardMode;
   }

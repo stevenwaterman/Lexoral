@@ -1,6 +1,6 @@
 <script lang="ts">
   import { autoPlayStore, lastPlayedSectionStore, loopStore, playAudio, playingStore, stopAudio } from "../audio/audio";
-  import { audioModeStore } from "../audio/audioSelection";
+  import { audioModeStore, contextAmountStore } from "../audio/audioSelection";
   import { findSectionNode, selectEnd } from "./select";
   import ToastController from "../display/toast/ToastController.svelte";
   import { sendToast } from "../display/toast/toasts";
@@ -40,20 +40,33 @@
     if (event.altKey) {
       event.preventDefault();
       switch(event.key) {
-        case "w": return wordMode();
         case "c": return contextMode();
         case "p": return paragraphMode();
         case "o": return onwardMode();
         case "l": return toggleLoop();
         case "a": return toggleAutoPlay();
+        case "ArrowLeft": return decreaseContext();
+        case "ArrowRight": return increaseContext();
       }
     }
   }
 
-  function wordMode() {
-    if ($audioModeStore === "word") return;
-    audioModeStore.set("word");
-    sendToast("Enabled audio mode: word");
+  function decreaseContext() {
+    contextAmountStore.update(amount => {
+      if (amount > 0) {
+        const newAmount = amount - 1;
+        sendToast(`Set context amount: ${newAmount}`);
+        return newAmount;
+      } else return amount;
+    });
+  }
+
+  function increaseContext() {
+    contextAmountStore.update(amount => {
+      const newAmount = amount + 1;
+      sendToast(`Set context amount: ${newAmount}`);
+      return newAmount;
+    });
   }
 
   function contextMode() {
