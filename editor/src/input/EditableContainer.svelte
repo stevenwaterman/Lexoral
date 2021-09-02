@@ -115,15 +115,13 @@
   async function rightArrow(event: KeyboardEvent) {}
 
   async function tab(event: KeyboardEvent) {
-    if ($isTextSelectedStore) {
-      event.preventDefault();
-      if (event.shiftKey) {
-        const idx = $earlySectionStore?.idx;
-        if (idx !== undefined) selectSectionEnd(idx - 1);
-      } else {
-        const idx = $lateSectionStore?.idx;
-        if (idx !== undefined) selectSectionStart(idx + 1);
-      }
+    event.preventDefault();
+    if (event.shiftKey) {
+      const idx = $earlySectionStore?.idx;
+      if (idx !== undefined) selectSectionEnd(idx - 1);
+    } else {
+      const idx = $lateSectionStore?.idx;
+      if (idx !== undefined) selectSectionStart(idx + 1);
     }
   }
 

@@ -16,13 +16,13 @@ sections:
 UX:
   ctrl-backspace deletes whole span
   can we detect selection type using document.getSelection().type or .isCollapsed maybe?
-  Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
   Some kind of button help
   Alt up/down should control volume
   Alt left/right should control context
 
   When combining a paragraph, it selects the next paragraph for a second
   
+  * Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
   * Hard to tell difference between primary and secondary text colours
   * Should entering first character on placeholder replace it?
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
