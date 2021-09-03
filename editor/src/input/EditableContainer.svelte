@@ -17,13 +17,12 @@
   import type { SectionSelection } from "./selectionState";
 
   import {
-restoreSelection,
-saveSelection,
-selectNextSection,
-        selectParagraphEnd,
+    restoreSelection,
+    saveSelection,
+    selectNextSection,
+    selectParagraphEnd,
     selectParagraphStart,
-selectPrevSection,
-        selectSectionEnd,
+    selectPrevSection,
     selectSectionPosition,
     selectSectionStart,
   } from "./select";
@@ -49,7 +48,7 @@ import { findSectionNode } from "../text/selector";
       await selectPrevSection($focusSectionIdxStore);
     } else if ($caretPositionStore.end) {
       const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
-      if (textContent?.length === 1 || event.ctrlKey) {
+      if (textContent?.length === 3 || event.ctrlKey) {
         event.preventDefault();
         new MaybeSectionMutator(focusSectionStore).setText("");
         await selectPrevSection($focusSectionIdxStore)
@@ -74,7 +73,7 @@ import { findSectionNode } from "../text/selector";
       await selectNextSection($focusSectionIdxStore);
     } else if ($caretPositionStore.start) {
       const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
-      if (textContent?.length === 1 || event.ctrlKey) {
+      if (textContent?.length === 3 || event.ctrlKey) {
         event.preventDefault();
         new MaybeSectionMutator(focusSectionStore).setText("");
         await selectNextSection($focusSectionIdxStore);
@@ -176,11 +175,11 @@ import { findSectionNode } from "../text/selector";
     if (trimmedContent === section.text) return;
 
     saveSelection();
-    if (!section.edited && trimmedContent.substring(1) === section.placeholder) {
-      new MaybeSectionMutator(focusSectionStore).setText(trimmedContent.substring(0, 1));
-    } else {
+    // if (!section.edited && trimmedContent.substring(1) === section.placeholder) {
+      // new MaybeSectionMutator(focusSectionStore).setText(trimmedContent.substring(0, 1));
+    // } else {
       new MaybeSectionMutator(focusSectionStore).setText(trimmedContent);
-    }
+    // }
     restoreSelection();
   }
 </script>

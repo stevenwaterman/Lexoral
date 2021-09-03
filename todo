@@ -14,15 +14,12 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Shouldn't be able to delete the underscore representing an empty section
-  Selecting the end of a paragraph requires 2 left arrows
+  Page up + page down don't work with text selected
   You have to press ctrl + arrows twice
   Can't click + drag if the selection starts with a space & can't select backwards
   When combining a paragraph, it selects the next paragraph for a second
   Some kind of button help
-  dropdown placement when a section goes across 2 lines is v weird
   
-  * Some kind of bug with autocompleting a word and the cursor being at the very start of the next section
   * Hard to tell difference between primary and secondary text colours
   * Should entering first character on placeholder replace it?
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?

@@ -2,9 +2,10 @@ import { Writable, writable, Readable, derived } from "svelte/store";
 import { ParagraphStore, documentStore, Section, SectionStore, allSectionsStore, MaybeParagraphStore, MaybeSectionStore } from "../text/textState";
 import { deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
 import { tick } from "svelte";
-import { clampGet } from "../utils/list";
+import { clampGet, clamp } from "../utils/list";
 import { SectionMutator } from "../text/storeMutators";
 import { findSectionNode } from "../text/selector";
+import { off } from "process";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -127,14 +128,11 @@ async function updateSelectionInternal() {
   const selection = window.getSelection();
   if (selection === null) return;
 
-  const normalisedAnchor = normaliseCursor(selection.anchorNode, selection.anchorOffset);
-  const normalisedFocus = normaliseCursor(selection.focusNode, selection.focusOffset);
-  if (normalisedAnchor === undefined) return;
-  if (normalisedFocus === undefined) return;
+  const anchor = normaliseCursor(selection.anchorNode, selection.anchorOffset, "anchor");
+  const focus = normaliseCursor(selection.focusNode, selection.focusOffset, "focus");
+  if (anchor === undefined) return;
+  if (focus === undefined) return;
 
-  const anchor = normalisedAnchor.position;
-  const focus = normalisedFocus.position;
-  
   const inverted = isSelectionInverted(anchor, focus);
 
   const early = inverted ? focus : anchor;
@@ -142,49 +140,48 @@ async function updateSelectionInternal() {
 
   selectionStoreInternal.set({ anchor, focus, early, late, inverted });
   await tick();
-
-  const newAnchorNode = normalisedAnchor.newNode ?? selection.anchorNode;
-  const newFocusNode = normalisedFocus.newNode ?? selection.focusNode;
-  if (newAnchorNode !== null && newFocusNode !== null) {
-    if (normalisedAnchor.newNode !== null || normalisedFocus.newNode !== null) {
-      const range = document.createRange();
-      range.setStart(newAnchorNode, normalisedAnchor.position.offset);
-      range.setEnd(newFocusNode, normalisedFocus.position.offset);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-  }
 }
 
-function normaliseCursor(node: Node | null, offset: number): { position: CursorPosition, newNode: Node | null } | undefined {
+function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "focus"): CursorPosition | undefined {
   let span: HTMLSpanElement;
   let spanOffset: number;
+
+  let requiresSelectionUpdate: boolean = false;
 
   if (node?.parentElement?.classList?.contains("section")) {
     // Inside the span
     span = node.parentElement;
-    spanOffset = offset - 1;
+    const clampedOffset = clamp(offset, 1, (span.textContent?.length ?? 1) - 1);
+    spanOffset = clampedOffset - 1;
+    if (clampedOffset !== offset) requiresSelectionUpdate = true;
   } else if (node?.parentElement?.classList?.contains("paragraph")) {
     // Between spans
     span = (node as Text).nextElementSibling as HTMLSpanElement;
     spanOffset = 0;
+    requiresSelectionUpdate = true;
   } else {
-    console.log("Unrecognised element selected", node);
-    return undefined;
+    throw new Error("Unrecognised selection position");
   }
-
-  const newNode = span.firstChild;
 
   const paragraph = span.parentElement;
   if (paragraph === null) return undefined;
 
-  return {
-    newNode: node === newNode ? null : newNode,
-    position: {
-      paragraph: siblingIdx(paragraph),
-      section: siblingIdx(span),
-      offset: spanOffset
+  if (requiresSelectionUpdate) {
+    const range = window.getSelection()?.getRangeAt(0);
+    const node = span.firstChild;
+    if (range !== undefined && node !== null) {
+      if (side === "anchor") {
+        range.setStart(node, spanOffset + 1);
+      } else {
+        range.setEnd(node, spanOffset + 1);
+      }
     }
+  }
+
+  return {
+    paragraph: siblingIdx(paragraph),
+    section: siblingIdx(span),
+    offset: spanOffset
   }
 }
 

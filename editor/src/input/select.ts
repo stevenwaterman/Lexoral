@@ -108,8 +108,6 @@ export function saveSelection() {
   if (!selection) return;
 
   const {startContainer, startOffset, endContainer, endOffset} = selection.getRangeAt(0);
-  console.log(endOffset);
-  console.log(startContainer.textContent);
   savedSelection = {startContainer, startOffset, endContainer, endOffset};
 }
 
