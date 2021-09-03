@@ -23,8 +23,8 @@
     selectParagraphEnd,
     selectParagraphStart,
     selectPrevSection,
-selectSectionEnd,
-        selectSectionPosition,
+    selectSectionEnd,
+    selectSectionPosition,
     selectSectionStart,
   } from "./select";
 
@@ -144,6 +144,14 @@ import { findSectionNode } from "../text/selector";
     }
   }
 
+  async function pageDown(event: KeyboardEvent) {
+
+  }
+
+  async function pageUp(event: KeyboardEvent) {
+
+  }
+
   const keyFuncs: Partial<Record<string, (event: KeyboardEvent) => Promise<void>>> = {
     Backspace: backspace,
     Delete: deleteKey,
@@ -152,6 +160,8 @@ import { findSectionNode } from "../text/selector";
     Tab: tab,
     Home: home,
     End: end,
+    PageUp: pageUp,
+    PageDown: pageDown,
     c: cKey,
   };
 

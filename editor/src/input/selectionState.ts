@@ -5,7 +5,6 @@ import { tick } from "svelte";
 import { clampGet, clamp } from "../utils/list";
 import { SectionMutator } from "../text/storeMutators";
 import { findSectionNode } from "../text/selector";
-import { off } from "process";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -160,6 +159,7 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
     spanOffset = 0;
     requiresSelectionUpdate = true;
   } else {
+    console.log("Unrecognised selection position", {node, offset, side});
     throw new Error("Unrecognised selection position");
   }
 
