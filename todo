@@ -14,7 +14,10 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Ctrl + Shift + Arrows don't work
+  Backspace / delete need to update selection sometimes
+  Page up / down don't work
+  need to disable ability to edit when selecting things
+
   Can't click + drag if the selection starts with a space & can't select backwards
   When combining a paragraph, it selects the next paragraph for a second
   Some kind of button help

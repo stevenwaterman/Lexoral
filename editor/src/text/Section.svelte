@@ -53,7 +53,7 @@
   class:nonePlaying={!$playingStore}
   data-sectionIdx={$sectionStore.idx}
 >
-  {`\u200b${innerText}\u200b`}
-  <!-- {`/${innerText}/`} -->
+  <!-- {`\u200b${innerText}\u200b`} -->
+  {`/${innerText}/`}
 </span>
 {last ? "" : " "}

@@ -103,6 +103,11 @@ let savedSelection: undefined | {
   endOffset: number;
 } = undefined;
 
+
+
+
+
+
 export function saveSelection() {
   const selection = window.getSelection();
   if (!selection) return;
@@ -124,3 +129,5 @@ export function restoreSelection() {
 
   savedSelection = undefined;
 }
+
+
