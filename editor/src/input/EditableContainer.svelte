@@ -196,11 +196,7 @@ import { findSectionNode } from "../text/selector";
     if (trimmedContent === section.text) return;
 
     saveSelection();
-    // if (!section.edited && trimmedContent.substring(1) === section.placeholder) {
-      // new MaybeSectionMutator(focusSectionStore).setText(trimmedContent.substring(0, 1));
-    // } else {
-      new MaybeSectionMutator(focusSectionStore).setText(trimmedContent);
-    // }
+    new MaybeSectionMutator(focusSectionStore).setText(trimmedContent);
     restoreSelection();
   }
 </script>
