@@ -15,7 +15,6 @@ sections:
   
 UX:
   Page up + page down don't work with text selected
-  You have to press ctrl + arrows twice
   Can't click + drag if the selection starts with a space & can't select backwards
   When combining a paragraph, it selects the next paragraph for a second
   Some kind of button help

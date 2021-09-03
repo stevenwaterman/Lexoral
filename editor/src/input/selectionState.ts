@@ -108,7 +108,7 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
   const textLength = findSectionNode(section.idx)?.textContent?.length ?? 0;
   const end = selection.focus.offset >= textLength - 2;
   return { start, end };
-})
+});
 
 /**
  * Update the selection state based on the current text selection in browser.

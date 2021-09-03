@@ -23,7 +23,8 @@
     selectParagraphEnd,
     selectParagraphStart,
     selectPrevSection,
-    selectSectionPosition,
+selectSectionEnd,
+        selectSectionPosition,
     selectSectionStart,
   } from "./select";
 
@@ -82,16 +83,36 @@ import { findSectionNode } from "../text/selector";
   }
 
   async function leftArrow(event: KeyboardEvent) {
-    if ($caretPositionStore.start && !$isTextSelectedStore) {
+    if ($caretPositionStore.start && !$isTextSelectedStore && !event.ctrlKey) {
       event.preventDefault();
       await selectPrevSection($focusSectionIdxStore);
+    } else if (event.ctrlKey) {
+      event.preventDefault();
+      if ($caretPositionStore.start) {
+        const idx = $focusSectionIdxStore;
+        if (idx !== undefined) {
+          await selectSectionStart(idx - 1);
+        }
+      } else {
+        await selectSectionStart($focusSectionIdxStore);
+      }
     }
   }
 
   async function rightArrow(event: KeyboardEvent) {
-    if ($caretPositionStore.end && !$isTextSelectedStore) {
+    if ($caretPositionStore.end && !$isTextSelectedStore && !event.ctrlKey) {
       event.preventDefault();
       await selectNextSection($focusSectionIdxStore);
+    } else if (event.ctrlKey) {
+      event.preventDefault();
+      if ($caretPositionStore.end) {
+        const idx = $focusSectionIdxStore;
+        if (idx !== undefined) {
+          await selectSectionEnd(idx + 1);
+        }
+      } else {
+        await selectSectionEnd($focusSectionIdxStore);
+      }
     }
   }
 
