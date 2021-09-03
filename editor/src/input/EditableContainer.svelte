@@ -27,7 +27,6 @@
   }
 
   async function updateText() {
-    await tick();
     const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
     if (textContent === undefined) return;
 

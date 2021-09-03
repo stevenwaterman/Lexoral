@@ -1,7 +1,7 @@
 import { focusSectionStore, updateSelection } from "./selectionState";
 import type { Section } from "../text/textState";
 import { findSectionNode } from "../text/selector";
-import { SectionMutator, MaybeSectionMutator } from "../text/storeMutators";
+import { SectionMutator } from "../text/storeMutators";
 
 let focusSection: Section | undefined = undefined;
 focusSectionStore.subscribe(state => focusSection = state);
@@ -17,6 +17,13 @@ export async function onKeyPressed(event: KeyboardEvent) {
   if (event.key === "ArrowRight") {
     if (event.ctrlKey) return processEvent(event, ctrlRightArrow);
     else return processEvent(event, rightArrow);
+  }
+
+  if (event.key === "Tab" && !event.shiftKey) return processEvent(event, tab);
+  if (event.key === "Tab" && event.shiftKey) {
+    event.preventDefault();
+    const focus = guardedCall(shiftTab);
+    return mutateSelection(false, focus);
   }
 
   if (event.key === "ArrowUp") return defaultBehaviour();
@@ -104,6 +111,21 @@ function rightArrow(focusNode: Node, focusOffset: number, focusSection: Section)
   }
   else return { node: focusNode, offset: focusOffset + 1 };
 }
+
+function shiftTab(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+  const node = findSectionNode(focusSection.idx - 1)?.firstChild;
+  if (!node) return;
+
+  const offset = (node?.textContent?.length ?? 1) - 1;
+  return { node, offset };
+}
+
+function tab(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+  const node = findSectionNode(focusSection.idx + 1)?.firstChild;
+  if (!node) return;
+  return { node, offset: 1 };
+}
+
 
 function ctrlLeftArrow(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
   if (focusOffset <= 1) {
