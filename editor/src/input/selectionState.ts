@@ -155,7 +155,14 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
     if (clampedOffset !== offset) requiresSelectionUpdate = true;
   } else if (node?.parentElement?.classList?.contains("paragraph")) {
     // Between spans
-    span = (node as Text).nextElementSibling as HTMLSpanElement;
+    const nextSpan = (node as Text).nextElementSibling as HTMLSpanElement | null;
+    if (nextSpan === null) {
+      // Between paragraphs, select first span of next paragraph
+      span = node.parentElement.nextElementSibling?.firstElementChild as HTMLSpanElement;
+    } else {
+      // Between spans within paragraph
+      span = nextSpan;
+    }
     spanOffset = 0;
     requiresSelectionUpdate = true;
   } else {
@@ -166,17 +173,14 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
   const paragraph = span.parentElement;
   if (paragraph === null) return undefined;
 
-  if (requiresSelectionUpdate) {
-    const range = window.getSelection()?.getRangeAt(0);
-    const node = span.firstChild;
-    if (range !== undefined && node !== null) {
-      if (side === "anchor") {
-        range.setStart(node, spanOffset + 1);
-      } else {
-        range.setEnd(node, spanOffset + 1);
-      }
-    }
-  }
+  // if (requiresSelectionUpdate) {
+  //   const node = span.firstChild;
+  //   const selection = window.getSelection();
+  //   if (node !== null && selection !== null) {
+  //     if (side === "anchor") selection.setBaseAndExtent(node, spanOffset + 1, selection.focusNode ?? node , selection.focusOffset);
+  //     else selection.setBaseAndExtent(selection.anchorNode ?? node, selection.anchorOffset, node, spanOffset + 1);
+  //   }
+  // }
 
   return {
     paragraph: siblingIdx(paragraph),

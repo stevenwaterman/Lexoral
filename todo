@@ -14,11 +14,8 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Backspace / delete need to update selection sometimes
-  Page up / down don't work
-  need to disable ability to edit when selecting things
+  empty sections show up when selecting in lighter color (don't get selected)
 
-  Can't click + drag if the selection starts with a space & can't select backwards
   When combining a paragraph, it selects the next paragraph for a second
   Some kind of button help
   
@@ -26,6 +23,7 @@ UX:
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
   * Should be able to select nothing
   * Should have nothing selected at first
+  * Page up / down don't work
   
   - add scrolling (when playing from current position onwards)
   - undo / redo support / disable
@@ -39,6 +37,7 @@ UX:
 Performance:
   Slow when selecting and deselecting lots of sections
   updateSelection is called way too much
+  changing paragraphs rerenders everything
 
 
 Add export functionality

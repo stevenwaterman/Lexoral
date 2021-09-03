@@ -11,9 +11,6 @@
 
   let desiredText: string;
   $: desiredText = $sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder;
-
-  let innerText: string;
-  $: innerText = desiredText.length === 0 ? "_" : desiredText;
 </script>
 
 <style>
@@ -21,10 +18,16 @@
     display: inline;
     white-space: pre-wrap;
     transition: background 0.2s;
+    min-width: 1em;
   }
 
   .section::selection {
     background: none;
+  }
+
+  .underline {
+    padding-right: 0.5em;
+    box-shadow: inset 0 -2px 0 var(--form-border);
   }
 
   .section.nonePlaying::selection {
@@ -51,9 +54,10 @@
   class:placeholder={!$sectionStore.edited}
   class:sectionPlaying={$currentlyPlayingSectionIdxStore === $sectionStore.idx}
   class:nonePlaying={!$playingStore}
+  class:underline={desiredText.length === 0}
   data-sectionIdx={$sectionStore.idx}
 >
-  <!-- {`\u200b${innerText}\u200b`} -->
-  {`/${innerText}/`}
+  {`\u200b${desiredText}\u200b`}
+  <!-- {`/${desiredText}/`} -->
 </span>
 {last ? "" : " "}

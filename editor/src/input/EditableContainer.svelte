@@ -30,7 +30,8 @@
 
   import { MaybeSectionMutator } from "../text/storeMutators";
   import { findSectionNode } from "../text/selector";
-  import { controlsKeyDown } from "./controls";
+  import { onKeyPressed } from "./controls";
+import Section from "../text/Section.svelte";
 
   // async function backspace(event: KeyboardEvent) {
   //   if ($isTextSelectedStore) {
@@ -185,7 +186,7 @@
   // }
 
   async function mouseDown(event: MouseEvent) {
-    await updateSelection();
+    // await updateSelection();
   }
 
   async function mouseUp(event: MouseEvent) {
@@ -193,9 +194,9 @@
   }
 
   async function mouseMove(event: MouseEvent) {
-    if (event.buttons === 1) {
-      await updateSelection();
-    }
+    // if (event.buttons === 1) {
+      // await updateSelection();
+    // }
   }
 
   async function input(event: Event) {
@@ -205,17 +206,10 @@
 
   async function updateText() {
     await tick();
-    const section = $focusSectionStore;
-    if (section === undefined) return;
-
-    const component = findSectionNode(section.idx);
-    const textContent = component?.textContent ?? undefined;
+    const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
     if (textContent === undefined) return;
 
     const trimmedContent = textContent.slice(1, textContent.length - 1);
-
-    if (!section.edited && trimmedContent === section.placeholder) return;
-    if (trimmedContent === section.text) return;
 
     saveSelection();
     new MaybeSectionMutator(focusSectionStore).setText(trimmedContent);
@@ -233,7 +227,7 @@
 <div
   contenteditable
   tabindex={-1}
-  on:keydown={controlsKeyDown}
+  on:keydown={onKeyPressed}
   on:mouseup={mouseUp}
   on:mousedown={mouseDown}
   on:mousemove={mouseMove}

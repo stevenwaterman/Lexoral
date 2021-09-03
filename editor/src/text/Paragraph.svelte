@@ -14,6 +14,10 @@
     padding-block-end: 1em;
   }
 
+  .paragraph::selection {
+    background: none;
+  }
+
   .paragraph.nonePlaying::selection {
     background-color: rgba(76, 108, 169, 0.99);
   }

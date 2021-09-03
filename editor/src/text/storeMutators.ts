@@ -1,8 +1,11 @@
-import { SectionStore, Section, Paragraph, documentStore } from "./textState";
+import { SectionStore, Section, Paragraph, documentStore, allSectionsStore } from "./textState";
 import { getOptions } from "../preprocess/align";
 import { Writable, writable } from "svelte/store";
 import type { CursorPosition } from "../input/selectionState";
 import { get_store_value } from "svelte/internal";
+
+let allSectionStores: Record<number, SectionStore>;
+allSectionsStore.subscribe(state => allSectionStores = state);
 
 abstract class BaseSectionMutator<S> {
   protected readonly underlying: Writable<S>;
@@ -18,12 +21,15 @@ abstract class BaseSectionMutator<S> {
   abstract update(func: (state: Section) => Section): this;
 
   setText(text: string): this {
-    return this.update(section => ({
-      ...section,
-      text,
-      completionOptions: getOptions(text, section.originalOptions),
-      edited: true
-    }))
+    return this.update(section => {
+      if (!section.edited && text === section.placeholder) return section;
+      return {
+        ...section,
+        text,
+        completionOptions: getOptions(text, section.originalOptions),
+        edited: true
+      }
+    })
   }
 
   deleteText(offsets?: { start?: number, end?: number }): this {
@@ -53,6 +59,10 @@ export class SectionMutator extends BaseSectionMutator<Section> {
   update(func: (state: Section) => Section): this {
     this.underlying.update(func);
     return this;
+  }
+
+  static ofIdx(idx: number): SectionMutator {
+    return new SectionMutator(allSectionStores[idx]);
   }
 }
 

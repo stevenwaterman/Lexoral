@@ -96,37 +96,33 @@ export async function selectEnd(node: Node | undefined) {
   return selectPosition(node, textLength - 1);
 }
 
+
+
 let savedSelection: undefined | {
-  startContainer: Node;
-  startOffset: number;
-  endContainer: Node;
-  endOffset: number;
+  anchorNode: Node;
+  anchorOffset: number;
+  focusNode: Node;
+  focusOffset: number;
 } = undefined;
-
-
-
-
-
 
 export function saveSelection() {
   const selection = window.getSelection();
   if (!selection) return;
 
-  const {startContainer, startOffset, endContainer, endOffset} = selection.getRangeAt(0);
-  savedSelection = {startContainer, startOffset, endContainer, endOffset};
+  const {anchorNode, anchorOffset, focusNode, focusOffset} = selection;
+  if (anchorNode === null) return;
+  if (focusNode === null) return;
+  savedSelection = {anchorNode, anchorOffset, focusNode, focusOffset};
 }
 
 export function restoreSelection() {
   if (!savedSelection) return;
-  const selection = window.getSelection();
-  if (!selection) return;
-
-  const range = document.createRange();
-  range.setStart(savedSelection.startContainer, savedSelection.startOffset);
-  range.setEnd(savedSelection.endContainer, savedSelection.endOffset);
-  selection.removeAllRanges();
-  selection.addRange(range);
-
+  window.getSelection()?.setBaseAndExtent(
+    savedSelection.anchorNode, 
+    savedSelection.anchorOffset,
+    savedSelection.focusNode,
+    savedSelection.focusOffset
+  );
   savedSelection = undefined;
 }
 
