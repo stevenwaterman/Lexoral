@@ -65,7 +65,7 @@ async function createPlayer(): Promise<Tone.Player> {
 
   return new Promise(resolve => {
     const player = new Tone.Player(
-      "/assets/audio.mp3", 
+      "assets/audio.mp3", 
       () => {
         duration = player.buffer.duration;
         resolve(player);

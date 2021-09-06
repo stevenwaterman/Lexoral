@@ -1,33 +1,58 @@
 name: AutomaticHost
 
-
 on:
   push:
-    branches: 
+    branches:
       - master
 
-defaults:
-  run:
-    working-directory: editor
-
 jobs:
-  build:
+  build-editor:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v2
       with:
-        node-version: '12.x'
+        node-version: '14'
     - run: npm ci
+      working-directory: editor
     - run: npm run build
+      working-directory: editor
+    - uses: actions/upload-artifact@v2
+      with:
+        name: editor
+        path: editor/public
+
+  build-landing:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/upload-artifact@v2
+      with:
+        name: landing
+        path: landing
+
+  commit-gh-pages:
+    needs: [build-editor, build-landing]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git checkout --orphan gh-pages
-        git reset
-        git add public/* -f
-        git mv public/* ../ -k
+        git reset --hard
+    - uses: actions/download-artifact@v2
+      with:
+        name: editor
+        path: demo
+    - uses: actions/download-artifact@v2
+      with:
+        name: landing
+    - run: |
+        git add ./*
         git commit -m "Update hosted version"
     - uses: ad-m/github-push-action@master
       with:
