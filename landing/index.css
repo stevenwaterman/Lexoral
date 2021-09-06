@@ -56,8 +56,20 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  text-align: center;
+}
 
-  background-color: var(--yellow-3);
+.hero {
+  display: grid;
+  grid-template-columns: 4fr 4fr;
+  gap: 2em;
+  align-items: center;
+
+  width: 90%;
+  max-width: 100em;
+  margin: auto;
+  margin-top: 10em;
+  margin-bottom: 6em;
 }
 
 .narrow-container {
@@ -65,28 +77,51 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
 
   margin: auto;
 }
 
+nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+
+  background-color: var(--yellow-2);
+  border-bottom: 2px solid var(--form-border);
+
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
 .logo {
-  max-height: 30vh;
-  max-width: 50vw;
-  margin-block-end: 2em;
+  height: 90%;
+  margin: 1em;
 }
 
 .demo-container {
   background-color: var(--page-background);
+  position: relative;
   width: 100%;
+  padding-top: 75%;
+
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px -2px var(--blue-3)
 }
 
 .demo {
-  width: 1200px;
-  max-width: 90%;
-  height: 720px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border: 2px solid var(--form-border);
-  margin-bottom: 2em;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -130,6 +165,12 @@ h2 {
   box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }
 
+nav .cta-button {
+  font-size: 1.2em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  margin-right: 1em;
+}
+
 .cta-detail {
   margin-block-start: 0.2em;
   font-style: italic;
@@ -138,9 +179,8 @@ h2 {
 /* TODO convert the description to a grid based system with responsive breakpoints */
 
 .description {
-  margin-top: 2em;
   font-size: 1.5em;
-  margin-bottom: 2em;
+  margin-bottom: 4em;
   padding-left: 0;
 
   width: 90%;
@@ -151,6 +191,8 @@ h2 {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+
+  z-index: 1;
 }
 
 .description li {
@@ -179,14 +221,32 @@ h2 {
 
 
 .comparison {
-  width: 55em;
-  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  background: linear-gradient(45deg, var(--yellow-1), var(--yellow-2), var(--yellow-3));
+  clip-path: polygon(
+    0 10vw,
+    20vw 0,
+    100vw 0,
+    100vw calc(100% - 10vw),
+    80vw 100%,
+    0 100%
+  );
+
+  padding-top: 1em;
+  padding-bottom: 5em;
 }
 
 .comparison ul {
   display: flex;
   flex-direction: column;
   list-style-type: none;
+
+  width: 45em;
+  max-width: 100%;
 
   padding: 0;
 }
@@ -207,12 +267,15 @@ h2 {
 
   padding-top: 1em;
   padding-bottom: 1em;
+  padding-right: 2em;
 
   clip-path: inset(0px -500px 0px -500px);
   box-shadow: 0 0 100px 30px var(--blue-1);
 
-  border: 2px solid var(--blue-1);
   border-radius: 2em;
+
+  background-color: var(--blue-1);
+  color: var(--light-text)
 }
 
 .comparison p {
@@ -245,7 +308,6 @@ h2 {
 .contact {
   margin-top: 3em;
   width: 100%;
-  background-color: var(--page-background);
 }
 
 .contact h2 {
