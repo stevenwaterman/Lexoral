@@ -56,11 +56,8 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-}
 
-nav {
-  position: sticky;
-  height: 64px;
+  background-color: var(--yellow-3);
 }
 
 .narrow-container {
@@ -69,27 +66,39 @@ nav {
   flex-direction: column;
   align-items: center;
   text-align: center;
+
+  margin: auto;
 }
 
 .logo {
-  height: 100%;
+  max-height: 30vh;
+  max-width: 50vw;
+  margin-block-end: 2em;
+}
+
+.demo-container {
+  background-color: var(--page-background);
+  width: 100%;
 }
 
 .demo {
-  width: 50vw;
-  height: 50vh;
+  width: 1200px;
+  max-width: 90%;
+  height: 720px;
+  border: 2px solid var(--form-border);
+  margin-bottom: 2em;
 }
 
 h1 {
   font-weight: bold;
-  font-size: 3em;
-  margin-block-start: 0.3em;
-  margin-block-end: 0.3em;
+  font-size: 4em;
+  margin-block-start: 0.4em;
+  margin-block-end: 0.4em;
 }
 
 h2 {
   font-weight: normal;
-  font-size: 1.5em;
+  font-size: 2.5em;
   margin-block-start: 0.3em;
   margin-block-end: 0.3em;
 }
@@ -101,22 +110,24 @@ h2 {
 .cta-button {
   font-size: 2em;
   padding: 0.5em 2em 0.5em 2em;
-  background-color: var(--green-3);
   transition-property: background-color, color;
   transition-duration: 200ms;
   border: none;
   border-radius: 0.5em;
   outline: none;
+  cursor: pointer;
+
+  background-color: var(--blue-1);
+  color: var(--light-text);
 }
 
 .cta-button:hover {
-  background-color: var(--blue-1);
-  color: var(--light-text)
+  background-color: var(--green-3);
+  color: var(--text);
 }
 
 .cta-button:active {
-  /* box-shadow: inset 0 3px 5px rgba(0,0,0,.125); */
-  box-shadow: inset 2px 3px 5px rgba(0,0,0,0.25);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }
 
 .cta-detail {
@@ -124,26 +135,163 @@ h2 {
   font-style: italic;
 }
 
+/* TODO convert the description to a grid based system with responsive breakpoints */
+
 .description {
   margin-top: 2em;
   font-size: 1.5em;
   margin-bottom: 2em;
+  padding-left: 0;
+
+  width: 90%;
+  max-width: 65em;
+
+  list-style-type: none;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
-.description p {
-  margin-block-start: 0.3em;
-  margin-block-end: 0.3em;
+.description li {
+  margin-left: 1.5vw;
+  margin-right: 1.5vw;
+
+  padding: 0.7vw;
+
+  --borderstyle: solid;
+  border-color: var(--blue-1);
+  border-width: 3px;
+  border-bottom-style: var(--borderstyle);
 }
+
+.description li:first-child {
+  border-left-style: var(--borderstyle);
+  border-bottom-style: var(--borderstyle);
+  border-bottom-left-radius: 0.5em;
+}
+
+.description li:last-child {
+  border-right-style: var(--borderstyle);
+  border-bottom-style: var(--borderstyle);
+  border-bottom-right-radius: 0.5em;
+}
+
 
 .comparison {
-  text-align: left;
+  width: 55em;
+  max-width: 100%;
+}
+
+.comparison ul {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+
+  padding: 0;
+}
+
+.comparison div {
+  width: 50%;
+  height: 100%;
+}
+
+.comparison li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+
+  padding-top: 1em;
+  padding-bottom: 1em;
+
+  clip-path: inset(0px -500px 0px -500px);
+  box-shadow: 0 0 100px 30px var(--blue-1);
+
+  border: 2px solid var(--blue-1);
+  border-radius: 2em;
+}
+
+.comparison p {
+  margin: 0;
+}
+
+.comparison-topic h2 {
+  font-size: 3em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.comparison li:first-child {
+  margin-top: 0;
+}
+
+.comparison li:last-child {
+  margin-bottom: 0;
+}
+
+.comparison-reason p {
+  font-size: 1.2em;
+}
+
+.comparison-reason p:first-child {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.contact {
+  margin-top: 3em;
+  width: 100%;
+  background-color: var(--page-background);
+}
+
+.contact h2 {
+  margin-bottom: 1em;
+}
+
+.contact h2 span:last-child {
+  font-size: smaller;
 }
 
 .contact-list {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4em;
+
+  margin: auto;
+  width: 60em;
+
+  margin-top: 4em;
+  margin-bottom: 6em;
+
+  padding-left: 0;
+
+  list-style-type: none;
 }
 
+.contact-list li a {
+  display: flex;
+  flex-direction: column;
+
+  font-size: 1.5em;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.contact-list i {
+  font-size: 3em;
+  margin-bottom: 0.3em;
+  transition-property: color;
+  transition-duration: 200ms;
+}
+
+.contact-list a:hover i {
+  color: var(--green-2)
+}
 
 
 
