@@ -41,3 +41,11 @@ Performance:
 
 
 Add export functionality
+
+
+
+
+Landing Page:
+  * Media breakpoints
+  * Flags to compile either demo (embed) or test site
+  * Update demo site eg remove logo etc

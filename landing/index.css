@@ -1,7 +1,7 @@
 html {
   --text: #242230;
   --secondary-text: #525666;
-  --light-text: var(--grey4);
+  --light-text: var(--grey-4);
   
   --weak-focus: #9CAFD3;
   --focus: #8BA861;
@@ -18,10 +18,10 @@ html {
   --border: #D2D4DB;
   --form-border: #525666;
 
-  --grey1: #242230;
-  --grey2: #525666;
-  --grey3: #D2D4DB;
-  --grey4: #E9EBED;
+  --grey-1: #242230;
+  --grey-2: #525666;
+  --grey-3: #D2D4DB;
+  --grey-4: #E9EBED;
 
   --red-1: #BB2A25;
   --red-2: #DA4944;
@@ -63,12 +63,12 @@ body {
   display: grid;
   grid-template-columns: 4fr 4fr;
   gap: 2em;
-  align-items: center;
+  justify-items: center;
 
-  width: 80%;
-  margin: auto;
-  margin-top: 7em;
+  margin-top: 11em;
   margin-bottom: 3em;
+  margin-right: 5em;
+  margin-left: 10em;
 }
 
 .narrow-container {
@@ -89,8 +89,10 @@ nav {
   background-color: var(--yellow-3);
   border-bottom: 2px solid var(--form-border);
 
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 5;
 }
 
@@ -234,7 +236,7 @@ h2 {
 
 nav .cta-button {
   font-size: 1.5em;
-  margin-right: 0.2em;
+  margin-right: 0.5em;
   padding: 0.3em 0.5em 0.3em 0.5em;
 }
 
@@ -242,7 +244,6 @@ nav .cta-button {
 
 .description {
   font-size: 1.5em;
-  margin-bottom: 4em;
   padding-left: 0;
 
   width: 90%;
@@ -250,55 +251,32 @@ nav .cta-button {
 
   list-style-type: none;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  display: grid;
+  gap: 2em;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  justify-items: center;
 
   z-index: 1;
 }
 
 .description li {
-  margin-left: 1.5em;
-  margin-right: 1.5em;
-
   padding: 0.7em;
 
-  --borderstyle: solid;
   border-color: var(--blue-1);
   border-width: 3px;
-  border-bottom-style: var(--borderstyle);
+  border-bottom-style: solid;
 }
 
 .description li:first-child {
-  border-left-style: var(--borderstyle);
-  border-bottom-style: var(--borderstyle);
+  border-left-style: solid;
+  border-bottom-style: solid;
   border-bottom-left-radius: 0.5em;
 }
 
 .description li:last-child {
-  border-right-style: var(--borderstyle);
-  border-bottom-style: var(--borderstyle);
+  border-right-style: solid;
+  border-bottom-style: solid;
   border-bottom-right-radius: 0.5em;
-}
-
-.comparison {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
-  background: linear-gradient(45deg, var(--yellow-1), var(--yellow-2), var(--yellow-3));
-  clip-path: polygon(
-    0 10vw,
-    20vw 0,
-    100vw 0,
-    100vw calc(100% - 10vw),
-    80vw 100%,
-    0 100%
-  );
-
-  padding-top: 1em;
-  padding-bottom: 5em;
 }
 
 .comparison ul {
@@ -312,31 +290,44 @@ nav .cta-button {
   padding: 0;
 }
 
-.comparison div {
-  width: 50%;
-  height: 100%;
+.comparison li {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+
+  filter: drop-shadow(2px 2px 3px var(--blue-3));
 }
 
-.comparison li {
+.comparison-item {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
 
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-
   padding-top: 1em;
   padding-bottom: 1em;
-  padding-right: 2em;
-
-  clip-path: inset(0px -500px 0px -500px);
-  box-shadow: 0 0 100px 30px var(--blue-1);
-
-  border-radius: 2em;
+  padding-right: 6em;
 
   background-color: var(--blue-1);
-  color: var(--light-text)
+  color: var(--light-text);
+
+  clip-path: polygon(
+    0 0,
+    calc(100% - 5em) 0,
+    100% 50%,
+    calc(100% - 5em) 100%,
+    0 100%,
+    2em 50%
+  );
+}
+
+.comparison-topic {
+  width: 50%;
+  height: 100%;
+}
+
+.comparison-reason {
+  width: 50%;
+  height: 100%;
 }
 
 .comparison p {
@@ -366,8 +357,221 @@ nav .cta-button {
   font-weight: bold;
 }
 
-.contact {
+
+
+
+.explanation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 70em;
+  max-width: 90vw;
+  margin: auto;
+}
+
+.explanation ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.explanation li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.explanationSectionHeader {
+  position: relative;
+
+  align-self: stretch;
+  flex-shrink: 0;
+  flex-basis: 15em;
+
+  margin: 0;
+  margin-right: 1em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.explanation h2 {
+  background-color: var(--blue-1);
+  color: var(--light-text);
+  border-radius: 1em;
+  padding: 0.5em 0 0.5em 0;
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
+}
+
+.explanationSectionHeader:before {
+  content: "";
+  width: 0.5em;
+  transform: translateX(-50%);
+
+  background-color: var(--yellow-1);
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+  bottom: 0;
+  z-index: -1;
+}
+
+li:first-child .explanationSectionHeader:before {
+  top: 10%;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
+li:last-child .explanationSectionHeader:before {
+  bottom: 10%;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+.explanation p {
+  font-size: 1.5em;
+  margin: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  padding: 1em;
+  border-bottom-right-radius: 1em;
+  margin-block-start: 2em;
+  margin-block-end: 2em;
+
+  border-color: var(--blue-1);
+  border-width: 3px;
+  border-bottom-style: solid;
+  border-right-style: solid;
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
+}
+
+.explanation h1 {
+  margin-bottom: 0;
+}
+
+
+
+
+
+
+
+
+.yellowContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  background: linear-gradient(45deg, var(--yellow-1), var(--yellow-2), var(--yellow-3));
+  clip-path: polygon(
+    0 10vw,
+    20vw 0,
+    100vw 0,
+    100vw calc(100% - 10vw),
+    80vw 100%,
+    0 100%
+  );
+
+  padding-top: 1em;
+  padding-bottom: 3em;
+
   margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+
+.pricingRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pricingPoints {
+  background-color: var(--blue-1);
+  color: var(--light-text);
+
+  border-radius: 0.5em;
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
+
+  padding: 0.5em 1em 0.5em 1em;
+  margin-right: 3em;
+
+  height: 100%;
+  font-size: 1.5em;
+}
+
+.pricingPoints ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricingPoints li {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.pricingPoints li:before {
+  content: '✓';
+  font-size: 2em;
+  color: var(--green-3);
+}
+
+.pricingBreakdown {
+  background-color: var(--blue-1);
+  color: var(--light-text);
+
+  border-radius: 0.5em;
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
+
+  padding: 0 3em 0em 3em;
+}
+
+.pricingBreakdown ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.pricingBreakdown li {
+  margin-block-start: 1em;;
+  margin-block-end: 2em;
+}
+
+.pricingBreakdown p {
+  margin: 0;
+}
+
+.pricingBreakdown p:first-child {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.pricingDescription {
+  font-style: italic;
+}
+
+.pricingSingle {
+  font-size: 1.4em;
+}
+
+.pricingBulk {
+  font-size: 1.2em;
+}
+
+
+
+
+
+
+.contact {
   width: 100%;
 }
 
@@ -454,13 +658,72 @@ form .cta-button {
 
 .cta-detail {
   color: var(--secondary-text);
-  margin-block-start: 0.2em;
+  margin-block-start: 0.5em;
   font-style: italic;
 }
 
 
 
 
+@media only screen and (max-width: 1600px) {
+  nav {
+    background: none; 
+    border: none;
+  }
 
+  nav .cta-button {
+    position: fixed;
+    top: 0.5em;
+    right: 0.5em;
+    margin: 0;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: 55fr 45fr;
+    margin: auto;
+    margin-top: 7em;
+    margin-bottom: 0;
+    max-width: 90%;
+  }
+
+  .hero h1 {
+    margin: 0;
+  }
+
+  .hero-button-container {
+    grid-column: span 2;
+  }
+
+  .hero-button-container form {
+    margin-top: 0;
+  }
+
+  .demo-container {
+    width: 50em;
+    max-width: 80vw;
+    height: 40vh;
+    padding-top: 0;
+
+    margin-left: 8em;
+    margin-right: 2em;
+
+    grid-column: span 2;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .description {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .description li {
+    border-style: solid;
+    border-radius: 0.5em;
+  }
+}
 
 
