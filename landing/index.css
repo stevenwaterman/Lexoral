@@ -65,15 +65,13 @@ body {
   gap: 2em;
   align-items: center;
 
-  width: 90%;
-  max-width: 100em;
+  width: 80%;
   margin: auto;
-  margin-top: 10em;
-  margin-bottom: 6em;
+  margin-top: 7em;
+  margin-bottom: 3em;
 }
 
 .narrow-container {
-  padding-top: 3em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,12 +86,12 @@ nav {
   justify-content: space-between;
   height: 64px;
 
-  background-color: var(--yellow-2);
+  background-color: var(--yellow-3);
   border-bottom: 2px solid var(--form-border);
 
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 5;
 }
 
 .logo {
@@ -108,7 +106,7 @@ nav {
   padding-top: 75%;
 
   border-radius: 10px;
-  box-shadow: 5px 5px 5px -2px var(--blue-3)
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
 }
 
 .demo {
@@ -122,6 +120,78 @@ nav {
   border: 2px solid var(--form-border);
   border-radius: 10px;
   box-sizing: border-box;
+}
+
+.demo-prompt {
+  position: absolute;
+  top: -1em;
+  left: -4em;
+  font-size: 2em;
+  z-index: 2;
+  transform: rotateZ(-25deg);
+
+  background-color: var(--blue-1);
+  color: var(--light-text);
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
+  padding: 0.5em;
+  border-radius: 0.5em;
+}
+
+.demo-fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: -0.5em;
+  right: -0.5em;
+  z-index: 2;
+
+  height: 1.75em;
+  width: 1.75em;
+  font-size: 2em;
+  font-weight: normal;
+
+  background-color: var(--blue-1);
+  color: var(--light-text);
+  border-radius: 100%;
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
+
+  transition-property: background-color, color;
+  transition-duration: 200ms;
+}
+
+.demo-fullscreen:hover {
+  background-color: var(--green-3);
+  color: var(--text);
+}
+
+.demo-fullscreen:active {
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+
+.demo-fullscreen .demo-fullscreen-tooltip {
+  position: absolute;
+  opacity: 0;
+  z-index: 3;
+
+  font-size: 0.75em;
+
+  background-color: var(--green-3);
+  color: var(--text);
+  border-radius: 0.5em;
+  padding: 0.25em 0.5em 0.25em 0.5em;
+
+  bottom: calc(100% - 0.5em);
+  right: 50%;
+  width: auto;
+
+  transition-property: opacity;
+  transition-duration: 200ms;
+}
+
+.demo-fullscreen:hover .demo-fullscreen-tooltip {
+  opacity: 1;
 }
 
 h1 {
@@ -138,19 +208,16 @@ h2 {
   margin-block-end: 0.3em;
 }
 
-.cta-container {
-  margin-block-start: 3em;
-}
-
 .cta-button {
-  font-size: 2em;
-  padding: 0.5em 2em 0.5em 2em;
+  font-size: 1.4em;
+  padding: 0.5em 1em 0.5em 1em;
   transition-property: background-color, color;
   transition-duration: 200ms;
   border: none;
   border-radius: 0.5em;
   outline: none;
   cursor: pointer;
+  text-decoration: none;
 
   background-color: var(--blue-1);
   color: var(--light-text);
@@ -166,14 +233,9 @@ h2 {
 }
 
 nav .cta-button {
-  font-size: 1.2em;
-  padding: 0.5em 0.5em 0.5em 0.5em;
-  margin-right: 1em;
-}
-
-.cta-detail {
-  margin-block-start: 0.2em;
-  font-style: italic;
+  font-size: 1.5em;
+  margin-right: 0.2em;
+  padding: 0.3em 0.5em 0.3em 0.5em;
 }
 
 /* TODO convert the description to a grid based system with responsive breakpoints */
@@ -196,10 +258,10 @@ nav .cta-button {
 }
 
 .description li {
-  margin-left: 1.5vw;
-  margin-right: 1.5vw;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
 
-  padding: 0.7vw;
+  padding: 0.7em;
 
   --borderstyle: solid;
   border-color: var(--blue-1);
@@ -218,7 +280,6 @@ nav .cta-button {
   border-bottom-style: var(--borderstyle);
   border-bottom-right-radius: 0.5em;
 }
-
 
 .comparison {
   display: flex;
@@ -355,11 +416,47 @@ nav .cta-button {
   color: var(--green-2)
 }
 
+form {
+  position: relative;
+  width: 30em;
+  min-width: 15em;
+  max-width: 100%;
+  margin: auto;
+  margin-top: 3em;
+}
 
+form input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+  padding: 1em;
 
+  border-radius: 0.75em;
+  border: none;
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
 
+  transition-property: box-shadow;
+  transition-duration: 200ms;
 
+  outline: none;
+}
 
+form input:focus {
+  box-shadow: 3px 3px 5px 2px var(--blue-3);
+}
+
+form .cta-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.cta-detail {
+  color: var(--secondary-text);
+  margin-block-start: 0.2em;
+  font-style: italic;
+}
 
 
 

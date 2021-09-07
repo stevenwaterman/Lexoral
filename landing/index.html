@@ -15,11 +15,16 @@
   <body>
     <nav>
       <img class="logo" src="smallBrand.svg"/>
-      <button class="cta-button">Register Interest</button>
+      <a class="cta-button" href="https://tinyletter.com/lexoral">Sign Up</a>
     </nav>
 
     <div class="hero">
       <div class="demo-container">
+        <span class="demo-prompt">Try clicking a word!</span>
+        <a class="demo-fullscreen" href="https://lexoral.com/demo">
+          <i class="fas fa-expand"></i>
+          <span class="demo-fullscreen-tooltip">Go&nbsp;Fullscreen</span>
+        </a>
         <iframe class="demo" src="https://lexoral.com/demo"></iframe>
       </div>
 
@@ -27,10 +32,13 @@
         <h1>The Transcription Tool <br> You <em>Wish</em> Existed.</h1>
         <h2>Take the pain out of research <br> by working <strong>with</strong> AI</h2>
         
-        <div class="cta-container">
-          <button class="cta-button">Register Interest</button>
-          <p class="cta-detail">Get notified when Lexoral is available</p>
-        </div>
+        <form action="https://tinyletter.com/lexoral" method="post">
+          <label hidden for="tlemail1">Enter your email address</label>
+          <input type="text" name="email" id="tlemail1" placeholder="email@example.com" />
+          <input type="hidden" value="1" name="embed"/>
+          <button type="submit" class="cta-button">Sign Up</button>
+        </form>
+        <p class="cta-detail">Get notified when Lexoral is available</p>
       </div>
     </div>
 
@@ -84,10 +92,13 @@
         <h1>Coming Soon</h1>
         <h2>We're still working on Lexoral</span> <br> <span>follow our progress:</span></h2>
 
-        <div class="cta-container">
-          <button class="cta-button">Register Interest</button>
-          <p class="cta-detail">Get notified when Lexoral is available</p>
-        </div>
+        <form action="https://tinyletter.com/lexoral" method="post">
+          <label hidden for="tlemail1">Enter your email address</label>
+          <input type="text" name="email" id="tlemail1" placeholder="email@example.com" />
+          <input type="hidden" value="1" name="embed"/>
+          <button type="submit" class="cta-button">Sign Up</button>
+        </form>
+        <p class="cta-detail">Get notified when Lexoral is available</p>
   
         <ul class="contact-list">
           <li>
@@ -112,8 +123,6 @@
           </li>
         </ul>
       </div>
-  
-      
     </div>
   </body>
 </html>
