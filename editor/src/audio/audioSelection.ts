@@ -4,7 +4,7 @@ import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section 
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
 import { clampGet, clampGetRecord } from "../utils/list";
 
-export const contextAmountStore: Writable<number> = writable(3);
+export const contextAmountStore: Writable<number> = writable(5);
 
 /**
  * The audio mode determines how to translate the section selection into the audio selection
