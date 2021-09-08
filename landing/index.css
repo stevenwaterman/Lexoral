@@ -810,6 +810,14 @@ form .cta-button {
   .mobile-logo {
     display: block;
   }
+
+  .pricingPoints {
+    margin-right: 1em;
+  }
+
+  .pricing {
+    padding-bottom: 6em;
+  }
 }
 
 @media only screen and (max-width: 600px) {
