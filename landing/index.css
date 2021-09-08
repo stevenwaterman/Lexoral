@@ -274,6 +274,10 @@ nav .cta-button {
   border-color: var(--blue-1);
   border-width: 3px;
   border-bottom-style: solid;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .description li:first-child {
