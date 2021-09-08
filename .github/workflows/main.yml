@@ -20,13 +20,13 @@ jobs:
       working-directory: editor
     - uses: actions/upload-artifact@v2
       with:
-        name: demo-editor
+        name: test-editor
         path: editor/public
     - run: npm run build-demo
       working-directory: editor
     - uses: actions/upload-artifact@v2
       with:
-        name: test-editor
+        name: demo-editor
         path: editor/public
 
   build-landing:
