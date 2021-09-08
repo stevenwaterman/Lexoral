@@ -4,6 +4,9 @@
   import { initialiseStores } from "./text/textState";
 
   export let demo: boolean;
+
+  let dataFile: string;
+  $: dataFile = demo ? "assets/demo.json" : "assets/data3.json"
 </script>
 
 <style>
@@ -80,7 +83,7 @@
 
 <svelte:body tabindex={-1}/>
 
-{#await fetch("assets/data3.json").then(data => data.json()).then(data => initialiseStores(data)).then(initAudio)}
+{#await fetch(dataFile).then(data => data.json()).then(data => initialiseStores(data)).then(sections => initAudio(sections, demo))}
   <span class="loading">
     Fetching data...
   </span>

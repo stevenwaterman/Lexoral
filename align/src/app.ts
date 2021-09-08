@@ -42,7 +42,7 @@ type WordAlternative = {
 };
 
 export default function start() {
-  const data = fs.readFileSync('test.json', 'utf8')
+  const data = fs.readFileSync('demo.json', 'utf8')
   const json: Response = JSON.parse(data);
 
   const transformed = transform(json);

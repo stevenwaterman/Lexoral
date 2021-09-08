@@ -64,6 +64,7 @@ body {
   grid-template-columns: 4fr 4fr;
   gap: 2em;
   justify-items: center;
+  align-items: center;
 
   margin-top: 11em;
   margin-bottom: 3em;
@@ -663,13 +664,46 @@ form .cta-button {
   font-style: italic;
 }
 
+.demo-small-screen-color {
+  display: none;
 
+  position: absolute;
+  height: 20%;
+  top: 50%;
+  left: calc(50% - 3em);
+  width: 120%;
+  transform: translate(-50%, -50%);
+  background-color: var(--yellow-1);
+  box-shadow: 0px 0px 10em 10em var(--yellow-1);
+  clip-path: inset(0px -500px);
+}
+
+.mobile-logo {
+  display: none;
+
+  width: 80%;
+  max-width: 50em;
+  margin-bottom: 3em;
+}
+
+@media only screen and (min-width: 1600px) {
+  .hero h1 {
+    align-self: flex-end;
+  }
+
+  .hero h2 {
+    align-self: center;
+  }
+
+  .hero-button-container {
+    align-self: flex-start;
+  }
+}
 
 
 @media only screen and (max-width: 1600px) {
-  nav {
-    background: none; 
-    border: none;
+  .demo-small-screen-color {
+    display: initial;
   }
 
   nav .cta-button {
@@ -679,24 +713,12 @@ form .cta-button {
     margin: 0;
   }
 
-  .logo {
-    display: none;
-  }
-
   .hero {
     grid-template-columns: 55fr 45fr;
     margin: auto;
-    margin-top: 7em;
+    margin-top: 10em;
     margin-bottom: 0;
     max-width: 90%;
-  }
-
-  .hero h1 {
-    margin: 0;
-  }
-
-  .hero h2 {
-    margin: 0;
   }
 
   .hero-button-container {
@@ -725,11 +747,56 @@ form .cta-button {
   .description {
     grid-template-columns: 1fr 1fr;
   }
-
+  
   .description li {
     border-style: solid;
     border-radius: 0.5em;
   }
 }
 
+@media only screen and (max-width: 1000px) {
+  body {
+    font-size: 0.7em;
+  }
 
+  nav {
+    background: none; 
+    border: none;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .demo-container {
+    display: none;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+  }
+
+  .hero h2 {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .contact-list {
+    grid-template-columns: 1fr;
+    width: auto;
+  }
+
+  .mobile-logo {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    font-size: 0.5em;
+  }
+}

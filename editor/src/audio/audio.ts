@@ -59,13 +59,14 @@ export const lastPlayedSectionStore: Readable<Section | undefined> = deriveLastD
 let duration: number;
 
 /** Load the audio into the Tone.js transport */
-async function createPlayer(): Promise<Tone.Player> {
+async function createPlayer(demo: boolean): Promise<Tone.Player> {
+  const audioFile = demo ? "assets/demo.mp3" : "assets/audio.mp3";
   const gainNode = new Tone.Gain(1).toDestination();
   volumeStore.subscribe(volume => gainNode.gain.value = volume / 100);
 
   return new Promise(resolve => {
     const player = new Tone.Player(
-      "assets/audio.mp3", 
+      audioFile, 
       () => {
         duration = player.buffer.duration;
         resolve(player);
@@ -75,8 +76,8 @@ async function createPlayer(): Promise<Tone.Player> {
 }
 
 /** Initialise the audio, loading the audio file and registering the start/end times of each section. Must be called before any play/pause methods. */
-export async function initAudio(allSections: Record<number, {startTime: number; endTime: number}>) {
-  await createPlayer();
+export async function initAudio(allSections: Record<number, {startTime: number; endTime: number}>, demo: boolean) {
+  await createPlayer(demo);
 
   Tone.Transport.loop = true;
   Tone.Transport.loopEnd = duration;

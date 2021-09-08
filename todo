@@ -42,11 +42,3 @@ Performance:
 
 Add export functionality
 
-
-
-
-Landing Page:
-  * Small screens need color at top of page
-  * Super small screen, show version without demo
-  * Flags to compile either demo (embed) or test site
-  * Update demo site eg remove logo etc

@@ -1,0 +1,1519 @@
+[
+  {
+    "options": [
+      {
+        "text": "Hello,",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 0.2,
+    "endTime": 0.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "I'm",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 0.9,
+    "endTime": 1.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Steven,",
+        "confidence": 0.83042306
+      },
+      {
+        "text": "Stephen,",
+        "confidence": 0.74518889
+      }
+    ],
+    "startTime": 1.1,
+    "endTime": 1.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 1.7,
+    "endTime": 1.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "founder",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 1.8,
+    "endTime": 2.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 2.2,
+    "endTime": 2.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Lexoral",
+        "confidence": 0.83042306
+      },
+      {
+        "text": "Lexoral.",
+        "confidence": 0.74518889
+      }
+    ],
+    "startTime": 2.3,
+    "endTime": 2.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.83042306
+      },
+      {
+        "text": "The",
+        "confidence": 0.74518889
+      }
+    ],
+    "startTime": 3.6,
+    "endTime": 3.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "text",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 3.9,
+    "endTime": 4.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 4.2,
+    "endTime": 4.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 4.3,
+    "endTime": 4.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "can",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 4.4,
+    "endTime": 4.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "see,",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 4.5,
+    "endTime": 4.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "here",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 4.7,
+    "endTime": 5.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "is",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 5.1,
+    "endTime": 5.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "an",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 5.2,
+    "endTime": 5.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "AI",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 5.4,
+    "endTime": 5.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "transcription",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 5.6,
+    "endTime": 6.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 6.4,
+    "endTime": 6.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "me",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 6.6,
+    "endTime": 7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "speaking.",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 7.1,
+    "endTime": 7.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So,",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 8.4,
+    "endTime": 8.6,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "I",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 8.6,
+    "endTime": 8.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "recorded",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 8.7,
+    "endTime": 9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "this",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 9,
+    "endTime": 9.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "audio",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 9.2,
+    "endTime": 9.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "first",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 9.5,
+    "endTime": 10.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 10.4,
+    "endTime": 10.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "then",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 10.5,
+    "endTime": 10.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 10.6,
+    "endTime": 10.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "AI",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 10.8,
+    "endTime": 11.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "transcribed.",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 11.1,
+    "endTime": 11.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "It",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 11.8,
+    "endTime": 11.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "into",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 11.9,
+    "endTime": 12.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 12.1,
+    "endTime": 12.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "text",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 12.2,
+    "endTime": 12.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 12.5,
+    "endTime": 12.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 12.6,
+    "endTime": 12.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "see",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 12.7,
+    "endTime": 12.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "now.",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 12.9,
+    "endTime": 13.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "And",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 13.7,
+    "endTime": 13.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 13.8,
+    "endTime": 13.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fact,",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 13.9,
+    "endTime": 14.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "this",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 14.2,
+    "endTime": 14.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "is",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 14.4,
+    "endTime": 14.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 14.5,
+    "endTime": 14.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "live",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 14.6,
+    "endTime": 15,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "demo",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 15,
+    "endTime": 15.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 15.4,
+    "endTime": 15.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Lexoral.",
+        "confidence": 0.9567899116881966
+      }
+    ],
+    "startTime": 15.6,
+    "endTime": 16.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "So",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 17.7,
+    "endTime": 18,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "if",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 18,
+    "endTime": 18.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 18.1,
+    "endTime": 18.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "see",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 18.2,
+    "endTime": 18.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "any",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 18.3,
+    "endTime": 18.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "mistakes,",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 18.5,
+    "endTime": 19.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "try",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 19.4,
+    "endTime": 19.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "fixing",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 19.6,
+    "endTime": 20,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "them,",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 20,
+    "endTime": 20.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 21.2,
+    "endTime": 21.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "can",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 21.3,
+    "endTime": 21.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "click",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 21.4,
+    "endTime": 21.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "anywhere",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 21.7,
+    "endTime": 22.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 22.3,
+    "endTime": 22.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "this",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 22.4,
+    "endTime": 22.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "demo",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 22.5,
+    "endTime": 23.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "to",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 23.4,
+    "endTime": 23.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "hear",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 23.6,
+    "endTime": 23.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 23.8,
+    "endTime": 23.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "audio",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 23.9,
+    "endTime": 24.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 24.3,
+    "endTime": 24.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "me,",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 24.5,
+    "endTime": 24.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "reading",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 24.6,
+    "endTime": 24.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 24.9,
+    "endTime": 25,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "text",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 25,
+    "endTime": 25.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 26.6,
+    "endTime": 26.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "then",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 26.7,
+    "endTime": 27.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 27.3,
+    "endTime": 27.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 27.4,
+    "endTime": 27.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "dropdown",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 27.5,
+    "endTime": 27.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 27.9,
+    "endTime": 28.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "appears,",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 28.1,
+    "endTime": 28.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 28.8,
+    "endTime": 28.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "can",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 28.9,
+    "endTime": 29.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "pick",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 29.1,
+    "endTime": 29.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 29.3,
+    "endTime": 29.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "right",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 29.4,
+    "endTime": 29.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "option",
+        "confidence": 0.987052304836352
+      },
+      {
+        "text": "option,",
+        "confidence": 0.83713073
+      }
+    ],
+    "startTime": 29.6,
+    "endTime": 30.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "out",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 30.3,
+    "endTime": 30.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 30.5,
+    "endTime": 30.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "the",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 30.6,
+    "endTime": 30.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "one, so",
+        "confidence": 0.89009315
+      },
+      {
+        "text": "1. So",
+        "confidence": 0.88219392
+      },
+      {
+        "text": "ones",
+        "confidence": 0.83713073
+      }
+    ],
+    "startTime": 30.7,
+    "endTime": 30.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 30.9,
+    "endTime": 31,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "shows",
+        "confidence": 0.987052304836352
+      },
+      {
+        "text": "it shows",
+        "confidence": 0.83713073
+      }
+    ],
+    "startTime": 31,
+    "endTime": 31.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you,",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 31.1,
+    "endTime": 31.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "if",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 31.4,
+    "endTime": 31.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "none",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 32.4,
+    "endTime": 32.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "of",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 32.6,
+    "endTime": 32.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "them",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 32.7,
+    "endTime": 32.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "are",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 32.8,
+    "endTime": 32.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "right,",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 32.9,
+    "endTime": 33,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 33,
+    "endTime": 33.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "can",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 33.7,
+    "endTime": 33.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "just",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 33.8,
+    "endTime": 33.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "type",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 33.9,
+    "endTime": 34.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "your",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 34.2,
+    "endTime": 34.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "own",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 34.4,
+    "endTime": 34.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "in.",
+        "confidence": 0.9978912183405141
+      }
+    ],
+    "startTime": 34.5,
+    "endTime": 34.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Give",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 36.6,
+    "endTime": 36.7,
+    "startParagraph": true
+  },
+  {
+    "options": [
+      {
+        "text": "it",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 36.7,
+    "endTime": 36.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "a",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 36.8,
+    "endTime": 36.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "try,",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 36.9,
+    "endTime": 37.3,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 37.5,
+    "endTime": 37.6,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "let",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 37.6,
+    "endTime": 37.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "me",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 37.7,
+    "endTime": 37.8,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "know",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 37.8,
+    "endTime": 37.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "if",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 37.9,
+    "endTime": 37.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 37.9,
+    "endTime": 38,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "have",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 38,
+    "endTime": 38.1,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "any",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 38.1,
+    "endTime": 38.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "questions,",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 38.2,
+    "endTime": 39,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "but",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 39.2,
+    "endTime": 39.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "if",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 39.5,
+    "endTime": 39.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "not,",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 39.7,
+    "endTime": 40.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "thanks",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 40.2,
+    "endTime": 40.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "for",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 40.4,
+    "endTime": 40.5,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "coming",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 40.5,
+    "endTime": 40.9,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "and",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 40.9,
+    "endTime": 41,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "I",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 41,
+    "endTime": 41,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "hope",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 41,
+    "endTime": 41.2,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "that",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 41.2,
+    "endTime": 41.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "you",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 41.4,
+    "endTime": 41.4,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "enjoyed",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 41.4,
+    "endTime": 41.7,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "using",
+        "confidence": 0.9877306107231865
+      }
+    ],
+    "startTime": 41.7,
+    "endTime": 42,
+    "startParagraph": false
+  },
+  {
+    "options": [
+      {
+        "text": "Lexoral.",
+        "confidence": 0.89176255
+      },
+      {
+        "text": "likes for all.",
+        "confidence": 0.88664377
+      }
+    ],
+    "startTime": 42,
+    "endTime": 42.6,
+    "startParagraph": false
+  }
+]
