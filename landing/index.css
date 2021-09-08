@@ -695,6 +695,10 @@ form .cta-button {
     margin: 0;
   }
 
+  .hero h2 {
+    margin: 0;
+  }
+
   .hero-button-container {
     grid-column: span 2;
   }

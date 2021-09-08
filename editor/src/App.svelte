@@ -2,6 +2,8 @@
   import { initAudio } from "./audio/audio";
   import Editor from "./input/Editor.svelte";
   import { initialiseStores } from "./text/textState";
+
+  export let demo: boolean;
 </script>
 
 <style>
@@ -83,5 +85,5 @@
     Fetching data...
   </span>
 {:then}
-  <Editor/>
+  <Editor demo={demo}/>
 {/await}

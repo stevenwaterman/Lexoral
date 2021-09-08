@@ -2,8 +2,10 @@
   "name": "lexoral-frontend",
   "version": "1.0.0",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c --environment BUILD:prod",
+    "build-demo": "rollup -c --environment BUILD:demo",
     "dev": "rollup -c -w",
+    "demo": "rollup -c -w --environment BUILD:demo",
     "start": "serve -n -s -l 5000 public",
     "validate": "svelte-check"
   },

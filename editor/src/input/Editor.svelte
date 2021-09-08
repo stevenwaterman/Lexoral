@@ -11,7 +11,9 @@
   import EditableContainer from "./EditableContainer.svelte";
   import { areMultipleSectionsSelectedStore } from "./selectionState";
   import { toggleParagraph } from "./paragraphs";
-import { findSectionNode } from "../text/selector";
+  import { findSectionNode } from "../text/selector";
+
+  export let demo: boolean;
 
   let altReleaseShouldPlay = false;
 
@@ -176,7 +178,9 @@ import { findSectionNode } from "../text/selector";
 <ToastController/>
 
 <div class="container">
-  <Header/>
+  {#if !demo}
+    <Header/>
+  {/if}
   
 
   <div class="wrapper" bind:this={wrapper}>

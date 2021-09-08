@@ -31,7 +31,10 @@ function serve() {
 }
 
 export default {
-	input: 'src/main.ts',
+	input: {
+    prod: 'src/main.ts',
+    demo: 'src/demo.ts'
+  }[process.env.BUILD],
 	output: {
 		sourcemap: true,
 		format: 'iife',

@@ -20,7 +20,13 @@ jobs:
       working-directory: editor
     - uses: actions/upload-artifact@v2
       with:
-        name: editor
+        name: demo-editor
+        path: editor/public
+    - run: npm run build-demo
+      working-directory: editor
+    - uses: actions/upload-artifact@v2
+      with:
+        name: demo-test
         path: editor/public
 
   build-landing:
@@ -46,8 +52,12 @@ jobs:
         git reset --hard
     - uses: actions/download-artifact@v2
       with:
-        name: editor
+        name: demo-editor
         path: demo
+    - uses: actions/download-artifact@v2
+      with:
+        name: test-editor
+        path: test
     - uses: actions/download-artifact@v2
       with:
         name: landing
