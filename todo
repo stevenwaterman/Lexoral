@@ -14,6 +14,7 @@ sections:
   -- manually adjust section timings
   
 UX:
+  dropdown should go upwards when it extends off the bottom of the screen
   empty sections show up when selecting in lighter color (don't get selected)
 
   When combining a paragraph, it selects the next paragraph for a second

@@ -119,9 +119,9 @@ nav {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 450px;
+  height: 30em;
   padding: 0.5em;
-  padding-top: 3.5em;
+  padding-top: 3em;
 
   border: 2px solid var(--form-border);
   border-radius: 10px;
@@ -756,7 +756,7 @@ form .cta-button {
   }
 
   .demo {
-    height: 25em;
+    height: 28em;
   }
 }
 
