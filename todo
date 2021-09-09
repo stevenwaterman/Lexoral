@@ -16,9 +16,10 @@ sections:
 UX:
   dropdown should go upwards when it extends off the bottom of the screen
   empty sections show up when selecting in lighter color (don't get selected)
+  Should be able to delete new paragraphs with backspace / delete
+  Shouldn't combine paragraph toggle history with text edit history
 
-  When combining a paragraph, it selects the next paragraph for a second
-  Some kind of button help
+  Some kind of help / tutorial
   
   * Hard to tell difference between primary and secondary text colours
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
@@ -27,13 +28,10 @@ UX:
   * Page up / down don't work
   
   - add scrolling (when playing from current position onwards)
-  - undo / redo support / disable
 
-  -- make logo background transparent
   -- support cut + paste
   -- Reenable key presses when text is selected
-  -- support firefox + safari + edge
-
+  -- Reenable deleting selected text (and undo/redoing it)
 
 Performance:
   Slow when selecting and deselecting lots of sections

@@ -15,16 +15,30 @@
   let visible: boolean;
   $: visible = !$isTextSelectedStore && section !== undefined && options.length > 0;
 
+  let optionHeight: number;
   let left: number;
   let top: number;
 
   function resize(...deps: any[]) {
-    const popupBox = findSectionNode(section?.idx)?.getBoundingClientRect();
-    const wrapperBox = wrapper?.getBoundingClientRect();
-    if (wrapperBox === undefined || popupBox === undefined) return;
+    if (!section) return;
 
-    left = popupBox.left - wrapperBox.left
-    top = popupBox.top + popupBox.height - wrapperBox.top;
+    const sectionBox = findSectionNode(section?.idx)?.getBoundingClientRect();
+    const wrapperBox = wrapper?.getBoundingClientRect();
+    if (!wrapperBox || !sectionBox) return;
+
+    left = sectionBox.left - wrapperBox.left
+
+    const boxHeight = section.completionOptions.length * (optionHeight + 1) + 5;
+    const desiredTop = sectionBox.top + sectionBox.height - wrapperBox.top;
+    const desiredBottom = desiredTop + boxHeight;
+
+    if (desiredBottom >= wrapperBox.height) {
+      // Point upwards instead
+      top = sectionBox.top - wrapperBox.top - boxHeight
+    } else {
+      top = desiredTop;
+    }
+    
   }
   $: resize(section);
 
@@ -141,10 +155,20 @@
   .topBorder {
     border-top: 1px solid var(--form-border);
   }
+
+  .invisible {
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 </style>
 
 <svelte:body on:keydown={keyDown}/>
 <svelte:window on:resize={resize}/>
+
+<span class="option invisible" bind:clientHeight={optionHeight}>Test</span>
 
 {#if visible}
   <div

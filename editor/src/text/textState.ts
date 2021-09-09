@@ -76,7 +76,6 @@ export const paragraphLocationsStore: Readable<{start: number, end: number}[]> =
   }
   return output;
 })
-paragraphLocationsStore.subscribe(console.log);
 
 /** Initialise the text state of the app using the data returned from the API */
 export function initialiseStores(output: JsonOutput): Record<number, { startTime: number; endTime: number }> {
