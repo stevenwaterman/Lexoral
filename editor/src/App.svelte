@@ -1,9 +1,13 @@
 <script lang="ts">
-  import { initAudio } from "./audio/audio";
+  import { autoPlayStore, initAudio } from "./audio/audio";
   import Editor from "./input/Editor.svelte";
   import { initialiseStores } from "./text/textState";
 
   export let demo: boolean;
+
+  if (demo) {
+    autoPlayStore.set(true);
+  }
 
   let dataFile: string;
   $: dataFile = demo ? "assets/demo.json" : "assets/data3.json"
