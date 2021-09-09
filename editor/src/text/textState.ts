@@ -69,13 +69,14 @@ export const paragraphLocationsStore: Readable<{start: number, end: number}[]> =
   if (sortedIdxs[sortedIdxs.length - 1] !== lastIdx) sortedIdxs.push(lastIdx)
 
   const output: {start: number; end: number}[] = [];
-  for(let i = 1; i <= sortedIdxs.length; i++) {
+  for(let i = 1; i < sortedIdxs.length; i++) {
     const start = sortedIdxs[i - 1] + 1;
     const end = sortedIdxs[i];
     output.push({ start, end })
   }
   return output;
 })
+paragraphLocationsStore.subscribe(console.log);
 
 /** Initialise the text state of the app using the data returned from the API */
 export function initialiseStores(output: JsonOutput): Record<number, { startTime: number; endTime: number }> {
