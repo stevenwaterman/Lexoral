@@ -1,4 +1,5 @@
 audio:
+  constrain to paragraph 
   When dragging, don't update audio until release
   Option to continue / restart
 
@@ -14,7 +15,7 @@ sections:
   -- manually adjust section timings
   
 UX:
-  dropdown should go upwards when it extends off the bottom of the screen
+  landing page demo not big enough on server
   empty sections show up when selecting in lighter color (don't get selected)
   Should be able to delete new paragraphs with backspace / delete
   Shouldn't combine paragraph toggle history with text edit history
