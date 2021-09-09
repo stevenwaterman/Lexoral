@@ -165,10 +165,6 @@
     flex-direction: column;
     position: relative;
   }
-
-  .wrapper.noScroll {
-    overflow-y: hidden;
-  }
 </style>
 
 <svelte:body on:keydown={keyDown} on:keyup={keyUp}/>
@@ -181,7 +177,7 @@
   {/if}
   
 
-  <div class="wrapper" bind:this={wrapper} class:noScroll={demo}>
+  <div class="wrapper" bind:this={wrapper}>
     <Dropdown wrapper={wrapper}/>
     <EditableContainer>
       <Document />
