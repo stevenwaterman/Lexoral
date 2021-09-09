@@ -1,11 +1,10 @@
-import { SectionStore, Section, Paragraph, documentStore, allSectionsStore } from "./textState";
+import { Section, allSectionsStore, AllSections } from "./textState";
 import { getOptions } from "../preprocess/align";
-import { Writable, writable } from "svelte/store";
-import { get_store_value, tick } from "svelte/internal";
-import type { CursorPosition } from "../input/selectionState";
+import type { Writable } from "svelte/store";
+import { tick } from "svelte/internal";
 
-let allSectionStores: Record<number, SectionStore>;
-allSectionsStore.subscribe(state => allSectionStores = state);
+let allSections: AllSections;
+allSectionsStore.subscribe(state => allSections = state);
 
 type HistoryStep = {
   postStepSelection: {
@@ -120,8 +119,24 @@ abstract class BaseSectionMutator<S> {
       };
 
       addHistory(
-        () => allSectionStores[state.idx].set(state),
-        () => allSectionStores[state.idx].set(newState)
+        () => allSections[state.idx].set(state),
+        () => allSections[state.idx].set(newState)
+      )
+      
+      return newState;
+    })
+  }
+
+  toggleParagraph(): this {
+    return this.update(state => {
+      const newState = {
+        ...state,
+        endParagraph: !state.endParagraph
+      };
+
+      addHistory(
+        () => allSections[state.idx].set(state),
+        () => allSections[state.idx].set(newState)
       )
       
       return newState;
@@ -150,8 +165,8 @@ abstract class BaseSectionMutator<S> {
       }
 
       addHistory(
-        () => allSectionStores[state.idx].set(state),
-        () => allSectionStores[state.idx].set(newState)
+        () => allSections[state.idx].set(state),
+        () => allSections[state.idx].set(newState)
       )
 
       return newState;
@@ -166,7 +181,7 @@ export class SectionMutator extends BaseSectionMutator<Section> {
   }
 
   static ofIdx(idx: number): SectionMutator {
-    return new SectionMutator(allSectionStores[idx]);
+    return new SectionMutator(allSections[idx]);
   }
 }
 
@@ -183,75 +198,75 @@ export class MaybeSectionMutator extends BaseSectionMutator<Section | undefined>
 
 
 
-abstract class BaseParagraphMutator<S> {
-  protected readonly underlying: Writable<S>;
+// abstract class BaseParagraphMutator<S> {
+//   protected readonly underlying: Writable<S>;
 
-  constructor(underlying: Writable<S>) {
-    this.underlying = underlying;
-  }
+//   constructor(underlying: Writable<S>) {
+//     this.underlying = underlying;
+//   }
 
-  get(): Writable<S> {
-    return this.underlying;
-  }
+//   get(): Writable<S> {
+//     return this.underlying;
+//   }
 
-  abstract update(func: (state: Paragraph) => Paragraph): this;
+//   abstract update(func: (state: Paragraph) => Paragraph): this;
 
-  append(store: SectionStore): this {
-    return this.update(state => {
-      state.push(store);
-      return state;
-    });
-  }
+//   append(store: SectionStore): this {
+//     return this.update(state => {
+//       state.push(store);
+//       return state;
+//     });
+//   }
 
-  split(position: CursorPosition): this {
-    return this.update(state => {
-      const remainingSections = state.slice(0, position.section);
+//   split(position: CursorPosition): this {
+//     return this.update(state => {
+//       const remainingSections = state.slice(0, position.section);
   
-      const removedSections = state.slice(position.section);
-      const newParagraphStore = writable(removedSections);
-      documentStore.update(document => {
-        document.splice(position.paragraph + 1, 0, newParagraphStore);
-        return document;
-      })
+//       const removedSections = state.slice(position.section);
+//       const newParagraphStore = writable(removedSections);
+//       documentStore.update(document => {
+//         document.splice(position.paragraph + 1, 0, newParagraphStore);
+//         return document;
+//       })
   
-      return remainingSections;
-    })
-  }
+//       return remainingSections;
+//     })
+//   }
 
-  combine(position: CursorPosition): this {
-    documentStore.update(document => {
-      const [deletedParagraph] = document.splice(position.paragraph - 1, 1);
-      const deletedParagraphValue = get_store_value(deletedParagraph);
-      this.update(state => {
-        const undoSplitPosition: CursorPosition = {
-          paragraph: position.paragraph - 1,
-          section: state.length - 1,
-          offset: 0
-        };
+//   combine(position: CursorPosition): this {
+//     documentStore.update(document => {
+//       const [deletedParagraph] = document.splice(position.paragraph - 1, 1);
+//       const deletedParagraphValue = get_store_value(deletedParagraph);
+//       this.update(state => {
+//         const undoSplitPosition: CursorPosition = {
+//           paragraph: position.paragraph - 1,
+//           section: state.length - 1,
+//           offset: 0
+//         };
 
-        state.unshift(...deletedParagraphValue);
+//         state.unshift(...deletedParagraphValue);
 
-        return state;
-      })
-      return document;
-    })
-    return this;
-  }
-}
+//         return state;
+//       })
+//       return document;
+//     })
+//     return this;
+//   }
+// }
 
-export class ParagraphMutator extends BaseParagraphMutator<Paragraph> {
-  update(func: (state: Paragraph) => Paragraph): this {
-    this.underlying.update(func);
-    return this;
-  }
-}
+// export class ParagraphMutator extends BaseParagraphMutator<Paragraph> {
+//   update(func: (state: Paragraph) => Paragraph): this {
+//     this.underlying.update(func);
+//     return this;
+//   }
+// }
 
-export class MaybeParagraphMutator extends BaseParagraphMutator<Paragraph | undefined> {
-  update(func: (state: Paragraph) => Paragraph): this {
-    this.underlying.update(state => {
-      if (state === undefined) return undefined;
-      else return func(state);
-    })
-    return this;
-  }
-}
+// export class MaybeParagraphMutator extends BaseParagraphMutator<Paragraph | undefined> {
+//   update(func: (state: Paragraph) => Paragraph): this {
+//     this.underlying.update(state => {
+//       if (state === undefined) return undefined;
+//       else return func(state);
+//     })
+//     return this;
+//   }
+// }

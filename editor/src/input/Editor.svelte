@@ -9,8 +9,6 @@
   import Document from "../text/Document.svelte";
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
-  import { areMultipleSectionsSelectedStore } from "./selectionState";
-  import { toggleParagraph } from "./paragraphs";
   import { findSectionNode } from "../text/selector";
 
   export let demo: boolean;
@@ -32,10 +30,6 @@
     if (event.key === "Alt") {
       event.preventDefault();
       altReleaseShouldPlay = true;
-    }
-
-    if (event.key === "Enter" && event.ctrlKey && !$areMultipleSectionsSelectedStore) {
-      await toggleParagraph();
     }
 
     if (event.key === "Escape" && $playingStore) {

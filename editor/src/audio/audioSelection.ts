@@ -1,8 +1,10 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
-import { allSectionsStore, documentStore, ParagraphStore, SectionStore, Section } from "../text/textState";
+import { allSectionsStore, SectionStore, Section } from "../text/textState";
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
 import { clampGet, clampGetRecord } from "../utils/list";
+
+// TODO this ignores constraint to paragraph
 
 export const contextAmountStore: Writable<number> = writable(5);
 
@@ -125,32 +127,18 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
   const addGapsOffset = side === "start" ? -1 : 1;
 
   /**
-   * Store containing the paragraph store for the paragraph that contains the [start / end] of the current selection
-   */
-  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, selectionStore], ([document, selection]) => {
-    if (selection === undefined) return undefined;
-    return clampGet(document, selection[earlyLate].paragraph);
-  });
-
-  /**
    * Store containing the section stores for the section at the [start / end] of the audio selection after applying the `sectionOffset` and `constrainWithinParagraph` mutations.
    */
   const offsetSectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ areMultipleSectionsSelectedStore, sectionIdxStore,  selectionStore, mutationStore,  deriveUnwrap(paragraphStoreWrapped), allSectionsStore], 
-    ([areMultipleSectionsSelected,      sectionIdx,       selection,      mutation,       paragraph,                          allSections]
+    [ areMultipleSectionsSelectedStore, sectionIdxStore,  selectionStore, mutationStore, allSectionsStore], 
+    ([areMultipleSectionsSelected,      sectionIdx,       selection,      mutation,      allSections]
   ) => {
     if (sectionIdx === undefined) return undefined;
-    if (paragraph === undefined) return undefined;
     if (selection === undefined) return undefined;
     if (areMultipleSectionsSelected) return allSections[sectionIdx];
 
-    if (mutation[side].constrainWithinParagraph) {
-      const offsetIdx = selection[earlyLate].section + mutation[side].sectionOffset;
-      return clampGet(paragraph, offsetIdx)
-    } else {
-      const offsetIdx = sectionIdx + mutation[side].sectionOffset;
-      return clampGetRecord(allSections, offsetIdx);
-    }                                          
+    const offsetIdx = sectionIdx + mutation[side].sectionOffset;
+    return clampGetRecord(allSections, offsetIdx);
   });
   const offsetSectionStore: Readable<Section | undefined> = deriveUnwrap(offsetSectionStoreWrapped);
 

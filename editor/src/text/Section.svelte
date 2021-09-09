@@ -4,7 +4,9 @@
   import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 
   export let sectionStore: SectionStore;
-  export let last: boolean;
+
+  let last: boolean;
+  $: last = $sectionStore.endParagraph;
 
   let highlight: boolean;
   $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;

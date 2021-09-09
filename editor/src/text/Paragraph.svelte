@@ -2,9 +2,25 @@
   import { playingStore } from "../audio/audio";
 
   import Section from "./Section.svelte";
-  import type { ParagraphStore } from "./textState";
+  import type { AllSections } from "./textState";
+  import { allSectionsStore } from "./textState";
 
-  export let paragraphStore: ParagraphStore;
+  export let start: number;
+  export let end: number;
+
+  function range(start: number, end: number): number[] {
+    const output: number[] = [];
+    for(let i = start; i <= end; i++) {
+      output.push(i);
+    }
+    return output;
+  }
+
+  let paragraphRange: number[];
+  $: paragraphRange = range(start, end);
+
+  let sections: AllSections;
+  $: sections = $allSectionsStore;
 </script>
 
 <style>
@@ -24,7 +40,7 @@
 </style>
 
 <p class="paragraph" class:nonePlaying={!$playingStore}>
-  {#each $paragraphStore as sectionStore, idx}
-    <Section sectionStore={ sectionStore } last={idx === $paragraphStore.length - 1}/>
+  {#each paragraphRange as idx}
+    <Section sectionStore={ sections[idx] }/>
   {/each}
 </p>

@@ -1,13 +1,18 @@
 import { focusSectionStore, updateSelection } from "./selectionState";
 import type { Section } from "../text/textState";
 import { findSectionNode } from "../text/selector";
-import { SectionMutator, undo, redo } from "../text/storeMutators";
+import { SectionMutator, undo, redo, MaybeSectionMutator } from "../text/storeMutators";
 
 let focusSection: Section | undefined = undefined;
 focusSectionStore.subscribe(state => focusSection = state);
 
 export async function onKeyPressed(event: KeyboardEvent) {
   if(event.altKey) return;
+
+  if (event.key === "Enter" && event.ctrlKey) {
+    event.preventDefault();
+    new MaybeSectionMutator(focusSectionStore).toggleParagraph();
+  }
 
   if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
     event.preventDefault();

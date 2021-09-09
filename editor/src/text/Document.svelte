@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { documentStore } from "../text/textState";
   import Paragraph from "./Paragraph.svelte";
+  import { paragraphLocationsStore } from "../text/textState";
 </script>
 
-{#each $documentStore as paragraphStore}
-  <Paragraph paragraphStore={ paragraphStore }/>
+{#each $paragraphLocationsStore as {start, end}}
+  <Paragraph start={start} end={end}/>
 {/each}

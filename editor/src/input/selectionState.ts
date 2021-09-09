@@ -1,5 +1,5 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
-import { ParagraphStore, documentStore, Section, SectionStore, allSectionsStore, MaybeParagraphStore, MaybeSectionStore } from "../text/textState";
+import { Section, SectionStore, allSectionsStore, MaybeSectionStore } from "../text/textState";
 import { deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
 import { tick } from "svelte";
 import { clampGet, clamp } from "../utils/list";
@@ -8,7 +8,6 @@ import { findSectionNode } from "../text/selector";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
-  paragraph: number;
   section: number;
   offset: number;
 }
@@ -37,46 +36,28 @@ export const selectionStore: Readable<SectionSelection | undefined> = deriveCond
 /**
  * Derive a store containing the selected section based from a store containing a cursor position
 */
-export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): {
-  paragraph: MaybeParagraphStore;
-  section: MaybeSectionStore;
-} {
-  // Use the paragraph idx from the cursor position to derive a store containing the paragraph store for the paragraph containing the cursor
-  const paragraphStoreWrapped: Readable<ParagraphStore | undefined> = derived([documentStore, cursorPositionStore], ([document, cursorPosition]) => 
-    cursorPosition === undefined ? undefined : clampGet(document, cursorPosition.paragraph));
-  const paragraphStore: MaybeParagraphStore = deriveUnwrapWritable(paragraphStoreWrapped);
-  const paragraphStoreSuppressed: MaybeParagraphStore = makeWritable(paragraphStore, deriveConditionally(paragraphStore, undefined));
-
+export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): MaybeSectionStore {
   // Use the section idx from the cursor position and the above store to derive a store containing the section store for the section containing the cursor
   const sectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ paragraphStoreSuppressed, cursorPositionStore],
-    ([paragraph,                cursorPosition]
+    [ allSectionsStore, cursorPositionStore],
+    ([allSections,      cursorPosition]
   ) => {
-    if (paragraph === undefined) return undefined;
     if (cursorPosition === undefined) return undefined;
-    return clampGet(paragraph, cursorPosition.section);
+    return clampGet(allSections, cursorPosition.section);
   });
   const sectionStore: MaybeSectionStore = deriveUnwrapWritable(sectionStoreWrapped);
   const sectionStoreSuppressed: MaybeSectionStore = makeWritable(sectionStore, deriveConditionally(sectionStore, undefined));
-
-  return {
-    section: sectionStoreSuppressed,
-    paragraph: paragraphStoreSuppressed
-  }
+  return sectionStoreSuppressed;
 }
 
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
 const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);
 
-const anchorStores = deriveSectionSelectionStore(anchorCursorPositionStore);
-export const anchorSectionStore: MaybeSectionStore = anchorStores.section;
+export const anchorSectionStore: MaybeSectionStore = deriveSectionSelectionStore(anchorCursorPositionStore);
 export const anchorSectionIdxStore = derived(anchorSectionStore, section => section?.idx);
-export const anchorParagraphStore: MaybeParagraphStore = anchorStores.paragraph;
 
-const focusStores = deriveSectionSelectionStore(focusCursorPositionStore);
-export const focusSectionStore: MaybeSectionStore = focusStores.section;
+export const focusSectionStore: MaybeSectionStore = deriveSectionSelectionStore(focusCursorPositionStore);
 export const focusSectionIdxStore = derived(focusSectionStore, section => section?.idx);
-export const focusParagraphStore: MaybeParagraphStore = focusStores.paragraph;
 
 export const earlySectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
 export const earlySectionIdxStore = derived(earlySectionStore, section => section?.idx);
@@ -86,7 +67,6 @@ export const lateSectionIdxStore = derived(lateSectionStore, section => section?
 /** Store indicating whether the selection is non-empty, ie are one or more characters selected */
 export const isTextSelectedStore: Readable<boolean> = derived(selectionStore, selection => {
   if (selection === undefined) return false;
-  if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
   if (selection.anchor.section !== selection.focus.section) return true;
   if (selection.anchor.offset !== selection.focus.offset) return true;
   return false;
@@ -95,7 +75,6 @@ export const isTextSelectedStore: Readable<boolean> = derived(selectionStore, se
 /** Store indicating whether the section selection is non-empty, ie are multiple sections selected */
 export const areMultipleSectionsSelectedStore: Readable<boolean> = derived(selectionStore, selection => {
   if (selection === undefined) return false;
-  if (selection.anchor.paragraph !== selection.focus.paragraph) return true;
   if (selection.anchor.section !== selection.focus.section) return true;
   return false;
 });
@@ -182,9 +161,13 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
     }
   }
 
+  const sectionIdx = span.getAttribute("data-sectionIdx");
+  if(sectionIdx === null) {
+    throw new Error("Null sectionIdx")
+  }
+
   return {
-    paragraph: siblingIdx(paragraph),
-    section: siblingIdx(span),
+    section: parseInt(sectionIdx),
     offset: spanOffset
   }
 }
@@ -220,9 +203,6 @@ export function deleteSelection(selection: SectionSelection, selectedSectionsSto
 
 /** Is the selection inverted, ie right-to-left, ie `anchor === late` */
 function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boolean {
-  if (focus.paragraph < anchor.paragraph) return true;
-  if (focus.paragraph > anchor.paragraph) return false;
-
   if (focus.section < anchor.section) return true;
   if (focus.section > anchor.section) return false;
 
