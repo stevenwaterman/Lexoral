@@ -1,8 +1,7 @@
 import { focusSectionStore, updateSelection } from "./selectionState";
 import type { Section } from "../text/textState";
 import { findSectionNode } from "../text/selector";
-import { SectionMutator } from "../text/storeMutators";
-import { undo, redo } from "./history";
+import { SectionMutator, undo, redo } from "../text/storeMutators";
 
 let focusSection: Section | undefined = undefined;
 focusSectionStore.subscribe(state => focusSection = state);
