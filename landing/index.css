@@ -109,10 +109,6 @@ nav {
   max-width: 60em;
   height: 500px;
   justify-self: flex-end;
-
-  border: 2px solid var(--form-border);
-  border-radius: 10px;
-  box-shadow: 5px 5px 5px -2px var(--blue-3);
   grid-row: span 3;
 }
 
@@ -125,12 +121,12 @@ nav {
   width: 100%;
   height: 450px;
   padding: 0.5em;
+  padding-top: 3.5em;
 
+  border: 2px solid var(--form-border);
   border-radius: 10px;
-
-  margin-top: 3em;
-  
-  border: none;
+  box-shadow: 5px 5px 5px -2px var(--blue-3);
+  box-sizing: border-box;
 }
 
 .demo-prompt {
@@ -687,6 +683,10 @@ form .cta-button {
   background-color: var(--yellow-1);
   box-shadow: 0px 0px 10em 10em var(--yellow-1);
   clip-path: inset(0px -500px);
+  z-index: -1;
+
+  grid-row: 1;
+  grid-column: 1 span 2;
 }
 
 .mobile-logo {

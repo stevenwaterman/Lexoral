@@ -60,10 +60,13 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
 export const allSectionsStore: AllSectionsStore = writable([]);
 
 const paragraphLocationsInternal: Writable<Record<number, true>> = writable({});
-export const paragraphLocationsStore: Readable<{start: number, end: number}[]> = derived(paragraphLocationsInternal, locations => {
+export const paragraphLocationsStore: Readable<{start: number, end: number}[]> = derived([paragraphLocationsInternal, allSectionsStore], ([locations, allSections]) => {
   const sortedIdxs = Object.keys(locations).map(i => parseInt(i));
   sortedIdxs.sort((a,b) => a - b);
   sortedIdxs.unshift(-1);
+
+  const lastIdx = allSections.length - 1;
+  if (sortedIdxs[sortedIdxs.length - 1] !== lastIdx) sortedIdxs.push(lastIdx)
 
   const output: {start: number; end: number}[] = [];
   for(let i = 1; i <= sortedIdxs.length; i++) {

@@ -1,9 +1,9 @@
-import * as Tone from "tone";
 import { Writable, Readable, writable, derived } from "svelte/store";
 import { StoreValues, deriveUnwrap, deriveLastDefined } from "../utils/stores";
 import { audioTimingsStore } from "./audioSelection";
 import { SectionStore, allSectionsStore, Section, MaybeSectionStore } from "../text/textState";
 import { clamp } from "../utils/list";
+import * as Tone from "tone";
 
 /** Is the audio actively playing */
 let playing: boolean = false;
