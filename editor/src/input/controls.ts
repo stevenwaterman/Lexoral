@@ -11,6 +11,10 @@ export async function onKeyPressed(event: KeyboardEvent) {
 
   if (event.key === "Enter" && event.ctrlKey) {
     event.preventDefault();
+
+    // TODO remove new paragraph with backspace / delete
+    // TODO select the new paragraph when adding it
+
     new MaybeSectionMutator(focusSectionStore).toggleParagraph();
   }
 

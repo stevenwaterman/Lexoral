@@ -7,20 +7,23 @@ let allSections: AllSections;
 allSectionsStore.subscribe(state => allSections = state);
 
 type HistoryStep = {
+  sectionIdx: number;
+  from: Section;
+  to: Section;
+  lock: boolean;
   postStepSelection: {
     anchorNode: Node | undefined;
     anchorOffset: number | undefined;
     focusNode : Node | undefined;
     focusOffset: number | undefined;
   };
-  undo: () => void;
-  redo: () => void;
 }
 
 let undoCount: number = 0;
 const history: HistoryStep[] = [];
 
-function addHistory(undo: () => void, redo: () => void) {
+function addHistory(idx: number, from: Section, to: Section) {
+  // TODO don't combine updates for text and endParagraph
   const splitPoint = history.length - undoCount;
   history.splice(splitPoint, history.length);
   undoCount = 0;
@@ -30,42 +33,45 @@ function addHistory(undo: () => void, redo: () => void) {
   const anchorOffset = selection?.anchorOffset ?? undefined;
   const focusNode = selection?.focusNode ?? undefined;
   const focusOffset = selection?.focusOffset ?? undefined;
+  const postStepSelection = {
+    anchorNode,
+    anchorOffset,
+    focusNode,
+    focusOffset
+  };
 
-  history.push({
-    postStepSelection: {
-      anchorNode,
-      anchorOffset,
-      focusNode,
-      focusOffset
-    },
-    undo,
-    redo
-  });
-
-  console.log(`History: ${undoCount} : ${history.length}`)
+  const lastHistory = history[history.length - 1];
+  if (lastHistory && !lastHistory.lock && lastHistory.sectionIdx === idx) {
+    lastHistory.postStepSelection = postStepSelection;
+    to = to;
+  } else {
+    if (lastHistory) lastHistory.lock = true;
+    history.push({
+      sectionIdx: idx,
+      from,
+      to,
+      lock: false,
+      postStepSelection
+    });
+  }
 }
 
 export async function undo() {
   const step = history.length - 1 - undoCount;
   const historyStep: HistoryStep | undefined = history[step];
-  console.log(historyStep)
   if (!historyStep) return;
 
   undoCount++;
-  historyStep.undo();
+  allSections[historyStep.sectionIdx].set(historyStep.from);
 
   await tick();
-
-  console.log(`History: ${undoCount} : ${history.length}`)
 
   const previousStep: HistoryStep | undefined = history[step - 1];
   if (!previousStep) return;
 
   const {anchorNode, anchorOffset, focusNode, focusOffset} = previousStep.postStepSelection;
   if (!anchorNode || !anchorOffset || !focusNode || !focusOffset) return;
-
   window.getSelection()?.setBaseAndExtent(anchorNode, anchorOffset, focusNode, focusOffset);
-
 }
 
 export async function redo() {
@@ -74,9 +80,7 @@ export async function redo() {
   const step = history.length - 1 - undoCount;
   const historyStep = history[step];
   if (!historyStep) return;
-  historyStep.redo();
-
-  console.log(`History: ${undoCount} : ${history.length}`)
+  allSections[historyStep.sectionIdx].set(historyStep.to);
 
   await tick();
 
@@ -84,12 +88,6 @@ export async function redo() {
   if (!anchorNode || !anchorOffset || !focusNode || !focusOffset) return;
   window.getSelection()?.setBaseAndExtent(anchorNode, anchorOffset, focusNode, focusOffset);
 }
-
-
-
-
-
-
 
 
 
@@ -111,36 +109,20 @@ abstract class BaseSectionMutator<S> {
     return this.update(state => {
       if (state.text === text) return state;
 
-      const newState = {
+      return {
         ...state,
         text,
         completionOptions: getOptions(text, state.originalOptions),
         edited: true
       };
-
-      addHistory(
-        () => allSections[state.idx].set(state),
-        () => allSections[state.idx].set(newState)
-      )
-      
-      return newState;
     })
   }
 
   toggleParagraph(): this {
-    return this.update(state => {
-      const newState = {
-        ...state,
-        endParagraph: !state.endParagraph
-      };
-
-      addHistory(
-        () => allSections[state.idx].set(state),
-        () => allSections[state.idx].set(newState)
-      )
-      
-      return newState;
-    })
+    return this.update(state => ({
+      ...state,
+      endParagraph: !state.endParagraph
+    }))
   }
 
   deleteText(offsets?: { start?: number, end?: number }): this {
@@ -157,26 +139,23 @@ abstract class BaseSectionMutator<S> {
         newText += currentText.substring(endOffset);
       }
 
-      const newState = {
+      return {
         ...state,
         text: newText,
         completionOptions: getOptions(newText, state.originalOptions),
         edited: true
       }
-
-      addHistory(
-        () => allSections[state.idx].set(state),
-        () => allSections[state.idx].set(newState)
-      )
-
-      return newState;
     })
   }
 }
 
 export class SectionMutator extends BaseSectionMutator<Section> {
   update(func: (state: Section) => Section): this {
-    this.underlying.update(func);
+    this.underlying.update(state => {
+      const newState = func(state);
+      addHistory(state.idx, state, newState);
+      return newState;
+    });
     return this;
   }
 
@@ -189,7 +168,9 @@ export class MaybeSectionMutator extends BaseSectionMutator<Section | undefined>
   update(func: (state: Section) => Section): this {
     this.underlying.update(state => {
       if (state === undefined) return undefined;
-      else return func(state);
+      const newState = func(state);
+      addHistory(state.idx, state, newState);
+      return newState;
     })
     return this;
   }
