@@ -29,6 +29,7 @@ UX:
   * Page up / down don't work
   
   - add scrolling (when playing from current position onwards)
+  - autosave
 
   -- support cut + paste
   -- Reenable key presses when text is selected
