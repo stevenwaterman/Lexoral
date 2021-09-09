@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { tick } from "svelte";
-
   import {
     focusSectionIdxStore,
     focusSectionStore,
@@ -15,7 +13,6 @@
   import { MaybeSectionMutator } from "../text/storeMutators";
   import { findSectionNode } from "../text/selector";
   import { onKeyPressed } from "./controls";
-
 
   async function mouseUp(event: MouseEvent) {
     await updateSelection();

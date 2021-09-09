@@ -12,6 +12,7 @@
   import { areMultipleSectionsSelectedStore } from "./selectionState";
   import { toggleParagraph } from "./paragraphs";
   import { findSectionNode } from "../text/selector";
+import { redo, undo } from "./history";
 
   export let demo: boolean;
 

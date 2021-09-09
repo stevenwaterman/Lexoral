@@ -3,6 +3,7 @@ import { getOptions } from "../preprocess/align";
 import { Writable, writable } from "svelte/store";
 import type { CursorPosition } from "../input/selectionState";
 import { get_store_value } from "svelte/internal";
+import { saveCurrentStateInHistory } from "../input/history";
 
 let allSectionStores: Record<number, SectionStore>;
 allSectionsStore.subscribe(state => allSectionStores = state);
@@ -22,7 +23,18 @@ abstract class BaseSectionMutator<S> {
 
   setText(text: string): this {
     return this.update(section => {
-      if (!section.edited && text === section.placeholder) return section;
+
+      const originalText = section.text;
+      const originalEdited = section.edited;
+
+      saveCurrentStateInHistory(section.idx, {
+        text: originalText,
+        edited: originalEdited
+      }, {
+        text,
+        edited: true
+      });
+
       return {
         ...section,
         text,

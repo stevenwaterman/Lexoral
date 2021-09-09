@@ -173,14 +173,14 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
   const paragraph = span.parentElement;
   if (paragraph === null) return undefined;
 
-  // if (requiresSelectionUpdate) {
-  //   const node = span.firstChild;
-  //   const selection = window.getSelection();
-  //   if (node !== null && selection !== null) {
-  //     if (side === "anchor") selection.setBaseAndExtent(node, spanOffset + 1, selection.focusNode ?? node , selection.focusOffset);
-  //     else selection.setBaseAndExtent(selection.anchorNode ?? node, selection.anchorOffset, node, spanOffset + 1);
-  //   }
-  // }
+  if (requiresSelectionUpdate) {
+    const node = span.firstChild;
+    const selection = window.getSelection();
+    if (node !== null && selection !== null) {
+      if (side === "anchor") selection.setBaseAndExtent(node, spanOffset + 1, selection.focusNode ?? node , selection.focusOffset);
+      else selection.setBaseAndExtent(selection.anchorNode ?? node, selection.anchorOffset, node, spanOffset + 1);
+    }
+  }
 
   return {
     paragraph: siblingIdx(paragraph),

@@ -2,12 +2,25 @@ import { focusSectionStore, updateSelection } from "./selectionState";
 import type { Section } from "../text/textState";
 import { findSectionNode } from "../text/selector";
 import { SectionMutator } from "../text/storeMutators";
+import { undo, redo } from "./history";
 
 let focusSection: Section | undefined = undefined;
 focusSectionStore.subscribe(state => focusSection = state);
 
 export async function onKeyPressed(event: KeyboardEvent) {
   if(event.altKey) return;
+
+  if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
+    event.preventDefault();
+    await undo();
+    return await updateSelection();
+  }
+
+  if (event.key === "y" && event.ctrlKey) {
+    event.preventDefault();
+    await redo();
+    return await updateSelection();
+  }
 
   if (event.key === "ArrowLeft") {
     if (event.ctrlKey) return processEvent(event, ctrlLeftArrow);
