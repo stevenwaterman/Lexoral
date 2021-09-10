@@ -1,5 +1,4 @@
 audio:
-  When dragging, don't update audio until release
   Option to continue / restart
 
 sections:

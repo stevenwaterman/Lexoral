@@ -107,7 +107,7 @@ abstract class BaseSectionMutator<S> {
 
   setText(text: string): this {
     return this.update(state => {
-      if (state.text === text) return state;
+      if (state.text === text && state.edited) return state;
 
       return {
         ...state,
