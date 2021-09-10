@@ -1,4 +1,4 @@
-import { Section, allSectionsStore, AllSections } from "./textState";
+import { Section, allSectionsStore, AllSections, SectionStore } from "./textState";
 import { getOptions } from "../preprocess/align";
 import type { Writable } from "svelte/store";
 import { tick } from "svelte/internal";
@@ -125,6 +125,20 @@ abstract class BaseSectionMutator<S> {
     }))
   }
 
+  enableEndParagraph(): this {
+    return this.update(state => ({
+      ...state,
+      endParagraph: true
+    }))
+  }
+
+  disableEndParagraph(): this {
+    return this.update(state => ({
+      ...state,
+      endParagraph: false
+    }))
+  }
+
   deleteText(offsets?: { start?: number, end?: number }): this {
     const startOffset = offsets?.start;
     const endOffset = offsets?.end;
@@ -159,8 +173,10 @@ export class SectionMutator extends BaseSectionMutator<Section> {
     return this;
   }
 
-  static ofIdx(idx: number): SectionMutator {
-    return new SectionMutator(allSections[idx]);
+  static ofIdx(idx: number): SectionMutator | undefined {
+    const store: SectionStore | undefined = allSections[idx];
+    if (!store) return undefined;
+    return new SectionMutator(store);
   }
 }
 

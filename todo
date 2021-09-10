@@ -13,8 +13,9 @@ sections:
   -- manually adjust section timings
   
 UX:
-  landing page demo not big enough on server
-  empty sections show up when selecting in lighter color (don't get selected)
+  Desync (race condition) when holding ctrl + delete
+  Show selected sections immediately
+  Allow deleting multiple sections
   Should be able to delete new paragraphs with backspace / delete
   Shouldn't combine paragraph toggle history with text edit history
 
@@ -38,6 +39,9 @@ Performance:
   updateSelection is called way too much
   changing paragraphs rerenders everything
 
+Features:
+  Add export functionality
+  -- Speaker diarization
 
-Add export functionality
 
+landing page demo not big enough on server

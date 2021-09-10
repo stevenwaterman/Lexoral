@@ -34,9 +34,9 @@
     background: none;
   }
 
-  .paragraph.nonePlaying::selection {
+  /* .paragraph.nonePlaying::selection {
     background-color: rgba(76, 108, 169, 0.99);
-  }
+  } */
 </style>
 
 <p class="paragraph" class:nonePlaying={!$playingStore}>

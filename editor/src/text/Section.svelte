@@ -32,10 +32,10 @@
     box-shadow: inset 0 -2px 0 var(--form-border);
   }
 
-  .section.nonePlaying::selection {
+  /* .section.nonePlaying::selection {
     background-color: rgba(76, 108, 169, 0.99);
     color: var(--light-text);
-  }
+  } */
 
   .highlight {
     background-color: var(--weak-focus);

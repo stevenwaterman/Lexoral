@@ -2,6 +2,7 @@ import { focusSectionStore, updateSelection } from "./selectionState";
 import type { Section } from "../text/textState";
 import { findSectionNode } from "../text/selector";
 import { SectionMutator, undo, redo, MaybeSectionMutator } from "../text/storeMutators";
+import { tick } from "svelte";
 
 let focusSection: Section | undefined = undefined;
 focusSectionStore.subscribe(state => focusSection = state);
@@ -11,11 +12,7 @@ export async function onKeyPressed(event: KeyboardEvent) {
 
   if (event.key === "Enter" && event.ctrlKey) {
     event.preventDefault();
-
-    // TODO remove new paragraph with backspace / delete
-    // TODO select the new paragraph when adding it
-
-    new MaybeSectionMutator(focusSectionStore).toggleParagraph();
+    new MaybeSectionMutator(focusSectionStore).enableEndParagraph();
   }
 
   if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
@@ -230,9 +227,21 @@ async function backspace(event: KeyboardEvent) {
 async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSection) return;
+
+  const currentSpan = findSectionNode(focusSection.idx);
+  if (!currentSpan) return;
+
+  const prevSpan = findSectionNode(focusSection.idx - 1);
+  if (!prevSpan) return;
+
+  if (currentSpan.parentElement !== prevSpan.parentElement) {
+    SectionMutator.ofIdx(focusSection.idx - 1)?.disableEndParagraph();
+    await tick();
+  }
+
   const node = findSectionNode(focusSection.idx - 1)?.firstChild;
   if (!node) return;
-
+  
   const offset = (node?.textContent?.length ?? 1) - 1;
   return mutateSelection(false, { node, offset });
 }
@@ -240,11 +249,26 @@ async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
 async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSection) return;
-  const newIdx = focusSection.idx - 1;
-  const node = findSectionNode(newIdx)?.firstChild;
+
+  const currentSpan = findSectionNode(focusSection.idx);
+  if (!currentSpan) return;
+
+  const prevSpan = findSectionNode(focusSection.idx - 1);
+  if (!prevSpan) return;
+
+  const mutator = SectionMutator.ofIdx(focusSection.idx - 1);
+  if (!mutator) return;
+
+  mutator.setText("");
+
+  if (currentSpan.parentElement !== prevSpan.parentElement) {
+    mutator.disableEndParagraph();
+    await tick();
+  }
+
+  const node = findSectionNode(focusSection.idx - 1)?.firstChild;
   if (!node) return;
 
-  SectionMutator.ofIdx(newIdx).setText("");
   return mutateSelection(false, { node, offset: 1 });
 }
 
@@ -273,6 +297,10 @@ async function deleteKey(event: KeyboardEvent) {
 async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSection) return;
+  if (focusSection.endParagraph) {
+    new MaybeSectionMutator(focusSectionStore).disableEndParagraph();
+    await tick();
+  }
   const node = findSectionNode(focusSection.idx + 1)?.firstChild;
   if (!node) return;
   return mutateSelection(false, { node, offset: 1 });
@@ -281,12 +309,18 @@ async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
 async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSection) return;
+
+  if (focusSection.endParagraph) {
+    new MaybeSectionMutator(focusSectionStore).disableEndParagraph();
+    await tick();
+  }
+
   const newIdx = focusSection.idx + 1;
   const node = findSectionNode(newIdx)?.firstChild;
   if (!node) return;
 
   const length = node?.textContent?.length ?? 2;
-  SectionMutator.ofIdx(newIdx).setText("");
+  SectionMutator.ofIdx(newIdx)?.setText("");
   return mutateSelection(false, { node, offset: length - 1 });
 }
 
