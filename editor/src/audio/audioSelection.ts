@@ -1,10 +1,8 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
-import { allSectionsStore, SectionStore, Section } from "../text/textState";
+import { allSectionsStore, SectionStore, Section, paragraphLocationsStore } from "../text/textState";
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
-import { clampGet, clampGetRecord } from "../utils/list";
-
-// TODO this ignores constraint to paragraph
+import { clampGet, clampGetRecord, clamp } from "../utils/list";
 
 export const contextAmountStore: Writable<number> = writable(5);
 
@@ -130,15 +128,23 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
    * Store containing the section stores for the section at the [start / end] of the audio selection after applying the `sectionOffset` and `constrainWithinParagraph` mutations.
    */
   const offsetSectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ areMultipleSectionsSelectedStore, sectionIdxStore,  selectionStore, mutationStore, allSectionsStore], 
-    ([areMultipleSectionsSelected,      sectionIdx,       selection,      mutation,      allSections]
+    [ areMultipleSectionsSelectedStore, sectionIdxStore,  selectionStore, mutationStore, allSectionsStore,  paragraphLocationsStore], 
+    ([areMultipleSectionsSelected,      sectionIdx,       selection,      mutation,      allSections,       paragraphLocations]
   ) => {
     if (sectionIdx === undefined) return undefined;
     if (selection === undefined) return undefined;
     if (areMultipleSectionsSelected) return allSections[sectionIdx];
 
     const offsetIdx = sectionIdx + mutation[side].sectionOffset;
-    return clampGetRecord(allSections, offsetIdx);
+
+    if (mutation[side].constrainWithinParagraph) {
+      const paragraph = paragraphLocations.find(paragraph => paragraph.start <= sectionIdx && paragraph.end >= sectionIdx);
+      if (!paragraph) throw new Error(`Couldn't find paragraph for section idx ${sectionIdx}`);
+      const clampedIdx = clamp(offsetIdx, paragraph.start, paragraph.end);
+      return clampGetRecord(allSections, clampedIdx);
+    } else {
+      return clampGetRecord(allSections, offsetIdx);
+    }
   });
   const offsetSectionStore: Readable<Section | undefined> = deriveUnwrap(offsetSectionStoreWrapped);
 
