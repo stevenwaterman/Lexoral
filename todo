@@ -13,10 +13,10 @@ sections:
   -- manually adjust section timings
   
 UX:
+  Undo selection location isn't correct when it's affected by code mutating the selection
   Desync (race condition) when holding ctrl + delete
   Show selected sections immediately
   Allow deleting multiple sections
-  Should be able to delete new paragraphs with backspace / delete
   Shouldn't combine paragraph toggle history with text edit history
 
   Some kind of help / tutorial
