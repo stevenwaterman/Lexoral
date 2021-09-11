@@ -7,8 +7,24 @@ import { tick } from "svelte";
 let focusSection: Section | undefined = undefined;
 focusSectionStore.subscribe(state => focusSection = state);
 
+let inProgress = false;
 export async function onKeyPressed(event: KeyboardEvent) {
-  if(event.altKey) return;
+  // Check to see if another event handler is already running
+  // If so, prevent this one
+  // When the app lags, multiple events can overlap because they're async
+  // This causes desynchronisation between the browser and the text state
+  if (inProgress) {
+    event.preventDefault();
+    event.stopPropagation();
+    return;
+  };
+  inProgress = true;
+  await onKeyPressedInner(event);
+  inProgress = false;
+}
+
+async function onKeyPressedInner(event: KeyboardEvent) {
+  if (event.altKey) return;
 
   if (event.key === "Enter" && event.ctrlKey) {
     event.preventDefault();
@@ -291,7 +307,7 @@ async function deleteKey(event: KeyboardEvent) {
   if (event.ctrlKey && atEnd) return deleteDeletingNext(event, selection);
   if (atEnd) return deleteAtEnd(event, selection);
 
-  return defaultBehaviour();
+  // return defaultBehaviour();
 }
 
 async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {

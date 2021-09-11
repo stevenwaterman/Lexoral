@@ -13,9 +13,10 @@ sections:
   -- manually adjust section timings
   
 UX:
-  Undo selection location isn't correct when it's affected by code mutating the selection
-  Desync (race condition) when holding ctrl + delete
-  Show selected sections immediately
+  AutoSave
+  Undo selection location isn't correct when it's affected by code mutating the selection (eg ctrl + backspace)
+  Show selected sections immediately when dragging
+  Show text selection only when selection is within one section
   Allow deleting multiple sections
   Shouldn't combine paragraph toggle history with text edit history
 

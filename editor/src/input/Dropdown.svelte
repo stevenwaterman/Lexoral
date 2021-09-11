@@ -150,6 +150,7 @@
     white-space: nowrap;
     padding: 2px;
     cursor: pointer;
+    white-space: pre;
   }
 
   .topBorder {
