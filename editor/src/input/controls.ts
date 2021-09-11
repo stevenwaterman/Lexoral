@@ -2,7 +2,7 @@ import { focusSectionStore, updateSelection, focusSectionIdxStore, anchorSection
 import { findSectionNode } from "../text/selector";
 import { SectionMutator, undo, redo, MaybeSectionMutator } from "../text/storeMutators";
 import { tick } from "svelte";
-import { selectSectionEnd, selectSectionStart } from "./select";
+import { selectSectionEnd, selectSectionStart, selectSectionPosition } from "./select";
 
 let focusSectionIdx: number | undefined = undefined;
 focusSectionIdxStore.subscribe(state => focusSectionIdx = state);
@@ -251,12 +251,7 @@ async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
     SectionMutator.ofIdx(focusSectionIdx - 1)?.disableEndParagraph();
     await tick();
   }
-
-  const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
-  if (!node) return;
-  
-  const offset = (node?.textContent?.length ?? 1) - 1;
-  return mutateSelection(false, { node, offset });
+  return selectSectionEnd(focusSectionIdx - 1);
 }
 
 async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Selection) {
@@ -273,10 +268,7 @@ async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Select
     await tick();
   }
 
-  const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
-  if (!node) return;
-
-  return mutateSelection(false, { node, offset: 1 });
+  return selectSectionStart(focusSectionIdx - 1);
 }
 
 async function backspaceSelectedText(event: KeyboardEvent, selection: Selection) {
@@ -325,10 +317,7 @@ async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
     SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
     await tick();
   }
-
-  const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
-  if (!node) return;
-  return mutateSelection(false, { node, offset: 1 });
+  return selectSectionStart(focusSectionIdx + 1);
 }
 
 async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
@@ -339,14 +328,8 @@ async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
     SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
     await tick();
   }
-
-  const newIdx = focusSectionIdx + 1;
-  const node = findSectionNode(newIdx)?.firstChild;
-  if (!node) return;
-
-  const length = node?.textContent?.length ?? 2;
-  SectionMutator.ofIdx(newIdx)?.setText("");
-  return mutateSelection(false, { node, offset: length - 1 });
+  SectionMutator.ofIdx(focusSectionIdx + 1)?.setText("");
+  return selectSectionStart(focusSectionIdx + 1);
 }
 
 async function deleteSelectedText(event: KeyboardEvent, selection: Selection) {

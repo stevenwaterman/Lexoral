@@ -15,8 +15,7 @@ sections:
   
 UX:
   AutoSave
-  Shouldn't combine paragraph toggle history with text edit history
-
+  Undo/Redo combines all sequential mutations to a single section and doesn't combine sequential mutations to multiple sections eg select then delete requires multiple undos
   Some kind of help / tutorial
   
   * Hard to tell difference between primary and secondary text colours
@@ -26,7 +25,6 @@ UX:
   * Page up / down don't work
   
   - add scrolling (when playing from current position onwards)
-  - autosave
 
   -- support cut + paste
 
