@@ -1,5 +1,6 @@
 audio:
   Option to continue / restart
+  multiple play at once sometimes when click + drag
 
 sections:
   - automatically adjust section timings based on audio envelope
@@ -14,7 +15,6 @@ sections:
   
 UX:
   AutoSave
-  Allow deleting multiple sections
   Shouldn't combine paragraph toggle history with text edit history
 
   Some kind of help / tutorial
@@ -29,8 +29,6 @@ UX:
   - autosave
 
   -- support cut + paste
-  -- Reenable key presses when text is selected
-  -- Reenable deleting selected text (and undo/redoing it)
 
 Performance:
   Slow when selecting and deselecting lots of sections

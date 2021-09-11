@@ -1,11 +1,14 @@
-import { focusSectionStore, updateSelection } from "./selectionState";
-import type { Section } from "../text/textState";
+import { focusSectionStore, updateSelection, focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
 import { findSectionNode } from "../text/selector";
 import { SectionMutator, undo, redo, MaybeSectionMutator } from "../text/storeMutators";
 import { tick } from "svelte";
+import { selectSectionEnd, selectSectionStart } from "./select";
 
-let focusSection: Section | undefined = undefined;
-focusSectionStore.subscribe(state => focusSection = state);
+let focusSectionIdx: number | undefined = undefined;
+focusSectionIdxStore.subscribe(state => focusSectionIdx = state);
+
+let anchorSectionIdx: number | undefined = undefined;
+anchorSectionIdxStore.subscribe(state => anchorSectionIdx = state);
 
 let inProgress = false;
 export async function onKeyPressed(event: KeyboardEvent) {
@@ -114,19 +117,19 @@ function getAnchor(): { node: Node; offset: number } | undefined {
 }
 
 function guardedCall(func: typeof leftArrow) {
-  if (focusSection === undefined) return;
+  if (focusSectionIdx === undefined) return;
 
   const selection = window.getSelection();
   if (selection === null) return;
 
   const { focusNode, focusOffset } = selection;
   if (focusNode === null) return;
-  return func(focusNode, focusOffset, focusSection);
+  return func(focusNode, focusOffset, focusSectionIdx);
 }
 
-function leftArrow(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function leftArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   if (focusOffset <= 1) {
-    const node = findSectionNode(focusSection.idx - 1)?.firstChild;
+    const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
     if (!node) return;
 
     const offset = (node?.textContent?.length ?? 1) - 1;
@@ -136,44 +139,44 @@ function leftArrow(focusNode: Node, focusOffset: number, focusSection: Section):
   else return { node: focusNode, offset: focusOffset - 1 };
 }
 
-function rightArrow(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function rightArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const nodeLength = focusNode?.textContent?.length ?? 0;
   if (focusOffset >= nodeLength - 1) {
-    const node = findSectionNode(focusSection.idx + 1)?.firstChild;
+    const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
     if (!node) return;
     return { node, offset: 1 };
   }
   else return { node: focusNode, offset: focusOffset + 1 };
 }
 
-function shiftTab(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
-  const node = findSectionNode(focusSection.idx - 1)?.firstChild;
+function shiftTab(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
+  const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
   if (!node) return;
 
   const offset = (node?.textContent?.length ?? 1) - 1;
   return { node, offset };
 }
 
-function tab(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
-  const node = findSectionNode(focusSection.idx + 1)?.firstChild;
+function tab(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
+  const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
   if (!node) return;
   return { node, offset: 1 };
 }
 
 
-function ctrlLeftArrow(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function ctrlLeftArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   if (focusOffset <= 1) {
-    const node = findSectionNode(focusSection.idx - 1)?.firstChild;
+    const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
     if (!node) return;
     return { node, offset: 1 };
   }
   else return { node: focusNode, offset: 1 };
 }
 
-function ctrlRightArrow(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function ctrlRightArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const nodeLength = focusNode?.textContent?.length ?? 0;
   if (focusOffset >= nodeLength - 1) {
-    const node = findSectionNode(focusSection.idx + 1)?.firstChild;
+    const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
     if (!node) return;
 
     const offset = (node?.textContent?.length ?? 1) - 1;
@@ -182,7 +185,7 @@ function ctrlRightArrow(focusNode: Node, focusOffset: number, focusSection: Sect
   else return { node: focusNode, offset: (focusNode?.textContent?.length ?? 1) - 1 };
 }
 
-function home(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function home(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const focusSpan = focusNode?.parentElement;
   const focusParagraph = focusSpan?.parentElement;
   const focusFirstSpan = focusParagraph?.firstElementChild;
@@ -191,7 +194,7 @@ function home(focusNode: Node, focusOffset: number, focusSection: Section): { no
   return { node, offset: 1 };
 }
 
-function end(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function end(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const focusSpan = focusNode?.parentElement;
   const focusParagraph = focusSpan?.parentElement;
   const focusLastSpan = focusParagraph?.lastElementChild;
@@ -202,7 +205,7 @@ function end(focusNode: Node, focusOffset: number, focusSection: Section): { nod
   return { node, offset };
 }
 
-function ctrlHome(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function ctrlHome(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const focusSpan = focusNode?.parentElement;
   const focusParagraph = focusSpan?.parentElement;
   const focusDocument = focusParagraph?.parentElement;
@@ -213,7 +216,7 @@ function ctrlHome(focusNode: Node, focusOffset: number, focusSection: Section): 
   return { node, offset: 1 };
 }
 
-function ctrlEnd(focusNode: Node, focusOffset: number, focusSection: Section): { node: Node; offset: number } | undefined {
+function ctrlEnd(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const focusSpan = focusNode?.parentElement;
   const focusParagraph = focusSpan?.parentElement;
   const focusDocument = focusParagraph?.parentElement;
@@ -242,20 +245,14 @@ async function backspace(event: KeyboardEvent) {
 
 async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
-  if (!focusSection) return;
+  if (!focusSectionIdx) return;
 
-  const currentSpan = findSectionNode(focusSection.idx);
-  if (!currentSpan) return;
-
-  const prevSpan = findSectionNode(focusSection.idx - 1);
-  if (!prevSpan) return;
-
-  if (currentSpan.parentElement !== prevSpan.parentElement) {
-    SectionMutator.ofIdx(focusSection.idx - 1)?.disableEndParagraph();
+  if (isParagraphEnd(focusSectionIdx - 1)) {
+    SectionMutator.ofIdx(focusSectionIdx - 1)?.disableEndParagraph();
     await tick();
   }
 
-  const node = findSectionNode(focusSection.idx - 1)?.firstChild;
+  const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
   if (!node) return;
   
   const offset = (node?.textContent?.length ?? 1) - 1;
@@ -264,34 +261,44 @@ async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
 
 async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
-  if (!focusSection) return;
+  if (!focusSectionIdx) return;
 
-  const currentSpan = findSectionNode(focusSection.idx);
-  if (!currentSpan) return;
-
-  const prevSpan = findSectionNode(focusSection.idx - 1);
-  if (!prevSpan) return;
-
-  const mutator = SectionMutator.ofIdx(focusSection.idx - 1);
+  const mutator = SectionMutator.ofIdx(focusSectionIdx - 1);
   if (!mutator) return;
 
   mutator.setText("");
 
-  if (currentSpan.parentElement !== prevSpan.parentElement) {
+  if (isParagraphEnd(focusSectionIdx - 1)) {
     mutator.disableEndParagraph();
     await tick();
   }
 
-  const node = findSectionNode(focusSection.idx - 1)?.firstChild;
+  const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
   if (!node) return;
 
   return mutateSelection(false, { node, offset: 1 });
 }
 
 async function backspaceSelectedText(event: KeyboardEvent, selection: Selection) {
+  if (selection.anchorNode === selection.focusNode) {
+    // Selected within one section
+    return defaultBehaviour();
+  }
+
   event.preventDefault();
-  console.log("Preventing backspace")
-  return updateSelection();
+
+  // Selecting multiple sections
+  if (anchorSectionIdx === undefined || focusSectionIdx === undefined) {
+    throw new Error("idxs are undefined when deleting")
+  };
+
+  const startIdx = Math.min(anchorSectionIdx, focusSectionIdx);
+  const endIdx = Math.max(anchorSectionIdx, focusSectionIdx);
+  for (let i = startIdx; i <= endIdx; i++) {
+    // TODO should this keep the paragraph breaks in?
+    SectionMutator.ofIdx(i)?.setText("");
+  }
+  return selectSectionStart(startIdx);
 }
 
 
@@ -307,31 +314,33 @@ async function deleteKey(event: KeyboardEvent) {
   if (event.ctrlKey && atEnd) return deleteDeletingNext(event, selection);
   if (atEnd) return deleteAtEnd(event, selection);
 
-  // return defaultBehaviour();
+  return defaultBehaviour();
 }
 
 async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
-  if (!focusSection) return;
-  if (focusSection.endParagraph) {
-    new MaybeSectionMutator(focusSectionStore).disableEndParagraph();
+  if (!focusSectionIdx) return;
+
+  if (isParagraphEnd(focusSectionIdx)) {
+    SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
     await tick();
   }
-  const node = findSectionNode(focusSection.idx + 1)?.firstChild;
+
+  const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
   if (!node) return;
   return mutateSelection(false, { node, offset: 1 });
 }
 
 async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
-  if (!focusSection) return;
+  if (!focusSectionIdx) return;
 
-  if (focusSection.endParagraph) {
-    new MaybeSectionMutator(focusSectionStore).disableEndParagraph();
+  if (isParagraphEnd(focusSectionIdx)) {
+    SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
     await tick();
   }
 
-  const newIdx = focusSection.idx + 1;
+  const newIdx = focusSectionIdx + 1;
   const node = findSectionNode(newIdx)?.firstChild;
   if (!node) return;
 
@@ -341,7 +350,34 @@ async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
 }
 
 async function deleteSelectedText(event: KeyboardEvent, selection: Selection) {
+  if (selection.anchorNode === selection.focusNode) {
+    // Selected within one section
+    return defaultBehaviour();
+  }
+
   event.preventDefault();
-  console.log("Preventing delete")
-  return updateSelection();
+
+  // Selecting multiple sections
+  if (anchorSectionIdx === undefined || focusSectionIdx === undefined) {
+    throw new Error("idxs are undefined when deleting")
+  };
+
+  const startIdx = Math.min(anchorSectionIdx, focusSectionIdx);
+  const endIdx = Math.max(anchorSectionIdx, focusSectionIdx);
+  for (let i = startIdx; i <= endIdx; i++) {
+    // TODO should this keep the paragraph breaks in?
+    SectionMutator.ofIdx(i)?.setText("");
+  }
+  return selectSectionEnd(endIdx);
+}
+
+
+function isParagraphEnd(idx: number): boolean {
+  const currentSpan = findSectionNode(idx);
+  if (!currentSpan) return false;
+
+  const prevSpan = findSectionNode(idx + 1);
+  if (!prevSpan) return false;
+
+  return currentSpan.parentElement !== prevSpan.parentElement;
 }

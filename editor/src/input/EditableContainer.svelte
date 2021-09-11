@@ -19,9 +19,9 @@
     suppressAudioStore.set(true);
   }
 
-  async function mouseMove(event: MouseEvent) {
-    if (event.buttons === 1) await updateSelection();
-  }
+  // async function mouseMove(event: MouseEvent) {
+  //   if (event.buttons === 1) await updateSelection();
+  // }
 
   async function mouseUp(event: MouseEvent) {
     await updateSelection();
@@ -57,7 +57,6 @@
   tabindex={-1}
   on:keydown={onKeyPressed}
   on:mousedown={mouseDown}
-  on:mousemove={mouseMove}
   on:mouseup={mouseUp}
   on:input={input}
   on:dragover|preventDefault
