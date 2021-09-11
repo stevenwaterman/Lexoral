@@ -2,6 +2,9 @@ import { Section, allSectionsStore, AllSections, SectionStore } from "./textStat
 import { getOptions } from "../preprocess/align";
 import type { Writable } from "svelte/store";
 import { tick } from "svelte/internal";
+import { SectionSelection, selectionStore } from "../input/selectionState";
+import { findSectionNode } from "./selector";
+import { selectSectionStart } from "../input/select";
 
 let allSections: AllSections;
 allSectionsStore.subscribe(state => allSections = state);
@@ -11,38 +14,23 @@ type HistoryStep = {
   from: Section;
   to: Section;
   lock: boolean;
-  postStepSelection: {
-    anchorNode: Node | undefined;
-    anchorOffset: number | undefined;
-    focusNode : Node | undefined;
-    focusOffset: number | undefined;
-  };
 }
 
 let undoCount: number = 0;
 const history: HistoryStep[] = [];
 
-function addHistory(idx: number, from: Section, to: Section) {
+async function addHistory(idx: number, from: Section, to: Section) {
+  setTimeout(() => addHistoryInternal(idx, from, to));
+}
+
+function addHistoryInternal(idx: number, from: Section, to: Section) {
   // TODO don't combine updates for text and endParagraph
   const splitPoint = history.length - undoCount;
   history.splice(splitPoint, history.length);
   undoCount = 0;
 
-  const selection = window.getSelection();
-  const anchorNode = selection?.anchorNode ?? undefined;
-  const anchorOffset = selection?.anchorOffset ?? undefined;
-  const focusNode = selection?.focusNode ?? undefined;
-  const focusOffset = selection?.focusOffset ?? undefined;
-  const postStepSelection = {
-    anchorNode,
-    anchorOffset,
-    focusNode,
-    focusOffset
-  };
-
   const lastHistory = history[history.length - 1];
   if (lastHistory && !lastHistory.lock && lastHistory.sectionIdx === idx) {
-    lastHistory.postStepSelection = postStepSelection;
     to = to;
   } else {
     if (lastHistory) lastHistory.lock = true;
@@ -51,7 +39,6 @@ function addHistory(idx: number, from: Section, to: Section) {
       from,
       to,
       lock: false,
-      postStepSelection
     });
   }
 }
@@ -67,11 +54,7 @@ export async function undo() {
   await tick();
 
   const previousStep: HistoryStep | undefined = history[step - 1];
-  if (!previousStep) return;
-
-  const {anchorNode, anchorOffset, focusNode, focusOffset} = previousStep.postStepSelection;
-  if (!anchorNode || !anchorOffset || !focusNode || !focusOffset) return;
-  window.getSelection()?.setBaseAndExtent(anchorNode, anchorOffset, focusNode, focusOffset);
+  await selectSectionStart(previousStep?.sectionIdx);
 }
 
 export async function redo() {
@@ -83,10 +66,7 @@ export async function redo() {
   allSections[historyStep.sectionIdx].set(historyStep.to);
 
   await tick();
-
-  const {anchorNode, anchorOffset, focusNode, focusOffset} = historyStep.postStepSelection;
-  if (!anchorNode || !anchorOffset || !focusNode || !focusOffset) return;
-  window.getSelection()?.setBaseAndExtent(anchorNode, anchorOffset, focusNode, focusOffset);
+  await selectSectionStart(historyStep.sectionIdx);
 }
 
 
@@ -191,79 +171,3 @@ export class MaybeSectionMutator extends BaseSectionMutator<Section | undefined>
     return this;
   }
 }
-
-
-
-
-// abstract class BaseParagraphMutator<S> {
-//   protected readonly underlying: Writable<S>;
-
-//   constructor(underlying: Writable<S>) {
-//     this.underlying = underlying;
-//   }
-
-//   get(): Writable<S> {
-//     return this.underlying;
-//   }
-
-//   abstract update(func: (state: Paragraph) => Paragraph): this;
-
-//   append(store: SectionStore): this {
-//     return this.update(state => {
-//       state.push(store);
-//       return state;
-//     });
-//   }
-
-//   split(position: CursorPosition): this {
-//     return this.update(state => {
-//       const remainingSections = state.slice(0, position.section);
-  
-//       const removedSections = state.slice(position.section);
-//       const newParagraphStore = writable(removedSections);
-//       documentStore.update(document => {
-//         document.splice(position.paragraph + 1, 0, newParagraphStore);
-//         return document;
-//       })
-  
-//       return remainingSections;
-//     })
-//   }
-
-//   combine(position: CursorPosition): this {
-//     documentStore.update(document => {
-//       const [deletedParagraph] = document.splice(position.paragraph - 1, 1);
-//       const deletedParagraphValue = get_store_value(deletedParagraph);
-//       this.update(state => {
-//         const undoSplitPosition: CursorPosition = {
-//           paragraph: position.paragraph - 1,
-//           section: state.length - 1,
-//           offset: 0
-//         };
-
-//         state.unshift(...deletedParagraphValue);
-
-//         return state;
-//       })
-//       return document;
-//     })
-//     return this;
-//   }
-// }
-
-// export class ParagraphMutator extends BaseParagraphMutator<Paragraph> {
-//   update(func: (state: Paragraph) => Paragraph): this {
-//     this.underlying.update(func);
-//     return this;
-//   }
-// }
-
-// export class MaybeParagraphMutator extends BaseParagraphMutator<Paragraph | undefined> {
-//   update(func: (state: Paragraph) => Paragraph): this {
-//     this.underlying.update(state => {
-//       if (state === undefined) return undefined;
-//       else return func(state);
-//     })
-//     return this;
-//   }
-// }

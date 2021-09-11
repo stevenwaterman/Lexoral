@@ -3,7 +3,6 @@ import { Section, SectionStore, allSectionsStore, MaybeSectionStore } from "../t
 import { deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
 import { tick } from "svelte";
 import { clampGet, clamp } from "../utils/list";
-import { SectionMutator } from "../text/storeMutators";
 import { findSectionNode } from "../text/selector";
 
 /** Represents the start or end of a selection */
@@ -186,20 +185,20 @@ export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySec
 })
 
 /** Delete the text inside of the provided selection */
-export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
-  const earlyOffset = selection.early.offset;
-  const lateOffset = selection.late.offset;
+// export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
+//   const earlyOffset = selection.early.offset;
+//   const lateOffset = selection.late.offset;
 
-  selectedSectionsStore.forEach((section, idx) => {
-    const sectionIsFirst = idx === 0;
-    const sectionIsLast = idx === selectedSectionsStore.length - 1;
+//   selectedSectionsStore.forEach((section, idx) => {
+//     const sectionIsFirst = idx === 0;
+//     const sectionIsLast = idx === selectedSectionsStore.length - 1;
 
-    new SectionMutator(section).deleteText({
-      start: sectionIsFirst ? earlyOffset : undefined,
-      end: sectionIsLast ? lateOffset : undefined
-    });
-  })
-}
+//     new SectionMutator(section).deleteText({
+//       start: sectionIsFirst ? earlyOffset : undefined,
+//       end: sectionIsLast ? lateOffset : undefined
+//     });
+//   })
+// }
 
 /** Is the selection inverted, ie right-to-left, ie `anchor === late` */
 function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boolean {
