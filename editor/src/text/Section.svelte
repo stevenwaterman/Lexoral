@@ -59,7 +59,7 @@
   class:underline={desiredText.length === 0}
   data-sectionIdx={$sectionStore.idx}
 >
-  <!-- {`\u200b${desiredText}\u200b`} -->
-  {`/${desiredText}/`}
+  {`\u200b${desiredText}\u200b`}
+  <!-- {`/${desiredText}/`} -->
 </span>
 {last ? "" : " "}
