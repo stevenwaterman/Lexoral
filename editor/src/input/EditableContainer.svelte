@@ -13,9 +13,19 @@
   import { MaybeSectionMutator } from "../text/storeMutators";
   import { findSectionNode } from "../text/selector";
   import { onKeyPressed } from "./controls";
+  import { suppressAudioStore } from "../audio/audio";
+
+  async function mouseDown(event: MouseEvent) {
+    suppressAudioStore.set(true);
+  }
+
+  async function mouseMove(event: MouseEvent) {
+    if (event.buttons === 1) await updateSelection();
+  }
 
   async function mouseUp(event: MouseEvent) {
     await updateSelection();
+    suppressAudioStore.set(false);
   }
 
   async function input(event: Event) {
@@ -46,6 +56,8 @@
   contenteditable
   tabindex={-1}
   on:keydown={onKeyPressed}
+  on:mousedown={mouseDown}
+  on:mousemove={mouseMove}
   on:mouseup={mouseUp}
   on:input={input}
   on:dragover|preventDefault

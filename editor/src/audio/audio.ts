@@ -141,14 +141,19 @@ export function stopAudio() {
   }
 }
 
+export const suppressAudioStore: Writable<boolean> = writable(false);
+
 /** The desired start and end time if the audio were to start playing now */
 let audioTimings: StoreValues<typeof audioTimingsStore> = undefined;
 
-audioTimingsStore.subscribe(state => {
-  // When the timings change, sometimes we start or stop the audio.
-  audioTimings = state;
-
-  if (state === undefined) return stopAudio(); // Stop if the new state contains no timings
+derived(
+  [suppressAudioStore, audioTimingsStore], 
+  ([suppress, timings]) => ({suppress, timings})
+).subscribe(({suppress, timings}) => {
+  audioTimings = timings;
+  
+  if (suppress) return;
+  if (timings === undefined) return stopAudio(); // Stop if the new state contains no timings
   if (autoPlay) return playAudio(); // Start if autoplay is enabled
   else stopAudio();
-});
+})

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { playingStore, currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "./textState";
-  import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
+  import { areMultipleSectionsSelectedStore, earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 
   export let sectionStore: SectionStore;
 
@@ -32,10 +32,10 @@
     box-shadow: inset 0 -2px 0 var(--form-border);
   }
 
-  /* .section.nonePlaying::selection {
+  .section.singleSelection::selection {
     background-color: rgba(76, 108, 169, 0.99);
     color: var(--light-text);
-  } */
+  }
 
   .highlight {
     background-color: var(--weak-focus);
@@ -55,7 +55,7 @@
   class:highlight
   class:placeholder={!$sectionStore.edited}
   class:sectionPlaying={$currentlyPlayingSectionIdxStore === $sectionStore.idx}
-  class:nonePlaying={!$playingStore}
+  class:singleSelection={!$areMultipleSectionsSelectedStore}
   class:underline={desiredText.length === 0}
   data-sectionIdx={$sectionStore.idx}
 >

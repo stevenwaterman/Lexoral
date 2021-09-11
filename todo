@@ -14,8 +14,6 @@ sections:
   
 UX:
   AutoSave
-  Show selected sections immediately when dragging
-  Show text selection only when selection is within one section
   Allow deleting multiple sections
   Shouldn't combine paragraph toggle history with text edit history
 
