@@ -2,9 +2,10 @@ import { Section, allSectionsStore, AllSections, SectionStore } from "./textStat
 import { getOptions } from "../preprocess/align";
 import type { Writable } from "svelte/store";
 import { tick } from "svelte/internal";
-import { selectSectionStart, selectExactly, selectSectionEnd } from "../input/select";
+import { selectSectionStart, selectExactly } from "../input/select";
 import { SectionSelection, selectionStore } from "../input/selectionState";
 import { deriveConditionally } from "../utils/stores";
+import { getAssertExists } from "../utils/list";
 
 let allSections: AllSections;
 allSectionsStore.subscribe(state => allSections = state);
@@ -66,7 +67,7 @@ export async function undo() {
   undoCount++;
   Object.entries(historyStep.sections).forEach(([idxString, { from }]) => {
     const idx = parseInt(idxString);
-    allSections[idx].set(from);
+    getAssertExists(allSections, idx).set(from);
   })
 
   await tick();
@@ -92,7 +93,7 @@ export async function redo() {
   undoCount--;
   Object.entries(historyStep.sections).forEach(([idxString, { to }]) => {
     const idx = parseInt(idxString);
-    allSections[idx].set(to);
+    getAssertExists(allSections, idx).set(to);
   })
 
   await tick();

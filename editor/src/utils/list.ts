@@ -72,3 +72,9 @@ export function clampGetRecord<V>(record: Record<number, V>, idx: number): V | u
   while (!(i in record)) i++;
   return record[i];
 }
+
+export function getAssertExists<T>(list: T[], idx: number): T {
+  const elem = list[idx];
+  if (elem === undefined) throw new Error(`Idx ${idx} did not exist in list ${list}, asserted that it did`);
+  return elem;
+}

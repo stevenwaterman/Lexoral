@@ -2,7 +2,7 @@ import { Writable, writable, Readable, derived } from "svelte/store";
 import { Section, SectionStore, allSectionsStore, MaybeSectionStore } from "../text/textState";
 import { deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
 import { tick } from "svelte";
-import { clampGet, clamp } from "../utils/list";
+import { clampGet, clamp, getAssertExists } from "../utils/list";
 import { findSectionNode } from "../text/selector";
 
 /** Represents the start or end of a selection */
@@ -161,9 +161,7 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
   }
 
   const sectionIdx = span.getAttribute("data-sectionIdx");
-  if(sectionIdx === null) {
-    throw new Error("Null sectionIdx")
-  }
+  if(sectionIdx === null) throw new Error("Null sectionIdx");
 
   return {
     section: parseInt(sectionIdx),
@@ -179,26 +177,11 @@ export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySec
   if (rangeEnd === undefined) return [];
   const output: SectionStore[] = [];
   for (let i = rangeStart; i <= rangeEnd; i++) {
-    output.push(sections[i]);
+    const section = getAssertExists(sections, i);
+    output.push(section);
   }
   return output;
 })
-
-/** Delete the text inside of the provided selection */
-// export function deleteSelection(selection: SectionSelection, selectedSectionsStore: SectionStore[]) {
-//   const earlyOffset = selection.early.offset;
-//   const lateOffset = selection.late.offset;
-
-//   selectedSectionsStore.forEach((section, idx) => {
-//     const sectionIsFirst = idx === 0;
-//     const sectionIsLast = idx === selectedSectionsStore.length - 1;
-
-//     new SectionMutator(section).deleteText({
-//       start: sectionIsFirst ? earlyOffset : undefined,
-//       end: sectionIsLast ? lateOffset : undefined
-//     });
-//   })
-// }
 
 /** Is the selection inverted, ie right-to-left, ie `anchor === late` */
 function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boolean {

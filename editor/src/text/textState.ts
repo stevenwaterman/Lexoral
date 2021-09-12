@@ -1,5 +1,6 @@
 import { writable, Writable, Readable, derived } from "svelte/store";
 import { getOptions } from "../preprocess/align";
+import { getAssertExists } from "../utils/list";
 
 /** The format of one section as returned from the API */
 export type JsonOutputSection = {
@@ -40,7 +41,7 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
     originalOptions: state.options,
     completionOptions: getOptions("", state.options),
     text: "",
-    placeholder: state.options[0].text,
+    placeholder: state.options?.[0]?.text ?? "",
     edited: false,
     endParagraph: false
   });
@@ -70,8 +71,8 @@ export const paragraphLocationsStore: Readable<{start: number, end: number}[]> =
 
   const output: {start: number; end: number}[] = [];
   for(let i = 1; i < sortedIdxs.length; i++) {
-    const start = sortedIdxs[i - 1] + 1;
-    const end = sortedIdxs[i];
+    const start = getAssertExists(sortedIdxs, i - 1) + 1;
+    const end = getAssertExists(sortedIdxs, i);
     output.push({ start, end })
   }
   return output;

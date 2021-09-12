@@ -1,6 +1,6 @@
 <script lang="ts">
   import { focusSectionStore, isTextSelectedStore } from "./selectionState";
-  import { modulo } from "../utils/list";
+  import { getAssertExists, modulo } from "../utils/list";
   import { selectNextSection, selectSectionStart } from "./select";
   import type { Section } from "../text/textState";
   import { MaybeSectionMutator } from "../text/storeMutators";
@@ -91,7 +91,7 @@
 
   async function acceptOption() {
     if (visible && options.length > 0 && highlightIdx !== undefined) {
-        const selectedOption = options[highlightIdx];
+        const selectedOption = getAssertExists(options, highlightIdx);
         new MaybeSectionMutator(focusSectionStore).setText(selectedOption);
     }
     await selectNextSection(section?.idx);

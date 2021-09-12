@@ -1,5 +1,6 @@
 <script lang="ts">
   import { playingStore } from "../audio/audio";
+import { getAssertExists } from "../utils/list";
 
   import Section from "./Section.svelte";
   import type { AllSections } from "./textState";
@@ -33,14 +34,10 @@
   .paragraph::selection {
     background: none;
   }
-
-  /* .paragraph.nonePlaying::selection {
-    background-color: rgba(76, 108, 169, 0.99);
-  } */
 </style>
 
 <p class="paragraph" class:nonePlaying={!$playingStore}>
   {#each paragraphRange as idx}
-    <Section sectionStore={ sections[idx] }/>
+    <Section sectionStore={getAssertExists(sections, idx)}/>
   {/each}
 </p>
