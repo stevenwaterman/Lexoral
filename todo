@@ -17,8 +17,6 @@ sections:
 UX:
   _Some kind of help / tutorial_
 
-  always adds history even if nothing has changed
-
   - Add export dialog where you can choose file name and swap between txt / srt / copy to clipboard
   - Clicky buttons for everything
   

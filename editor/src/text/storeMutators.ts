@@ -35,6 +35,8 @@ deriveConditionally(selectionStore, undefined, (a, b) => {
 }).subscribe(() => commitHistory())
 
 async function addHistory(idx: number, from: Section, to: Section) {
+  if (sectionsEqual(from, to)) return;
+
   const currentSection = pendingStepSections[idx];
   if (currentSection === undefined) {
     pendingStepSections[idx] = { from, to };
@@ -195,4 +197,14 @@ export class MaybeSectionMutator extends BaseSectionMutator<Section | undefined>
     })
     return this;
   }
+}
+
+function sectionsEqual(a: Section, b: Section): boolean {
+  if (a.idx !== b.idx) return false;
+  if (a.text !== b.text) return false;
+  if (a.startTime !== b.startTime) return false;
+  if (a.endTime !== b.endTime) return false;
+  if (a.edited !== b.edited) return false;
+  if (a.endParagraph !== b.endParagraph) return false;
+  return true;
 }
