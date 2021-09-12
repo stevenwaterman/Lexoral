@@ -1,6 +1,7 @@
 audio:
-  Option to continue / restart
-  multiple play at once sometimes when click + drag
+  _multiple play at once sometimes when click + drag_
+
+  * Option to continue / restart
 
 sections:
   - automatically adjust section timings based on audio envelope
@@ -14,8 +15,8 @@ sections:
   -- manually adjust section timings
   
 UX:
-  AutoSave
-  Some kind of help / tutorial
+  _Load from autoSave_
+  _Some kind of help / tutorial_
   
   * Hard to tell difference between primary and secondary text colours
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
@@ -33,7 +34,7 @@ Performance:
   changing paragraphs rerenders everything
 
 Features:
-  Add export functionality
+  _Add export functionality_
   -- Speaker diarization
 
 

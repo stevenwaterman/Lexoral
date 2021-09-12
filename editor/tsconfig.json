@@ -3,7 +3,8 @@
   "compilerOptions": {
     "sourceMap": true,
     "strict": true,
-    "types": ["node", "svelte"]
+    "types": ["node", "svelte"],
+    "noUncheckedIndexedAccess": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"]

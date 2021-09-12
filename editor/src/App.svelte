@@ -1,6 +1,7 @@
 <script lang="ts">
   import { autoPlayStore, initAudio } from "./audio/audio";
   import Editor from "./input/Editor.svelte";
+  import { autoSaveIntervalStore } from "./text/save";
   import { initialiseStores } from "./text/textState";
 
   export let demo: boolean;
@@ -10,7 +11,9 @@
   }
 
   let dataFile: string;
-  $: dataFile = demo ? "assets/demo.json" : "assets/data3.json"
+  $: dataFile = demo ? "assets/demo.json" : "assets/data3.json";
+
+  $: if (!demo) autoSaveIntervalStore.set(60);
 </script>
 
 <style>
