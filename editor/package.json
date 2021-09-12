@@ -14,6 +14,8 @@
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.2.3",
     "@tsconfig/svelte": "^1.0.13",
+    "@types/downloadjs": "^1.4.2",
+    "@types/file-saver": "^2.0.3",
     "@types/node": "^16.4.1",
     "rollup": "^2.53.2",
     "rollup-plugin-css-only": "^3.1.0",
@@ -29,6 +31,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "file-saver": "^2.0.5",
     "fontawesome-svelte": "^2.0.1",
     "query-string": "^7.0.0",
     "seqalign": "^1.0.3",

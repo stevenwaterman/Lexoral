@@ -16,6 +16,11 @@ sections:
   
 UX:
   _Some kind of help / tutorial_
+
+  ctrl+enter at start of word should make previous section endParagraph instead
+  always adds history even if nothing has changed
+
+  - Add export dialog where you can choose file name and swap between txt / srt / copy to clipboard
   
   * Hard to tell difference between primary and secondary text colours
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
@@ -33,8 +38,8 @@ Performance:
   changing paragraphs rerenders everything
 
 Features:
-  _Add export functionality_
   -- Speaker diarization
+  -- Know the word Lexoral
 
 
 landing page demo not big enough on server

@@ -4,6 +4,7 @@ import { SectionMutator, undo, redo, MaybeSectionMutator, commitHistory } from "
 import { tick } from "svelte";
 import { selectSectionEnd, selectSectionStart, selectSectionPosition } from "./select";
 import { save } from "../text/save";
+import { exportTranscript } from "../text/export";
 
 let focusSectionIdx: number | undefined = undefined;
 focusSectionIdxStore.subscribe(state => focusSectionIdx = state);
@@ -51,7 +52,7 @@ async function onKeyPressedInner(event: KeyboardEvent) {
 
   if (event.key === "s" && event.ctrlKey) {
     event.preventDefault();
-    save();
+    exportTranscript();
     return;
   }
 
