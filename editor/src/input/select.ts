@@ -1,5 +1,19 @@
-import { updateSelection } from "./selectionState";
+import { updateSelection, SectionSelection } from "./selectionState";
 import { findSectionNode } from "../text/selector";
+
+export async function selectExactly(selection: SectionSelection | undefined) {
+  if (!selection) return;
+
+  const anchor = findSectionNode(selection.anchor.section)?.firstChild;
+  const focus = findSectionNode(selection.focus.section)?.firstChild;
+  if (!anchor || !focus) return;
+
+  const windowSelection = window.getSelection();
+  if (!windowSelection) return;
+
+  windowSelection.setBaseAndExtent(anchor, selection.anchor.offset + 1, focus, selection.focus.offset + 1);
+  await updateSelection();
+}
 
 /** 
  * Select the start of the section after the provided component.

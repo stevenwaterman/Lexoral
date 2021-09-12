@@ -2,71 +2,101 @@ import { Section, allSectionsStore, AllSections, SectionStore } from "./textStat
 import { getOptions } from "../preprocess/align";
 import type { Writable } from "svelte/store";
 import { tick } from "svelte/internal";
+import { selectSectionStart, selectExactly, selectSectionEnd } from "../input/select";
 import { SectionSelection, selectionStore } from "../input/selectionState";
-import { findSectionNode } from "./selector";
-import { selectSectionStart } from "../input/select";
+import { deriveConditionally } from "../utils/stores";
 
 let allSections: AllSections;
 allSectionsStore.subscribe(state => allSections = state);
 
 type HistoryStep = {
-  sectionIdx: number;
-  from: Section;
-  to: Section;
-  lock: boolean;
-}
+  selection: SectionSelection | undefined;
+  sections: Record<number, {
+              from: Section;
+              to: Section;
+            }>
+};
 
 let undoCount: number = 0;
 const history: HistoryStep[] = [];
 
+let pendingStepSections: HistoryStep["sections"] = {};
+
+let selection: SectionSelection | undefined;
+selectionStore.subscribe(state => selection = state);
+
+deriveConditionally(selectionStore, undefined, (a, b) => {
+  if (a?.anchor?.section !== b?.anchor?.section) return true;
+  if (a?.focus?.section !== b?.focus?.section) return true;
+  return false;
+}).subscribe(() => commitHistory())
+
 async function addHistory(idx: number, from: Section, to: Section) {
-  setTimeout(() => addHistoryInternal(idx, from, to));
-}
-
-function addHistoryInternal(idx: number, from: Section, to: Section) {
-  // TODO don't combine updates for text and endParagraph
-  const splitPoint = history.length - undoCount;
-  history.splice(splitPoint, history.length);
-  undoCount = 0;
-
-  const lastHistory = history[history.length - 1];
-  if (lastHistory && !lastHistory.lock && lastHistory.sectionIdx === idx) {
-    to = to;
+  const currentSection = pendingStepSections[idx];
+  if (currentSection === undefined) {
+    pendingStepSections[idx] = { from, to };
   } else {
-    if (lastHistory) lastHistory.lock = true;
-    history.push({
-      sectionIdx: idx,
-      from,
-      to,
-      lock: false,
-    });
+    currentSection.to = to;
   }
 }
 
+export function commitHistory() {
+  if (Object.keys(pendingStepSections).length === 0) return;
+  console.log("Committed", pendingStepSections)
+
+  const splitPoint = history.length - undoCount;
+  history.splice(splitPoint, history.length);
+
+  history.push({
+    selection,
+    sections: pendingStepSections
+  });
+
+  pendingStepSections = {};
+  undoCount = 0;
+}
+
 export async function undo() {
+  commitHistory();
+
   const step = history.length - 1 - undoCount;
   const historyStep: HistoryStep | undefined = history[step];
   if (!historyStep) return;
 
   undoCount++;
-  allSections[historyStep.sectionIdx].set(historyStep.from);
+  Object.entries(historyStep.sections).forEach(([idxString, { from }]) => {
+    const idx = parseInt(idxString);
+    allSections[idx].set(from);
+  })
 
   await tick();
 
   const previousStep: HistoryStep | undefined = history[step - 1];
-  await selectSectionStart(previousStep?.sectionIdx);
+  if (previousStep === undefined) {
+    const idxString = Object.keys(historyStep.sections)?.[0];
+    if (idxString !== undefined) {
+      await selectSectionStart(parseInt(idxString));
+    }
+  } else {
+    await selectExactly(previousStep?.selection);
+  }
 }
 
 export async function redo() {
-  if (undoCount === 0) return;
-  undoCount--;
-  const step = history.length - 1 - undoCount;
-  const historyStep = history[step];
+  commitHistory();
+
+  const step = history.length - undoCount;
+  const historyStep: HistoryStep | undefined = history[step];
   if (!historyStep) return;
-  allSections[historyStep.sectionIdx].set(historyStep.to);
+
+  undoCount--;
+  Object.entries(historyStep.sections).forEach(([idxString, { to }]) => {
+    const idx = parseInt(idxString);
+    allSections[idx].set(to);
+  })
 
   await tick();
-  await selectSectionStart(historyStep.sectionIdx);
+  await selectExactly(historyStep?.selection);
 }
 
 

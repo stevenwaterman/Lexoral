@@ -1,6 +1,6 @@
 import { focusSectionStore, updateSelection, focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
 import { findSectionNode } from "../text/selector";
-import { SectionMutator, undo, redo, MaybeSectionMutator } from "../text/storeMutators";
+import { SectionMutator, undo, redo, MaybeSectionMutator, commitHistory } from "../text/storeMutators";
 import { tick } from "svelte";
 import { selectSectionEnd, selectSectionStart, selectSectionPosition } from "./select";
 
@@ -32,6 +32,8 @@ async function onKeyPressedInner(event: KeyboardEvent) {
   if (event.key === "Enter" && event.ctrlKey) {
     event.preventDefault();
     new MaybeSectionMutator(focusSectionStore).enableEndParagraph();
+    await tick();
+    commitHistory();
   }
 
   if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
@@ -248,6 +250,7 @@ async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx - 1)) {
+    commitHistory();
     SectionMutator.ofIdx(focusSectionIdx - 1)?.disableEndParagraph();
     await tick();
   }
@@ -264,6 +267,7 @@ async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Select
   mutator.setText("");
 
   if (isParagraphEnd(focusSectionIdx - 1)) {
+    commitHistory();
     mutator.disableEndParagraph();
     await tick();
   }
@@ -314,6 +318,7 @@ async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx)) {
+    commitHistory();
     SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
     await tick();
   }
@@ -325,6 +330,7 @@ async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx)) {
+    commitHistory();
     SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
     await tick();
   }
