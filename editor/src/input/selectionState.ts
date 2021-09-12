@@ -44,9 +44,7 @@ export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefi
     if (cursorPosition === undefined) return undefined;
     return clampGet(allSections, cursorPosition.section);
   });
-  const sectionStore: MaybeSectionStore = deriveUnwrapWritable(sectionStoreWrapped);
-  const sectionStoreSuppressed: MaybeSectionStore = makeWritable(sectionStore, deriveConditionally(sectionStore, undefined));
-  return sectionStoreSuppressed;
+  return deriveUnwrapWritable(sectionStoreWrapped);
 }
 
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);

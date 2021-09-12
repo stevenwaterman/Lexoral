@@ -1,46 +1,49 @@
 # Text Editing:
 
 left arrow       = move one character left
-  + ctrl         = move one word left
+  + ctrl         = move one section left
   + shift        = select one character left
-  + ctrl + shift = select one word left
+  + ctrl + shift = select one section left
 
 right arrow      = move one character right
-  + ctrl         = move one word right
+  + ctrl         = move one section right
   + shift        = select one character right
-  + ctrl + shift = select one word right
+  + ctrl + shift = select one section right
 
 up arrow         = select previous autocomplete option
-  + ctrl         = move one line up
-  + ctrl + shift = select one line up
+  + ctrl         = move one paragraph up
+  + ctrl + shift = select one paragraph up
 
 down arrow       = select next autocomplete option
-  + ctrl         = move one line down
-  + ctrl + shift = select one line down
+  + ctrl         = move one paragraph down
+  + ctrl + shift = select one paragraph down
 
-tab              = move one word right
-  + shift        = move one word left
+tab              = move one section right
+  + shift        = move one section left
 
-home             = move to start of line
+home             = move to start of paragraph
   + ctrl         = move to start of document
   + shift        = select start of line
   + ctrl + shift = select start of document
 
-end              = move to end of line
+end              = move to end of paragraph
   + ctrl         = move to end of document
-  + shift        = select end of line
+  + shift        = select end of paragraph
   + ctrl + shift = select end of document
 
 enter            = accept current autocomplete option
-  + ctrl         = add / remove line break
+  + ctrl         = end paragraph
 
 backspace        = delete character before cursor
-  + ctrl         = delete word before cursor
+  + ctrl         = delete section before cursor
 
 delete           = delete character after cursor
-  + ctrl         = delete word after cursor
+  + ctrl         = delete section after cursor
 
-
+ctrl
+  + s            = Export transcript
+  + z            = Undo
+  + you          = Redo
 
 # Audio Control:
 

@@ -1,9 +1,8 @@
-import { focusSectionStore, updateSelection, focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
+import { updateSelection, focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
 import { findSectionNode } from "../text/selector";
-import { SectionMutator, undo, redo, MaybeSectionMutator, commitHistory } from "../text/storeMutators";
+import { SectionMutator, undo, redo, commitHistory } from "../text/storeMutators";
 import { tick } from "svelte";
-import { selectSectionEnd, selectSectionStart, selectSectionPosition } from "./select";
-import { save } from "../text/save";
+import { selectSectionEnd, selectSectionStart } from "./select";
 import { exportTranscript } from "../text/export";
 
 let focusSectionIdx: number | undefined = undefined;
@@ -31,11 +30,21 @@ export async function onKeyPressed(event: KeyboardEvent) {
 async function onKeyPressedInner(event: KeyboardEvent) {
   if (event.altKey) return;
 
+  const selection = window.getSelection();
+
   if (event.key === "Enter" && event.ctrlKey) {
     event.preventDefault();
-    new MaybeSectionMutator(focusSectionStore).enableEndParagraph();
-    await tick();
-    commitHistory();
+    if (focusSectionIdx !== undefined) {
+      if (selection?.focusOffset === 1) {
+        SectionMutator.ofIdx(focusSectionIdx - 1)?.enableEndParagraph();
+      } else {
+        SectionMutator.ofIdx(focusSectionIdx)?.enableEndParagraph();
+      }
+      await tick();
+      await selectSectionStart(focusSectionIdx)
+      commitHistory();
+      return;
+    }
   }
 
   if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
@@ -89,7 +98,6 @@ async function onKeyPressedInner(event: KeyboardEvent) {
   if (event.key === "Backspace") return backspace(event);
   if (event.key === "Delete") return deleteKey(event);
 
-  const selection = window.getSelection();
   if (selection?.isCollapsed === false) {
     event.preventDefault();
   }

@@ -6,8 +6,8 @@ audio:
 sections:
   - automatically adjust section timings based on audio envelope
   - automatically determine paragraph boundaries based on audio envelope
-  - automatically combine sections
 
+  -- automatically combine sections
   -- manually split a section
   -- manually combine a section
   -- manually add a section
@@ -17,10 +17,10 @@ sections:
 UX:
   _Some kind of help / tutorial_
 
-  ctrl+enter at start of word should make previous section endParagraph instead
   always adds history even if nothing has changed
 
   - Add export dialog where you can choose file name and swap between txt / srt / copy to clipboard
+  - Clicky buttons for everything
   
   * Hard to tell difference between primary and secondary text colours
   * Select multiple sections and press enter to accept all / why do we feel like we have to accept all of it?
