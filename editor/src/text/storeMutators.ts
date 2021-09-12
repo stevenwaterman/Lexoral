@@ -6,6 +6,8 @@ import { selectSectionStart, selectExactly } from "../input/select";
 import { SectionSelection, selectionStore } from "../input/selectionState";
 import { deriveConditionally } from "../utils/stores";
 import { getAssertExists } from "../utils/list";
+import type { SectionPatch } from "./save";
+import { stat } from "fs";
 
 let allSections: AllSections;
 allSectionsStore.subscribe(state => allSections = state);
@@ -43,7 +45,7 @@ async function addHistory(idx: number, from: Section, to: Section) {
 
 export function commitHistory() {
   if (Object.keys(pendingStepSections).length === 0) return;
-  console.log("Committed", pendingStepSections)
+  console.log("Committed history", pendingStepSections)
 
   const splitPoint = history.length - undoCount;
   history.splice(splitPoint, history.length);
@@ -53,6 +55,12 @@ export function commitHistory() {
     sections: pendingStepSections
   });
 
+  pendingStepSections = {};
+  undoCount = 0;
+}
+
+export function clearHistory() {
+  history.splice(0, history.length);
   pendingStepSections = {};
   undoCount = 0;
 }
@@ -150,27 +158,13 @@ abstract class BaseSectionMutator<S> {
     }))
   }
 
-  deleteText(offsets?: { start?: number, end?: number }): this {
-    const startOffset = offsets?.start;
-    const endOffset = offsets?.end;
-    return this.update(state => {
-      const currentText = state.edited ? state.text : state.placeholder;
-
-      let newText = "";
-      if (startOffset !== undefined) {
-        newText += currentText.substring(0, startOffset);
-      }
-      if (endOffset !== undefined) {
-        newText += currentText.substring(endOffset);
-      }
-
-      return {
-        ...state,
-        text: newText,
-        completionOptions: getOptions(newText, state.originalOptions),
-        edited: true
-      }
-    })
+  applyPatch(patch: SectionPatch): this {
+    return this.update(state => ({
+      ...state,
+      text: patch.text ?? state.text,
+      edited: patch.edited ?? state.edited,
+      endParagraph: patch.endParagraph ?? state.endParagraph
+    }))
   }
 }
 

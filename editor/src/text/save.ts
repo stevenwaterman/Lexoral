@@ -1,6 +1,8 @@
 import { allSectionsStore, Section, SectionStore } from "./textState";
 import { deriveUnwrapRecord } from "../utils/stores";
 import { Writable, writable } from "svelte/store";
+import { SectionMutator } from "./storeMutators";
+import { sendToast } from "../display/toast/toasts";
 
 let state: Partial<Record<number, Section>> = {};
 deriveUnwrapRecord<number, Section, SectionStore>(allSectionsStore).subscribe(sections => state = sections);
@@ -9,7 +11,7 @@ export const autoSaveIntervalStore: Writable<number | undefined> = writable(unde
 
 let timer: NodeJS.Timer | undefined = undefined;
 
-type SimplifiedSection = {
+export type SectionPatch = {
   idx: number;
   text?: string;
   edited?: true;
@@ -21,16 +23,33 @@ autoSaveIntervalStore.subscribe(interval => {
   if (interval === undefined) return;
 
   timer = setInterval(() => {
-    const simplifiedState = (Object.values(state).filter(section => section !== undefined) as Section[])
-      .map(({ idx, text, edited, endParagraph }) => {
-        const section: SimplifiedSection = {idx};
-        if (text.length) section.text = text;
-        if (edited) section.edited = edited;
-        if (endParagraph) section.endParagraph = endParagraph;
-        return section;
-      })
-    localStorage.setItem("autoSave", JSON.stringify(simplifiedState))
-    console.log("AutoSaved")
+    save();
   }, interval * 1000);
 })
 
+export function loadSave() {
+  const autoSave = localStorage.getItem("save");
+  if (autoSave === null) return;
+  const patches: SectionPatch[] = JSON.parse(autoSave);
+  patches.forEach(patch => {
+    SectionMutator.ofIdx(patch.idx)?.applyPatch(patch)
+  })
+  console.log("Loaded")
+}
+
+export function save() {
+  const simplifiedState = Object.values(state)
+    .map(section => {
+      if (!section) return undefined;
+      const simplified: SectionPatch = { idx: section.idx };
+      if (section.text.length) simplified.text = section.text;
+      if (section.edited) simplified.edited = section.edited;
+      if (section.endParagraph) simplified.endParagraph = section.endParagraph;
+
+      if (section.text.length || section.edited || section.endParagraph) return section;
+      else return undefined;
+    });
+  const definedState = (simplifiedState.filter(state => state !== undefined) as SectionPatch[]);
+  localStorage.setItem("save", JSON.stringify(definedState))
+  sendToast("Saved")
+}

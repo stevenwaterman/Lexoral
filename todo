@@ -15,7 +15,6 @@ sections:
   -- manually adjust section timings
   
 UX:
-  _Load from autoSave_
   _Some kind of help / tutorial_
   
   * Hard to tell difference between primary and secondary text colours
