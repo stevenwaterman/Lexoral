@@ -6,8 +6,7 @@ import { getAssertExists } from "../utils/list";
 export type JsonOutputSection = {
   startTime: number;
   endTime: number;
-  options: {text: string; confidence: number}[];
-  startParagraph: boolean
+  options: string[];
 }
 
 /** The format of the entire document as returned from the API */
@@ -22,7 +21,7 @@ export type Section = {
   idx: number;
   startTime: number;
   endTime: number;
-  originalOptions: {text: string; confidence: number}[];
+  originalOptions: string[];
   completionOptions: string[];
   text: string;
   placeholder: string;
@@ -41,7 +40,7 @@ function createSectionStore(state: JsonOutputSection, idx: number): SectionStore
     originalOptions: state.options,
     completionOptions: getOptions("", state.options),
     text: "",
-    placeholder: state.options?.[0]?.text ?? "",
+    placeholder: state.options?.[0] ?? "",
     edited: false,
     endParagraph: false
   });
@@ -82,15 +81,20 @@ export const paragraphLocationsStore: Readable<{start: number, end: number}[]> =
 export function initialiseStores(output: JsonOutput): Record<number, { startTime: number; endTime: number }> {
   const audioTimings: Record<number, { startTime: number; endTime: number }> = {};
   const sectionStores: SectionStore[] = [];
-  output.forEach((outputSection, idx) => {
-    if (outputSection.startParagraph) {
-      const lastStore = sectionStores[sectionStores.length - 1];
-      lastStore?.update(state => ({
-        ...state,
+
+  let lastEligibleToEndParagraph: boolean = false;
+  let time = 0;
+
+  output.forEach((outputSection, idx) => { // TODO this threshold should be configurable
+    if (lastEligibleToEndParagraph && outputSection.startTime - time > 0.3) {
+      sectionStores[sectionStores.length - 1]?.update(section => ({
+        ...section,
         endParagraph: true
       }));
     }
-
+    lastEligibleToEndParagraph = isEligibleToEndParagraph(outputSection);
+    time = outputSection.endTime;
+    
     const store = createSectionStore(outputSection, idx);
     sectionStores.push(store);
     audioTimings[idx] = {
@@ -101,4 +105,13 @@ export function initialiseStores(output: JsonOutput): Record<number, { startTime
   
   allSectionsStore.set(sectionStores);
   return audioTimings;
+}
+
+const punctuation = [".", "!", "?"]
+
+function isEligibleToEndParagraph({options}: JsonOutputSection): boolean {
+  const firstOption = options[0];
+  if (firstOption === undefined) return false;
+  const lastChar = firstOption[firstOption.length - 1];
+  return lastChar !== undefined && punctuation.includes(lastChar);
 }

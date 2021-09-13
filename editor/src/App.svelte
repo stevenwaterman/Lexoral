@@ -10,7 +10,7 @@
   }
 
   let dataFile: string;
-  $: dataFile = demo ? "assets/demo.json" : "assets/data3.json";
+  $: dataFile = demo ? "assets/demo.json" : "assets/data.json";
 </script>
 
 <style>

@@ -1,1519 +1,952 @@
 [
   {
     "options": [
-      {
-        "text": "Hello,",
-        "confidence": 0.9567899116881966
-      }
+      "Hello,"
     ],
-    "startTime": 0.2,
-    "endTime": 0.7,
-    "startParagraph": true
+    "startTime": 0.207,
+    "endTime": 0.711
   },
   {
     "options": [
-      {
-        "text": "I'm",
-        "confidence": 0.9567899116881966
-      }
+      "I'm"
     ],
-    "startTime": 0.9,
-    "endTime": 1.1,
-    "startParagraph": false
+    "startTime": 0.947,
+    "endTime": 1.13
   },
   {
     "options": [
-      {
-        "text": "Steven,",
-        "confidence": 0.83042306
-      },
-      {
-        "text": "Stephen,",
-        "confidence": 0.74518889
-      }
+      "Steven,",
+      "Stephen,"
     ],
-    "startTime": 1.1,
-    "endTime": 1.7,
-    "startParagraph": false
+    "startTime": 1.13,
+    "endTime": 1.679
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9567899116881966
-      }
+      "the"
     ],
-    "startTime": 1.7,
-    "endTime": 1.8,
-    "startParagraph": false
+    "startTime": 1.679,
+    "endTime": 1.75
   },
   {
     "options": [
-      {
-        "text": "founder",
-        "confidence": 0.9567899116881966
-      }
+      "founder"
     ],
-    "startTime": 1.8,
-    "endTime": 2.2,
-    "startParagraph": false
+    "startTime": 1.75,
+    "endTime": 2.248
   },
   {
     "options": [
-      {
-        "text": "of",
-        "confidence": 0.9567899116881966
-      }
+      "of"
     ],
-    "startTime": 2.2,
-    "endTime": 2.3,
-    "startParagraph": false
+    "startTime": 2.248,
+    "endTime": 2.28
   },
   {
     "options": [
-      {
-        "text": "Lexoral",
-        "confidence": 0.83042306
-      },
-      {
-        "text": "Lexoral.",
-        "confidence": 0.74518889
-      }
+      "Lexoral."
     ],
-    "startTime": 2.3,
-    "endTime": 2.9,
-    "startParagraph": false
+    "startTime": 2.28,
+    "endTime": 2.934
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.83042306
-      },
-      {
-        "text": "The",
-        "confidence": 0.74518889
-      }
+      "The"
     ],
-    "startTime": 3.6,
-    "endTime": 3.9,
-    "startParagraph": false
+    "startTime": 3.619,
+    "endTime": 3.898
   },
   {
     "options": [
-      {
-        "text": "text",
-        "confidence": 0.9567899116881966
-      }
+      "text"
     ],
-    "startTime": 3.9,
-    "endTime": 4.2,
-    "startParagraph": false
+    "startTime": 3.898,
+    "endTime": 4.23
   },
   {
     "options": [
-      {
-        "text": "that",
-        "confidence": 0.9567899116881966
-      }
+      "that"
     ],
-    "startTime": 4.2,
-    "endTime": 4.3,
-    "startParagraph": false
+    "startTime": 4.23,
+    "endTime": 4.332
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9567899116881966
-      }
+      "you"
     ],
-    "startTime": 4.3,
-    "endTime": 4.4,
-    "startParagraph": false
+    "startTime": 4.332,
+    "endTime": 4.419
   },
   {
     "options": [
-      {
-        "text": "can",
-        "confidence": 0.9567899116881966
-      }
+      "can"
     ],
-    "startTime": 4.4,
-    "endTime": 4.5,
-    "startParagraph": false
+    "startTime": 4.419,
+    "endTime": 4.452
   },
   {
     "options": [
-      {
-        "text": "see,",
-        "confidence": 0.9567899116881966
-      }
+      "see,"
     ],
-    "startTime": 4.5,
-    "endTime": 4.7,
-    "startParagraph": false
+    "startTime": 4.452,
+    "endTime": 4.748
   },
   {
     "options": [
-      {
-        "text": "here",
-        "confidence": 0.9567899116881966
-      }
+      "here"
     ],
-    "startTime": 4.7,
-    "endTime": 5.1,
-    "startParagraph": false
+    "startTime": 4.748,
+    "endTime": 5.138
   },
   {
     "options": [
-      {
-        "text": "is",
-        "confidence": 0.9567899116881966
-      }
+      "is"
     ],
-    "startTime": 5.1,
-    "endTime": 5.2,
-    "startParagraph": false
+    "startTime": 5.138,
+    "endTime": 5.15
   },
   {
     "options": [
-      {
-        "text": "an",
-        "confidence": 0.9567899116881966
-      }
+      "an"
     ],
-    "startTime": 5.2,
-    "endTime": 5.4,
-    "startParagraph": false
+    "startTime": 5.15,
+    "endTime": 5.398
   },
   {
     "options": [
-      {
-        "text": "AI",
-        "confidence": 0.9567899116881966
-      }
+      "AI"
     ],
-    "startTime": 5.4,
-    "endTime": 5.6,
-    "startParagraph": false
+    "startTime": 5.398,
+    "endTime": 5.608
   },
   {
     "options": [
-      {
-        "text": "transcription",
-        "confidence": 0.9567899116881966
-      }
+      "transcription"
     ],
-    "startTime": 5.6,
-    "endTime": 6.4,
-    "startParagraph": false
+    "startTime": 5.608,
+    "endTime": 6.408
   },
   {
     "options": [
-      {
-        "text": "of",
-        "confidence": 0.9567899116881966
-      }
+      "of"
     ],
-    "startTime": 6.4,
-    "endTime": 6.6,
-    "startParagraph": false
+    "startTime": 6.408,
+    "endTime": 6.55
   },
   {
     "options": [
-      {
-        "text": "me",
-        "confidence": 0.9567899116881966
-      }
+      "me"
     ],
-    "startTime": 6.6,
-    "endTime": 7,
-    "startParagraph": false
+    "startTime": 6.55,
+    "endTime": 7.029
   },
   {
     "options": [
-      {
-        "text": "speaking.",
-        "confidence": 0.9567899116881966
-      }
+      "speaking."
     ],
-    "startTime": 7.1,
-    "endTime": 7.8,
-    "startParagraph": false
+    "startTime": 7.055,
+    "endTime": 7.82
   },
   {
     "options": [
-      {
-        "text": "So,",
-        "confidence": 0.9567899116881966
-      }
+      "So,"
     ],
-    "startTime": 8.4,
-    "endTime": 8.6,
-    "startParagraph": true
+    "startTime": 8.431,
+    "endTime": 8.558
   },
   {
     "options": [
-      {
-        "text": "I",
-        "confidence": 0.9567899116881966
-      }
+      "I"
     ],
-    "startTime": 8.6,
-    "endTime": 8.7,
-    "startParagraph": false
+    "startTime": 8.558,
+    "endTime": 8.748
   },
   {
     "options": [
-      {
-        "text": "recorded",
-        "confidence": 0.9567899116881966
-      }
+      "recorded"
     ],
-    "startTime": 8.7,
-    "endTime": 9,
-    "startParagraph": false
+    "startTime": 8.748,
+    "endTime": 9.015
   },
   {
     "options": [
-      {
-        "text": "this",
-        "confidence": 0.9567899116881966
-      }
+      "this"
     ],
-    "startTime": 9,
-    "endTime": 9.2,
-    "startParagraph": false
+    "startTime": 9.015,
+    "endTime": 9.171
   },
   {
     "options": [
-      {
-        "text": "audio",
-        "confidence": 0.9567899116881966
-      }
+      "audio"
     ],
-    "startTime": 9.2,
-    "endTime": 9.5,
-    "startParagraph": false
+    "startTime": 9.171,
+    "endTime": 9.538
   },
   {
     "options": [
-      {
-        "text": "first",
-        "confidence": 0.9567899116881966
-      }
+      "first"
     ],
-    "startTime": 9.5,
-    "endTime": 10.2,
-    "startParagraph": false
+    "startTime": 9.538,
+    "endTime": 10.151
   },
   {
     "options": [
-      {
-        "text": "and",
-        "confidence": 0.9567899116881966
-      }
+      "and"
     ],
-    "startTime": 10.4,
-    "endTime": 10.5,
-    "startParagraph": false
+    "startTime": 10.387,
+    "endTime": 10.45
   },
   {
     "options": [
-      {
-        "text": "then",
-        "confidence": 0.9567899116881966
-      }
+      "then"
     ],
-    "startTime": 10.5,
-    "endTime": 10.6,
-    "startParagraph": false
+    "startTime": 10.45,
+    "endTime": 10.617
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9567899116881966
-      }
+      "the"
     ],
-    "startTime": 10.6,
-    "endTime": 10.8,
-    "startParagraph": false
+    "startTime": 10.617,
+    "endTime": 10.754
   },
   {
     "options": [
-      {
-        "text": "AI",
-        "confidence": 0.9567899116881966
-      }
+      "AI"
     ],
-    "startTime": 10.8,
-    "endTime": 11.1,
-    "startParagraph": false
+    "startTime": 10.754,
+    "endTime": 11.066
   },
   {
     "options": [
-      {
-        "text": "transcribed.",
-        "confidence": 0.9567899116881966
-      }
+      "transcribed."
     ],
-    "startTime": 11.1,
-    "endTime": 11.8,
-    "startParagraph": false
+    "startTime": 11.066,
+    "endTime": 11.787
   },
   {
     "options": [
-      {
-        "text": "It",
-        "confidence": 0.9567899116881966
-      }
+      "It"
     ],
-    "startTime": 11.8,
-    "endTime": 11.9,
-    "startParagraph": false
+    "startTime": 11.787,
+    "endTime": 11.896
   },
   {
     "options": [
-      {
-        "text": "into",
-        "confidence": 0.9567899116881966
-      }
+      "into"
     ],
-    "startTime": 11.9,
-    "endTime": 12.1,
-    "startParagraph": false
+    "startTime": 11.896,
+    "endTime": 12.098
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9567899116881966
-      }
+      "the"
     ],
-    "startTime": 12.1,
-    "endTime": 12.2,
-    "startParagraph": false
+    "startTime": 12.098,
+    "endTime": 12.161
   },
   {
     "options": [
-      {
-        "text": "text",
-        "confidence": 0.9567899116881966
-      }
+      "text"
     ],
-    "startTime": 12.2,
-    "endTime": 12.5,
-    "startParagraph": false
+    "startTime": 12.161,
+    "endTime": 12.547
   },
   {
     "options": [
-      {
-        "text": "that",
-        "confidence": 0.9567899116881966
-      }
+      "that"
     ],
-    "startTime": 12.5,
-    "endTime": 12.6,
-    "startParagraph": false
+    "startTime": 12.547,
+    "endTime": 12.551
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9567899116881966
-      }
+      "you"
     ],
-    "startTime": 12.6,
-    "endTime": 12.7,
-    "startParagraph": false
+    "startTime": 12.551,
+    "endTime": 12.71
   },
   {
     "options": [
-      {
-        "text": "see",
-        "confidence": 0.9567899116881966
-      }
+      "see"
     ],
-    "startTime": 12.7,
-    "endTime": 12.9,
-    "startParagraph": false
+    "startTime": 12.71,
+    "endTime": 12.888
   },
   {
     "options": [
-      {
-        "text": "now.",
-        "confidence": 0.9567899116881966
-      }
+      "now."
     ],
-    "startTime": 12.9,
-    "endTime": 13.4,
-    "startParagraph": false
+    "startTime": 12.888,
+    "endTime": 13.405
   },
   {
     "options": [
-      {
-        "text": "And",
-        "confidence": 0.9567899116881966
-      }
+      "And"
     ],
-    "startTime": 13.7,
-    "endTime": 13.8,
-    "startParagraph": false
+    "startTime": 13.678,
+    "endTime": 13.75
   },
   {
     "options": [
-      {
-        "text": "in",
-        "confidence": 0.9567899116881966
-      }
+      "in"
     ],
-    "startTime": 13.8,
-    "endTime": 13.9,
-    "startParagraph": false
+    "startTime": 13.75,
+    "endTime": 13.943
   },
   {
     "options": [
-      {
-        "text": "fact,",
-        "confidence": 0.9567899116881966
-      }
+      "fact,"
     ],
-    "startTime": 13.9,
-    "endTime": 14.2,
-    "startParagraph": false
+    "startTime": 13.943,
+    "endTime": 14.229
   },
   {
     "options": [
-      {
-        "text": "this",
-        "confidence": 0.9567899116881966
-      }
+      "this"
     ],
-    "startTime": 14.2,
-    "endTime": 14.4,
-    "startParagraph": false
+    "startTime": 14.229,
+    "endTime": 14.351
   },
   {
     "options": [
-      {
-        "text": "is",
-        "confidence": 0.9567899116881966
-      }
+      "is"
     ],
-    "startTime": 14.4,
-    "endTime": 14.5,
-    "startParagraph": false
+    "startTime": 14.351,
+    "endTime": 14.488
   },
   {
     "options": [
-      {
-        "text": "a",
-        "confidence": 0.9567899116881966
-      }
+      "a"
     ],
-    "startTime": 14.5,
-    "endTime": 14.6,
-    "startParagraph": false
+    "startTime": 14.488,
+    "endTime": 14.595
   },
   {
     "options": [
-      {
-        "text": "live",
-        "confidence": 0.9567899116881966
-      }
+      "live"
     ],
-    "startTime": 14.6,
-    "endTime": 15,
-    "startParagraph": false
+    "startTime": 14.595,
+    "endTime": 14.991
   },
   {
     "options": [
-      {
-        "text": "demo",
-        "confidence": 0.9567899116881966
-      }
+      "demo"
     ],
-    "startTime": 15,
-    "endTime": 15.4,
-    "startParagraph": false
+    "startTime": 14.991,
+    "endTime": 15.404
   },
   {
     "options": [
-      {
-        "text": "of",
-        "confidence": 0.9567899116881966
-      }
+      "of"
     ],
-    "startTime": 15.4,
-    "endTime": 15.6,
-    "startParagraph": false
+    "startTime": 15.404,
+    "endTime": 15.603
   },
   {
     "options": [
-      {
-        "text": "Lexoral.",
-        "confidence": 0.9567899116881966
-      }
+      "Lexoral."
     ],
-    "startTime": 15.6,
-    "endTime": 16.3,
-    "startParagraph": false
+    "startTime": 15.603,
+    "endTime": 16.347
   },
   {
     "options": [
-      {
-        "text": "So",
-        "confidence": 0.9978912183405141
-      }
+      "So"
     ],
-    "startTime": 17.7,
-    "endTime": 18,
-    "startParagraph": true
+    "startTime": 17.67,
+    "endTime": 18.031
   },
   {
     "options": [
-      {
-        "text": "if",
-        "confidence": 0.9978912183405141
-      }
+      "if"
     ],
-    "startTime": 18,
-    "endTime": 18.1,
-    "startParagraph": false
+    "startTime": 18.031,
+    "endTime": 18.082
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9978912183405141
-      }
+      "you"
     ],
-    "startTime": 18.1,
-    "endTime": 18.2,
-    "startParagraph": false
+    "startTime": 18.082,
+    "endTime": 18.233
   },
   {
     "options": [
-      {
-        "text": "see",
-        "confidence": 0.9978912183405141
-      }
+      "see"
     ],
-    "startTime": 18.2,
-    "endTime": 18.3,
-    "startParagraph": false
+    "startTime": 18.233,
+    "endTime": 18.315
   },
   {
     "options": [
-      {
-        "text": "any",
-        "confidence": 0.9978912183405141
-      }
+      "any"
     ],
-    "startTime": 18.3,
-    "endTime": 18.5,
-    "startParagraph": false
+    "startTime": 18.315,
+    "endTime": 18.542
   },
   {
     "options": [
-      {
-        "text": "mistakes,",
-        "confidence": 0.9978912183405141
-      }
+      "mistakes,"
     ],
-    "startTime": 18.5,
-    "endTime": 19.2,
-    "startParagraph": false
+    "startTime": 18.542,
+    "endTime": 19.23
   },
   {
     "options": [
-      {
-        "text": "try",
-        "confidence": 0.9978912183405141
-      }
+      "try"
     ],
-    "startTime": 19.4,
-    "endTime": 19.6,
-    "startParagraph": false
+    "startTime": 19.35,
+    "endTime": 19.638
   },
   {
     "options": [
-      {
-        "text": "fixing",
-        "confidence": 0.9978912183405141
-      }
+      "fixing"
     ],
-    "startTime": 19.6,
-    "endTime": 20,
-    "startParagraph": false
+    "startTime": 19.638,
+    "endTime": 20.048
   },
   {
     "options": [
-      {
-        "text": "them,",
-        "confidence": 0.9978912183405141
-      }
+      "them,"
     ],
-    "startTime": 20,
-    "endTime": 20.3,
-    "startParagraph": false
+    "startTime": 20.048,
+    "endTime": 20.268
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9978912183405141
-      }
+      "you"
     ],
-    "startTime": 21.2,
-    "endTime": 21.3,
-    "startParagraph": false
+    "startTime": 21.183,
+    "endTime": 21.319
   },
   {
     "options": [
-      {
-        "text": "can",
-        "confidence": 0.9978912183405141
-      }
+      "can"
     ],
-    "startTime": 21.3,
-    "endTime": 21.4,
-    "startParagraph": false
+    "startTime": 21.319,
+    "endTime": 21.447
   },
   {
     "options": [
-      {
-        "text": "click",
-        "confidence": 0.9978912183405141
-      }
+      "click"
     ],
-    "startTime": 21.4,
-    "endTime": 21.7,
-    "startParagraph": false
+    "startTime": 21.447,
+    "endTime": 21.747
   },
   {
     "options": [
-      {
-        "text": "anywhere",
-        "confidence": 0.9978912183405141
-      }
+      "anywhere"
     ],
-    "startTime": 21.7,
-    "endTime": 22.3,
-    "startParagraph": false
+    "startTime": 21.747,
+    "endTime": 22.259
   },
   {
     "options": [
-      {
-        "text": "in",
-        "confidence": 0.9978912183405141
-      }
+      "in"
     ],
-    "startTime": 22.3,
-    "endTime": 22.4,
-    "startParagraph": false
+    "startTime": 22.259,
+    "endTime": 22.44
   },
   {
     "options": [
-      {
-        "text": "this",
-        "confidence": 0.9978912183405141
-      }
+      "this"
     ],
-    "startTime": 22.4,
-    "endTime": 22.5,
-    "startParagraph": false
+    "startTime": 22.44,
+    "endTime": 22.548
   },
   {
     "options": [
-      {
-        "text": "demo",
-        "confidence": 0.9978912183405141
-      }
+      "demo"
     ],
-    "startTime": 22.5,
-    "endTime": 23.1,
-    "startParagraph": false
+    "startTime": 22.548,
+    "endTime": 23.051
   },
   {
     "options": [
-      {
-        "text": "to",
-        "confidence": 0.9978912183405141
-      }
+      "to"
     ],
-    "startTime": 23.4,
-    "endTime": 23.6,
-    "startParagraph": false
+    "startTime": 23.401,
+    "endTime": 23.609
   },
   {
     "options": [
-      {
-        "text": "hear",
-        "confidence": 0.9978912183405141
-      }
+      "hear"
     ],
-    "startTime": 23.6,
-    "endTime": 23.8,
-    "startParagraph": false
+    "startTime": 23.609,
+    "endTime": 23.803
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9978912183405141
-      }
+      "the"
     ],
-    "startTime": 23.8,
-    "endTime": 23.9,
-    "startParagraph": false
+    "startTime": 23.803,
+    "endTime": 23.904
   },
   {
     "options": [
-      {
-        "text": "audio",
-        "confidence": 0.9978912183405141
-      }
+      "audio"
     ],
-    "startTime": 23.9,
-    "endTime": 24.3,
-    "startParagraph": false
+    "startTime": 23.904,
+    "endTime": 24.318
   },
   {
     "options": [
-      {
-        "text": "of",
-        "confidence": 0.9978912183405141
-      }
+      "of"
     ],
-    "startTime": 24.3,
-    "endTime": 24.5,
-    "startParagraph": false
+    "startTime": 24.318,
+    "endTime": 24.467
   },
   {
     "options": [
-      {
-        "text": "me,",
-        "confidence": 0.9978912183405141
-      }
+      "me,"
     ],
-    "startTime": 24.5,
-    "endTime": 24.6,
-    "startParagraph": false
+    "startTime": 24.467,
+    "endTime": 24.647
   },
   {
     "options": [
-      {
-        "text": "reading",
-        "confidence": 0.9978912183405141
-      }
+      "reading"
     ],
-    "startTime": 24.6,
-    "endTime": 24.9,
-    "startParagraph": false
+    "startTime": 24.647,
+    "endTime": 24.868
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9978912183405141
-      }
+      "the"
     ],
-    "startTime": 24.9,
-    "endTime": 25,
-    "startParagraph": false
+    "startTime": 24.868,
+    "endTime": 25.014
   },
   {
     "options": [
-      {
-        "text": "text",
-        "confidence": 0.9978912183405141
-      }
+      "text"
     ],
-    "startTime": 25,
-    "endTime": 25.7,
-    "startParagraph": false
+    "startTime": 25.014,
+    "endTime": 25.651
   },
   {
     "options": [
-      {
-        "text": "and",
-        "confidence": 0.9978912183405141
-      }
+      "and"
     ],
-    "startTime": 26.6,
-    "endTime": 26.7,
-    "startParagraph": false
+    "startTime": 26.557,
+    "endTime": 26.656
   },
   {
     "options": [
-      {
-        "text": "then",
-        "confidence": 0.9978912183405141
-      }
+      "then"
     ],
-    "startTime": 26.7,
-    "endTime": 27.2,
-    "startParagraph": false
+    "startTime": 26.656,
+    "endTime": 27.248
   },
   {
     "options": [
-      {
-        "text": "in",
-        "confidence": 0.9978912183405141
-      }
+      "in"
     ],
-    "startTime": 27.3,
-    "endTime": 27.4,
-    "startParagraph": false
+    "startTime": 27.252,
+    "endTime": 27.377
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9978912183405141
-      }
+      "the"
     ],
-    "startTime": 27.4,
-    "endTime": 27.5,
-    "startParagraph": false
+    "startTime": 27.377,
+    "endTime": 27.535
   },
   {
     "options": [
-      {
-        "text": "dropdown",
-        "confidence": 0.9978912183405141
-      }
+      "dropdown"
     ],
-    "startTime": 27.5,
-    "endTime": 27.9,
-    "startParagraph": false
+    "startTime": 27.535,
+    "endTime": 27.948
   },
   {
     "options": [
-      {
-        "text": "that",
-        "confidence": 0.9978912183405141
-      }
+      "that"
     ],
-    "startTime": 27.9,
-    "endTime": 28.1,
-    "startParagraph": false
+    "startTime": 27.948,
+    "endTime": 28.143
   },
   {
     "options": [
-      {
-        "text": "appears,",
-        "confidence": 0.9978912183405141
-      }
+      "appears,"
     ],
-    "startTime": 28.1,
-    "endTime": 28.6,
-    "startParagraph": false
+    "startTime": 28.143,
+    "endTime": 28.588
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9978912183405141
-      }
+      "you"
     ],
-    "startTime": 28.8,
-    "endTime": 28.9,
-    "startParagraph": false
+    "startTime": 28.791,
+    "endTime": 28.856
   },
   {
     "options": [
-      {
-        "text": "can",
-        "confidence": 0.9978912183405141
-      }
+      "can"
     ],
-    "startTime": 28.9,
-    "endTime": 29.1,
-    "startParagraph": false
+    "startTime": 28.856,
+    "endTime": 29.088
   },
   {
     "options": [
-      {
-        "text": "pick",
-        "confidence": 0.9978912183405141
-      }
+      "pick"
     ],
-    "startTime": 29.1,
-    "endTime": 29.3,
-    "startParagraph": false
+    "startTime": 29.088,
+    "endTime": 29.3
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9978912183405141
-      }
+      "the"
     ],
     "startTime": 29.3,
-    "endTime": 29.4,
-    "startParagraph": false
+    "endTime": 29.383
   },
   {
     "options": [
-      {
-        "text": "right",
-        "confidence": 0.9978912183405141
-      }
+      "right"
     ],
-    "startTime": 29.4,
-    "endTime": 29.6,
-    "startParagraph": false
+    "startTime": 29.383,
+    "endTime": 29.595
   },
   {
     "options": [
-      {
-        "text": "option",
-        "confidence": 0.987052304836352
-      },
-      {
-        "text": "option,",
-        "confidence": 0.83713073
-      }
+      "option",
+      "option,"
     ],
-    "startTime": 29.6,
-    "endTime": 30.2,
-    "startParagraph": false
+    "startTime": 29.595,
+    "endTime": 30.239
   },
   {
     "options": [
-      {
-        "text": "out",
-        "confidence": 0.9978912183405141
-      }
+      "out"
     ],
-    "startTime": 30.3,
-    "endTime": 30.5,
-    "startParagraph": false
+    "startTime": 30.337,
+    "endTime": 30.503
   },
   {
     "options": [
-      {
-        "text": "of",
-        "confidence": 0.9978912183405141
-      }
+      "of"
     ],
-    "startTime": 30.5,
-    "endTime": 30.6,
-    "startParagraph": false
+    "startTime": 30.503,
+    "endTime": 30.635
   },
   {
     "options": [
-      {
-        "text": "the",
-        "confidence": 0.9978912183405141
-      }
+      "the"
     ],
-    "startTime": 30.6,
-    "endTime": 30.7,
-    "startParagraph": false
+    "startTime": 30.635,
+    "endTime": 30.689
   },
   {
     "options": [
-      {
-        "text": "one, so",
-        "confidence": 0.89009315
-      },
-      {
-        "text": "1. So",
-        "confidence": 0.88219392
-      },
-      {
-        "text": "ones",
-        "confidence": 0.83713073
-      }
+      "one, so",
+      "1. So",
+      "ones"
     ],
-    "startTime": 30.7,
-    "endTime": 30.9,
-    "startParagraph": false
+    "startTime": 30.689,
+    "endTime": 30.939
   },
   {
     "options": [
-      {
-        "text": "that",
-        "confidence": 0.9978912183405141
-      }
+      "that"
     ],
-    "startTime": 30.9,
-    "endTime": 31,
-    "startParagraph": false
+    "startTime": 30.939,
+    "endTime": 30.993
   },
   {
     "options": [
-      {
-        "text": "shows",
-        "confidence": 0.987052304836352
-      },
-      {
-        "text": "it shows",
-        "confidence": 0.83713073
-      }
+      "shows",
+      "it shows"
     ],
-    "startTime": 31,
-    "endTime": 31.1,
-    "startParagraph": false
+    "startTime": 30.993,
+    "endTime": 31.1
   },
   {
     "options": [
-      {
-        "text": "you,",
-        "confidence": 0.9978912183405141
-      }
+      "you,"
     ],
     "startTime": 31.1,
-    "endTime": 31.4,
-    "startParagraph": false
+    "endTime": 31.44
   },
   {
     "options": [
-      {
-        "text": "if",
-        "confidence": 0.9978912183405141
-      }
+      "if"
     ],
-    "startTime": 31.4,
-    "endTime": 31.7,
-    "startParagraph": false
+    "startTime": 31.44,
+    "endTime": 31.747
   },
   {
     "options": [
-      {
-        "text": "none",
-        "confidence": 0.9978912183405141
-      }
+      "none"
     ],
-    "startTime": 32.4,
-    "endTime": 32.6,
-    "startParagraph": false
+    "startTime": 32.392,
+    "endTime": 32.55
   },
   {
     "options": [
-      {
-        "text": "of",
-        "confidence": 0.9978912183405141
-      }
+      "of"
     ],
-    "startTime": 32.6,
-    "endTime": 32.7,
-    "startParagraph": false
+    "startTime": 32.55,
+    "endTime": 32.705
   },
   {
     "options": [
-      {
-        "text": "them",
-        "confidence": 0.9978912183405141
-      }
+      "them"
     ],
-    "startTime": 32.7,
-    "endTime": 32.8,
-    "startParagraph": false
+    "startTime": 32.705,
+    "endTime": 32.811
   },
   {
     "options": [
-      {
-        "text": "are",
-        "confidence": 0.9978912183405141
-      }
+      "are"
     ],
-    "startTime": 32.8,
-    "endTime": 32.9,
-    "startParagraph": false
+    "startTime": 32.811,
+    "endTime": 32.942
   },
   {
     "options": [
-      {
-        "text": "right,",
-        "confidence": 0.9978912183405141
-      }
+      "right,"
     ],
-    "startTime": 32.9,
-    "endTime": 33,
-    "startParagraph": false
+    "startTime": 32.942,
+    "endTime": 33.028
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9978912183405141
-      }
+      "you"
     ],
-    "startTime": 33,
-    "endTime": 33.5,
-    "startParagraph": false
+    "startTime": 33.028,
+    "endTime": 33.515
   },
   {
     "options": [
-      {
-        "text": "can",
-        "confidence": 0.9978912183405141
-      }
+      "can"
     ],
-    "startTime": 33.7,
-    "endTime": 33.8,
-    "startParagraph": false
+    "startTime": 33.731,
+    "endTime": 33.75
   },
   {
     "options": [
-      {
-        "text": "just",
-        "confidence": 0.9978912183405141
-      }
+      "just"
     ],
-    "startTime": 33.8,
-    "endTime": 33.9,
-    "startParagraph": false
+    "startTime": 33.75,
+    "endTime": 33.876
   },
   {
     "options": [
-      {
-        "text": "type",
-        "confidence": 0.9978912183405141
-      }
+      "type"
     ],
-    "startTime": 33.9,
-    "endTime": 34.2,
-    "startParagraph": false
+    "startTime": 33.876,
+    "endTime": 34.159
   },
   {
     "options": [
-      {
-        "text": "your",
-        "confidence": 0.9978912183405141
-      }
+      "your"
     ],
-    "startTime": 34.2,
-    "endTime": 34.4,
-    "startParagraph": false
+    "startTime": 34.159,
+    "endTime": 34.401
   },
   {
     "options": [
-      {
-        "text": "own",
-        "confidence": 0.9978912183405141
-      }
+      "own"
     ],
-    "startTime": 34.4,
-    "endTime": 34.5,
-    "startParagraph": false
+    "startTime": 34.401,
+    "endTime": 34.451
   },
   {
     "options": [
-      {
-        "text": "in.",
-        "confidence": 0.9978912183405141
-      }
+      "in."
     ],
-    "startTime": 34.5,
-    "endTime": 34.7,
-    "startParagraph": false
+    "startTime": 34.451,
+    "endTime": 34.74
   },
   {
     "options": [
-      {
-        "text": "Give",
-        "confidence": 0.9877306107231865
-      }
+      "Give"
     ],
-    "startTime": 36.6,
-    "endTime": 36.7,
-    "startParagraph": true
+    "startTime": 36.647,
+    "endTime": 36.655
   },
   {
     "options": [
-      {
-        "text": "it",
-        "confidence": 0.9877306107231865
-      }
+      "it"
     ],
-    "startTime": 36.7,
-    "endTime": 36.8,
-    "startParagraph": false
+    "startTime": 36.655,
+    "endTime": 36.751
   },
   {
     "options": [
-      {
-        "text": "a",
-        "confidence": 0.9877306107231865
-      }
+      "a"
     ],
-    "startTime": 36.8,
-    "endTime": 36.9,
-    "startParagraph": false
+    "startTime": 36.751,
+    "endTime": 36.895
   },
   {
     "options": [
-      {
-        "text": "try,",
-        "confidence": 0.9877306107231865
-      }
+      "try,"
     ],
-    "startTime": 36.9,
-    "endTime": 37.3,
-    "startParagraph": false
+    "startTime": 36.895,
+    "endTime": 37.336
   },
   {
     "options": [
-      {
-        "text": "and",
-        "confidence": 0.9877306107231865
-      }
+      "and"
     ],
-    "startTime": 37.5,
-    "endTime": 37.6,
-    "startParagraph": false
+    "startTime": 37.451,
+    "endTime": 37.551
   },
   {
     "options": [
-      {
-        "text": "let",
-        "confidence": 0.9877306107231865
-      }
+      "let"
     ],
-    "startTime": 37.6,
-    "endTime": 37.7,
-    "startParagraph": false
+    "startTime": 37.551,
+    "endTime": 37.695
   },
   {
     "options": [
-      {
-        "text": "me",
-        "confidence": 0.9877306107231865
-      }
+      "me"
     ],
-    "startTime": 37.7,
-    "endTime": 37.8,
-    "startParagraph": false
+    "startTime": 37.695,
+    "endTime": 37.771
   },
   {
     "options": [
-      {
-        "text": "know",
-        "confidence": 0.9877306107231865
-      }
+      "know"
     ],
-    "startTime": 37.8,
-    "endTime": 37.9,
-    "startParagraph": false
+    "startTime": 37.771,
+    "endTime": 37.947
   },
   {
     "options": [
-      {
-        "text": "if",
-        "confidence": 0.9877306107231865
-      }
+      "if"
     ],
-    "startTime": 37.9,
-    "endTime": 37.9,
-    "startParagraph": false
+    "startTime": 37.898,
+    "endTime": 37.947
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9877306107231865
-      }
+      "you"
     ],
-    "startTime": 37.9,
-    "endTime": 38,
-    "startParagraph": false
+    "startTime": 37.947,
+    "endTime": 37.985
   },
   {
     "options": [
-      {
-        "text": "have",
-        "confidence": 0.9877306107231865
-      }
+      "have"
     ],
-    "startTime": 38,
-    "endTime": 38.1,
-    "startParagraph": false
+    "startTime": 37.985,
+    "endTime": 38.106
   },
   {
     "options": [
-      {
-        "text": "any",
-        "confidence": 0.9877306107231865
-      }
+      "any"
     ],
-    "startTime": 38.1,
-    "endTime": 38.2,
-    "startParagraph": false
+    "startTime": 38.106,
+    "endTime": 38.247
   },
   {
     "options": [
-      {
-        "text": "questions,",
-        "confidence": 0.9877306107231865
-      }
+      "questions,"
     ],
-    "startTime": 38.2,
-    "endTime": 39,
-    "startParagraph": false
+    "startTime": 38.247,
+    "endTime": 39.047
   },
   {
     "options": [
-      {
-        "text": "but",
-        "confidence": 0.9877306107231865
-      }
+      "but"
     ],
-    "startTime": 39.2,
-    "endTime": 39.5,
-    "startParagraph": false
+    "startTime": 39.194,
+    "endTime": 39.547
   },
   {
     "options": [
-      {
-        "text": "if",
-        "confidence": 0.9877306107231865
-      }
+      "if"
     ],
-    "startTime": 39.5,
-    "endTime": 39.7,
-    "startParagraph": false
+    "startTime": 39.547,
+    "endTime": 39.714
   },
   {
     "options": [
-      {
-        "text": "not,",
-        "confidence": 0.9877306107231865
-      }
+      "not,"
     ],
-    "startTime": 39.7,
-    "endTime": 40.2,
-    "startParagraph": false
+    "startTime": 39.714,
+    "endTime": 40.164
   },
   {
     "options": [
-      {
-        "text": "thanks",
-        "confidence": 0.9877306107231865
-      }
+      "thanks"
     ],
-    "startTime": 40.2,
-    "endTime": 40.4,
-    "startParagraph": false
+    "startTime": 40.164,
+    "endTime": 40.386
   },
   {
     "options": [
-      {
-        "text": "for",
-        "confidence": 0.9877306107231865
-      }
+      "for"
     ],
-    "startTime": 40.4,
-    "endTime": 40.5,
-    "startParagraph": false
+    "startTime": 40.386,
+    "endTime": 40.519
   },
   {
     "options": [
-      {
-        "text": "coming",
-        "confidence": 0.9877306107231865
-      }
+      "coming"
     ],
-    "startTime": 40.5,
-    "endTime": 40.9,
-    "startParagraph": false
+    "startTime": 40.519,
+    "endTime": 40.868
   },
   {
     "options": [
-      {
-        "text": "and",
-        "confidence": 0.9877306107231865
-      }
+      "and"
     ],
-    "startTime": 40.9,
-    "endTime": 41,
-    "startParagraph": false
+    "startTime": 40.868,
+    "endTime": 40.977
   },
   {
     "options": [
-      {
-        "text": "I",
-        "confidence": 0.9877306107231865
-      }
+      "I"
     ],
-    "startTime": 41,
-    "endTime": 41,
-    "startParagraph": false
+    "startTime": 40.977,
+    "endTime": 41.048
   },
   {
     "options": [
-      {
-        "text": "hope",
-        "confidence": 0.9877306107231865
-      }
+      "hope"
     ],
-    "startTime": 41,
-    "endTime": 41.2,
-    "startParagraph": false
+    "startTime": 40.977,
+    "endTime": 41.195
   },
   {
     "options": [
-      {
-        "text": "that",
-        "confidence": 0.9877306107231865
-      }
+      "that"
     ],
-    "startTime": 41.2,
-    "endTime": 41.4,
-    "startParagraph": false
+    "startTime": 41.195,
+    "endTime": 41.353
   },
   {
     "options": [
-      {
-        "text": "you",
-        "confidence": 0.9877306107231865
-      }
+      "you"
     ],
-    "startTime": 41.4,
-    "endTime": 41.4,
-    "startParagraph": false
+    "startTime": 41.353,
+    "endTime": 41.405
   },
   {
     "options": [
-      {
-        "text": "enjoyed",
-        "confidence": 0.9877306107231865
-      }
+      "enjoyed"
     ],
-    "startTime": 41.4,
-    "endTime": 41.7,
-    "startParagraph": false
+    "startTime": 41.353,
+    "endTime": 41.741
   },
   {
     "options": [
-      {
-        "text": "using",
-        "confidence": 0.9877306107231865
-      }
+      "using"
     ],
-    "startTime": 41.7,
-    "endTime": 42,
-    "startParagraph": false
+    "startTime": 41.741,
+    "endTime": 41.95
   },
   {
     "options": [
-      {
-        "text": "Lexoral.",
-        "confidence": 0.89176255
-      },
-      {
-        "text": "likes for all.",
-        "confidence": 0.88664377
-      }
+      "Lexoral."
     ],
-    "startTime": 42,
-    "endTime": 42.6,
-    "startParagraph": false
+    "startTime": 41.95,
+    "endTime": 42.582
   }
 ]

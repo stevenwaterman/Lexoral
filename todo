@@ -4,9 +4,10 @@ audio:
   * Option to continue / restart
 
 sections:
-  - automatically adjust section timings based on audio envelope
-  - automatically determine paragraph boundaries based on audio envelope
-
+  -- Remove superfluous punctuation
+  -- Remove superflous capitalisation
+  -- Convert to UK english
+  -- Make paragraph boundary threshold configuarble
   -- automatically combine sections
   -- manually split a section
   -- manually combine a section

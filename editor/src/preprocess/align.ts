@@ -7,8 +7,8 @@ const defaultAligner = NWaligner({
 /**
  * Correct the initial autocomplete suggestions based on the current text input
  */
-export function getOptions(text: string, options: { text: string }[]): string[] {
-  const newOptions = options.map(option => alignOption(text, option.text));
+export function getOptions(text: string, options: string[]): string[] {
+  const newOptions = options.map(option => alignOption(text, option));
   newOptions.sort((a, b) => b.score - a.score);
   const justText = newOptions.map(option => option.text);
 

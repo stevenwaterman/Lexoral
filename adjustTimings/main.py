@@ -27,7 +27,7 @@ def min_in_range(time, start_time, end_time, envelope):
 
 
 
-signal, sample_rate = librosa.load("./audio.mp3", sr=44100)
+signal, sample_rate = librosa.load("./demo.mp3", sr=44100)
 duration = len(signal) / sample_rate
 
 analytic_signal = hilbert(signal)
@@ -54,17 +54,12 @@ decimated_sample_rate = decimated_samples / duration
 with open("./data.json") as json_file:
   sections = json.load(json_file)
 
-# To prevent overlaps, we lock the time before the most recent adjusted time
-locked_time = 0
-
 for section in sections:
   start_time = section["startTime"]
   end_time = section["endTime"]
 
-    
-
-  start_search_start_time = max(start_time - 0.049, locked_time)
-  end_search_start_time = max(end_time - 0.049, locked_time)
+  start_search_start_time = start_time - 0.049
+  end_search_start_time = end_time - 0.049
 
   start_search_end_time = start_time + 0.049
   end_search_end_time = end_time + 0.049
@@ -77,13 +72,11 @@ for section in sections:
     start_search_start_time = midpoint - duration / 2
     start_search_end_time = midpoint
 
-    end_search_start_time = midpoint + 0.001
+    end_search_start_time = midpoint + 0.005
     end_search_end_time = midpoint + duration / 2
   
   adjusted_start_time = min_in_range(start_time, start_search_start_time, start_search_end_time, decimated_envelope)
   adjusted_end_time = min_in_range(end_time, end_search_start_time, end_search_end_time, decimated_envelope)
-
-  locked_time = max(locked_time, adjusted_end_time)
 
   section["startTime"] = adjusted_start_time
   section["endTime"] = adjusted_end_time

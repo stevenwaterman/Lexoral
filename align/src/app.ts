@@ -10,8 +10,7 @@ type Word = protos.google.cloud.speech.v1p1beta1.IWordInfo;
 type OutputSection = {
   startTime: number;
   endTime: number;
-  options: {text: string; confidence: number}[];
-  startParagraph: boolean;
+  options: string[];
 }
 type Output = OutputSection[];
 
@@ -63,11 +62,10 @@ function precompute(result: Result): OutputSection[] {
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
   const collapsedAlternatives = collapseAlternatives(wordAlternatives);
-  return collapsedAlternatives.map((alternative, idx) => ({
-    options: alternative.words.map(({word, confidence}) => ({text: word, confidence})),
+  return collapsedAlternatives.map((alternative) => ({
+    options: alternative.words.map(({word}) => word),
     startTime: alternative.time.start,
     endTime: alternative.time.end,
-    startParagraph: idx === 0 || collapsedAlternatives[idx - 1].words.every(({ word }) => sentenceEndingPunctuation.includes(word[word.length - 1]))
   }));
 }
 
