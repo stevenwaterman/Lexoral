@@ -1,6 +1,8 @@
 {
   "name": "lexoral-frontend",
   "version": "1.0.0",
+  "author": "Steven Waterman",
+  "license": "GPL-3.0-only",
   "scripts": {
     "build": "rollup -c --environment BUILD:prod",
     "dev": "rollup -c -w --environment BUILD:prod",

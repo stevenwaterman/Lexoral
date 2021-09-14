@@ -1,6 +1,7 @@
 import { NWaligner } from "seqalign";
-import { protos } from '@google-cloud/speech'
-import fs from "fs"
+import { protos } from "@google-cloud/speech";
+import { Storage } from "@google-cloud/storage";
+import { Readable } from "stream";
 
 type Response = protos.google.cloud.speech.v1p1beta1.IRecognizeResponse;
 type Result = protos.google.cloud.speech.v1p1beta1.ISpeechRecognitionResult;
@@ -40,12 +41,32 @@ type WordAlternative = {
   }
 };
 
-export default function start() {
-  const data = fs.readFileSync('demo.json', 'utf8')
-  const json: Response = JSON.parse(data);
 
-  const transformed = transform(json);
-  console.log(JSON.stringify(transformed))
+async function streamToString (stream: Readable): Promise<string> {
+  const chunks = [];
+  return new Promise<string>((resolve, reject) => {
+    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+    stream.on('error', (err) => reject(err));
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+  })
+}
+
+/**
+ * Triggered from a change to a Cloud Storage bucket.
+ */
+export async function run(event, context) {
+  const data = await readFile(event.name);
+  const json: Response = JSON.parse(data);
+  const aligned = transform(json);
+  console.log("aligned", aligned)
+  // TODO push to pubsub
+}
+
+async function readFile(fileName: string): Promise<string> {
+  const storage = new Storage();
+  const bucket = storage.bucket("lexoral-transcripts-raw");
+  const file = bucket.file(fileName);
+  return await streamToString(file.createReadStream());
 }
 
 function transform(response: Response): Output {
@@ -294,5 +315,3 @@ function wordTime(word: Word): { start: number, end: number } {
 
   return { start: startSeconds, end: endSeconds };
 }
-
-await start();

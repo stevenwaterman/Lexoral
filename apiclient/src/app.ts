@@ -1,18 +1,24 @@
 // Imports the Google Cloud client library
-import speech, { protos } from '@google-cloud/speech';
+import speech, { protos } from "@google-cloud/speech";
 
-// Creates a client
-const client = new speech.v1p1beta1.SpeechClient({ projectId: "amie-300613", keyFile: "/home/steven/service.json" });
+const client = new speech.v1p1beta1.SpeechClient();
 
-async function quickstart() {
-  const gcsUri: string = 'gs://testing-storage-steven-waterman/demo.mp3';
+/**
+ * Triggered from a change to a Cloud Storage bucket.
+ */
+export function run(event, context) {
+  transcribe(event.name);
+}
+
+function transcribe(fileName: string) {
+  const gcsUri: string = `gs://lexoral-audio/${fileName}`;
 
   const audio: protos.google.cloud.speech.v1p1beta1.IRecognitionAudio = { uri: gcsUri };
 
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
     encoding: "MP3",
     sampleRateHertz: 44100,
-    languageCode: 'en-US',
+    languageCode: "en-US",
     maxAlternatives: 5,
     enableAutomaticPunctuation: true,
     enableWordTimeOffsets: true,
@@ -20,16 +26,9 @@ async function quickstart() {
     model: "video",
   };
 
-  const outputConfig: protos.google.cloud.speech.v1p1beta1.ITranscriptOutputConfig = { gcsUri: `${gcsUri}.json` };
+  const outputConfig: protos.google.cloud.speech.v1p1beta1.ITranscriptOutputConfig = { 
+    gcsUri: `gs://lexoral-transcripts-raw/${fileName}.json`
+  };
 
-  const [operation] = await client.longRunningRecognize({ audio, config, outputConfig });
-  const [response] = await operation.promise();
-
-  // const transcription = response.results
-  //   .map(result => result.alternatives[0].transcript)
-  //   .join('\n');
-  // console.log(`Transcription: ${transcription}`);
-
+  client.longRunningRecognize({ audio, config, outputConfig });
 }
-
-await quickstart();
