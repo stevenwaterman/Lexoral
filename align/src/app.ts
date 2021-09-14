@@ -1,7 +1,8 @@
+import { Readable } from "stream";
 import { NWaligner } from "seqalign";
 import { protos } from "@google-cloud/speech";
 import { Storage } from "@google-cloud/storage";
-import { Readable } from "stream";
+import { PubSub } from "@google-cloud/pubsub";
 
 type Response = protos.google.cloud.speech.v1p1beta1.IRecognizeResponse;
 type Result = protos.google.cloud.speech.v1p1beta1.ISpeechRecognitionResult;
@@ -41,6 +42,34 @@ type WordAlternative = {
   }
 };
 
+const topicName = "projects/lexoral/topics/to_adjust";
+
+/**
+ * Triggered from a change to a Cloud Storage bucket.
+ */
+export async function run(event, context) {
+  const fileName = event.name;
+
+  const data = await readFile(fileName);
+  const json: Response = JSON.parse(data);
+  const aligned = transform(json);
+
+  const message = {
+    fileName,
+    sections: aligned
+  }
+
+  const pubSubClient = new PubSub();
+  const buffer = Buffer.from(JSON.stringify(message));
+
+  try {
+    const messageId = await pubSubClient.topic(topicName).publish(buffer);
+    console.log(`Message ${messageId} published.`);
+  } catch (error) {
+    console.error(`Received error while publishing: ${error.message}`);
+    process.exitCode = 1;
+  }
+}
 
 async function streamToString (stream: Readable): Promise<string> {
   const chunks = [];
@@ -49,17 +78,6 @@ async function streamToString (stream: Readable): Promise<string> {
     stream.on('error', (err) => reject(err));
     stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
   })
-}
-
-/**
- * Triggered from a change to a Cloud Storage bucket.
- */
-export async function run(event, context) {
-  const data = await readFile(event.name);
-  const json: Response = JSON.parse(data);
-  const aligned = transform(json);
-  console.log("aligned", aligned)
-  // TODO push to pubsub
 }
 
 async function readFile(fileName: string): Promise<string> {

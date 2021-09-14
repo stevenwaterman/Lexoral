@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 numpy = "*"
-matplotlib = "*"
 scipy = "*"
 librosa = "*"
+google-cloud-storage = "*"
 
 [dev-packages]
 

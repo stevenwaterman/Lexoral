@@ -17,6 +17,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "@google-cloud/pubsub": "^2.17.0",
     "@google-cloud/speech": "^4.8.1",
     "@google-cloud/storage": "^5.14.2",
     "seqalign": "^1.0.3"
