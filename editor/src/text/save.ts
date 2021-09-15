@@ -46,7 +46,7 @@ export function save() {
       if (section.edited) simplified.edited = section.edited;
       if (section.endParagraph) simplified.endParagraph = section.endParagraph;
 
-      if (section.text.length || section.edited || section.endParagraph) return section;
+      if (section.text.length || section.edited || section.endParagraph) return simplified;
       else return undefined;
     });
   const definedState = (simplifiedState.filter(state => state !== undefined) as SectionPatch[]);
