@@ -42,3 +42,8 @@ Features:
 
 
 landing page demo not big enough on server
+
+Cloud:
+  - Login
+  - Fetch audio + transcript + patches
+  - Save patches to DB

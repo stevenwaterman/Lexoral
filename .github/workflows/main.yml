@@ -69,3 +69,35 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         branch: gh-pages
+
+  build-functions:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: bash compile.sh
+      working-directory: functions
+    - uses: actions/upload-artifact@v2
+      with:
+        name: functions
+        path: functions/dist
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        name: functions
+        path: terraform/functions
+    - uses: hashicorp/setup-terraform@v1
+    - run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+    - run: terraform apply -auto-approve
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}

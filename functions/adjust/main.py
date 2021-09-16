@@ -4,6 +4,7 @@ from librosa import load as load_audio
 from json import loads as json_parse, dumps as json_stringify
 from base64 import b64decode
 from google.cloud import storage
+from os import environ
 
 def run(event, context):
   pubsub_message = b64decode(event['data']).decode('utf-8')
@@ -21,12 +22,13 @@ def run(event, context):
 
 def download(storage_client, file_name):
   audio_name = file_name[:-5]
-  bucket = storage_client.get_bucket("lexoral-audio")
+  bucket = storage_client.get_bucket("-audio")
   bucket.blob(audio_name).download_to_filename("/tmp/audio")
   return load_audio("/tmp/audio", sr=44100)
 
 def upload(storage_client, data, file_name):
-  bucket = storage_client.get_bucket("lexoral-transcripts")
+  project_id = environ.get("PROJECT_ID")
+  bucket = storage_client.get_bucket(f'{project_id}-transcripts')
   json_data = json_stringify(data)
   bucket.blob(file_name).upload_from_string(json_data)
 

@@ -11,7 +11,7 @@ export function run(event, context) {
 }
 
 function transcribe(fileName: string) {
-  const gcsUri: string = `gs://lexoral-audio/${fileName}`;
+  const gcsUri: string = `gs://${process.env.PROJECT_ID}-audio/${fileName}`;
 
   const audio: protos.google.cloud.speech.v1p1beta1.IRecognitionAudio = { uri: gcsUri };
 
@@ -27,7 +27,7 @@ function transcribe(fileName: string) {
   };
 
   const outputConfig: protos.google.cloud.speech.v1p1beta1.ITranscriptOutputConfig = { 
-    gcsUri: `gs://lexoral-transcripts-raw/${fileName}.json`
+    gcsUri: `gs://${process.env.PROJECT_ID}-transcripts-raw/${fileName}.json`
   };
 
   client.longRunningRecognize({ audio, config, outputConfig });

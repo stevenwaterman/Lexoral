@@ -42,7 +42,7 @@ type WordAlternative = {
   }
 };
 
-const topicName = "projects/lexoral/topics/to_adjust";
+const topicName = `projects/${process.env.PROJECT_ID}/topics/to_adjust`;
 
 /**
  * Triggered from a change to a Cloud Storage bucket.
@@ -82,7 +82,7 @@ async function streamToString (stream: Readable): Promise<string> {
 
 async function readFile(fileName: string): Promise<string> {
   const storage = new Storage();
-  const bucket = storage.bucket("lexoral-transcripts-raw");
+  const bucket = storage.bucket(`${process.env.PROJECT_ID}-transcripts-raw`);
   const file = bucket.file(fileName);
   return await streamToString(file.createReadStream());
 }
