@@ -34,6 +34,30 @@ resource "google_storage_bucket" "transcripts" {
   uniform_bucket_level_access = true
 }
 
+resource "google_storage_bucket_acl" "audio_acl" {
+  bucket = google_storage_bucket.audio.name
+
+  role_entity = [
+    "WRITER:user-${data.google_project.project.project_id}@appspot.gserviceaccount.com"
+  ]
+}
+
+resource "google_storage_bucket_acl" "raw_transcripts_acl" {
+  bucket = google_storage_bucket.raw_transcripts.name
+
+  role_entity = [
+    "WRITER:user-${data.google_project.project.project_id}@appspot.gserviceaccount.com"
+  ]
+}
+
+resource "google_storage_bucket_acl" "transcripts_acl" {
+  bucket = google_storage_bucket.transcripts.name
+
+  role_entity = [
+    "WRITER:user-${data.google_project.project.project_id}@appspot.gserviceaccount.com"
+  ]
+}
+
 
 
 resource "google_storage_bucket" "functions_code" {
