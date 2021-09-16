@@ -17,18 +17,21 @@ resource "google_storage_bucket" "audio" {
   name = "${data.google_project.project.project_id}-audio"
   storage_class = "REGIONAL"
   location = "europe-west2"
+  uniform_bucket_level_access = true
 }
 
 resource "google_storage_bucket" "raw_transcripts" {
   name = "${data.google_project.project.project_id}-transcripts-raw"
   storage_class = "REGIONAL"
   location = "europe-west2"
+  uniform_bucket_level_access = true
 }
 
 resource "google_storage_bucket" "transcripts" {
   name = "${data.google_project.project.project_id}-transcripts"
   storage_class = "REGIONAL"
   location = "europe-west2"
+  uniform_bucket_level_access = true
 }
 
 
