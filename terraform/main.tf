@@ -124,7 +124,7 @@ resource "google_cloudfunctions_function" "fetch" {
   entry_point           = "run"
   environment_variables = {
     PROJECT_ID = data.google_project.project.project_id
-  }
+  },
 }
 
 resource "google_cloudfunctions_function_iam_member" "fetch_invoker" {
