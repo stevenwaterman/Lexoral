@@ -42,7 +42,7 @@ type WordAlternative = {
   }
 };
 
-const topicName = `projects/${process.env.PROJECT_ID}/topics/to_adjust`;
+const topicName = `projects/${process.env.PROJECT_ID}/topics/to-adjust`;
 
 /**
  * Triggered from a change to a Cloud Storage bucket.
