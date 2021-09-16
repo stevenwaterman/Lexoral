@@ -15,20 +15,28 @@ data "google_project" "project" {}
 
 resource "google_storage_bucket" "audio" {
   name = "${data.google_project.project.project_id}-audio"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
 }
 
 resource "google_storage_bucket" "raw_transcripts" {
   name = "${data.google_project.project.project_id}-transcripts-raw"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
 }
 
 resource "google_storage_bucket" "transcripts" {
   name = "${data.google_project.project.project_id}-transcripts"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
 }
 
 
 
 resource "google_storage_bucket" "functions_code" {
   name = "${data.google_project.project.project_id}-functions-code"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
 }
 
 
