@@ -97,8 +97,10 @@ jobs:
         path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
     - run: terraform init
+      working-directory: terraform 
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
     - run: terraform apply -auto-approve
+      working-directory: terraform
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
