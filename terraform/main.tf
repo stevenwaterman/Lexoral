@@ -4,6 +4,13 @@ provider "google" {
   zone    = "europe-west2-b"
 }
 
+terraform {
+  backend "gcs" {
+    bucket  = "lexoral-test-tf-state"
+    prefix  = "terraform/state"
+  }
+}
+
 data "google_project" "project" {}
 
 resource "google_storage_bucket" "audio" {
