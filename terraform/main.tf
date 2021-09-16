@@ -4,6 +4,8 @@ provider "google" {
   zone    = "europe-west2-b"
 }
 
+data "google_project" "project" {}
+
 resource "google_storage_bucket" "audio" {
   name = "${data.google_project.project.project_id}-audio"
 }
