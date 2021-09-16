@@ -86,6 +86,7 @@ jobs:
         path: functions/dist
 
   deploy:
+    needs: [build-functions]
     runs-on: ubuntu-latest
 
     steps:
