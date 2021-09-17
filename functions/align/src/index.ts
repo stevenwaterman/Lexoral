@@ -42,12 +42,12 @@ type WordAlternative = {
   }
 };
 
-const topicName = `projects/${process.env.PROJECT_ID}/topics/to-adjust`;
+const topicName = `projects/${process.env["PROJECT_ID"]}/topics/to-adjust`;
 
 /**
  * Triggered from a change to a Cloud Storage bucket.
  */
-export async function run(event, context) {
+export async function run(event: { name: string }) {
   const fileName = event.name;
 
   const data = await readFile(fileName);
@@ -65,14 +65,14 @@ export async function run(event, context) {
   try {
     const messageId = await pubSubClient.topic(topicName).publish(buffer);
     console.log(`Message ${messageId} published.`);
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Received error while publishing: ${error.message}`);
     process.exitCode = 1;
   }
 }
 
 async function streamToString (stream: Readable): Promise<string> {
-  const chunks = [];
+  const chunks: Buffer[] = [];
   return new Promise<string>((resolve, reject) => {
     stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
     stream.on('error', (err) => reject(err));
@@ -82,7 +82,7 @@ async function streamToString (stream: Readable): Promise<string> {
 
 async function readFile(fileName: string): Promise<string> {
   const storage = new Storage();
-  const bucket = storage.bucket(`${process.env.PROJECT_ID}-transcripts-raw`);
+  const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts-raw`);
   const file = bucket.file(fileName);
   return await streamToString(file.createReadStream());
 }
@@ -112,7 +112,11 @@ function align(alternatives: Alternative[]): Record<number, string> {
   const count = alternatives.length;
 
   if (count === 0) return {};
-  if (count === 1) return { 0: alternatives[0].transcript };
+  if (count === 1) {
+    const transcript = alternatives[0].transcript;
+    if (!transcript) throw new Error("Transcript is undefined");
+    return { 0: transcript };
+  }
 
   const defaultAligner = NWaligner({
     similarityScoreFunction: (char1: string, char2: string) => (char1.toLowerCase() === char2.toLowerCase() ? 1 : -2)
@@ -156,6 +160,7 @@ function align(alternatives: Alternative[]): Record<number, string> {
 
     // Find the first (ie best) alignment where one of the two has already been aligned
     const newAlignment = alignments.find(alignment => alignedIdxs.includes(alignment.aIdx) || alignedIdxs.includes(alignment.bIdx));
+    if (newAlignment === undefined) throw new Error("Alignment list ended up empty somehow");
 
     // Which of the two alternatives in the alignment has already been aligned, and which one hasn't?
     const existingIdx = alignedIdxs.includes(newAlignment.aIdx) ? newAlignment.aIdx : newAlignment.bIdx;
@@ -197,7 +202,7 @@ function align(alternatives: Alternative[]): Record<number, string> {
 // TODO confidence is going above 1?
 
 function transposeAlternatives(timedAlternatives: TimedAlternative[], alternatives: Alternative[]): WordAlternative[] {
-  const confidence = alternatives.map(alternative => alternative.confidence);
+  const confidence: (number | null)[] = alternatives.map(alternative => alternative.confidence ?? null);
 
   // Create a list of the options for each word break
   const wordAlternatives: WordAlternative[] = [];
@@ -209,12 +214,14 @@ function transposeAlternatives(timedAlternatives: TimedAlternative[], alternativ
       const alternativeWord = sequence.words[i];
       const currentConfidence = wordConfidence[alternativeWord.text];
       if (currentConfidence) {
-        wordConfidence[alternativeWord.text] = 1 - ((1 - currentConfidence)*(1 - confidence[idx]));
+        wordConfidence[alternativeWord.text] = 1 - ((1 - currentConfidence)*(1 - (confidence[idx] ?? 0)));
       } else {
-        wordConfidence[alternativeWord.text] = confidence[idx];
+        wordConfidence[alternativeWord.text] = confidence[idx] ?? 0;
       }
       time = alternativeWord.time || time;
     });
+
+    if (time === null) throw new Error("Time is null")
 
     const output: WordAlternative = {
       words: Object.entries(wordConfidence).map(([word, confidence]) => ({word, confidence})),
@@ -263,7 +270,7 @@ function breakSequences(alignedSequences: Record<number, string>, alternatives: 
 
   // Break the sequences along those line breaks, then add the timings for each word
   const wordSequences: string[][] = Object.values(alignedSequences).map(sequence => breakSequence(sequence, wordBreaks));
-  const timedAlternatives: TimedAlternative[] = timeSequences(wordSequences, alternatives[0].words);
+  const timedAlternatives: TimedAlternative[] = timeSequences(wordSequences, alternatives[0].words ?? []);
   return timedAlternatives;
 }
 

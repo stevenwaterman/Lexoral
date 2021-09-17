@@ -47,3 +47,7 @@ Cloud:
   - Login
   - Fetch audio + transcript + patches
   - Save patches to DB
+
+
+Use base tsconfig file for everything
+abstract auth code out of fetch function into reusable library
