@@ -150,3 +150,7 @@ resource "google_cloudfunctions_function_iam_member" "fetch_invoker" {
   role   = "roles/cloudfunctions.invoker"
   member = "allUsers"
 }
+
+
+
+
