@@ -43,9 +43,8 @@ resource "google_storage_bucket" "functions_code" {
 }
 
 
-
 resource "google_storage_bucket_object" "transcribe_function_src" {
-  name   = "transcribe-${formatdate("YYMMDDhhmmss", timestamp())}.zip"
+  name   = "transcribe-${substr(filemd5("./functions/transcribe.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/transcribe.zip"
 }
@@ -71,7 +70,7 @@ resource "google_cloudfunctions_function" "transcribe" {
 
 
 resource "google_storage_bucket_object" "align_function_src" {
-  name   = "align-${formatdate("YYMMDDhhmmss", timestamp())}.zip"
+  name   = "align-${substr(filemd5("./functions/align.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/align.zip"
 }
@@ -100,7 +99,7 @@ resource "google_pubsub_topic" "to_adjust" {
 }
 
 resource "google_storage_bucket_object" "adjust_function_src" {
-  name   = "adjust.zip-${formatdate("YYMMDDhhmmss", timestamp())}"
+  name   = "adjust-${substr(filemd5("./functions/adjust.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/adjust.zip"
 }
@@ -126,7 +125,7 @@ resource "google_cloudfunctions_function" "adjust" {
 
 
 resource "google_storage_bucket_object" "fetch_function_src" {
-  name   = "fetch.zip-${formatdate("YYMMDDhhmmss", timestamp())}"
+  name   = "fetch-${substr(filemd5("./functions/fetch.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/fetch.zip"
 }
