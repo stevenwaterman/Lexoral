@@ -1,5 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { initializeApp, firestore } from "firebase-admin";
 
 type SignupEvent = { 
   uid: string;
@@ -33,14 +32,9 @@ export async function run(event: SignupEvent) {
     secondsCredit: "0"
   }
 
-  initializeApp({
-    apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
-    authDomain: "lexoral-test.firebaseapp.com",
-    projectId: process.env["PROJECT_ID"]
-  });
-  const db = getFirestore();
-  const docRef = doc(db, "users", event.uid);
-  await setDoc(docRef, data);
-
-  console.log("Added firestore document", docRef.path)
+  initializeApp();
+  const db = firestore();
+  const path = `users/${event.uid}`;
+  await db.doc(path).set(data)
+  console.log("Added firestore document", path)
 }
