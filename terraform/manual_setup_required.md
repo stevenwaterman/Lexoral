@@ -6,9 +6,10 @@ Lexoral makes use of a number of APIs that need to be manually enabled before yo
 * Cloud Build
 * Cloud Speech-to-Text
 * Identity Platform
+* Firestore (native mode, europe-west-2)
 
 # In-console setup
 
-Configure the OAuth consent screen
-Add an Email/Password provider to Identity Platform
-Add lexoral.com as an authorized domain and remove the others in identity platform
+* Add an Email/Password provider to Identity Platform
+* Add lexoral.com as an authorized domain and remove the others in identity platform
+* 

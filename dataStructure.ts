@@ -6,23 +6,23 @@ type User = {
 }
 
 type UserProfile = {
-  name: string;
+  name?: string;
   email: string; // TODO necessary?
-  created: Date; // TODO necessary?
+  created: string; // TODO necessary?
 }
 
 type Transcription = {
   id: string;
   stage: "transcribe" | "align" | "adjust" | "edit";
   name: string;
-  created: Date;
-  lastUpdated: Date;
+  created: string;
+  lastUpdated: string;
   patches: Patch[];
 }
 
 type Patch = {
   idx: number;
-  timestamp: Date;
+  timestamp: string;
   text?: string;
   endParagraph?: true;
 }

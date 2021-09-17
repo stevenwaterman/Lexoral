@@ -54,6 +54,5 @@ abstract auth code out of fetch function into reusable library
 Re-enable signup
 
 
-
-Create SQL DB
-store info about audio + owner
+create an app engine with firestore in terraform
+disallow public access to firestore
