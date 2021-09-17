@@ -8,7 +8,7 @@ type SignupEvent = {
 }
 
 type SignupMetadata = { 
-  creationTime: string;
+  createdAt: string;
 }
 
 type User = {
@@ -22,24 +22,16 @@ type UserProfile = {
   created: string; // TODO necessary?
 }
 
-
 export async function run(event: SignupEvent) {
-  console.log(event);
-  console.log(event.metadata);
   const email = event.email;
-  console.log("email", email);
-
-  const creationTime = event.metadata.creationTime;
-  console.log("creationTime", creationTime)
-
+  const createdAt = event.metadata.createdAt;
   const data: User = {
     profile: {
       email: email,
-      created: creationTime
+      created: createdAt
     },
     secondsCredit: "0"
   }
-
 
   initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
