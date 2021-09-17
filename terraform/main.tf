@@ -115,7 +115,7 @@ resource "google_cloudfunctions_function" "signup" {
 
   event_trigger {
     event_type = "providers/firebase.auth/eventTypes/user.create"
-    resource = data.google_project.project.project_id
+    resource = "projects/${data.google_project.project.project_id}"
   }
 }
 
