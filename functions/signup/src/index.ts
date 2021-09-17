@@ -1,4 +1,4 @@
-import { initializeApp, firestore } from "firebase-admin";
+import admin from "firebase-admin";
 
 type SignupEvent = { 
   uid: string;
@@ -32,8 +32,8 @@ export async function run(event: SignupEvent) {
     secondsCredit: "0"
   }
 
-  initializeApp();
-  const db = firestore();
+  admin.initializeApp();
+  const db = admin.firestore();
   const path = `users/${event.uid}`;
   await db.doc(path).set(data)
   console.log("Added firestore document", path)
