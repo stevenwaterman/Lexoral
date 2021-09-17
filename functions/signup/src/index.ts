@@ -12,7 +12,6 @@ type SignupMetadata = {
 }
 
 type User = {
-  id: string;
   profile: UserProfile;
   secondsCredit: string;
 }
@@ -25,20 +24,31 @@ type UserProfile = {
 
 
 export async function run(event: SignupEvent) {
-  initializeApp({
-    apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
-    authDomain: "lexoral-test.firebaseapp.com"
-  });
-  const db = getFirestore();
-  const docRef = doc(db, "users", event.uid);
+  console.log(event);
+  console.log(event.metadata);
+  const email = event.email;
+  console.log("email", email);
+
+  const creationTime = event.metadata.creationTime;
+  console.log("creationTime", creationTime)
+
   const data: User = {
-    id: event.uid,
     profile: {
-      email: event.email,
-      created: event.metadata.creationTime
+      email: email,
+      created: creationTime
     },
     secondsCredit: "0"
   }
+
+
+  initializeApp({
+    apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
+    authDomain: "lexoral-test.firebaseapp.com",
+    projectId: process.env["PROJECT_ID"]
+  });
+  const db = getFirestore();
+  const docRef = doc(db, "users", event.uid);
   await setDoc(docRef, data);
+
   console.log("Added firestore document", docRef.path)
 }

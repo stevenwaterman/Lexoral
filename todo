@@ -56,3 +56,4 @@ Re-enable signup
 
 create an app engine with firestore in terraform
 disallow public access to firestore
+let terraform archive the files and use the hash of the contained files / without metadata
