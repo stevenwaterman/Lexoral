@@ -13,7 +13,7 @@ terraform {
 
 data "google_project" "project" {}
 
-resource "google_storage_bucket" "raw_audio" {
+resource "google_storage_bucket" "audio" {
   name = "${data.google_project.project.project_id}-raw-audio"
   storage_class = "REGIONAL"
   location = "europe-west2"
