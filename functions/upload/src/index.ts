@@ -102,7 +102,7 @@ const db = admin.firestore();
 const cors = corsFactory({ origin: true });
 const app = express()
   .use(cors)
-  .use(validateFirebaseIdToken)
+  // .use(validateFirebaseIdToken)
 
 const multerUpload = multer({storage}).single("file");
 
