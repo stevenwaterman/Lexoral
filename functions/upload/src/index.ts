@@ -25,8 +25,10 @@ const multer = Multer({
 const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
 
 // Process the file upload and upload to Google Cloud Storage.
-app.post('*', multer.single('file'), (req, res, next) => {
+app.post('*', multer.any(), (req, res, next) => {
   console.log("Called");
+  console.log("Files", req.files);
+  console.log("Body", req.body);
   if (!req.file) {
     res.status(400).send('No file uploaded.');
     return;
