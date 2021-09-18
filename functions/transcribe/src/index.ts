@@ -20,6 +20,7 @@ function transcribe(fileName: string) {
     sampleRateHertz: 44100,
     languageCode: "en-US",
     maxAlternatives: 5,
+    audioChannelCount: 1,
     enableAutomaticPunctuation: true,
     enableWordTimeOffsets: true,
     useEnhanced: true,

@@ -57,3 +57,8 @@ Re-enable signup
 create an app engine with firestore in terraform
 disallow public access to firestore
 let terraform archive the files and use the hash of the contained files / without metadata
+set up caching dependencies on the build server
+maybe only compile functions if they've changed
+
+
+Add function to convert to extract audio (if video) + convert to wav + amplify (probably ffmpeg)

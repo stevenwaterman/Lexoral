@@ -1,5 +1,4 @@
 type User = {
-  id: string;
   profile: UserProfile;
   transcriptions: Transcription[];
   secondsCredit: BigInteger;
@@ -7,17 +6,14 @@ type User = {
 
 type UserProfile = {
   name?: string;
-  email: string; // TODO necessary?
-  created: string; // TODO necessary?
+  email: string;
+  created: string;
 }
 
 type Transcription = {
-  id: string;
-  stage: "transcribe" | "align" | "adjust" | "edit";
+  stage: "pre-upload" | "pre-transcode" | "pre-transcribe" | "pre-align" | "pre-adjust" | "ready";
   name: string;
-  created: string;
-  lastUpdated: string;
-  patches: Patch[];
+  patches?: Patch[];
 }
 
 type Patch = {

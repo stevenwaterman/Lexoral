@@ -35,6 +35,6 @@ export async function run(event: SignupEvent) {
   admin.initializeApp();
   const db = admin.firestore();
   const path = `users/${event.uid}`;
-  await db.doc(path).set(data)
-  console.log("Added firestore document", path)
+  await db.doc(path).set(data);
+  console.log("Added firestore document", path);
 }

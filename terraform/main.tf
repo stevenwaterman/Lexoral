@@ -14,7 +14,21 @@ terraform {
 data "google_project" "project" {}
 
 resource "google_storage_bucket" "audio" {
-  name = "${data.google_project.project.project_id}-audio"
+  name = "${data.google_project.project.project_id}-raw-audio"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
+  uniform_bucket_level_access = true
+}
+
+resource "google_storage_bucket" "playback_audio" {
+  name = "${data.google_project.project.project_id}-playback-audio"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
+  uniform_bucket_level_access = true
+}
+
+resource "google_storage_bucket" "transcription_audio" {
+  name = "${data.google_project.project.project_id}-transcription-audio"
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
@@ -63,7 +77,7 @@ resource "google_cloudfunctions_function" "transcribe" {
 
   event_trigger {
     event_type = "google.storage.object.finalize"
-    resource = google_storage_bucket.audio.name
+    resource = google_storage_bucket.transcription_audio.name
   }
 }
 
@@ -179,4 +193,28 @@ resource "google_cloudfunctions_function_iam_member" "fetch_invoker" {
 
 
 
+resource "google_storage_bucket_object" "upload_function_src" {
+  name   = "upload-${substr(filemd5("./functions/upload.zip"), 0, 10)}.zip"
+  bucket = google_storage_bucket.functions_code.name
+  source = "./functions/upload.zip"
+}
 
+resource "google_cloudfunctions_function" "upload" {
+  name        = "upload"
+  runtime     = "nodejs14"
+
+  available_memory_mb   = 128
+  source_archive_bucket = google_storage_bucket.functions_code.name
+  source_archive_object = google_storage_bucket_object.upload_function_src.name
+  trigger_http          = true
+  entry_point           = "run"
+  environment_variables = {
+    PROJECT_ID = data.google_project.project.project_id
+  }
+}
+
+resource "google_cloudfunctions_function_iam_member" "upload_invoker" {
+  cloud_function = google_cloudfunctions_function.upload.name
+  role   = "roles/cloudfunctions.invoker"
+  member = "allUsers"
+}

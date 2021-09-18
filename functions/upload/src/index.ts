@@ -59,29 +59,40 @@ async function validateFirebaseIdToken(
   }
 };
 
-function sendFile(res: Response) {
-  res.writeHead(200, {
-    "Content-Type": "text/json"
-  });
-
-  new Storage()
-    .bucket(`${process.env["PROJECT_ID"]}-transcripts`)
-    .file("temp.mp3.json")
-    .createReadStream()
-    .on("error", err => console.log(err))
-    .on("end", () => {})
-    .pipe(res);
-}
-
-function handleRequest(reqInput: HydratedRequestInput, res: Response) {
+async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
   console.log("Request handler hit");
-  sendFile(res);
+  // TODO check if 0 credit, reject early
+
+  const collection = db.collection(`users/${req.user.uid}/transcriptions`)
+  const audioData = {
+    stage: "pre-upload",
+    name: "audio"
+  }
+  const stored = await collection.add(audioData)
+  const audioId = stored.id;
+  console.log("Created audio id", audioId);
+
+  console.log("Starting upload");
+  const writeStream = new Storage()
+    .bucket(`${process.env["PROJECT_ID"]}-audio`)
+    .file(audioId)
+    .createWriteStream();
+  req.pipe(writeStream);
+  console.log("Finished upload");
+
+  await stored.update({
+    stage: "pre-transcode"
+  });
+
+  res.sendStatus(201);
+  console.log("Done");
 }
 
 admin.initializeApp();
+const db = admin.firestore();
 const cors = corsFactory({ origin: true });
 const app = express().use(cors).use(validateFirebaseIdToken);
-app.get("*", handleRequest);
+app.post("*", handleRequest);
 
 export const run = app;
