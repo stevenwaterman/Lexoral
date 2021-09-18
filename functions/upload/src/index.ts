@@ -96,6 +96,7 @@ function getFilename(req: Request, file: File, cb: (err: string | null, filename
 }
 
 const storage = storageEngine({
+  projectId: process.env["PROJECT_ID"],
   bucket: `${process.env["PROJECT_ID"]}-raw-audio`,
   filename: getFilename,
   uniformBucketLevelAccess: true
