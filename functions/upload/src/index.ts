@@ -53,9 +53,27 @@ async function validateFirebaseIdToken(
   }
 };
 
+async function writeFile(req: HydratedRequest, audioId: string) {
+  return new Promise<void>(resolve => {
+    const writeStream = new Storage()
+      .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
+      .file(audioId)
+      .createWriteStream()
+      .on("end", resolve);
+    req.pipe(writeStream);
+  })
+}
+
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
   // TODO check if 0 credit, reject early
+
+  const name = req.query["name"];
+  if (name === undefined) {
+    res.status(400).send("Missing `name` in query params");
+    console.log("Missing name in query params");
+    return;
+  }
 
   const collection = db.collection(`users/${req.user.uid}/transcriptions`)
   const audioData = {
@@ -66,15 +84,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const audioId = stored.id;
   console.log("Created audio id", audioId);
 
-  const writeStream = new Storage()
-    .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
-    .file(audioId)
-    .createWriteStream();
-  req.pipe(writeStream);
-
-  await stored.update({
-    stage: "pre-transcode"
-  });
+  await writeFile(req, audioId);
+  await stored.update({ stage: "pre-transcode" });
 
   res.sendStatus(201);
   console.log("Done");

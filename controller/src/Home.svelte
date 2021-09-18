@@ -33,7 +33,9 @@
     }
 
     const idToken = await user.getIdToken();
-    await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/upload", {
+    const url = new URL("https://europe-west2-lexoral-test.cloudfunctions.net/upload")
+    url.searchParams.append("name", file.name);
+    await fetch(url.toString(), {
       method: "post",
       headers: {
         "Authorization": `Bearer ${idToken}`
