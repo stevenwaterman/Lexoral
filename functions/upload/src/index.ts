@@ -3,7 +3,7 @@ import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
-import multerFactory from "multer";
+import multer from "multer";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
@@ -69,7 +69,19 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
   // TODO check if 0 credit, reject early
 
-  console.log(req.files);
+  const name: string | undefined = req.body["name"];
+  if (name === undefined) {
+    res.status(400).send("Missing name");
+  }
+
+  const file = req.file;
+  if (file === undefined) {
+    res.status(400).send("Missing file");
+    return;
+  }
+
+  console.log(name, file);
+  res.sendStatus(200);
 
   // const collection = db.collection(`users/${req.user.uid}/transcriptions`)
   // const audioData = {
@@ -91,11 +103,11 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 admin.initializeApp();
 const db = admin.firestore();
 const cors = corsFactory({ origin: true });
-const multer = multerFactory();
+const upload = multer().single("file");
 const app = express()
   .use(cors)
-  .use(multer.any())
-  .use(validateFirebaseIdToken);
-app.post("*", handleRequest);
+  .use(validateFirebaseIdToken)
+  .use(upload);
+app.post("*", multer, handleRequest);
 
 export const run = app;

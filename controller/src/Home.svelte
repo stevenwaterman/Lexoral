@@ -33,7 +33,7 @@
     }
 
     const data = new FormData();
-    data.append('file',file);
+    data.append('file', file);
     data.append('name', 'audio');
 
     const idToken = await user.getIdToken();
