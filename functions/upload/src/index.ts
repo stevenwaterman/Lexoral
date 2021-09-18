@@ -1,9 +1,9 @@
-import { Storage } from "@google-cloud/storage";
 import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
 import multer from "multer";
+import MulterGCS from "multer-cloud-storage";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
@@ -54,18 +54,7 @@ async function validateFirebaseIdToken(
   }
 };
 
-async function writeFile(req: HydratedRequest, audioId: string) {
-  return new Promise<void>(resolve => {
-    const writeStream = new Storage()
-      .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
-      .file(audioId)
-      .createWriteStream()
-      .on("end", resolve);
-    req.pipe(writeStream);
-  })
-}
-
-async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
+async function preUpload(reqInput: HydratedRequestInput, res: Response, next: () => void) {
   const req = reqInput as HydratedRequest;
   // TODO check if 0 credit, reject early
 
@@ -83,31 +72,44 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   console.log(name, file);
   res.sendStatus(200);
 
-  // const collection = db.collection(`users/${req.user.uid}/transcriptions`)
-  // const audioData = {
-  //   stage: "pre-upload",
-  //   name: "audio"
-  // }
-  // const stored = await collection.add(audioData)
-  // const audioId = stored.id;
-  // console.log("Created audio id", audioId);
-
-  // await writeFile(req, audioId);
-  // console.log("Finished writing file")
-  // await stored.update({ stage: "pre-transcode" });
-
-  // res.sendStatus(201);
-  // console.log("Done");
+  const collection = db.collection(`users/${req.user.uid}/transcriptions`);
+  const stored = await collection.add({ stage: "pre-upload", name });
+  const audioId = stored.id;
+  (req as any)["audioId"] = audioId;
+  console.log("Created audio id", audioId);
+  next();
 }
+
+async function postUpload(reqInput: HydratedRequestInput, res: Response, next: () => void) {
+  const req = reqInput as HydratedRequest;
+  console.log("Finished writing file");
+  const audioId: string = (req as any)["audioId"];
+  await db.doc(`users/${req.user.uid}/transcriptions/${audioId}`).update({ stage: "pre-transcode" })
+  console.log("Updated firestore");
+
+  res.sendStatus(201);
+  console.log("Done");
+}
+
+function getFilename(req: Request, file: File, cb: (err: string | null, filename: string) => void) {
+  cb(null, (req as any)["audioId"]);
+}
+
+const storage = new MulterGCS({
+  bucket: `${process.env["PROJECT_ID"]}-raw-audio`,
+  filename: getFilename,
+  uniformBucketLevelAccess: true
+})
 
 admin.initializeApp();
 const db = admin.firestore();
 const cors = corsFactory({ origin: true });
-const upload = multer().single("file");
 const app = express()
   .use(cors)
   .use(validateFirebaseIdToken)
-  .use(upload);
-app.post("*", multer, handleRequest);
+
+const upload = multer({storage}).single("file");
+
+app.post("*", preUpload, upload, postUpload);
 
 export const run = app;
