@@ -1,4 +1,6 @@
 <script lang="ts">
+import { sign } from "crypto";
+
   import type { User } from "firebase/auth";
 
   export let user: User | null;
@@ -32,18 +34,14 @@
       return;
     }
 
-    const data = new FormData();
-    // data.append('file', file);
-    data.append('name', 'audio');
-
     const idToken = await user.getIdToken();
-    await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/upload", {
+    const signedUrl = await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/upload", {
       method: "post",
       headers: {
         "Authorization": `Bearer ${idToken}`
-      },
-      body: data
-    })
+      }
+    }).then(res => res.text());
+    console.log(signedUrl);
   }
 </script>
 

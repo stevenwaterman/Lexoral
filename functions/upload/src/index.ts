@@ -1,7 +1,7 @@
 import { Storage } from "@google-cloud/storage";
 import type { NextFunction, Request, Response } from "express";
-import admin, { storage } from "firebase-admin";
-import corsFactory from "cors";
+import admin from "firebase-admin";
+import cors from "cors";
 import express from "express";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
@@ -91,8 +91,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 
 admin.initializeApp();
 const db = admin.firestore();
-const cors = corsFactory({ origin: true });
-const app = express().use(cors).use(validateFirebaseIdToken);
+const app = express().use(cors()).use(validateFirebaseIdToken);
+app.options("*", cors() as any);
 app.post("*", handleRequest);
 
 export const run = app;
