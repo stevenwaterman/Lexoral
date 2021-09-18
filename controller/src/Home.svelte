@@ -1,6 +1,4 @@
 <script lang="ts">
-import { sign } from "crypto";
-
   import type { User } from "firebase/auth";
 
   export let user: User | null;
@@ -41,7 +39,11 @@ import { sign } from "crypto";
         "Authorization": `Bearer ${idToken}`
       }
     }).then(res => res.text());
-    console.log(signedUrl);
+
+    await fetch(signedUrl, {
+      method: "put",
+      body: file
+    })
   }
 </script>
 

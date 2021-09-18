@@ -13,11 +13,17 @@ terraform {
 
 data "google_project" "project" {}
 
-resource "google_storage_bucket" "audio" {
+resource "google_storage_bucket" "raw_audio" {
   name = "${data.google_project.project.project_id}-raw-audio"
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
+  cors {
+    origin          = ["http://localhost", "https://lexoral.com"]
+    method          = ["PUT"]
+    response_header = ["*"]
+    max_age_seconds = 3600
+  }
   force_destroy = true # TODO remove this
 }
 
