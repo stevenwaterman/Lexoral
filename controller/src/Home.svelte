@@ -32,15 +32,17 @@
       return;
     }
 
+    const data = new FormData();
+    data.append('file',file);
+    data.append('name', 'audio');
+
     const idToken = await user.getIdToken();
-    const url = new URL("https://europe-west2-lexoral-test.cloudfunctions.net/upload")
-    url.searchParams.append("name", file.name);
-    await fetch(url.toString(), {
+    await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/upload", {
       method: "post",
       headers: {
         "Authorization": `Bearer ${idToken}`
       },
-      body: file
+      body: data
     })
   }
 </script>

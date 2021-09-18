@@ -3,6 +3,7 @@ import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
+import multerFactory from "multer";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
@@ -68,33 +69,33 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
   // TODO check if 0 credit, reject early
 
-  const name = req.query["name"];
-  if (name === undefined) {
-    res.status(400).send("Missing `name` in query params");
-    console.log("Missing name in query params");
-    return;
-  }
+  console.log(req.files);
 
-  const collection = db.collection(`users/${req.user.uid}/transcriptions`)
-  const audioData = {
-    stage: "pre-upload",
-    name: "audio"
-  }
-  const stored = await collection.add(audioData)
-  const audioId = stored.id;
-  console.log("Created audio id", audioId);
+  // const collection = db.collection(`users/${req.user.uid}/transcriptions`)
+  // const audioData = {
+  //   stage: "pre-upload",
+  //   name: "audio"
+  // }
+  // const stored = await collection.add(audioData)
+  // const audioId = stored.id;
+  // console.log("Created audio id", audioId);
 
-  await writeFile(req, audioId);
-  await stored.update({ stage: "pre-transcode" });
+  // await writeFile(req, audioId);
+  // console.log("Finished writing file")
+  // await stored.update({ stage: "pre-transcode" });
 
-  res.sendStatus(201);
-  console.log("Done");
+  // res.sendStatus(201);
+  // console.log("Done");
 }
 
 admin.initializeApp();
 const db = admin.firestore();
 const cors = corsFactory({ origin: true });
-const app = express().use(cors).use(validateFirebaseIdToken);
+const multer = multerFactory();
+const app = express()
+  .use(cors)
+  .use(multer.any())
+  .use(validateFirebaseIdToken);
 app.post("*", handleRequest);
 
 export const run = app;
