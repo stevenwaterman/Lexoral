@@ -2,12 +2,13 @@ import { format } from "util";
 import express from "express";
 import Multer from "multer";
 import { Storage } from "@google-cloud/storage";
+import cors from "cors";
 
 // Instantiate a storage client
 const storage = new Storage();
 
 const app = express();
-
+app.use(cors());
 // This middleware is available in Express v4.16.0 onwards
 app.use(express.json());
 

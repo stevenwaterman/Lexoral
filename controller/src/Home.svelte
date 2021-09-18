@@ -57,10 +57,11 @@
   Welcome, {user.email}
   <button on:click={sendRequest}>Fetch</button>
 
-  <form method="post" enctype="multipart/form-data" action="https://europe-west2-lexoral-test.cloudfunctions.net/upload">
+
+  <form method="post" enctype="multipart/form-data" on:submit|preventDefault={upload}>
     <div>
-      <label for="file">Choose audio to upload</label>
-      <input id="file" name="file" type="file" accept="audio/*" bind:this={fileInput}>
+      <label for="file_upload">Choose audio to upload</label>
+      <input id="file_upload" type="file" accept="audio/*" bind:this={fileInput}>
     </div>
     <div>
       <input type="submit">
