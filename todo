@@ -64,3 +64,5 @@ maybe only compile functions if they've changed
 Add function to convert to extract audio (if video) + convert to wav + amplify (probably ffmpeg)
 
 Disable force destroy on buckets once live
+create iam.serviceAccounts.signBlob role with terraform
+enable https://console.developers.google.com/apis/api/iamcredentials.googleapis.com/overview?project=463294190405

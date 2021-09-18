@@ -7,6 +7,7 @@ Lexoral makes use of a number of APIs that need to be manually enabled before yo
 * Cloud Speech-to-Text
 * Identity Platform
 * Firestore (native mode, europe-west-2)
+* IAM Service Account Credentials API
 
 # In-console setup
 

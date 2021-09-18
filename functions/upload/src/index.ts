@@ -81,12 +81,15 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     contentType: 'application/octet-stream',
   } as const;
 
-  const [url] = await new Storage()
+  await new Storage()
     .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
     .file(audioId)
-    .getSignedUrl(options);
-
-  res.status(200).send(url);
+    .getSignedUrl(options)
+    .then(([url]) => res.status(200).send(url))
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 }
 
 admin.initializeApp();
