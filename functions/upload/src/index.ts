@@ -3,7 +3,7 @@ import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
 import multer from "multer";
-import MulterGCS from "multer-cloud-storage";
+import {storageEngine} from "multer-cloud-storage";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
@@ -95,7 +95,7 @@ function getFilename(req: Request, file: File, cb: (err: string | null, filename
   cb(null, (req as any)["audioId"]);
 }
 
-const storage = new MulterGCS({
+const storage = storageEngine({
   bucket: `${process.env["PROJECT_ID"]}-raw-audio`,
   filename: getFilename,
   uniformBucketLevelAccess: true
