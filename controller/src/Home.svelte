@@ -33,7 +33,7 @@
     }
 
     const data = new FormData();
-    data.append('file', file);
+    // data.append('file', file);
     data.append('name', 'audio');
 
     const idToken = await user.getIdToken();
@@ -56,7 +56,10 @@
 {:else}
   Welcome, {user.email}
   <button on:click={sendRequest}>Fetch</button>
-
+  <!-- <form method="post" enctype="multipart/form-data" action="https://europe-west2-lexoral-test.cloudfunctions.net/upload">
+    <input id="file_upload" type="file" name="file" accept="audio/*">
+    <input type="submit">
+  </form> -->
 
   <form method="post" enctype="multipart/form-data" on:submit|preventDefault={upload}>
     <div>

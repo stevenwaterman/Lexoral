@@ -1,56 +1,98 @@
-import { format } from "util";
-import express from "express";
-import Multer from "multer";
 import { Storage } from "@google-cloud/storage";
-import cors from "cors";
+import type { NextFunction, Request, Response } from "express";
+import admin, { storage } from "firebase-admin";
+import corsFactory from "cors";
+import express from "express";
 
-// Instantiate a storage client
-const storage = new Storage();
+type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
+type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
 
-const app = express();
-app.use(cors());
-// This middleware is available in Express v4.16.0 onwards
-app.use(express.json());
+// Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
+// The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
+// `Authorization: Bearer <Firebase ID Token>`.
+// when decoded successfully, the ID Token content will be added as `req.user`.
+async function validateFirebaseIdToken(
+  req: HydratedRequestInput, 
+  res: Response,
+  next: NextFunction
+) {
+  console.log('Check if request is authorized with Firebase ID token');
 
-// Multer is required to process file uploads and make them available via
-// req.files.
-const multer = Multer({
-  storage: Multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024, // no larger than 5mb, you can change as needed.
-  },
-});
-
-// A bucket is a container for objects (files).
-const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
-
-// Process the file upload and upload to Google Cloud Storage.
-app.post('*', multer.any(), (req, res, next) => {
-  console.log("Called");
-  console.log("Files", req.files);
-  console.log("Body", req.body);
-  if (!req.file) {
-    res.status(400).send('No file uploaded.');
+  if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
+      !(req.cookies && req.cookies.__session)) {
+    console.error(
+      'No Firebase ID token was passed as a Bearer token in the Authorization header.',
+      'Make sure you authorize your request by providing the following HTTP header:',
+      'Authorization: Bearer <Firebase ID Token>',
+      'or by passing a "__session" cookie.'
+    );
+    res.status(403).send('Unauthorized');
     return;
   }
 
-  // Create a new blob in the bucket and upload the file data.
-  const blob = bucket.file(req.file.originalname);
-  const blobStream = blob.createWriteStream();
+  let idToken;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    console.log('Found "Authorization" header');
+    // Read the ID Token from the Authorization header.
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else if(req.cookies) {
+    console.log('Found "__session" cookie');
+    // Read the ID Token from cookie.
+    idToken = req.cookies.__session;
+  } else {
+    // No cookie
+    res.status(403).send('Unauthorized');
+    return;
+  }
 
-  blobStream.on('error', err => {
-    next(err);
-  });
+  try {
+    const decodedIdToken = await admin.auth().verifyIdToken(idToken);
+    console.log('ID Token correctly decoded', decodedIdToken);
+    console.log("Decoded user:", decodedIdToken.email)
+    req.user = decodedIdToken;
+    next();
+    return;
+  } catch (error) {
+    console.error('Error while verifying Firebase ID token:', error);
+    res.status(403).send('Unauthorized');
+    return;
+  }
+};
 
-  blobStream.on('finish', () => {
-    // The public URL can be used to directly access the file via HTTP.
-    const publicUrl = format(
-      `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-    );
-    res.status(200).send(publicUrl);
-  });
+async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
+  const req = reqInput as HydratedRequest;
+  console.log("Request handler hit");
+  // TODO check if 0 credit, reject early
+  // TODO check available credit, reject if not enough
 
-  blobStream.end(req.file.buffer);
-});
+  const collection = db.collection(`users/${req.user.uid}/transcriptions`)
+  const audioData = {
+    stage: "pre-upload",
+    name: "audio"
+  }
+  const stored = await collection.add(audioData)
+  const audioId = stored.id;
+  console.log("Created audio id", audioId);
+
+  const options = {
+    version: 'v4',
+    action: 'write',
+    expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+    contentType: 'application/octet-stream',
+  } as const;
+
+  const [url] = await new Storage()
+    .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
+    .file(audioId)
+    .getSignedUrl(options);
+
+  res.status(200).send(url);
+}
+
+admin.initializeApp();
+const db = admin.firestore();
+const cors = corsFactory({ origin: true });
+const app = express().use(cors).use(validateFirebaseIdToken);
+app.post("*", handleRequest);
 
 export const run = app;
