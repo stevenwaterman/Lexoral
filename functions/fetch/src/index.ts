@@ -5,7 +5,6 @@ import corsFactory from "cors";
 import express from "express";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
-type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -16,8 +15,6 @@ async function validateFirebaseIdToken(
   res: Response,
   next: NextFunction
 ) {
-  console.log('Check if request is authorized with Firebase ID token');
-
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
       !(req.cookies && req.cookies.__session)) {
     console.error(
@@ -32,11 +29,9 @@ async function validateFirebaseIdToken(
 
   let idToken;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-    console.log('Found "Authorization" header');
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split('Bearer ')[1];
   } else if(req.cookies) {
-    console.log('Found "__session" cookie');
     // Read the ID Token from cookie.
     idToken = req.cookies.__session;
   } else {
@@ -47,8 +42,6 @@ async function validateFirebaseIdToken(
 
   try {
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log('ID Token correctly decoded', decodedIdToken);
-    console.log("Decoded user:", decodedIdToken.email)
     req.user = decodedIdToken;
     next();
     return;
@@ -74,8 +67,6 @@ function sendFile(res: Response) {
 }
 
 function handleRequest(reqInput: HydratedRequestInput, res: Response) {
-  const req = reqInput as HydratedRequest;
-  console.log("Request handler hit");
   sendFile(res);
 }
 

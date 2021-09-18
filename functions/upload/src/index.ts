@@ -16,8 +16,6 @@ async function validateFirebaseIdToken(
   res: Response,
   next: NextFunction
 ) {
-  console.log('Check if request is authorized with Firebase ID token');
-
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
       !(req.cookies && req.cookies.__session)) {
     console.error(
@@ -32,11 +30,9 @@ async function validateFirebaseIdToken(
 
   let idToken;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-    console.log('Found "Authorization" header');
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split('Bearer ')[1];
   } else if(req.cookies) {
-    console.log('Found "__session" cookie');
     // Read the ID Token from cookie.
     idToken = req.cookies.__session;
   } else {
@@ -47,8 +43,6 @@ async function validateFirebaseIdToken(
 
   try {
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log('ID Token correctly decoded', decodedIdToken);
-    console.log("Decoded user:", decodedIdToken.email)
     req.user = decodedIdToken;
     next();
     return;
@@ -61,7 +55,6 @@ async function validateFirebaseIdToken(
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
-  console.log("Request handler hit");
   // TODO check if 0 credit, reject early
 
   const collection = db.collection(`users/${req.user.uid}/transcriptions`)
@@ -73,13 +66,11 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const audioId = stored.id;
   console.log("Created audio id", audioId);
 
-  console.log("Starting upload");
   const writeStream = new Storage()
-    .bucket(`${process.env["PROJECT_ID"]}-audio`)
+    .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
     .file(audioId)
     .createWriteStream();
   req.pipe(writeStream);
-  console.log("Finished upload");
 
   await stored.update({
     stage: "pre-transcode"
