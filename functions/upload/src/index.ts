@@ -57,23 +57,8 @@ async function validateFirebaseIdToken(
 async function preUpload(reqInput: HydratedRequestInput, res: Response, next: () => void) {
   const req = reqInput as HydratedRequest;
   // TODO check if 0 credit, reject early
-
-  const name: string | undefined = req.body["name"];
-  if (name === undefined) {
-    res.status(400).send("Missing name");
-  }
-
-  const file = req.file;
-  if (file === undefined) {
-    res.status(400).send("Missing file");
-    return;
-  }
-
-  console.log(name, file);
-  res.sendStatus(200);
-
   const collection = db.collection(`users/${req.user.uid}/transcriptions`);
-  const stored = await collection.add({ stage: "pre-upload", name });
+  const stored = await collection.add({ stage: "pre-upload" });
   const audioId = stored.id;
   (req as any)["audioId"] = audioId;
   console.log("Created audio id", audioId);
@@ -84,7 +69,10 @@ async function postUpload(reqInput: HydratedRequestInput, res: Response, next: (
   const req = reqInput as HydratedRequest;
   console.log("Finished writing file");
   const audioId: string = (req as any)["audioId"];
-  await db.doc(`users/${req.user.uid}/transcriptions/${audioId}`).update({ stage: "pre-transcode" })
+  const name: string | undefined = req.body["name"];
+  console.log("name", name);
+  const audioData = { stage: "pre-transcode", name };
+  await db.doc(`users/${req.user.uid}/transcriptions/${audioId}`).update(audioData)
   console.log("Updated firestore");
 
   res.sendStatus(201);
