@@ -19,7 +19,7 @@ resource "google_storage_bucket" "audio" {
   location = "europe-west2"
   uniform_bucket_level_access = true
   cors {
-    origin          = ["http://localhost", "https://lexoral.com"]
+    origin          = ["http://localhost", "http://localhost:5000", "https://lexoral.com"]
     method          = ["PUT"]
     response_header = ["*"]
     max_age_seconds = 3600

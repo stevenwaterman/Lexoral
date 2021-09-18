@@ -42,6 +42,9 @@
 
     await fetch(signedUrl, {
       method: "put",
+      headers: {
+        "Content-Type": "application/octet-stream"
+      },
       body: file
     })
   }
