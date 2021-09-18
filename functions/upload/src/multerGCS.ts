@@ -50,6 +50,7 @@ class MulterGoogleCloudStorage implements multer.StorageEngine {
 	}
 
 	_handleFile = (req: Request, file: any, cb: (err: any | null, result?: any) => void) => {
+    console.log("upload started");
 		const blobFile = this.getBlobFileReference(req);
     const blobPath = blobFile.destination + blobFile.filename;
     const blob = this.bucket.file(blobPath);
@@ -57,6 +58,7 @@ class MulterGoogleCloudStorage implements multer.StorageEngine {
     file.stream.pipe(blobStream)
       .on('error', (err: any) => cb(err))
       .on('finish', () => {
+        console.log("upload complete");
         const name = blob.metadata.name;
         const filename = name.substr(name.lastIndexOf('/')+1);
         cb(null, {
@@ -72,6 +74,7 @@ class MulterGoogleCloudStorage implements multer.StorageEngine {
           //metadata: blob.metadata
         })
       });
+    console.log("upload function returning");
 	}
 	_removeFile =  (req: Request, file: any, cb: (err: any | null, result?: any) => void) => {
 		const blobFile = this.getBlobFileReference(req);

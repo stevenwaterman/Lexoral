@@ -55,6 +55,7 @@ async function validateFirebaseIdToken(
 };
 
 async function preUpload(reqInput: HydratedRequestInput, res: Response, next: () => void) {
+  console.log("Pre upload started")
   const req = reqInput as HydratedRequest;
   // TODO check if 0 credit, reject early
   const collection = db.collection(`users/${req.user.uid}/transcriptions`);
@@ -62,21 +63,23 @@ async function preUpload(reqInput: HydratedRequestInput, res: Response, next: ()
   const audioId = stored.id;
   (req as any)["audioId"] = audioId;
   console.log("Created audio id", audioId);
+  console.log("Pre upload ended")
   next();
 }
 
 async function postUpload(reqInput: HydratedRequestInput, res: Response, next: () => void) {
   const req = reqInput as HydratedRequest;
-  console.log("Finished writing file");
+  console.log("Post upload started");
   const audioId: string = (req as any)["audioId"];
   const name: string | undefined = req.body["name"];
-  console.log("name", name);
-  const audioData = { stage: "pre-transcode", name };
+  console.log("request", req);
+  console.log("name", name); // TODO add name in
+  const audioData = { stage: "pre-transcode" };
   await db.doc(`users/${req.user.uid}/transcriptions/${audioId}`).update(audioData)
   console.log("Updated firestore");
 
   res.sendStatus(201);
-  console.log("Done");
+  console.log("Post upload ended");
 }
 
 function getFilename(req: Request) {
