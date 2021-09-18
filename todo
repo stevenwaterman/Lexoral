@@ -62,3 +62,5 @@ maybe only compile functions if they've changed
 
 
 Add function to convert to extract audio (if video) + convert to wav + amplify (probably ffmpeg)
+
+Disable force destroy on buckets once live
