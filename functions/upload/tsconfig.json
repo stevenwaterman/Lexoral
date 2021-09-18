@@ -7,12 +7,12 @@
     "sourceMap": true,
     "outDir": "dist",
     "strict": true,
-    "noUncheckedIndexedAccess": true,
+    // "noUncheckedIndexedAccess": true,
     // "exactOptionalPropertyTypes": true TODO enable this once svelte-check updates to TS 4.4
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true
+    // "noFallthroughCasesInSwitch": true,
+    // "noImplicitOverride": true,
+    // "noImplicitReturns": true,
+    // "noPropertyAccessFromIndexSignature": true
   },
   "lib": ["es2015"]
 }

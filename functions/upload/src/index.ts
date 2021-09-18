@@ -3,7 +3,7 @@ import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
 import multer from "multer";
-import { storageEngine } from "./multerGCS.js";
+import MulterGoogleCloudStorage from "./multerGCS.js";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
@@ -54,7 +54,7 @@ async function validateFirebaseIdToken(
   }
 };
 
-async function preUpload(reqInput: HydratedRequestInput, res: Response, next: () => void) {
+async function preUpload(reqInput: HydratedRequestInput, res: Response, next: NextFunction) {
   console.log("Pre upload started")
   const req = reqInput as HydratedRequest;
   // TODO check if 0 credit, reject early
@@ -67,12 +67,17 @@ async function preUpload(reqInput: HydratedRequestInput, res: Response, next: ()
   next();
 }
 
-async function postUpload(reqInput: HydratedRequestInput, res: Response, next: () => void) {
+async function upload(req: Request, res: Response, next: NextFunction) {
+  console.log("Upload started");
+  multerUpload(req, res, next);
+  console.log("Upload ended")
+}
+
+async function postUpload(reqInput: HydratedRequestInput, res: Response, next: NextFunction) {
   const req = reqInput as HydratedRequest;
   console.log("Post upload started");
   const audioId: string = (req as any)["audioId"];
   const name: string | undefined = req.body["name"];
-  console.log("request", req);
   console.log("name", name); // TODO add name in
   const audioData = { stage: "pre-transcode" };
   await db.doc(`users/${req.user.uid}/transcriptions/${audioId}`).update(audioData)
@@ -86,7 +91,7 @@ function getFilename(req: Request) {
   return (req as any)["audioId"];
 }
 
-const storage = storageEngine({
+const storage = new MulterGoogleCloudStorage({
   bucket: `${process.env["PROJECT_ID"]}-raw-audio`,
   destination: "/",
   filename: getFilename
@@ -99,7 +104,7 @@ const app = express()
   .use(cors)
   .use(validateFirebaseIdToken)
 
-const upload = multer({storage}).single("file");
+const multerUpload = multer({storage}).single("file");
 
 app.post("*", preUpload, upload, postUpload);
 

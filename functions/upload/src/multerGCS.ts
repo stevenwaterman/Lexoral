@@ -31,7 +31,7 @@ export type MulterGoogleCloudStorageOptions = {
   filename: (req: Request) => string;
 };
 
-class MulterGoogleCloudStorage implements multer.StorageEngine {
+export default class MulterGoogleCloudStorage implements multer.StorageEngine {
 	private bucket: Bucket;
 	private storage: Storage;
 	private options: StorageOptions & MulterGoogleCloudStorageOptions;
