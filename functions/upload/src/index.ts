@@ -3,7 +3,7 @@ import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
 import multer from "multer";
-import { storageEngine } from "./multerGCS";
+import { storageEngine } from "./multerGCS.js";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
