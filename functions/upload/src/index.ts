@@ -1,8 +1,7 @@
 import { Storage } from "@google-cloud/storage";
-import { json, NextFunction, Request, Response } from "express";
+import express, { json, NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import cors from "cors";
-import express from "express";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
@@ -16,8 +15,6 @@ async function validateFirebaseIdToken(
   res: Response,
   next: NextFunction
 ) {
-  console.log('Check if request is authorized with Firebase ID token');
-
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
       !(req.cookies && req.cookies.__session)) {
     console.error(
@@ -32,23 +29,16 @@ async function validateFirebaseIdToken(
 
   let idToken;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-    console.log('Found "Authorization" header');
-    // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split('Bearer ')[1];
   } else if(req.cookies) {
-    console.log('Found "__session" cookie');
-    // Read the ID Token from cookie.
     idToken = req.cookies.__session;
   } else {
-    // No cookie
     res.status(403).send('Unauthorized');
     return;
   }
 
   try {
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log('ID Token correctly decoded', decodedIdToken);
-    console.log("Decoded user:", decodedIdToken.email)
     req.user = decodedIdToken;
     next();
     return;
@@ -61,9 +51,10 @@ async function validateFirebaseIdToken(
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
-  console.log("Request handler hit");
   // TODO check if 0 credit, reject early
   // TODO check available credit, reject if not enough
+
+  console.log(req.body);
 
   const name = req.body["name"];
   if (name === undefined) {
