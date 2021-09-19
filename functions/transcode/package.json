@@ -1,0 +1,23 @@
+{
+  "name": "lexoral-transcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Steven Waterman",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.18",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^5.14.2",
+    "fluent-ffmpeg": "^2.1.2"
+  }
+}

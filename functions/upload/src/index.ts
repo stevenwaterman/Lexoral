@@ -85,7 +85,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 
   await new Storage()
     .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
-    .file(audioId)
+    .file(`${req.user.uid}_${audioId}`)
     .getSignedUrl(options)
     .then(([url]) => res.status(200).send(url))
     .catch(err => {

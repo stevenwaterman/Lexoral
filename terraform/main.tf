@@ -69,6 +69,33 @@ resource "google_storage_bucket" "functions_code" {
 }
 
 
+
+resource "google_storage_bucket_object" "transcode_function_src" {
+  name   = "transcode-${substr(filemd5("./functions/transcode.zip"), 0, 10)}.zip"
+  bucket = google_storage_bucket.functions_code.name
+  source = "./functions/transcode.zip"
+}
+
+resource "google_cloudfunctions_function" "transcode" {
+  name        = "transcode"
+  runtime     = "nodejs14"
+
+  available_memory_mb   = 128
+  source_archive_bucket = google_storage_bucket.functions_code.name
+  source_archive_object = google_storage_bucket_object.transcode_function_src.name
+  entry_point           = "run"
+  environment_variables = {
+    PROJECT_ID = data.google_project.project.project_id
+  }
+
+  event_trigger {
+    event_type = "google.storage.object.finalize"
+    resource = google_storage_bucket.audio.name
+  }
+}
+
+
+
 resource "google_storage_bucket_object" "transcribe_function_src" {
   name   = "transcribe-${substr(filemd5("./functions/transcribe.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name

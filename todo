@@ -66,3 +66,16 @@ Add function to convert to extract audio (if video) + convert to wav + amplify (
 Disable force destroy on buckets once live
 create iam.serviceAccounts.signBlob role with terraform
 enable https://console.developers.google.com/apis/api/iamcredentials.googleapis.com/overview?project=463294190405
+
+
+
+
+
+
+
+Function:
+
+trigger from finalize in bucket lexoral-test-raw-audio
+convert audio with ffmpeg from whatever file format to mp3 for playback and dump into lexoral-test-playback-audio
+inspect audio length and charge user's credit
+convert audio with ffmpeg to wav for transcription and dump into lexoral-text-transcription-audio
