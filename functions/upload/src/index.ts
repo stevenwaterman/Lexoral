@@ -1,5 +1,5 @@
 import { Storage } from "@google-cloud/storage";
-import type { NextFunction, Request, Response } from "express";
+import { json, NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import cors from "cors";
 import express from "express";
@@ -65,10 +65,16 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   // TODO check if 0 credit, reject early
   // TODO check available credit, reject if not enough
 
+  const name = req.body["name"];
+  if (name === undefined) {
+    res.status(400).send("Missing 'name' field in body");
+    return;
+  }
+
   const collection = db.collection(`users/${req.user.uid}/transcriptions`)
   const audioData = {
     stage: "pre-upload",
-    name: "audio"
+    name
   }
   const stored = await collection.add(audioData)
   const audioId = stored.id;
@@ -94,7 +100,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 
 admin.initializeApp();
 const db = admin.firestore();
-const app = express().use(cors()).use(validateFirebaseIdToken);
+const app = express().use(cors()).use(validateFirebaseIdToken).use(json());
 app.options("*", cors() as any);
 app.post("*", handleRequest);
 

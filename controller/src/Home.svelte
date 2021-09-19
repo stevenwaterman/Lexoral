@@ -37,7 +37,10 @@
       method: "post",
       headers: {
         "Authorization": `Bearer ${idToken}`
-      }
+      },
+      body: JSON.stringify({
+        name: "TestName"
+      })
     }).then(res => res.text());
 
     await fetch(signedUrl, {
