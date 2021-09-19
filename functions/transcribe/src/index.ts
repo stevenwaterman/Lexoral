@@ -11,7 +11,7 @@ export function run(event: { name: string }) {
 }
 
 function transcribe(fileName: string) {
-  const gcsUri: string = `gs://${process.env["PROJECT_ID"]}-audio/${fileName}`;
+  const gcsUri: string = `gs://${process.env["PROJECT_ID"]}-transcription-audio/${fileName}`;
 
   const audio: protos.google.cloud.speech.v1p1beta1.IRecognitionAudio = { uri: gcsUri };
 
