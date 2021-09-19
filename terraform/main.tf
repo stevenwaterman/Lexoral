@@ -80,7 +80,7 @@ resource "google_cloudfunctions_function" "transcode" {
   name        = "transcode"
   runtime     = "nodejs14"
 
-  available_memory_mb   = 128
+  available_memory_mb   = 8192
   source_archive_bucket = google_storage_bucket.functions_code.name
   source_archive_object = google_storage_bucket_object.transcode_function_src.name
   entry_point           = "run"
