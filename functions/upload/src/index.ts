@@ -72,7 +72,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   }
 
   const audioData = { stage: "pre-upload", name };
-  const stored = await db.collection(`users/${req.user.uid}/transcriptions`).add(audioData);
+  const stored = await db.collection(`users/${req.user.uid}/transcripts`).add(audioData);
   const audioId = stored.id;
   console.log("Created audio id", audioId);
 
