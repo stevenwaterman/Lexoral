@@ -63,7 +63,6 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     res.status(500).send("User profile missing, contact support");
     return;
   }
-  console.log(userDoc.data());
 
   const creditString = userDoc.get("secondsCredit");
   const credit = parseInt(creditString);
