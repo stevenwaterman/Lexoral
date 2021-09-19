@@ -23,9 +23,9 @@ def run(event, context):
 def download(storage_client, file_name):
   audio_name = file_name[:-5]
   project_id = environ.get("PROJECT_ID", "Project ID not set")
-  bucket = storage_client.get_bucket(f'{project_id}-audio')
+  bucket = storage_client.get_bucket(f'{project_id}-transcription-audio')
   bucket.blob(audio_name).download_to_filename("/tmp/audio")
-  return load_audio("/tmp/audio", sr=44100)
+  return load_audio("/tmp/audio", sr=16000)
 
 def upload(storage_client, data, file_name):
   project_id = environ.get("PROJECT_ID", "Project ID not set")
