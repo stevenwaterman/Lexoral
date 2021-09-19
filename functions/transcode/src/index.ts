@@ -1,6 +1,7 @@
 import ffmpeg from "fluent-ffmpeg";
 import { Storage } from "@google-cloud/storage";
 import admin from "firebase-admin";
+import fs from "fs";
 
 /**
  * Triggered from a change to a Cloud Storage bucket.
@@ -37,14 +38,13 @@ export async function run({ name }: { name: string }) {
   const storage = new Storage();
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(name);
-  const source = sourceFile.createReadStream();
 
   const playbackBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
   const playbackFile = playbackBucket.file(`${name}.mp3`);
   const playback = playbackFile.createWriteStream();
 
   const durationSeconds = await new Promise<number>(resolve => {
-    ffmpeg(source)
+    ffmpeg(sourceFile.createReadStream())
       .audioFilter("loudnorm")
       .noVideo()
       .audioCodec('libmp3lame')
@@ -93,7 +93,7 @@ export async function run({ name }: { name: string }) {
   const transcribe = transcribeFile.createWriteStream();
 
   await new Promise<void>(resolve => {
-    ffmpeg(source)
+    ffmpeg(sourceFile.createReadStream())
       .audioFilter("loudnorm")
       .noVideo()
       .audioFrequency(22050)
