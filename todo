@@ -66,11 +66,14 @@ Add function to convert to extract audio (if video) + convert to wav + amplify (
 Disable force destroy on buckets once live
 create iam.serviceAccounts.signBlob role with terraform
 enable https://console.developers.google.com/apis/api/iamcredentials.googleapis.com/overview?project=463294190405
+ 
 
+static demo version
 
-
-
-
+make a note on the user profile when they've got pending transcripts
+provide a way to resume a transcription after not having enough money
+check that user is not disabled
+add pre-upload audio editing + size checking (web audio api)
 
 
 Function:

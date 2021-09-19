@@ -85,7 +85,8 @@ export async function run({ name }: { name: string }) {
       return
     }
 
-    transaction.update(userDoc, { secondsCredit: credit - roundedDuration })
+    const newCredit = credit - roundedDuration;
+    transaction.update(userDoc, { secondsCredit: newCredit.toString() })
   });
 
   const transcribeBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
