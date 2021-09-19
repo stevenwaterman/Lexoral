@@ -41,12 +41,15 @@ export async function run({ name }: { name: string }) {
 
   const playbackBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
   const playbackFile = playbackBucket.file(`${name}.mp3`);
-  const playback = playbackFile.createWriteStream()
+  const playback = playbackFile.createWriteStream();
 
   const durationSeconds = await new Promise<number>(resolve => {
     ffmpeg(source)
       .audioFilter("loudnorm")
       .noVideo()
+      .audioCodec('libmp3lame')
+      .audioQuality(2)
+      .audioFrequency(22050)
       .format("mp3")
       .output(playback, {end: true})
       .on("end", (_, stderr: string) => {
@@ -83,7 +86,21 @@ export async function run({ name }: { name: string }) {
     }
 
     transaction.update(userDoc, { secondsCredit: credit - roundedDuration })
-  })
+  });
 
-  console.log("done", durationSeconds);
+  const transcribeBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
+  const transcribeFile = transcribeBucket.file(`${name}.wav`);
+  const transcribe = transcribeFile.createWriteStream();
+
+  await new Promise<void>(resolve => {
+    ffmpeg(source)
+      .audioFilter("loudnorm")
+      .noVideo()
+      .audioFrequency(22050)
+      .audioChannels(1)
+      .format("wav")
+      .output(transcribe, {end: true})
+      .on("end", resolve)
+      .run()
+  });
 }

@@ -16,7 +16,7 @@ function transcribe(fileName: string) {
   const audio: protos.google.cloud.speech.v1p1beta1.IRecognitionAudio = { uri: gcsUri };
 
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
-    encoding: "MP3",
+    encoding: "LINEAR16",
     sampleRateHertz: 44100,
     languageCode: "en-US",
     maxAlternatives: 5,
