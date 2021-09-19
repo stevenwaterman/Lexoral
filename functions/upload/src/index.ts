@@ -51,10 +51,6 @@ async function validateFirebaseIdToken(
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
-  // TODO check if 0 credit, reject early
-  // TODO check available credit, reject if not enough
-
-  console.log(req.body);
 
   const name = req.body["name"];
   if (name === undefined) {
@@ -62,12 +58,21 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const collection = db.collection(`users/${req.user.uid}/transcriptions`)
-  const audioData = {
-    stage: "pre-upload",
-    name
+  const userDoc = await db.doc(`users/${req.user.uid}`).get();
+  if (!userDoc.exists) {
+    res.status(500).send("User profile missing, contact support");
+    return;
   }
-  const stored = await collection.add(audioData)
+  console.log(userDoc.data());
+
+  const creditString = userDoc.get("secondsCredit");
+  const credit = parseInt(creditString);
+  if (credit <= 0) {
+    res.status(402).send("Account has no credit");
+  }
+
+  const audioData = { stage: "pre-upload", name };
+  const stored = await db.collection(`users/${req.user.uid}/transcriptions`).add(audioData);
   const audioId = stored.id;
   console.log("Created audio id", audioId);
 

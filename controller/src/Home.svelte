@@ -33,23 +33,24 @@
     }
 
     const idToken = await user.getIdToken();
-    const signedUrl = await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/upload", {
+    await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/upload", {
       method: "post",
       headers: {
-        "Authorization": `Bearer ${idToken}`
+        "Authorization": `Bearer ${idToken}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         name: "TestName"
       })
-    }).then(res => res.text());
-
-    await fetch(signedUrl, {
+    })
+    .then(res => res.text())
+    .then(url => fetch(url, {
       method: "put",
       headers: {
         "Content-Type": "application/octet-stream"
       },
       body: file
-    })
+    }));
   }
 </script>
 
