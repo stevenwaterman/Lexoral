@@ -69,6 +69,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const credit = parseInt(creditString);
   if (credit <= 0) {
     res.status(402).send("Account has no credit");
+    return;
   }
 
   const audioData = { stage: "pre-upload", name };

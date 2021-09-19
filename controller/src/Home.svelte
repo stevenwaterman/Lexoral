@@ -43,6 +43,11 @@
         name: "TestName"
       })
     })
+    .then(async res => {
+      if (res.ok) return res;
+      const text = await res.text();
+      throw new Error("Request was rejected: " + text);
+    })
     .then(res => res.text())
     .then(url => fetch(url, {
       method: "put",
@@ -50,7 +55,8 @@
         "Content-Type": "application/octet-stream"
       },
       body: file
-    }));
+    }))
+    .catch(console.error);
   }
 </script>
 
