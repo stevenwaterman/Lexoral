@@ -96,7 +96,7 @@ export async function run({ name }: { name: string }) {
     ffmpeg(sourceFile.createReadStream())
       .audioFilter("loudnorm")
       .noVideo()
-      .audioFrequency(44100)
+      .audioFrequency(16000)
       .audioChannels(1)
       .format("wav")
       .output(transcribe, {end: true})
