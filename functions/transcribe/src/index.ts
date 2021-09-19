@@ -17,7 +17,6 @@ function transcribe(fileName: string) {
 
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
     encoding: "LINEAR16",
-    sampleRateHertz: 44100,
     languageCode: "en-US",
     maxAlternatives: 5,
     audioChannelCount: 1,
