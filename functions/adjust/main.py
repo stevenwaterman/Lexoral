@@ -1,11 +1,13 @@
 import numpy as np
 import firebase_admin
+from firebase_admin import firestore
 from json import loads as json_parse, dumps as json_stringify
 from base64 import b64decode
 from google.cloud import storage
 from os import environ
 
-store = firebase_admin.initialize_app().firestore()
+app = firebase_admin.initialize_app()
+store = firestore.client()
 storage_client = storage.Client()
 
 async def run(event):
