@@ -87,3 +87,4 @@ convert audio with ffmpeg to wav for transcription and dump into lexoral-text-tr
 multiple github actions jobs
 update fetch to fetch a specific transcript
 prevent users uploading more if they already have something in status not_paid
+don't throw uncaught exceptions

@@ -10,7 +10,6 @@ export async function run(event: any) {
   if (!userId) throw new Error("userId not found in message");
   if (!transcriptId) throw new Error("transcriptId not found in message");
 
-
   const userDoc = store.doc(`users/${userId}`);
   const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
   const transcript = await transcriptDoc.get();
@@ -24,9 +23,9 @@ export async function run(event: any) {
   let paid = false;
   await store.runTransaction(async transaction => {
     const user = await transaction.get(userDoc);
-    const credit = user.get("creditSeconds");
+    const credit = user.get("secondsCredit");
     if (credit >= duration) {
-      transaction.update(userDoc, { creditSeconds: credit - duration });
+      transaction.update(userDoc, { secondsCredit: credit - duration });
       paid = true;
     }
   });

@@ -22,7 +22,7 @@ export async function run(event: any) {
   const transcriptStage = transcript.get("stage");
   if (transcriptStage !== "post-upload") throw new Error("Expected transcript stage post-upload, got " + transcriptStage)
 
-  const credit = user.get("creditSeconds");
+  const credit = user.get("secondsCredit");
   if (credit <= 0) throw new Error("User " + userId + " has " + credit + " credit, cannot transcribe");
 
   const filename = `${userId}_${transcriptId}`
