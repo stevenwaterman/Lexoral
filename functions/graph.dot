@@ -1,0 +1,24 @@
+digraph {
+  client -> func_upload
+  func_upload -> client
+  client -> bucket_raw_audio
+  bucket_raw_audio -> func_upload_watcher
+  func_upload_watcher -> pubsub_post_upload
+  pubsub_post_upload -> func_transcode_playback
+  func_transcode_playback -> pubsub_transcoded_playback
+  pubsub_transcoded_playback -> func_charge_credit
+  func_charge_credit -> pubsub_not_paid
+  func_charge_credit -> pubsub_paid
+  pubsub_paid -> func_transcode_transcription
+  func_transcode_transcription -> pubsub_transcoded_transcription
+  pubsub_transcoded_transcription -> func_transcode_envelope
+  func_transcode_envelope -> pubsub_transcoded_envelope
+  pubsub_transcoded_envelope -> func_transcribe
+  func_transcribe -> cloud_speech
+  cloud_speech -> bucket_raw_transcripts
+  bucket_raw_transcripts -> func_transcription_watcher
+  func_transcription_watcher -> pubsub_transcribed
+  pubsub_transcribed -> func_align
+  func_align -> pubsub_aligned
+  pubsub_aligned -> func_adjust
+}

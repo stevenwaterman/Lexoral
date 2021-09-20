@@ -226,36 +226,6 @@ resource "google_cloudfunctions_function" "charge_credit" {
 
 
 
-resource "google_pubsub_topic" "transcoded_envelope" {
-  name = "transcoded-envelope"
-}
-
-resource "google_storage_bucket_object" "transcode_envelope_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/transcode-envelope.zip"), 0, 10)}.zip"
-  bucket = google_storage_bucket.functions_code.name
-  source = "./functions/transcode-envelope.zip"
-}
-
-resource "google_cloudfunctions_function" "transcode_envelope" {
-  name        = "transcode_envelope"
-  runtime     = "nodejs14"
-
-  available_memory_mb   = 1024
-  source_archive_bucket = google_storage_bucket.functions_code.name
-  source_archive_object = google_storage_bucket_object.transcode_envelope_function_src.name
-  entry_point           = "run"
-  environment_variables = {
-    PROJECT_ID = data.google_project.project.project_id
-  }
-
-  event_trigger {
-    event_type = "google.pubsub.topic.publish"
-    resource = google_pubsub_topic.paid.name
-  }
-}
-
-
-
 resource "google_pubsub_topic" "transcoded_transcription" {
   name = "transcoded-transcription"
 }
@@ -280,7 +250,37 @@ resource "google_cloudfunctions_function" "transcode_transcription" {
 
   event_trigger {
     event_type = "google.pubsub.topic.publish"
-    resource = google_pubsub_topic.transcoded_envelope.name
+    resource = google_pubsub_topic.paid.name
+  }
+}
+
+
+
+resource "google_pubsub_topic" "transcoded_envelope" {
+  name = "transcoded-envelope"
+}
+
+resource "google_storage_bucket_object" "transcode_envelope_function_src" {
+  name   = "adjust-${substr(filemd5("./functions/transcode-envelope.zip"), 0, 10)}.zip"
+  bucket = google_storage_bucket.functions_code.name
+  source = "./functions/transcode-envelope.zip"
+}
+
+resource "google_cloudfunctions_function" "transcode_envelope" {
+  name        = "transcode_envelope"
+  runtime     = "nodejs14"
+
+  available_memory_mb   = 1024
+  source_archive_bucket = google_storage_bucket.functions_code.name
+  source_archive_object = google_storage_bucket_object.transcode_envelope_function_src.name
+  entry_point           = "run"
+  environment_variables = {
+    PROJECT_ID = data.google_project.project.project_id
+  }
+
+  event_trigger {
+    event_type = "google.pubsub.topic.publish"
+    resource = google_pubsub_topic.transcoded_transcription.name
   }
 }
 
