@@ -306,7 +306,7 @@ resource "google_cloudfunctions_function" "transcribe" {
 
   event_trigger {
     event_type = "google.pubsub.topic.publish"
-    resource = google_pubsub_topic.transcoded_transcription.name
+    resource = google_pubsub_topic.transcoded_envelope.name
   }
 }
 

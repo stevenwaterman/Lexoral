@@ -28,7 +28,7 @@ export async function run(event: any) {
   if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
 
   const transcriptStage = transcript.get("stage");
-  if (transcriptStage !== "transcribed") throw new Error("Expected transcript stage aligned, got " + transcriptStage)
+  if (transcriptStage !== "aligned") throw new Error("Expected transcript stage aligned, got " + transcriptStage)
 
   const envelope = await readEnvelope(userId, transcriptId);
 
@@ -58,11 +58,13 @@ async function readEnvelope(userId: string, transcriptId: string): Promise<Int16
 }
 
 async function writeTranscript(userId: string, transcriptId: string, adjusted: Output): Promise<void> {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve, reject) => {
     const outputFile = transcriptBucket.file(`${userId}_${transcriptId}.json`);
-    const outputStream = outputFile.createWriteStream();
-    const transcriptString = JSON.stringify(adjusted);
-    outputStream.write(transcriptString, () => resolve());
+    const outputStream = outputFile.createWriteStream({ metadata: { contentType: 'text/json' }});
+    Readable.from(JSON.stringify(adjusted))
+      .pipe(outputStream)
+      .on("error", err => reject(err))
+      .on("finish", () => resolve());
   })
 }
 
