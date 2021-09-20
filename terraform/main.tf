@@ -43,6 +43,14 @@ resource "google_storage_bucket" "transcription_audio" {
   force_destroy = true # TODO remove this
 }
 
+resource "google_storage_bucket" "envelope_audio" {
+  name = "${data.google_project.project.project_id}-envelope-audio"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
+  uniform_bucket_level_access = true
+  force_destroy = true # TODO remove this
+}
+
 resource "google_storage_bucket" "raw_transcripts" {
   name = "${data.google_project.project.project_id}-transcripts-raw"
   storage_class = "REGIONAL"

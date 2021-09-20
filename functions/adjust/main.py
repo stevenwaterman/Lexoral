@@ -1,6 +1,4 @@
-from numpy import argmin as np_argmin, abs as np_abs
-from scipy.signal import hilbert, butter, lfilter, argrelextrema
-from librosa import load as load_audio
+import numpy as np
 from json import loads as json_parse, dumps as json_stringify
 from base64 import b64decode
 from google.cloud import storage
@@ -14,18 +12,23 @@ def run(event, context):
   sections = pubsub_data["sections"]
 
   storage_client = storage.Client()
-  signal, sample_rate = download(storage_client, file_name)
-  envelope = get_envelope(signal, sample_rate)
+  envelope = download(storage_client, file_name)
 
-  adjust_sections(sections, envelope, sample_rate)
+  adjust_sections(sections, envelope)
+
   upload(storage_client, sections, file_name)
 
 def download(storage_client, file_name):
-  audio_name = file_name[:-5]
   project_id = environ.get("PROJECT_ID", "Project ID not set")
   bucket = storage_client.get_bucket(f'{project_id}-transcription-audio')
-  bucket.blob(audio_name).download_to_filename("/tmp/audio")
-  return load_audio("/tmp/audio", sr=16000)
+
+  audio_name = file_name[:-5] + ".pcm"
+  bucket.blob(audio_name).download_to_filename("/tmp/envelope.pcm")
+
+  data_type = np.dtype("<i2")
+  with open("/tmp/envelope.pcm", "rb") as envelope_file:
+    buf = envelope_file.read()
+    return np.frombuffer(buf, dtype=data_type)
 
 def upload(storage_client, data, file_name):
   project_id = environ.get("PROJECT_ID", "Project ID not set")
@@ -33,35 +36,18 @@ def upload(storage_client, data, file_name):
   json_data = json_stringify(data)
   bucket.blob(file_name).upload_from_string(json_data)
 
-def butter_lowpass(cutoff, fs, order=5):
-  nyq = 0.5 * fs
-  normal_cutoff = cutoff / nyq
-  b, a = butter(order, normal_cutoff, btype='low', analog=False)
-  return b, a
-
-def butter_lowpass_filter(data, cutoff, fs, order=5):
-  b, a = butter_lowpass(cutoff, fs, order=order)
-  y = lfilter(b, a, data)
-  return y
-
 def min_in_range(time, start_time, end_time, envelope, sample_rate):
   search_start_sample = int(start_time * sample_rate)
   search_end_sample = int(end_time * sample_rate)
 
-  min_slice_idx = np_argmin(envelope[search_start_sample:search_end_sample])
+  min_slice_idx = np.argmin(envelope[search_start_sample:search_end_sample])
   idx = min_slice_idx + search_start_sample
   adjusted_time = idx / sample_rate
   return round(adjusted_time, 3)
 
-def get_envelope(signal, sample_rate):
-  analytic_signal = hilbert(signal)
-  amplitude_envelope = np_abs(analytic_signal)
-  smoothed_envelope = butter_lowpass_filter(amplitude_envelope, 30, sample_rate)
-  return smoothed_envelope
-
-def adjust_sections(sections, envelope, sample_rate):
+def adjust_sections(sections, envelope):
   for section in sections:
-    adjust_section(section, envelope, sample_rate)
+    adjust_section(section, envelope, 1000)
 
 def adjust_section(section, envelope, sample_rate):
   start_time = section["startTime"]

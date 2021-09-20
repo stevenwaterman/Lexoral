@@ -1,49 +1,84 @@
 import ffmpeg from "fluent-ffmpeg";
-import { Storage } from "@google-cloud/storage";
+import { File, Storage } from "@google-cloud/storage";
 import admin from "firebase-admin";
-import fs from "fs";
 
 /**
  * Triggered from a change to a Cloud Storage bucket.
  */
 export async function run({ name }: { name: string }) {
-  const [userId, audioId] = name.split("_");
-
-  if (userId === undefined || audioId === undefined) {
-    throw new Error("File name formatted wrong: " + name);
-  }
-
-  admin.initializeApp();
-  const store = admin.firestore()
-
-  const userDoc = store.doc(`users/${userId}`);
-  const transcriptDoc = store.doc(`users/${userId}/transcripts/${audioId}`);
-
-  const [preUser, preTranscript] = await Promise.all([userDoc.get(), transcriptDoc.get()]);
-
-  if (!preUser.exists) throw new Error("User " + userId + " profile missing");
-  if (!preTranscript.exists) throw new Error("Transcript " + userId + "/" + audioId + " doc missing");
-
-  const preTranscriptStage = preTranscript.get("stage");
-  if (preTranscriptStage !== "pre-upload") throw new Error("Transcript " + userId + "/" + audioId + " in wrong stage. Expected pre-upload, got " + preTranscriptStage);
-
-  const preUserCreditString = preUser.get("creditSeconds");
-  const preUserCredit = parseInt(preUserCreditString)
-  if (preUserCredit <= 0) throw new Error("User " + userId + " has " + preUserCreditString + " credit, cannot transcribe");
-
-  await transcriptDoc.update({ stage: "pre-transcode" })
-
-  // TODO watch user for updates rather than fetching again
+  const store = admin.initializeApp().firestore()
+  const {userDoc, transcriptDoc, pendingPaymentDuration} = await preChecks(name, store);
 
   const storage = new Storage();
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(name);
 
+  let roundedDuration: number;
+  if (pendingPaymentDuration === undefined) {
+    const durationSeconds = await transcodePlayback(storage, name, sourceFile);
+    roundedDuration = Math.round(durationSeconds);
+  } else {
+    roundedDuration = parseInt(pendingPaymentDuration);
+  }
+
+  store.runTransaction(async transaction => {
+    const user = await transaction.get(userDoc);
+    const creditString = user.get("secondsCredit");
+    const credit = parseInt(creditString);
+
+    transaction.update(transcriptDoc, { duration: roundedDuration.toString() });
+
+    if (credit < roundedDuration) {
+      transaction.update(transcriptDoc, { stage: "mid-transcode-payment-required" });
+      return
+    }
+
+    const newCredit = credit - roundedDuration;
+    transaction.update(userDoc, { secondsCredit: newCredit.toString() });
+  });
+
+  await transcodeEnvelope(storage, name, sourceFile)
+  await transcodeTranscribe(storage, name, sourceFile)
+}
+
+async function preChecks(name: string, store: FirebaseFirestore.Firestore): 
+  Promise<{
+    userDoc: FirebaseFirestore.DocumentReference,
+    transcriptDoc: FirebaseFirestore.DocumentReference,
+    pendingPaymentDuration: string | undefined
+  }> {
+
+  const [userId, audioId] = name.split("_");
+  if (userId === undefined || audioId === undefined) throw new Error("File name formatted wrong: " + name);
+
+  const userDoc = store.doc(`users/${userId}`);
+  const transcriptDoc = store.doc(`users/${userId}/transcripts/${audioId}`);
+  const [user, transcript] = await Promise.all([userDoc.get(), transcriptDoc.get()]);
+
+  if (!user.exists) throw new Error("User " + userId + " profile missing");
+  if (!transcript.exists) throw new Error("Transcript " + userId + "/" + audioId + " doc missing");
+
+  const transcriptStage = transcript.get("stage");
+  if (transcriptStage !== "pre-upload" && transcriptStage !== "mid-transcode-payment-required") {
+    throw new Error("Transcript " + userId + "/" + audioId + " in wrong stage. Expected pre-upload or mid-transcode, got " + transcriptStage);
+  }
+
+  const userCreditString = user.get("creditSeconds");
+  const userCredit = parseInt(userCreditString);
+  if (userCredit <= 0) throw new Error("User " + userId + " has " + userCreditString + " credit, cannot transcribe");
+
+  const pendingPaymentDuration: string | undefined = transcript.get("duration")
+
+  await transcriptDoc.update({ stage: "pre-transcode" });
+  return {userDoc, transcriptDoc, pendingPaymentDuration}
+}
+
+async function transcodePlayback(storage: Storage, name: string, sourceFile: File): Promise<number> {
   const playbackBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
   const playbackFile = playbackBucket.file(`${name}.mp3`);
   const playback = playbackFile.createWriteStream();
 
-  const durationSeconds = await new Promise<number>(resolve => {
+  return new Promise<number>(resolve => {
     ffmpeg(sourceFile.createReadStream())
       .audioFilter("loudnorm")
       .noVideo()
@@ -72,30 +107,35 @@ export async function run({ name }: { name: string }) {
       })
       .run()
   });
+}
 
-  const roundedDuration = Math.round(durationSeconds);
+async function transcodeEnvelope(storage: Storage, name: string, sourceFile: File): Promise<void> {
+  const envelopeBucket = storage.bucket(`${process.env["PROJECT_ID"]}-envelope-audio`);
+  const envelopeFile = envelopeBucket.file(`${name}.pcm`);
+  const envelope = envelopeFile.createWriteStream();
 
-  store.runTransaction(async transaction => {
-    const user = await transaction.get(userDoc);
-    const creditString = user.get("secondsCredit")
-    const credit = parseInt(creditString);
-
-    if (credit < roundedDuration) {
-      transcriptDoc.update({ stage: "mid-transcode-payment-required" });
-      return
-    }
-
-    const newCredit = credit - roundedDuration;
-    transaction.update(userDoc, { secondsCredit: newCredit.toString() })
+  return new Promise<void>(resolve => {
+    ffmpeg(sourceFile.createReadStream())
+      .noVideo()
+      .audioFilter("dynaudnorm=g=3")
+      .audioFilter("asplit")
+      .audioFilter("amultiply")
+      .audioFilter("lowpass=f=20")
+      .audioFilter("aresample=1000")
+      .format("s16le")
+      .output(envelope, {end: true})
+      .on("end", resolve)
+      .run()
   });
+}
 
+async function transcodeTranscribe(storage: Storage, name: string, sourceFile: File): Promise<void> {
   const transcribeBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
   const transcribeFile = transcribeBucket.file(`${name}.wav`);
   const transcribe = transcribeFile.createWriteStream();
 
-  await new Promise<void>(resolve => {
+  return new Promise<void>(resolve => {
     ffmpeg(sourceFile.createReadStream())
-      .audioFilter("loudnorm")
       .noVideo()
       .audioFrequency(16000)
       .audioChannels(1)
