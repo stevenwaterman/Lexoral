@@ -1,0 +1,11 @@
+- (stage: N/A) upload triggered by html, returns signed upload url if non-zero credit and creates transcription document in db (stage: pre-upload)
+- PUT to signed url
+- (stage: pre-upload) upload-watcher is triggered by file creation, publishes to pub/sub (stage: post-upload)
+- (stage: post-upload) transcode-playback is triggered by file creation, transcodes the audio to mp3 for playback, notes the duration on the document, publishes to pub/sub (stage: transcoded-playback)
+- (stage: transcoded-playback) charge-credit is triggered by pub/sub, charges the account (or exits), publishes to pub/sub (stage: paid)
+- (stage: paid) transcode-envelope is triggered by pub/sub, transcodes the audio to envelope for adjusting, publishes to pub/sub (stage: transcoded-envelope)
+- (stage: transcoded-envelope) transcode-transcription is triggered by pub/sub, transcodes the audio for transcription, publishes to pub/sub (stage: transcoded-transcription)
+- (stage: transcoded-transcription) transcribe is triggered by pub/sub, sends the audio for transcription (stage: pre-transcribe)
+- (stage: pre-transcribe) transcribe-watcher is triggered by file creation, publishes to pub/sub (stage: post-transcribe)
+- (stage: post-transcribe) align is triggered by pub/sub, does alignment, publishes to pub/sub (stage: aligned)
+- (stage: aligned) adjust is triggered by pub/sub, does adjustment, done (stage: ready)

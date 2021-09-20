@@ -1,15 +1,42 @@
 import numpy as np
+import firebase_admin
 from json import loads as json_parse, dumps as json_stringify
 from base64 import b64decode
 from google.cloud import storage
 from os import environ
 
-def run(event, context):
+def run(event):
   pubsub_message = b64decode(event['data']).decode('utf-8')
   pubsub_data = json_parse(pubsub_message)
 
-  file_name = pubsub_data["fileName"]
-  sections = pubsub_data["sections"]
+  user_id = pubsub_data["userId"]
+  transcript_id = pubsub_data["transcriptId"]
+  sections = pubsub_data["aligned"]
+
+  if user_id is None:
+    raise "User ID is None"
+
+  if transcript_id is None:
+    raise "Transcript ID is None"
+
+  if sections is None:
+    raise "Aligned data is None"
+
+  store = firebase_admin.initialize_app().firestore()
+
+  user_doc = store.document(f'users/${user_id}')
+  user = await user_doc.get()
+  if not user.exists:
+    raise "User " + user_id + " profile missing"
+
+  transcript_doc = store.document(f'users/${user_id}/transcripts/${transcript_id}')
+  transcript = await transcript_doc.get()
+  if not transcript.exists:
+    raise "Transcript " + user_id + "/" + transcript_id + " doc missing"
+
+  transcript_stage = transcript.get("stage")
+  if transcript_stage != "aligned":
+    raise "Expected transcript stage transcribed, got " + transcript_stage
 
   storage_client = storage.Client()
   envelope = download(storage_client, file_name)
@@ -17,6 +44,10 @@ def run(event, context):
   adjust_sections(sections, envelope)
 
   upload(storage_client, sections, file_name)
+
+  transcript_doc.update({
+    "stage": "ready"
+  })
 
 def download(storage_client, file_name):
   project_id = environ.get("PROJECT_ID", "Project ID not set")

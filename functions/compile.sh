@@ -11,7 +11,7 @@ compile() {
   cd ..
 }
 
-for dir in adjust align fetch transcribe signup upload transcode; do compile "$dir" & done
+for dir in adjust align charge-credit fetch signup transcode-envelope transcode-playback transcode-transcription transcribe transcription-watcher upload upload-watcher; do compile "$dir" & done
 wait
 
 for f in ./dist/error-*; do

@@ -12,7 +12,7 @@ type SignupMetadata = {
 
 type User = {
   profile: UserProfile;
-  secondsCredit: string;
+  secondsCredit: number;
 }
 
 type UserProfile = {
@@ -29,7 +29,7 @@ export async function run(event: SignupEvent) {
       email: email,
       created: createdAt
     },
-    secondsCredit: "0"
+    secondsCredit: 0
   }
 
   admin.initializeApp();

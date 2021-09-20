@@ -64,8 +64,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const creditString = userDoc.get("secondsCredit");
-  const credit = parseInt(creditString);
+  const credit = userDoc.get("secondsCredit");
   if (credit <= 0) {
     res.status(402).send("Account has no credit");
     return;
@@ -73,8 +72,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 
   const audioData = { stage: "pre-upload", name };
   const stored = await db.collection(`users/${req.user.uid}/transcripts`).add(audioData);
-  const audioId = stored.id;
-  console.log("Created audio id", audioId);
+  const transcriptId = stored.id;
+  console.log("Created audio id", transcriptId);
 
   const options = {
     version: 'v4',
@@ -85,7 +84,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 
   await new Storage()
     .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
-    .file(`${req.user.uid}_${audioId}`)
+    .file(`${req.user.uid}_${transcriptId}`)
     .getSignedUrl(options)
     .then(([url]) => res.status(200).send(url))
     .catch(err => {
