@@ -1,13 +1,15 @@
 import admin from "firebase-admin";
 import { PubSub } from "@google-cloud/pubsub";
 
+const store = admin.initializeApp().firestore()
+const pubSubClient = new PubSub();
+
 export async function run(event: any) {
   const messageData = JSON.parse(Buffer.from(event.data, "base64").toString());
   const { userId, transcriptId } = messageData;
   if (!userId) throw new Error("userId not found in message");
   if (!transcriptId) throw new Error("transcriptId not found in message");
 
-  const store = admin.initializeApp().firestore()
 
   const userDoc = store.doc(`users/${userId}`);
   const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
@@ -29,7 +31,6 @@ export async function run(event: any) {
     }
   });
 
-  const pubSubClient = new PubSub();
   const message = { userId, transcriptId };
   const buffer = Buffer.from(JSON.stringify(message));
   let topicName: string;

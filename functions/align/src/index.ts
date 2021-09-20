@@ -43,13 +43,15 @@ type WordAlternative = {
   }
 };
 
+const store = admin.initializeApp().firestore();
+const storage = new Storage();
+const pubSubClient = new PubSub();
+
 export async function run(event: any) {
   const messageData = JSON.parse(Buffer.from(event.data, "base64").toString());
   const { userId, transcriptId } = messageData;
   if (!userId) throw new Error("userId not found in message");
   if (!transcriptId) throw new Error("transcriptId not found in message");
-
-  const store = admin.initializeApp().firestore()
 
   const userDoc = store.doc(`users/${userId}`);
   const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
@@ -67,7 +69,6 @@ export async function run(event: any) {
   await transcriptDoc.update({ stage: "aligned" });
 
   const message = { userId, transcriptId, aligned };
-  const pubSubClient = new PubSub();
   const buffer = Buffer.from(JSON.stringify(message));
   const topicName = `projects/${process.env["PROJECT_ID"]}/topics/aligned`;
   await pubSubClient.topic(topicName).publish(buffer);
@@ -83,7 +84,6 @@ async function streamToString (stream: Readable): Promise<string> {
 }
 
 async function readFile(userId: string, transcriptId: string): Promise<string> {
-  const storage = new Storage();
   const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts-raw`);
   const file = bucket.file(`${userId}_${transcriptId}`);
   return await streamToString(file.createReadStream());
@@ -93,8 +93,6 @@ function transform(response: Response): Output {
   if (!response.results) return [];
   return response.results.flatMap(result => precompute(result));
 }
-
-
 
 function precompute(result: Result): OutputSection[] {
   if (!result.alternatives) return [];

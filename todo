@@ -82,3 +82,8 @@ trigger from finalize in bucket lexoral-test-raw-audio
 convert audio with ffmpeg from whatever file format to mp3 for playback and dump into lexoral-test-playback-audio
 inspect audio length and charge user's credit
 convert audio with ffmpeg to wav for transcription and dump into lexoral-text-transcription-audio
+
+
+multiple github actions jobs
+update fetch to fetch a specific transcript
+prevent users uploading more if they already have something in status not_paid

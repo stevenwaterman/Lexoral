@@ -21,6 +21,8 @@ type UserProfile = {
   created: string; // TODO necessary?
 }
 
+const store = admin.initializeApp().firestore();
+
 export async function run(event: SignupEvent) {
   const email = event.email;
   const createdAt = event.metadata.createdAt;
@@ -32,9 +34,8 @@ export async function run(event: SignupEvent) {
     secondsCredit: 0
   }
 
-  admin.initializeApp();
-  const db = admin.firestore();
   const path = `users/${event.uid}`;
-  await db.doc(path).set(data);
+  await store.doc(path).set(data);
+  
   console.log("Added firestore document", path);
 }

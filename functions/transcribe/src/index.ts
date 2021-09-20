@@ -1,6 +1,8 @@
 import speech, { protos } from "@google-cloud/speech";
-import { PubSub } from "@google-cloud/pubsub";
 import admin from "firebase-admin";
+
+const store = admin.initializeApp().firestore()
+const speechClient = new speech.v1p1beta1.SpeechClient();
 
 export async function run(event: any) {
   const messageData = JSON.parse(Buffer.from(event.data, "base64").toString());
@@ -8,7 +10,6 @@ export async function run(event: any) {
   if (!userId) throw new Error("userId not found in message");
   if (!transcriptId) throw new Error("transcriptId not found in message");
 
-  const store = admin.initializeApp().firestore()
 
   const userDoc = store.doc(`users/${userId}`);
   const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
@@ -19,7 +20,6 @@ export async function run(event: any) {
   const transcriptStage = transcript.get("stage");
   if (transcriptStage !== "transcoded-transcription") throw new Error("Expected transcript stage transcoded-transcription, got " + transcriptStage);
 
-  const speechClient = new speech.v1p1beta1.SpeechClient();
   const inputUri: string = `gs://${process.env["PROJECT_ID"]}-transcription-audio/${userId}_${transcriptId}.wav`;
   const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-raw/${userId}_${transcriptId}`;
 

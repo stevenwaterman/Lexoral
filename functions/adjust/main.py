@@ -5,6 +5,9 @@ from base64 import b64decode
 from google.cloud import storage
 from os import environ
 
+store = firebase_admin.initialize_app().firestore()
+storage_client = storage.Client()
+
 async def run(event):
   pubsub_message = b64decode(event['data']).decode('utf-8')
   pubsub_data = json_parse(pubsub_message)
@@ -22,8 +25,6 @@ async def run(event):
   if sections is None:
     raise "Aligned data is None"
 
-  store = firebase_admin.initialize_app().firestore()
-
   user_doc = store.document(f'users/${user_id}')
   user = await user_doc.get()
   if not user.exists:
@@ -38,18 +39,15 @@ async def run(event):
   if transcript_stage != "aligned":
     raise "Expected transcript stage transcribed, got " + transcript_stage
 
-  storage_client = storage.Client()
-  envelope = download(storage_client, file_name)
-
+  envelope = download(file_name)
   adjust_sections(sections, envelope)
-
-  upload(storage_client, sections, file_name)
+  upload(sections, file_name)
 
   transcript_doc.update({
     "stage": "ready"
   })
 
-def download(storage_client, file_name):
+def download(file_name):
   project_id = environ.get("PROJECT_ID", "Project ID not set")
   bucket = storage_client.get_bucket(f'{project_id}-transcription-audio')
 
@@ -61,7 +59,7 @@ def download(storage_client, file_name):
     buf = envelope_file.read()
     return np.frombuffer(buf, dtype=data_type)
 
-def upload(storage_client, data, file_name):
+def upload(data, file_name):
   project_id = environ.get("PROJECT_ID", "Project ID not set")
   bucket = storage_client.get_bucket(f'{project_id}-transcripts')
   json_data = json_stringify(data)

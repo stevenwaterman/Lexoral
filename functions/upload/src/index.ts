@@ -58,7 +58,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const userDoc = await db.doc(`users/${req.user.uid}`).get();
+  const userDoc = await store.doc(`users/${req.user.uid}`).get();
   if (!userDoc.exists) {
     res.status(500).send("User profile missing, contact support");
     return;
@@ -71,7 +71,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   }
 
   const audioData = { stage: "pre-upload", name };
-  const stored = await db.collection(`users/${req.user.uid}/transcripts`).add(audioData);
+  const stored = await store.collection(`users/${req.user.uid}/transcripts`).add(audioData);
   const transcriptId = stored.id;
   console.log("Created audio id", transcriptId);
 
@@ -82,9 +82,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     contentType: 'application/octet-stream',
   } as const;
 
-  await new Storage()
-    .bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
-    .file(`${req.user.uid}_${transcriptId}`)
+  await bucket.file(`${req.user.uid}_${transcriptId}`)
     .getSignedUrl(options)
     .then(([url]) => res.status(200).send(url))
     .catch(err => {
@@ -93,8 +91,9 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     });
 }
 
-admin.initializeApp();
-const db = admin.firestore();
+const store = admin.initializeApp().firestore();
+const bucket = new Storage().bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
+
 const app = express().use(cors()).use(validateFirebaseIdToken).use(json());
 app.options("*", cors() as any);
 app.post("*", handleRequest);

@@ -52,25 +52,26 @@ async function validateFirebaseIdToken(
   }
 };
 
-function sendFile(res: Response) {
+async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   res.writeHead(200, {
     "Content-Type": "text/json"
   });
 
-  new Storage()
-    .bucket(`${process.env["PROJECT_ID"]}-transcripts`)
-    .file("temp.mp3.json")
-    .createReadStream()
-    .on("error", err => console.log(err))
-    .on("end", () => {})
-    .pipe(res);
-}
-
-function handleRequest(reqInput: HydratedRequestInput, res: Response) {
-  sendFile(res);
+  return new Promise<void>((resolve, reject) => {
+    bucket.file("temp.mp3.json") // TODO make this configurable
+      .createReadStream()
+      .on("error", reject)
+      .on("end", resolve)
+      .pipe(res);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send(err);
+  });
 }
 
 admin.initializeApp();
+const bucket = new Storage().bucket(`${process.env["PROJECT_ID"]}-transcripts`);
+
 const cors = corsFactory({ origin: true });
 const app = express().use(cors).use(validateFirebaseIdToken);
 app.get("*", handleRequest);
