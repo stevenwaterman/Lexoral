@@ -196,7 +196,7 @@ resource "google_cloudfunctions_function" "adjust" {
   name        = "adjust"
   runtime     = "python38"
 
-  available_memory_mb   = 8192
+  available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.functions_code.name
   source_archive_object = google_storage_bucket_object.adjust_function_src.name
   entry_point           = "run"
