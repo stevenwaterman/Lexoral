@@ -5,7 +5,7 @@ from base64 import b64decode
 from google.cloud import storage
 from os import environ
 
-def run(event):
+async def run(event):
   pubsub_message = b64decode(event['data']).decode('utf-8')
   pubsub_data = json_parse(pubsub_message)
 
