@@ -45,10 +45,8 @@ async function transcodeEnvelope(storage: Storage, name: string, sourceFile: Fil
   return new Promise<void>(resolve => {
     ffmpeg(sourceFile.createReadStream())
       .noVideo()
-      .audioFilter("dynaudnorm=g=3")
-      .audioFilter("asplit")
-      .audioFilter("amultiply")
-      .audioFilter("lowpass=f=20")
+      .audioFilter("aeval=abs(val(0))")
+      .audioFilter("firequalizer=gain='if(lt(f,30), 0, -INF)'")
       .audioFilter("aresample=1000")
       .format("s16le")
       .output(envelope, {end: true})

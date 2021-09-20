@@ -18,7 +18,7 @@ export async function run(event: any) {
   if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
 
   const transcriptStage = transcript.get("stage");
-  if (transcriptStage !== "transcoded-transcription") throw new Error("Expected transcript stage transcoded-transcription, got " + transcriptStage);
+  if (transcriptStage !== "transcoded-envelope") throw new Error("Expected transcript stage transcoded-envelope, got " + transcriptStage);
 
   const inputUri: string = `gs://${process.env["PROJECT_ID"]}-transcription-audio/${userId}_${transcriptId}.wav`;
   const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-raw/${userId}_${transcriptId}`;
