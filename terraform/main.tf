@@ -137,7 +137,7 @@ resource "google_pubsub_topic" "post_upload" {
 }
 
 resource "google_storage_bucket_object" "upload_watcher_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/upload-watcher.zip"), 0, 10)}.zip"
+  name   = "upload-watcher-${substr(filemd5("./functions/upload-watcher.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/upload-watcher.zip"
 }
@@ -167,7 +167,7 @@ resource "google_pubsub_topic" "transcoded_playback" {
 }
 
 resource "google_storage_bucket_object" "transcode_playback_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/transcode-playback.zip"), 0, 10)}.zip"
+  name   = "transcode-playback-${substr(filemd5("./functions/transcode-playback.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/transcode-playback.zip"
 }
@@ -201,7 +201,7 @@ resource "google_pubsub_topic" "not_paid" {
 }
 
 resource "google_storage_bucket_object" "charge_credit_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/charge-credit.zip"), 0, 10)}.zip"
+  name   = "charge-credit-${substr(filemd5("./functions/charge-credit.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/charge-credit.zip"
 }
@@ -231,7 +231,7 @@ resource "google_pubsub_topic" "transcoded_transcription" {
 }
 
 resource "google_storage_bucket_object" "transcode_transcription_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/transcode-transcription.zip"), 0, 10)}.zip"
+  name   = "transcode-transcription-${substr(filemd5("./functions/transcode-transcription.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/transcode-transcription.zip"
 }
@@ -261,7 +261,7 @@ resource "google_pubsub_topic" "transcoded_envelope" {
 }
 
 resource "google_storage_bucket_object" "transcode_envelope_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/transcode-envelope.zip"), 0, 10)}.zip"
+  name   = "transcode-envelope-${substr(filemd5("./functions/transcode-envelope.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/transcode-envelope.zip"
 }
@@ -287,7 +287,7 @@ resource "google_cloudfunctions_function" "transcode_envelope" {
 
 
 resource "google_storage_bucket_object" "transcribe_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/transcribe.zip"), 0, 10)}.zip"
+  name   = "transcribe-${substr(filemd5("./functions/transcribe.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/transcribe.zip"
 }
@@ -317,7 +317,7 @@ resource "google_pubsub_topic" "transcribed" {
 }
 
 resource "google_storage_bucket_object" "transcription_watcher_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/transcription-watcher.zip"), 0, 10)}.zip"
+  name   = "transcription-watcher-${substr(filemd5("./functions/transcription-watcher.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/transcription-watcher.zip"
 }
@@ -347,7 +347,7 @@ resource "google_pubsub_topic" "aligned" {
 }
 
 resource "google_storage_bucket_object" "align_function_src" {
-  name   = "adjust-${substr(filemd5("./functions/align.zip"), 0, 10)}.zip"
+  name   = "align-${substr(filemd5("./functions/align.zip"), 0, 10)}.zip"
   bucket = google_storage_bucket.functions_code.name
   source = "./functions/align.zip"
 }
@@ -380,7 +380,7 @@ resource "google_storage_bucket_object" "adjust_function_src" {
 
 resource "google_cloudfunctions_function" "adjust" {
   name        = "adjust"
-  runtime     = "python38"
+  runtime     = "nodejs14"
 
   available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.functions_code.name

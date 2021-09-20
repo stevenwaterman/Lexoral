@@ -1,0 +1,24 @@
+{
+  "name": "lexoral-align",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Steven Waterman",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "@types/node": "^16.4.7",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "^2.17.0",
+    "@google-cloud/storage": "^5.14.2",
+    "firebase-admin": "^9.11.1"
+  }
+}

@@ -1,3 +1,4 @@
 set -e
-pipenv lock -r > requirements.txt
-zip ../dist/adjust.zip main.py requirements.txt
+npm ci
+tsc
+zip -j ../dist/adjust.zip dist/* package.json
