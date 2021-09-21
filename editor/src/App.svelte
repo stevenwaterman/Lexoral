@@ -1,16 +1,18 @@
 <script lang="ts">
-  import { autoPlayStore, initAudio } from "./audio/audio";
-  import Editor from "./input/Editor.svelte";
-  import { initialiseStores } from "./text/textState";
+  import { initializeApp } from "firebase/app";
+  import { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged } from "firebase/auth";
+  import type { User } from "firebase/auth";
+  import DataWrapper from "./DataWrapper.svelte";
 
-  export let demo: boolean;
+  initializeApp({
+    apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
+    authDomain: "lexoral-test.firebaseapp.com"
+  })
 
-  if (demo) {
-    autoPlayStore.set(true);
-  }
-
-  let dataFile: string;
-  $: dataFile = demo ? "assets/demo.json" : "assets/data.json";
+  let user: User | null | undefined = undefined;
+  const auth = getAuth();
+  setPersistence(auth, browserLocalPersistence);
+  onAuthStateChanged(auth, state => user = state);
 </script>
 
 <style>
@@ -87,10 +89,22 @@
 
 <svelte:body tabindex={-1}/>
 
-{#await fetch(dataFile).then(data => data.json()).then(data => initialiseStores(data)).then(sections => initAudio(sections, demo))}
+{#if user === undefined}
+  <span class="loading">
+    Logging in...
+  </span>
+{:else if user === null}
+  <span class="loading">
+    Login failed...
+  </span>
+{:else}
+  <DataWrapper user={user}/>
+{/if}
+
+<!-- {#await fetch(dataFile).then(data => data.json()).then(data => initialiseStores(data)).then(sections => initAudio(sections, demo))}
   <span class="loading">
     Fetching data...
   </span>
 {:then}
   <Editor demo={demo}/>
-{/await}
+{/await} -->

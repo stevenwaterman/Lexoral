@@ -13,4 +13,4 @@ Lexoral makes use of a number of APIs that need to be manually enabled before yo
 
 * Add an Email/Password provider to Identity Platform
 * Add lexoral.com as an authorized domain and remove the others in identity platform
-* 
+* Add `Service Account Token Creator` to the default app engine service account

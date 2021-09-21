@@ -47,7 +47,7 @@ async function validateFirebaseIdToken(
     res.status(403).send('Unauthorized');
     return;
   }
-};
+}
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;

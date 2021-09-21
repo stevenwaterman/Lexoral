@@ -52,13 +52,13 @@ async function validateFirebaseIdToken(
     res.status(403).send('Unauthorized');
     return;
   }
-};
+}
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
 
   const userId = req.user.uid;
-  const transcriptId = reqInput.query["transcript"];
+  const transcriptId: string | undefined = reqInput.query["transcript"]?.toString();
   if (!transcriptId) {
     res.status(400).send("Missing 'transcript' query param");
     return;
@@ -82,36 +82,33 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const transcriptFile = transcriptBucket.file(`${userId}_${transcriptId}.json`);
-  const transcriptFileData = await streamToString(transcriptFile.createReadStream())
-    .catch(err => {
-      console.error(err);
-      res.status(500).send("Error fetching transcript file");
-      return null;
-    });
-  if (!transcriptFileData) return;
-  const transcriptFileJson = JSON.parse(transcriptFileData);
+  const transcriptString = await readTranscript(userId, transcriptId);
+  if (!transcriptString) {
+    res.status(500).send("Error fetching transcript file");
+    return;
+  }
+  const transcriptJson = JSON.parse(transcriptString);
 
-  const audioFile = audioBucket.file(`${userId}_${transcriptId}.mp3`);
-  const audioFileUrl = await audioFile.getSignedUrl({
-    action: "read",
-    version: "v4",
-    contentType: "audio/mp3",
-    expires: Date.now() + 15 * 60 * 1000, // 15 minutes
-  }).then(([url]) => url)
-  .catch(err => {
-    console.error(err);
-    res.status(500).send("Error generating signed audio url");
-    return null;
-  });
-  if (!audioFileUrl) return;
+  // const audioFile = audioBucket.file(`${userId}_${transcriptId}.mp3`);
+  // const audioFileUrl = await audioFile.getSignedUrl({
+  //   action: "read",
+  //   version: "v4",
+  //   contentType: "audio/mp3",
+  //   expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+  // }).then(([url]) => url)
+  // .catch(err => {
+  //   console.error(err);
+  //   res.status(500).send("Error generating signed audio url");
+  //   return null;
+  // });
+  // if (!audioFileUrl) return;
 
   const transcriptName = transcript.get("name");
   const patches = transcript.get("patches") ?? [];
 
   const response = {
-    audioUrl: audioFileUrl,
-    transcript: transcriptFileJson,
+    // audioUrl: audioFileUrl,
+    transcript: transcriptJson,
     name: transcriptName,
     patches
   };
@@ -126,6 +123,15 @@ async function streamToString (stream: Readable): Promise<string> {
     stream.on('error', (err) => reject(err));
     stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
   })
+}
+
+async function readTranscript(userId: string, transcriptId: string): Promise<string | null> {
+  const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts`);
+  const file = bucket.file(`${userId}_${transcriptId}.json`);
+  return streamToString(file.createReadStream()).catch(err => {
+    console.error(err);
+    return null;
+  });
 }
 
 const store = admin.initializeApp().firestore();
