@@ -42,7 +42,7 @@ export async function run(event: any) {
   await transcriptDoc.update({ stage: "ready" });
 }
 
-async function streamToString (stream: Readable): Promise<Buffer> {
+async function readStreamToBuffer (stream: Readable): Promise<Buffer> {
   const chunks: Buffer[] = [];
   return new Promise((resolve, reject) => {
     stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
@@ -53,7 +53,7 @@ async function streamToString (stream: Readable): Promise<Buffer> {
 
 async function readEnvelope(userId: string, transcriptId: string): Promise<Int16Array> {
   const file = envelopeBucket.file(`${userId}_${transcriptId}.pcm`);
-  const byteBuffer = await streamToString(file.createReadStream());
+  const byteBuffer = await readStreamToBuffer(file.createReadStream());
   return new Int16Array(byteBuffer.buffer);
 }
 

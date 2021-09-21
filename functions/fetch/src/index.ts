@@ -3,7 +3,9 @@ import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
+import {Readable} from "stream";
 
+type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -53,24 +55,83 @@ async function validateFirebaseIdToken(
 };
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
-  res.writeHead(200, {
-    "Content-Type": "text/json"
-  });
+  const req = reqInput as HydratedRequest;
 
-  return new Promise<void>((resolve, reject) => {
-    bucket.file("temp.mp3.json") // TODO make this configurable
-      .createReadStream()
-      .on("error", reject)
-      .on("end", resolve)
-      .pipe(res);
-  }).catch(err => {
+  const userId = req.user.uid;
+  const transcriptId = reqInput.query["transcript"];
+  if (!transcriptId) {
+    res.status(400).send("Missing 'transcript' query param");
+    return;
+  }
+
+  const userDoc = store.doc(`users/${userId}`);
+  const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
+  const [user, transcript] = await Promise.all([userDoc.get(), transcriptDoc.get()]);
+  if (!user.exists) {
+    res.status(500).send("User profile missing for user id " + userId);
+    return;
+  }
+  if (!transcript.exists) {
+    res.status(404).send("Could not find transcript document " + userId + "/" + transcriptId);
+    return;
+  }
+
+  const transcriptStage = transcript.get("stage");
+  if (transcriptStage !== "ready") {
+    res.status(400).send("Transcript is not ready. Expected stage 'ready', was actually " + transcriptStage);
+    return;
+  }
+
+  const transcriptFile = transcriptBucket.file(`${userId}_${transcriptId}.json`);
+  const transcriptFileData = await streamToString(transcriptFile.createReadStream())
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error fetching transcript file");
+      return null;
+    });
+  if (!transcriptFileData) return;
+  const transcriptFileJson = JSON.parse(transcriptFileData);
+
+  const audioFile = audioBucket.file(`${userId}_${transcriptId}.mp3`);
+  const audioFileUrl = await audioFile.getSignedUrl({
+    action: "read",
+    version: "v4",
+    contentType: "audio/mp3",
+    expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+  }).then(([url]) => url)
+  .catch(err => {
     console.error(err);
-    res.status(500).send(err);
+    res.status(500).send("Error generating signed audio url");
+    return null;
   });
+  if (!audioFileUrl) return;
+
+  const transcriptName = transcript.get("name");
+  const patches = transcript.get("patches") ?? [];
+
+  const response = {
+    audioUrl: audioFileUrl,
+    transcript: transcriptFileJson,
+    name: transcriptName,
+    patches
+  };
+  
+  res.sendStatus(200).contentType("json").send(response);
 }
 
-admin.initializeApp();
-const bucket = new Storage().bucket(`${process.env["PROJECT_ID"]}-transcripts`);
+async function streamToString (stream: Readable): Promise<string> {
+  const chunks: Buffer[] = [];
+  return new Promise<string>((resolve, reject) => {
+    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+    stream.on('error', (err) => reject(err));
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+  })
+}
+
+const store = admin.initializeApp().firestore();
+const storage = new Storage();
+const audioBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
+const transcriptBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts`);
 
 const cors = corsFactory({ origin: true });
 const app = express().use(cors).use(validateFirebaseIdToken);

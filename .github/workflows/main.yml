@@ -78,10 +78,6 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - uses: actions/setup-python@v2
-      with:
-        python-version: "3.8"
-    - run: pip install pipenv
     - run: bash compile.sh
       working-directory: functions
     - uses: actions/upload-artifact@v2

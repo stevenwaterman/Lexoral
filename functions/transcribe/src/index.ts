@@ -10,7 +10,6 @@ export async function run(event: any) {
   if (!userId) throw new Error("userId not found in message");
   if (!transcriptId) throw new Error("transcriptId not found in message");
 
-
   const userDoc = store.doc(`users/${userId}`);
   const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
   const [user, transcript] = await Promise.all([userDoc.get(), transcriptDoc.get()]);
