@@ -13,13 +13,9 @@
   import { autoSaveIntervalStore, loadSave } from "../text/save";
   import { clearHistory } from "../text/storeMutators";
 
-  export let demo: boolean;
-
-  $: if (!demo) {
-    loadSave()
-    autoSaveIntervalStore.set(60);
-    clearHistory();
-  }
+  loadSave()
+  autoSaveIntervalStore.set(60);
+  clearHistory();
 
   let altReleaseShouldPlay = false;
 
@@ -180,11 +176,8 @@
 <ToastController/>
 
 <div class="container">
-  {#if !demo}
-    <Header/>
-  {/if}
+  <Header/>
   
-
   <div class="wrapper" bind:this={wrapper}>
     <Dropdown wrapper={wrapper}/>
     <EditableContainer>

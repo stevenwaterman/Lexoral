@@ -113,7 +113,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     patches
   };
   
-  res.sendStatus(200).contentType("json").send(response);
+  res.status(200).contentType("json").send(response);
 }
 
 async function streamToString (stream: Readable): Promise<string> {

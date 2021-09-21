@@ -100,11 +100,3 @@
 {:else}
   <DataWrapper user={user}/>
 {/if}
-
-<!-- {#await fetch(dataFile).then(data => data.json()).then(data => initialiseStores(data)).then(sections => initAudio(sections, demo))}
-  <span class="loading">
-    Fetching data...
-  </span>
-{:then}
-  <Editor demo={demo}/>
-{/await} -->

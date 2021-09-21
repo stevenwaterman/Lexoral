@@ -1,14 +1,17 @@
 <script lang="ts">
   import type { User } from "firebase/auth";
+  import { initAudio } from "./audio/audio";
+  import { initialiseStores } from "./text/textState";
+  import Editor from "./input/Editor.svelte";
 
   export let user: User;
 
-  async function getData(userId: string) {
+  async function getData(): Promise<void> {
     const params = new URLSearchParams(window.location.search);
     const transcriptId = params.get("id");
     if (transcriptId === null) throw new Error("Missing transcript ID");
 
-    await user
+    return user
       .getIdToken()
       .then(idToken => 
         fetch(`https://europe-west2-lexoral-test.cloudfunctions.net/fetch?transcript=${transcriptId}`, {
@@ -22,7 +25,10 @@
         throw new Error("response was not OK: " + res.status)
       })
       .then(res => res.json())
-      .then(console.log);
+      .then(res => {
+        const audioTimings = initialiseStores(res.transcript);
+        return initAudio(audioTimings, res.audioUrl);
+      });
   }
 </script>
 
@@ -30,10 +36,10 @@
 
 </style>
 
-{#await getData(user.uid)}
+{#await getData()}
   Pending
 {:then res}
-  {res}
+  <Editor/>
 {:catch err}
   {err}
 {/await}
