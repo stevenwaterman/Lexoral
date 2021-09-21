@@ -89,25 +89,25 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   }
   const transcriptJson = JSON.parse(transcriptString);
 
-  // const audioFile = audioBucket.file(`${userId}_${transcriptId}.mp3`);
-  // const audioFileUrl = await audioFile.getSignedUrl({
-  //   action: "read",
-  //   version: "v4",
-  //   contentType: "audio/mp3",
-  //   expires: Date.now() + 15 * 60 * 1000, // 15 minutes
-  // }).then(([url]) => url)
-  // .catch(err => {
-  //   console.error(err);
-  //   res.status(500).send("Error generating signed audio url");
-  //   return null;
-  // });
-  // if (!audioFileUrl) return;
+  const audioFile = audioBucket.file(`${userId}_${transcriptId}.mp3`);
+  const audioFileUrl = await audioFile.getSignedUrl({
+    action: "read",
+    version: "v4",
+    contentType: "audio/mp3",
+    expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+  }).then(([url]) => url)
+  .catch(err => {
+    console.error(err);
+    res.status(500).send("Error generating signed audio url");
+    return null;
+  });
+  if (!audioFileUrl) return;
 
   const transcriptName = transcript.get("name");
   const patches = transcript.get("patches") ?? [];
 
   const response = {
-    // audioUrl: audioFileUrl,
+    audioUrl: audioFileUrl,
     transcript: transcriptJson,
     name: transcriptName,
     patches
@@ -126,8 +126,7 @@ async function streamToString (stream: Readable): Promise<string> {
 }
 
 async function readTranscript(userId: string, transcriptId: string): Promise<string | null> {
-  const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts`);
-  const file = bucket.file(`${userId}_${transcriptId}.json`);
+  const file = transcriptBucket.file(`${userId}_${transcriptId}.json`);
   return streamToString(file.createReadStream()).catch(err => {
     console.error(err);
     return null;
