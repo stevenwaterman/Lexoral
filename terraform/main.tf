@@ -32,6 +32,12 @@ resource "google_storage_bucket" "playback_audio" {
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
+  cors {
+    origin          = ["http://localhost", "http://localhost:5000", "https://lexoral.com"]
+    method          = ["GET"]
+    response_header = ["*"]
+    max_age_seconds = 3600
+  }
   force_destroy = true # TODO remove this
 }
 
