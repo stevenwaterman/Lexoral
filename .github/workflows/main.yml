@@ -20,13 +20,7 @@ jobs:
       working-directory: editor
     - uses: actions/upload-artifact@v2
       with:
-        name: test-editor
-        path: editor/public
-    - run: npm run build-demo
-      working-directory: editor
-    - uses: actions/upload-artifact@v2
-      with:
-        name: demo-editor
+        name: editor
         path: editor/public
 
   build-landing:
@@ -39,8 +33,18 @@ jobs:
         name: landing
         path: landing
 
+  build-demo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/upload-artifact@v2
+      with:
+        name: demo
+        path: demo
+
   commit-gh-pages:
-    needs: [build-editor, build-landing]
+    needs: [build-editor, build-landing, build-demo]
     runs-on: ubuntu-latest
 
     steps:
@@ -52,11 +56,11 @@ jobs:
         git reset --hard
     - uses: actions/download-artifact@v2
       with:
-        name: demo-editor
+        name: demo
         path: demo
     - uses: actions/download-artifact@v2
       with:
-        name: test-editor
+        name: editor
         path: test
     - uses: actions/download-artifact@v2
       with:
