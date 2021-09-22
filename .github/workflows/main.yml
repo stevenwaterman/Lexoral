@@ -81,17 +81,17 @@ jobs:
         functionName:
           - adjust
           - align
-          - charge-credit
+          - charge_credit
           - fetch
           - patch
           - signup
-          - transcode-envelope
-          - transcode-playback
-          - transcode-transcription
+          - transcode_envelope
+          - transcode_playback
+          - transcode_transcription
           - transcribe
-          - transcription-watcher
+          - transcription_watcher
           - upload
-          - upload-watcher
+          - upload_watcher
 
     steps:
     - uses: actions/checkout@v2
