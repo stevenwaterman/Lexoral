@@ -1,5 +1,4 @@
 # Install, compile, zip all functions in parallel
-
 rm -r dist
 mkdir -p dist
 
@@ -11,7 +10,7 @@ compile() {
   cd ..
 }
 
-for dir in adjust align charge-credit fetch signup transcode-envelope transcode-playback transcode-transcription transcribe transcription-watcher upload upload-watcher; do compile "$dir" & done
+for dir in adjust align charge-credit fetch signup transcode-envelope transcode-playback transcode-transcription transcribe transcription-watcher upload upload-watcher patch; do compile "$dir" & done
 wait
 
 for f in ./dist/error-*; do

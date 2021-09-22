@@ -429,3 +429,31 @@ resource "google_cloudfunctions_function_iam_member" "fetch_invoker" {
   role   = "roles/cloudfunctions.invoker"
   member = "allUsers"
 }
+
+
+
+resource "google_storage_bucket_object" "patch_function_src" {
+  name   = "patch-${substr(filemd5("./functions/patch.zip"), 0, 10)}.zip"
+  bucket = google_storage_bucket.functions_code.name
+  source = "./functions/patch.zip"
+}
+
+resource "google_cloudfunctions_function" "patch" {
+  name        = "patch"
+  runtime     = "nodejs14"
+
+  available_memory_mb   = 128
+  source_archive_bucket = google_storage_bucket.functions_code.name
+  source_archive_object = google_storage_bucket_object.patch_function_src.name
+  trigger_http          = true
+  entry_point           = "run"
+  environment_variables = {
+    PROJECT_ID = data.google_project.project.project_id
+  }
+}
+
+resource "google_cloudfunctions_function_iam_member" "patch_invoker" {
+  cloud_function = google_cloudfunctions_function.patch.name
+  role   = "roles/cloudfunctions.invoker"
+  member = "allUsers"
+}

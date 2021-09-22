@@ -68,6 +68,8 @@ Cloud:
   host the controller
   -- add pre-upload audio editing + size checking (web audio api)
   don't throw uncaught exceptions
+  fix function names in package json
+  compile typescript in cloud build rather than doing it twice
 
 Refactoring:
   Use base tsconfig file for everything

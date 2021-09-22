@@ -1,9 +1,7 @@
-import { Storage } from "@google-cloud/storage";
 import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
-import {Readable} from "stream";
 
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
@@ -54,6 +52,13 @@ async function validateFirebaseIdToken(
   }
 }
 
+type PatchedSectionProps = {
+  text: string;
+  endParagraph: boolean;
+}
+type SectionPatch = Partial<PatchedSectionProps>;
+type Patch = Record<number, SectionPatch>;
+
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
 
@@ -64,13 +69,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const userDoc = store.doc(`users/${userId}`);
   const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
-  const [user, transcript] = await Promise.all([userDoc.get(), transcriptDoc.get()]);
-  if (!user.exists) {
-    res.status(500).send("User profile missing for user id " + userId);
-    return;
-  }
+  const transcript = await transcriptDoc.get();
   if (!transcript.exists) {
     res.status(404).send("Could not find transcript document " + userId + "/" + transcriptId);
     return;
@@ -82,63 +82,37 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const transcriptString = await readTranscript(userId, transcriptId);
-  if (!transcriptString) {
-    res.status(500).send("Error fetching transcript file");
-    return;
-  }
-  const transcriptJson = JSON.parse(transcriptString);
+  const patchesToAdd: Patch[] = [
+    {
+      1: {
+        text: "hi"
+      }
+    },
+    {
+      2: {
+        text: "there"
+      },
+      5: {
+        endParagraph: true
+      }
+    }
+  ]
 
-  const audioFile = audioBucket.file(`${userId}_${transcriptId}.mp3`);
-  const audioFileUrl = await audioFile.getSignedUrl({
-    action: "read",
-    version: "v4",
-    expires: Date.now() + 15 * 60 * 1000, // 15 minutes
-  }).then(([url]) => url)
-  .catch(err => {
-    console.error(err);
-    res.status(500).send("Error generating signed audio url");
-    return null;
-  });
-  if (!audioFileUrl) return;
-
-  const transcriptName = transcript.get("name");
-  const patches = transcript.get("patches") ?? [];
-
-  const response = {
-    audioUrl: audioFileUrl,
-    transcript: transcriptJson,
-    name: transcriptName,
-    patches
-  };
-  
-  res.status(200).contentType("json").send(response);
-}
-
-async function streamToString (stream: Readable): Promise<string> {
-  const chunks: Buffer[] = [];
-  return new Promise<string>((resolve, reject) => {
-    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
-    stream.on('error', (err) => reject(err));
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+  const batch = store.batch();
+  const patchesCollection = store.collection(`users/${userId}/transcripts/${transcriptId}/patches`);
+  patchesToAdd.forEach(patch => {
+    const docRef = patchesCollection.doc();
+    batch.create(docRef, patch)
   })
-}
+  await batch.commit();
 
-async function readTranscript(userId: string, transcriptId: string): Promise<string | null> {
-  const file = transcriptBucket.file(`${userId}_${transcriptId}.json`);
-  return streamToString(file.createReadStream()).catch(err => {
-    console.error(err);
-    return null;
-  });
+  res.sendStatus(201);
 }
 
 const store = admin.initializeApp().firestore();
-const storage = new Storage();
-const audioBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
-const transcriptBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts`);
 
 const cors = corsFactory({ origin: true });
 const app = express().use(cors).use(validateFirebaseIdToken);
-app.get("*", handleRequest);
+app.put("*", handleRequest);
 
 export const run = app;
