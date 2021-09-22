@@ -8,6 +8,7 @@ sections:
   automatically create paragraphs
   saving
   loading
+  patches need timestamps on them
 
   -- Remove superfluous punctuation
   -- Remove superflous capitalisation
