@@ -1,18 +1,6 @@
-{
+{ 
+  "extends": "../tsconfig.json", 
   "compilerOptions": {
-    "module": "esnext",
-    "esModuleInterop": true,
-    "target": "esnext",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist",
-    "strict": true,
-    "noUncheckedIndexedAccess": false,
-    // "exactOptionalPropertyTypes": true TODO enable this once svelte-check updates to TS 4.4
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true
-  },
-  "lib": ["es2015"]
+    "outDir": "dist"
+  }
 }

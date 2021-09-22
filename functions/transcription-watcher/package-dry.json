@@ -1,0 +1,10 @@
+{
+  "name": "lexoral-transcription-watcher",
+  "dry": {
+    "extends": "../package-dry.json"
+  },
+  "dependencies": {
+    "firebase-admin": "managed",
+    "@google-cloud/pubsub": "managed"
+  }
+}

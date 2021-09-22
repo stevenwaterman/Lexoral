@@ -1,0 +1,15 @@
+{
+  "name": "lexoral-transcode-envelope",
+  "dry": {
+    "extends": "../package-dry.json"
+  },
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "managed"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "managed",
+    "firebase-admin": "managed",
+    "fluent-ffmpeg": "managed",
+    "@google-cloud/pubsub": "managed"
+  }
+}

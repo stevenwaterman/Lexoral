@@ -1,0 +1,9 @@
+{
+  "name": "lexoral-signup",
+  "dry": {
+    "extends": "../package-dry.json"
+  },
+  "dependencies": {
+    "firebase-admin": "managed"
+  }
+}

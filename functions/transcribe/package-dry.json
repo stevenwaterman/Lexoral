@@ -1,0 +1,11 @@
+{
+  "name": "lexoral-transcribe",
+  "dry": {
+    "extends": "../package-dry.json"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "managed",
+    "@google-cloud/storage": "managed",
+    "firebase-admin": "managed"
+  }
+}

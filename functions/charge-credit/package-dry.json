@@ -1,0 +1,10 @@
+{
+  "name": "lexoral-charge-credit",
+  "dry": {
+    "extends": "../package-dry.json"
+  },
+  "dependencies": {
+    "firebase-admin": "managed",
+    "@google-cloud/pubsub": "managed"
+  }
+}

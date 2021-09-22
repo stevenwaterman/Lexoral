@@ -1,0 +1,14 @@
+{
+  "name": "parent-http",
+  "dry": {
+    "extends": "../package-dry.json"
+  },
+  "devDependencies": {
+    "@types/cors": "managed",
+    "@types/express": "managed"
+  },
+  "dependencies": {
+    "cors": "managed",
+    "express": "managed"
+  }
+}
