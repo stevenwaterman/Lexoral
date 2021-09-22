@@ -1,15 +1,15 @@
 {
-  "name": "lexoral-align",
+  "name": "lexoral-transcode-playback",
   "dry": {
     "extends": "../package-dry.json"
   },
   "devDependencies": {
-    "@google-cloud/speech": "managed"
+    "@types/fluent-ffmpeg": "managed"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "managed",
     "@google-cloud/storage": "managed",
     "firebase-admin": "managed",
-    "seqalign": "managed"
+    "fluent-ffmpeg": "managed",
+    "@google-cloud/pubsub": "managed"
   }
 }

@@ -3,7 +3,7 @@ import admin from "firebase-admin";
 type SignupEvent = { 
   uid: string;
   email: string;
-  metadata: SignupMetadata
+  metadata: SignupMetadata;
 }
 
 type SignupMetadata = { 

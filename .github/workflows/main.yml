@@ -99,7 +99,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm i -g dry-dry
-    - run: dry run build
+    - run: dry run ci && dry run build
       working-directory: functions/${{ matrix.functionName }}
     - uses: actions/upload-artifact@v2
       with:
