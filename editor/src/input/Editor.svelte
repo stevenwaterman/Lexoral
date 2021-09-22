@@ -10,12 +10,6 @@
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
   import { findSectionNode } from "../text/selector";
-  import { autoSaveIntervalStore, loadSave } from "../text/save";
-  import { clearHistory } from "../text/storeMutators";
-
-  loadSave()
-  autoSaveIntervalStore.set(60);
-  clearHistory();
 
   let altReleaseShouldPlay = false;
 

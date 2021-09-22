@@ -1,8 +1,9 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
-import { allSectionsStore, SectionStore, Section, paragraphLocationsStore } from "../text/textState";
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
 import { clampGet, clampGetRecord, clamp } from "../utils/list";
+import { allSectionsStore, Section, SectionStore } from "../text/state/sectionStore";
+import { paragraphLocationsStore } from "../text/state/paragraphLocationsStore";
 
 export const contextAmountStore: Writable<number> = writable(5);
 

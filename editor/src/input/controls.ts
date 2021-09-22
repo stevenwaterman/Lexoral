@@ -1,9 +1,9 @@
 import { updateSelection, focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
 import { findSectionNode } from "../text/selector";
-import { SectionMutator, undo, redo, commitHistory } from "../text/storeMutators";
 import { tick } from "svelte";
-import { selectSectionEnd, selectSectionStart } from "./select";
+import { restoreSelection, saveSelection, selectSectionEnd, selectSectionStart } from "./select";
 import { exportTranscript } from "../text/export";
+import { Patch, PatchStore, patchStore } from "../text/state/patchStore";
 
 let focusSectionIdx: number | undefined = undefined;
 focusSectionIdxStore.subscribe(state => focusSectionIdx = state);
@@ -35,28 +35,28 @@ async function onKeyPressedInner(event: KeyboardEvent) {
   if (event.key === "Enter" && event.ctrlKey) {
     event.preventDefault();
     if (focusSectionIdx !== undefined) {
-      if (selection?.focusOffset === 1) {
-        SectionMutator.ofIdx(focusSectionIdx - 1)?.enableEndParagraph();
-      } else {
-        SectionMutator.ofIdx(focusSectionIdx)?.enableEndParagraph();
-      }
+      const patchIdx = selection?.focusOffset === 1 ? focusSectionIdx - 1 : focusSectionIdx;
+      patchStore.append(patchIdx, { endParagraph: true })
       await tick();
       await selectSectionStart(focusSectionIdx)
-      commitHistory();
       return;
     }
   }
 
   if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
     event.preventDefault();
-    await undo();
-    return await updateSelection();
+    saveSelection();
+    patchStore.undo();
+    await tick();
+    return restoreSelection();
   }
 
   if (event.key === "y" && event.ctrlKey) {
     event.preventDefault();
-    await redo();
-    return await updateSelection();
+    saveSelection();
+    patchStore.redo();
+    await tick();
+    return restoreSelection();
   }
 
   if (event.key === "s" && event.ctrlKey) {
@@ -266,8 +266,7 @@ async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx - 1)) {
-    commitHistory();
-    SectionMutator.ofIdx(focusSectionIdx - 1)?.disableEndParagraph();
+    patchStore.append(focusSectionIdx - 1, { endParagraph: false });
     await tick();
   }
   return selectSectionEnd(focusSectionIdx - 1);
@@ -277,15 +276,14 @@ async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Select
   event.preventDefault();
   if (!focusSectionIdx) return;
 
-  const mutator = SectionMutator.ofIdx(focusSectionIdx - 1);
-  if (!mutator) return;
-
-  mutator.setText("");
-
   if (isParagraphEnd(focusSectionIdx - 1)) {
-    commitHistory();
-    mutator.disableEndParagraph();
+    patchStore.append(focusSectionIdx - 1, {
+      text: "",
+      endParagraph: false
+    });
     await tick();
+  } else {
+     patchStore.append(focusSectionIdx - 1, { text: "" });
   }
 
   return selectSectionStart(focusSectionIdx - 1);
@@ -306,10 +304,14 @@ async function backspaceSelectedText(event: KeyboardEvent, selection: Selection)
 
   const startIdx = Math.min(anchorSectionIdx, focusSectionIdx);
   const endIdx = Math.max(anchorSectionIdx, focusSectionIdx);
+
+  const patch: Patch = {};
   for (let i = startIdx; i <= endIdx; i++) {
     // TODO should this keep the paragraph breaks in?
-    SectionMutator.ofIdx(i)?.setText("");
+    patch[i] = { text: "" };
   }
+  patchStore.appendFull(patch);
+
   return selectSectionStart(startIdx);
 }
 
@@ -334,8 +336,7 @@ async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx)) {
-    commitHistory();
-    SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
+    patchStore.append(focusSectionIdx, { endParagraph: false })
     await tick();
   }
   return selectSectionStart(focusSectionIdx + 1);
@@ -345,12 +346,11 @@ async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSectionIdx) return;
 
-  if (isParagraphEnd(focusSectionIdx)) {
-    commitHistory();
-    SectionMutator.ofIdx(focusSectionIdx)?.disableEndParagraph();
-    await tick();
-  }
-  SectionMutator.ofIdx(focusSectionIdx + 1)?.setText("");
+  const patch: Patch = {};
+  patch[focusSectionIdx + 1] = { text: "" };
+  if (isParagraphEnd(focusSectionIdx)) patch[focusSectionIdx] = { endParagraph: false };
+  patchStore.appendFull(patch)
+
   return selectSectionStart(focusSectionIdx + 1);
 }
 
@@ -369,10 +369,14 @@ async function deleteSelectedText(event: KeyboardEvent, selection: Selection) {
 
   const startIdx = Math.min(anchorSectionIdx, focusSectionIdx);
   const endIdx = Math.max(anchorSectionIdx, focusSectionIdx);
+
+  const patch: Patch = {};
   for (let i = startIdx; i <= endIdx; i++) {
     // TODO should this keep the paragraph breaks in?
-    SectionMutator.ofIdx(i)?.setText("");
+    patch[i] = { text: "" };
   }
+  patchStore.appendFull(patch);
+  
   return selectSectionEnd(endIdx);
 }
 

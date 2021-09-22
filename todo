@@ -1,9 +1,14 @@
 audio:
   _multiple play at once sometimes when click + drag_
+  sometimes audio doesn't play
 
   * Option to continue / restart
 
 sections:
+  automatically create paragraphs
+  saving
+  loading
+
   -- Remove superfluous punctuation
   -- Remove superflous capitalisation
   -- Convert to UK english
@@ -16,6 +21,7 @@ sections:
   -- manually adjust section timings
   
 UX:
+  patch locking + committing
   _Some kind of help / tutorial_
 
   - Add export dialog where you can choose file name and swap between txt / srt / copy to clipboard
@@ -35,56 +41,33 @@ Performance:
   Slow when selecting and deselecting lots of sections
   updateSelection is called way too much
   changing paragraphs rerenders everything
+  transform is called for every section on every edit
 
 Features:
   -- Speaker diarization
   -- Know the word Lexoral
 
 
-landing page demo not big enough on server
+Landing:
+  landing page demo not big enough on server
 
 Cloud:
-  - Login
-  - Fetch audio + transcript + patches
-  - Save patches to DB
+  Re-enable signup
+  create an app engine with firestore in terraform
+  disallow public access to firestore
+  let terraform archive the files and use the hash of the contained files / without metadata
+  set up caching dependencies on the build server
+  only compile things if they've changed
+  Disable force destroy on buckets once live
+  create iam.serviceAccounts.signBlob role with terraform
+  enable https://console.developers.google.com/apis/api/iamcredentials.googleapis.com/overview?project=463294190405
+  make a note on the user profile when they've got pending transcripts (negative balance)
+  provide a way to resume a transcription after not having enough money
+  let the user see their transcripts in the controller
+  host the controller
+  -- add pre-upload audio editing + size checking (web audio api)
+  don't throw uncaught exceptions
 
-
-Use base tsconfig file for everything
-abstract auth code out of fetch function into reusable library
-Re-enable signup
-
-
-create an app engine with firestore in terraform
-disallow public access to firestore
-let terraform archive the files and use the hash of the contained files / without metadata
-set up caching dependencies on the build server
-maybe only compile frontends if they've changed
-
-
-Add function to convert to extract audio (if video) + convert to wav + amplify (probably ffmpeg)
-
-Disable force destroy on buckets once live
-create iam.serviceAccounts.signBlob role with terraform
-enable https://console.developers.google.com/apis/api/iamcredentials.googleapis.com/overview?project=463294190405
- 
-
-static demo version
-
-make a note on the user profile when they've got pending transcripts
-provide a way to resume a transcription after not having enough money
-check that user is not disabled
-add pre-upload audio editing + size checking (web audio api)
-
-
-Function:
-
-trigger from finalize in bucket lexoral-test-raw-audio
-convert audio with ffmpeg from whatever file format to mp3 for playback and dump into lexoral-test-playback-audio
-inspect audio length and charge user's credit
-convert audio with ffmpeg to wav for transcription and dump into lexoral-text-transcription-audio
-
-
-multiple github actions jobs
-update fetch to fetch a specific transcript
-prevent users uploading more if they already have something in status not_paid
-don't throw uncaught exceptions
+Refactoring:
+  Use base tsconfig file for everything
+  abstract auth code out of fetch function into reusable library

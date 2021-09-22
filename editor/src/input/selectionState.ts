@@ -1,9 +1,9 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
-import { Section, SectionStore, allSectionsStore, MaybeSectionStore } from "../text/textState";
-import { deriveConditionally, deriveUnwrapWritable, makeWritable } from "../utils/stores";
+import { deriveConditionally, deriveUnwrap, deriveUnwrapWritable } from "../utils/stores";
 import { tick } from "svelte";
 import { clampGet, clamp, getAssertExists } from "../utils/list";
 import { findSectionNode } from "../text/selector";
+import { allSectionsStore, MaybeSectionStore, Section, SectionStore } from "../text/state/sectionStore";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -44,7 +44,7 @@ export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefi
     if (cursorPosition === undefined) return undefined;
     return clampGet(allSections, cursorPosition.section);
   });
-  return deriveUnwrapWritable(sectionStoreWrapped);
+  return deriveUnwrap(sectionStoreWrapped);
 }
 
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);

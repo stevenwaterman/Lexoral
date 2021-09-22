@@ -1,6 +1,6 @@
-import { allSectionsStore, Section, SectionStore } from "./textState";
 import { deriveUnwrapRecord } from "../utils/stores";
 import { saveAs } from "file-saver";
+import { allSectionsStore, Section, SectionStore } from "./state/sectionStore";
 
 let state: Partial<Record<number, Section>> = {};
 deriveUnwrapRecord<number, Section, SectionStore>(allSectionsStore).subscribe(sections => state = sections);
@@ -20,7 +20,7 @@ export function exportTranscriptPlainText(sections: Section[]): string {
 }
 
 function sectionToPlainText(section: Section): string {
-  return `${section.edited ? section.text : section.placeholder}${section.endParagraph ? "\n" : " "}`;
+  return `${section.text}${section.endParagraph ? "\n" : " "}`;
 }
 
 type Subtitle = {
@@ -40,7 +40,7 @@ export function exportTranscriptSubtitles(sections: Section[]): string {
       startTime = section.startTime;
     }
     text += " "
-    text += (section.edited ? section.text : section.placeholder);
+    text += section.text;
 
     if (section.endParagraph) {
       subtitles.push({

@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { User } from "firebase/auth";
   import { initAudio } from "./audio/audio";
-  import { initialiseStores } from "./text/textState";
   import Editor from "./input/Editor.svelte";
+  import { initialiseStores } from "./text/state/initStore";
 
   export let user: User;
 
@@ -26,7 +26,7 @@
       })
       .then(res => res.json())
       .then(res => {
-        const audioTimings = initialiseStores(res.transcript);
+        const audioTimings = initialiseStores(res.transcript, res.patches);
         return initAudio(audioTimings, res.audioUrl);
       });
   }
@@ -37,8 +37,8 @@
 </style>
 
 {#await getData()}
-  Pending
-{:then res}
+  Loading your transcript
+{:then}
   <Editor/>
 {:catch err}
   {err}

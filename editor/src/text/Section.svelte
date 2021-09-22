@@ -1,7 +1,7 @@
 <script lang="ts">
   import { playingStore, currentlyPlayingSectionIdxStore, suppressAudioStore } from "../audio/audio";
-  import type { SectionStore } from "./textState";
   import { areMultipleSectionsSelectedStore, earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
+  import type { SectionStore } from "./state/sectionStore";
 
   export let sectionStore: SectionStore;
 
@@ -12,7 +12,7 @@
   $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;
 
   let desiredText: string;
-  $: desiredText = $sectionStore.edited ? $sectionStore.text : $sectionStore.placeholder;
+  $: desiredText = $sectionStore.text;
 </script>
 
 <style>

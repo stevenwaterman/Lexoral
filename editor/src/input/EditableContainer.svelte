@@ -10,10 +10,10 @@
     saveSelection
   } from "./select";
 
-  import { MaybeSectionMutator } from "../text/storeMutators";
   import { findSectionNode } from "../text/selector";
   import { onKeyPressed } from "./controls";
   import { suppressAudioStore } from "../audio/audio";
+  import { patchStore } from "../text/state/patchStore";
 
   async function mouseDown(event: MouseEvent) {
     suppressAudioStore.set(true);
@@ -34,13 +34,16 @@
   }
 
   async function updateText() {
-    const textContent = findSectionNode($focusSectionIdxStore)?.textContent ?? undefined;
+    const idx = $focusSectionIdxStore;
+    if (idx === undefined) return;
+
+    const textContent = findSectionNode(idx)?.textContent ?? undefined;
     if (textContent === undefined) return;
 
     const trimmedContent = textContent.slice(1, textContent.length - 1);
 
     saveSelection();
-    new MaybeSectionMutator(focusSectionStore).setText(trimmedContent);
+    patchStore.append(idx, { text: trimmedContent });
     restoreSelection();
   }
 </script>

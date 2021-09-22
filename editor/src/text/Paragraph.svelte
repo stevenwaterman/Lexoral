@@ -1,10 +1,10 @@
 <script lang="ts">
   import { playingStore } from "../audio/audio";
-import { getAssertExists } from "../utils/list";
+  import { getAssertExists } from "../utils/list";
 
   import Section from "./Section.svelte";
-  import type { AllSections } from "./textState";
-  import { allSectionsStore } from "./textState";
+  import type { AllSections } from "./state/sectionStore";
+  import { allSectionsStore } from "./state/sectionStore";
 
   export let start: number;
   export let end: number;

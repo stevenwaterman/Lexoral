@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { focusSectionStore, isTextSelectedStore } from "./selectionState";
+  import { focusSectionIdxStore, focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { getAssertExists, modulo } from "../utils/list";
   import { selectNextSection, selectSectionStart } from "./select";
-  import type { Section } from "../text/textState";
-  import { MaybeSectionMutator } from "../text/storeMutators";
   import { playingStore } from "../audio/audio";
   import { findSectionNode } from "../text/selector";
+import type { Section } from "../text/state/sectionStore";
+import { patchStore } from "../text/state/patchStore";
 
   export let wrapper: HTMLDivElement | undefined;
 
@@ -28,7 +28,7 @@
 
     left = sectionBox.left - wrapperBox.left
 
-    const boxHeight = section.completionOptions.length * (optionHeight + 1) + 5;
+    const boxHeight = section.completions.length * (optionHeight + 1) + 5;
     const desiredTop = sectionBox.top + sectionBox.height - wrapperBox.top;
     const desiredBottom = desiredTop + boxHeight;
 
@@ -46,9 +46,9 @@
   $: options = getOptions(section)
   function getOptions(section: Section | undefined): string[] {
     if (!section) return [];
-    const {completionOptions, text, edited} = section;
+    const {completions, text, edited} = section;
 
-    let options: string[] = completionOptions;
+    let options: string[] = completions;
     if (!edited && text.length > 0) {
       options = options.filter(option => option !== text);
       options.unshift(text);
@@ -90,9 +90,9 @@
   }
 
   async function acceptOption() {
-    if (visible && options.length > 0 && highlightIdx !== undefined) {
-        const selectedOption = getAssertExists(options, highlightIdx);
-        new MaybeSectionMutator(focusSectionStore).setText(selectedOption);
+    if (section && visible && options.length > 0 && highlightIdx !== undefined) {
+      const selectedOption = getAssertExists(options, highlightIdx);
+      patchStore.append(section.idx, { text: selectedOption });
     }
     await selectNextSection(section?.idx);
   }
@@ -150,7 +150,6 @@
     white-space: nowrap;
     padding: 2px;
     cursor: pointer;
-    white-space: pre;
   }
 
   .topBorder {
