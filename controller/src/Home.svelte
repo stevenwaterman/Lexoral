@@ -7,8 +7,8 @@
     if (user === null) return;
 
     const idToken = await user.getIdToken();
-    await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/fetch", {
-      method: "get",
+    await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/patch?transcript=VWhYn86xAweQmEvCZxoW", {
+      method: "put",
       headers: {
         "Authorization": `Bearer ${idToken}`
       }

@@ -20,13 +20,14 @@ export async function run(event: any) {
 
   const duration = transcript.get("duration");
 
-  let paid = false;
-  await store.runTransaction(async transaction => {
+  const paid = await store.runTransaction(async transaction => {
     const user = await transaction.get(userDoc);
     const credit = user.get("secondsCredit");
     if (credit >= duration) {
       transaction.update(userDoc, { secondsCredit: credit - duration });
-      paid = true;
+      return true;
+    } else {
+      return false;
     }
   });
 

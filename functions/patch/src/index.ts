@@ -82,29 +82,33 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const patchesToAdd: Patch[] = [
-    {
-      1: {
-        text: "hi"
-      }
-    },
-    {
-      2: {
-        text: "there"
-      },
-      5: {
-        endParagraph: true
-      }
+  const patch1: Patch = {
+    1: {
+      text: "hi"
     }
-  ]
+  };
 
-  const batch = store.batch();
+  const patch2: Patch = {
+    2: {
+      text: "there"
+    },
+    5: {
+      endParagraph: true
+    }
+  }
+
+  const patchesToAdd: Record<number, Patch> = {
+    2: patch1,
+    10: patch2
+  };
+
   const patchesCollection = store.collection(`users/${userId}/transcripts/${transcriptId}/patches`);
-  patchesToAdd.forEach(patch => {
-    const docRef = patchesCollection.doc();
-    batch.create(docRef, patch)
+  const writes = Object.entries(patchesToAdd).map(([idx, patch]) => {
+    const docId = idx.padStart(10, "0");
+    const docRef = patchesCollection.doc(docId);
+    return docRef.set(patch)
   })
-  await batch.commit();
+  await Promise.all(writes);
 
   res.sendStatus(201);
 }
