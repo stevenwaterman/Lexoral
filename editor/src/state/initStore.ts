@@ -1,6 +1,3 @@
-import { writable, Writable, Readable, derived } from "svelte/store";
-import { getOptions } from "../../preprocess/align";
-import { getAssertExists } from "../../utils/list";
 import { Patch, patchStore } from "./patchStore";
 import { createSectionStore, SectionState, SectionStore } from "./sectionStore";
 

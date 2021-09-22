@@ -13,7 +13,7 @@
   import { findSectionNode } from "../text/selector";
   import { onKeyPressed } from "./controls";
   import { suppressAudioStore } from "../audio/audio";
-  import { patchStore } from "../text/state/patchStore";
+  import { patchStore } from "../state/patchStore";
 
   async function mouseDown(event: MouseEvent) {
     suppressAudioStore.set(true);

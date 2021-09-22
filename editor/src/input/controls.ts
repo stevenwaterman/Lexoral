@@ -3,7 +3,7 @@ import { findSectionNode } from "../text/selector";
 import { tick } from "svelte";
 import { restoreSelection, saveSelection, selectSectionEnd, selectSectionStart } from "./select";
 import { exportTranscript } from "../text/export";
-import { Patch, PatchStore, patchStore } from "../text/state/patchStore";
+import { Patch, PatchStore, patchStore } from "../state/patchStore";
 
 let focusSectionIdx: number | undefined = undefined;
 focusSectionIdxStore.subscribe(state => focusSectionIdx = state);

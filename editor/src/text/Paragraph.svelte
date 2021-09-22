@@ -3,8 +3,8 @@
   import { getAssertExists } from "../utils/list";
 
   import Section from "./Section.svelte";
-  import type { AllSections } from "./state/sectionStore";
-  import { allSectionsStore } from "./state/sectionStore";
+  import type { AllSections } from "../state/sectionStore";
+  import { allSectionsStore } from "../state/sectionStore";
 
   export let start: number;
   export let end: number;

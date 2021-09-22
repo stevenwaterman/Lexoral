@@ -1,6 +1,6 @@
 <script lang="ts">
   import Paragraph from "./Paragraph.svelte";
-  import { paragraphLocationsStore } from "./state/paragraphLocationsStore";
+  import { paragraphLocationsStore } from "../state/paragraphLocationsStore";
 </script>
 
 {#each $paragraphLocationsStore as {start, end}}

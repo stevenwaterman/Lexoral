@@ -1,5 +1,5 @@
 import { derived, Readable, writable, Writable } from "svelte/store";
-import { getAssertExists } from "../../utils/list";
+import { getAssertExists } from "../utils/list";
 
 export type ParagraphLocation = {start: number, end: number};
 

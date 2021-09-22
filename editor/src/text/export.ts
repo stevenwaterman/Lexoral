@@ -1,6 +1,6 @@
 import { deriveUnwrapRecord } from "../utils/stores";
 import { saveAs } from "file-saver";
-import { allSectionsStore, Section, SectionStore } from "./state/sectionStore";
+import { allSectionsStore, Section, SectionStore } from "../state/sectionStore";
 
 let state: Partial<Record<number, Section>> = {};
 deriveUnwrapRecord<number, Section, SectionStore>(allSectionsStore).subscribe(sections => state = sections);

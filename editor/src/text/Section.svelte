@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { playingStore, currentlyPlayingSectionIdxStore, suppressAudioStore } from "../audio/audio";
-  import { areMultipleSectionsSelectedStore, earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
-  import type { SectionStore } from "./state/sectionStore";
+  import { currentlyPlayingSectionIdxStore, suppressAudioStore } from "../audio/audio";
+  import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
+  import type { SectionStore } from "../state/sectionStore";
 
   export let sectionStore: SectionStore;
 

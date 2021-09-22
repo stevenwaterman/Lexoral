@@ -2,7 +2,7 @@
   import type { User } from "firebase/auth";
   import { initAudio } from "./audio/audio";
   import Editor from "./input/Editor.svelte";
-  import { initialiseStores } from "./text/state/initStore";
+  import { initialiseStores } from "./state/initStore";
 
   export let user: User;
 

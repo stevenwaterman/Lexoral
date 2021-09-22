@@ -3,7 +3,7 @@ import { StoreValues, deriveUnwrap, deriveLastDefined } from "../utils/stores";
 import { audioTimingsStore } from "./audioSelection";
 import { clamp } from "../utils/list";
 import * as Tone from "tone";
-import { allSectionsStore, Section, SectionStore } from "../text/state/sectionStore";
+import { allSectionsStore, Section, SectionStore } from "../state/sectionStore";
 
 /** Is the audio actively playing */
 let playing: boolean = false;

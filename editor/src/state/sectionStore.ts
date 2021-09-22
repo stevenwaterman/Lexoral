@@ -1,5 +1,5 @@
 import { derived, Readable, writable, Writable } from "svelte/store"
-import { getOptions } from "../../preprocess/align"
+import { getOptions } from "../preprocess/align"
 import { paragraphLocationsStore } from "./paragraphLocationsStore";
 import { PatchState, patchStore, PatchStore, SectionPatch } from "./patchStore";
 

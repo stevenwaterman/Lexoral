@@ -3,7 +3,7 @@ import { deriveConditionally, deriveUnwrap, deriveUnwrapWritable } from "../util
 import { tick } from "svelte";
 import { clampGet, clamp, getAssertExists } from "../utils/list";
 import { findSectionNode } from "../text/selector";
-import { allSectionsStore, MaybeSectionStore, Section, SectionStore } from "../text/state/sectionStore";
+import { allSectionsStore, MaybeSectionStore, Section, SectionStore } from "../state/sectionStore";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {

@@ -4,8 +4,8 @@
   import { selectNextSection, selectSectionStart } from "./select";
   import { playingStore } from "../audio/audio";
   import { findSectionNode } from "../text/selector";
-import type { Section } from "../text/state/sectionStore";
-import { patchStore } from "../text/state/patchStore";
+import type { Section } from "../state/sectionStore";
+import { patchStore } from "../state/patchStore";
 
   export let wrapper: HTMLDivElement | undefined;
 
