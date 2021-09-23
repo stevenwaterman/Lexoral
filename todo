@@ -21,9 +21,6 @@ UX:
   _Some kind of help / tutorial_
 
   - Add error handling
-  - Add manual save function
-
-  - Add export
   - Add export dialog where you can choose file name and swap between txt / srt / copy to clipboard
   - Clicky buttons for everything
   
