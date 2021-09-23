@@ -63,7 +63,7 @@ export function deriveWithPrevious<T>(baseStore: Readable<T>): Readable<{last?: 
 export function deriveDebounced<T>(
   baseStore: Readable<T>,
   delay: number,
-): Readable<T> {
+): Readable<T | undefined> {
   return derived(baseStore, (state, set) => {
     const timeout = setTimeout(() => set(state), delay * 1000);
     return () => clearTimeout(timeout);

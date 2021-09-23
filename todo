@@ -6,9 +6,7 @@ audio:
 
 sections:
   automatically create paragraphs
-  saving
-  loading
-  patches need timestamps on them
+  patch locking + committing
 
   -- Remove superfluous punctuation
   -- Remove superflous capitalisation
@@ -22,7 +20,6 @@ sections:
   -- manually adjust section timings
   
 UX:
-  patch locking + committing
   _Some kind of help / tutorial_
 
   - Add export dialog where you can choose file name and swap between txt / srt / copy to clipboard
@@ -48,7 +45,6 @@ Features:
   -- Speaker diarization
   -- Know the word Lexoral
 
-
 Landing:
   landing page demo not big enough on server
 
@@ -56,9 +52,7 @@ Cloud:
   Re-enable signup
   create an app engine with firestore in terraform
   disallow public access to firestore
-  let terraform archive the files and use the hash of the contained files / without metadata
   set up caching dependencies on the build server
-  only compile things if they've changed
   Disable force destroy on buckets once live
   create iam.serviceAccounts.signBlob role with terraform
   enable https://console.developers.google.com/apis/api/iamcredentials.googleapis.com/overview?project=463294190405
@@ -68,9 +62,7 @@ Cloud:
   host the controller
   -- add pre-upload audio editing + size checking (web audio api)
   don't throw uncaught exceptions
-  fix function names in package json
-  compile typescript in cloud build rather than doing it twice
 
 Refactoring:
-  Use base tsconfig file for everything
   abstract auth code out of fetch function into reusable library
+  abstract 
