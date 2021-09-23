@@ -29,7 +29,7 @@ function createParagraphBreaks(sections: SectionState[]) {
   sections.forEach(section => { // TODO this threshold should be configurable
     if (lastEligibleToEndParagraph && section.startTime - time > 0.3) {
       anyAdded = true;
-      patch[section.idx] = {
+      patch[section.idx - 1] = {
         endParagraph: true
       };
     }
