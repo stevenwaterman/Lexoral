@@ -93,7 +93,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
       return docRef.delete();
     } else {
       return docRef.set({
-        creationTime: admin.firestore.FieldValue.serverTimestamp()
+        creationTime: admin.firestore.FieldValue.serverTimestamp(),
+        ...patch
       });
     }
   })

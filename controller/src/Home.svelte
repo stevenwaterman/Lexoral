@@ -10,8 +10,26 @@
     await fetch("https://europe-west2-lexoral-test.cloudfunctions.net/patch?transcript=VWhYn86xAweQmEvCZxoW", {
       method: "put",
       headers: {
-        "Authorization": `Bearer ${idToken}`
-      }
+        "Authorization": `Bearer ${idToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        1: {
+          1: {
+            text: "hi",
+            endParagraph: true
+          },
+          5: {
+            text: "friendos"
+          }
+        },
+        2: {
+          2: {
+            text: "there"
+          }
+        },
+        10: null
+      })
     })
   }
 
