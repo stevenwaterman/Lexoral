@@ -193,6 +193,7 @@ module "align" {
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.transcribed.name
   project_id = data.google_project.project.project_id
+  memory = 8192
 }
 
 resource "google_pubsub_topic" "aligned" {
@@ -205,6 +206,7 @@ module "adjust" {
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.aligned.name
   project_id = data.google_project.project.project_id
+  memory = 8192
 }
 
 module "fetch" {

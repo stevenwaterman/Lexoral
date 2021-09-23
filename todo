@@ -63,6 +63,7 @@ Cloud:
   -- add pre-upload audio editing + size checking (web audio api)
   don't throw uncaught exceptions
   Add start + end stages not just end stages
+  Choose function runner memory size based on file length
 
 Refactoring:
   abstract auth code out of fetch function into reusable library
