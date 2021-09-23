@@ -2,8 +2,7 @@ import { updateSelection, focusSectionIdxStore, anchorSectionIdxStore } from "./
 import { findSectionNode } from "../text/selector";
 import { tick } from "svelte";
 import { restoreSelection, saveSelection, selectSectionEnd, selectSectionStart } from "./select";
-import { exportTranscript } from "../text/export";
-import { Patch, PatchStore, patchStore } from "../state/patchStore";
+import { Patch, patchStore } from "../state/patchStore";
 
 let focusSectionIdx: number | undefined = undefined;
 focusSectionIdxStore.subscribe(state => focusSectionIdx = state);
@@ -57,12 +56,6 @@ async function onKeyPressedInner(event: KeyboardEvent) {
     patchStore.redo();
     await tick();
     return restoreSelection();
-  }
-
-  if (event.key === "s" && event.ctrlKey) {
-    event.preventDefault();
-    exportTranscript();
-    return;
   }
 
   if (event.key === "ArrowLeft") {

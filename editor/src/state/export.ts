@@ -1,6 +1,6 @@
 import { deriveUnwrapRecord } from "../utils/stores";
 import { saveAs } from "file-saver";
-import { allSectionsStore, Section, SectionStore } from "../state/sectionStore";
+import { allSectionsStore, Section, SectionStore } from "./sectionStore";
 
 let state: Partial<Record<number, Section>> = {};
 deriveUnwrapRecord<number, Section, SectionStore>(allSectionsStore).subscribe(sections => state = sections);
@@ -10,9 +10,9 @@ export function exportTranscript() {
   keys.sort((a, b) => a - b);
 
   const sections: Section[] = keys.map(key => state[key]).filter(section => section !== undefined) as Section[];
-  const output = exportTranscriptSubtitles(sections);
+  const output = exportTranscriptPlainText(sections);
   const blob = new Blob([output], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, "lexoralExport.srt");
+  saveAs(blob, "lexoralExport.txt");
 }
 
 export function exportTranscriptPlainText(sections: Section[]): string {

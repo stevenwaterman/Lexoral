@@ -10,6 +10,8 @@
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
   import { findSectionNode } from "../text/selector";
+  import { manualSave } from "../state/patchStore";
+  import { exportTranscript } from "../state/export";
 
   let altReleaseShouldPlay = false;
 
@@ -40,6 +42,16 @@
           stopAudio();
         }
       }
+    }
+
+    if (event.key === "s" && event.ctrlKey) {
+      event.preventDefault();
+      return manualSave();
+    }
+
+    if (event.key === "e" && event.ctrlKey) {
+      event.preventDefault();
+      return exportTranscript();
     }
 
     if (event.key !== "Alt" && event.altKey) {

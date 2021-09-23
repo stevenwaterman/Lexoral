@@ -3,6 +3,7 @@ import { getAssertExists } from "../utils/list";
 import { deriveDebounced } from "../utils/stores";
 import type { User } from "firebase/auth";
 import { patchTranscript } from "../api";
+import { sendToast } from "../display/toast/toasts";
 
 type PatchedSectionProps = {
   text: string;
@@ -24,7 +25,9 @@ export type PatchStore = Readable<PatchState> & {
   commit: () => void;
 };
 
+let patchState: PatchState | undefined = undefined;
 export const patchStore: PatchStore = createPatchStore();
+patchStore.subscribe(state => patchState = state);
 
 function createPatchStore(): PatchStore {
   const store: Writable<PatchState> = writable({
@@ -115,25 +118,26 @@ function createPatchStore(): PatchStore {
 
 let initialised: boolean = false;
 let minAddedIdx: number | undefined = undefined;
-deriveDebounced(patchStore, 3).subscribe(state => {
+deriveDebounced(patchStore, 3).subscribe(async state => {
   if (state === undefined) return;
   patchStore.commit();
-  save(state.patches);
+  const saved = await save(state.patches);
+  if (saved) sendToast("AutoSaved");
 });
 
-async function save(patches: Patch[]) {
+let saving = false;
+async function save(patches: Patch[]): Promise<boolean> {
   if (!initialised) {
     console.log("save called before init, cancelling");
-    return;
+    return false;
   }
 
   if (minAddedIdx === undefined) {
     console.log("Nothing added since last time, cancelling");
-    return;
+    return false;
   }
   const addStartIdx = minAddedIdx;
   const addEndIdx = patches.length - 1;
-  console.log("Save started", { initialised, minAddedIdx, addStartIdx, addEndIdx });
 
   let needed = false;
   const request: Record<number, Patch | null> = {};
@@ -142,15 +146,30 @@ async function save(patches: Patch[]) {
     request[i] = getAssertExists(patches, i);
   }
 
-  console.log("Request", request)
-
   if (!needed) {
     console.log("Cancelled save, unnecessary");
-    return;
+    saving = false;
+    return false;
   }
+
+  if (saving) {
+    console.log("already saving");
+    return false;
+  }
+
+  saving = true;
 
   await patchTranscript(request);
 
   minAddedIdx = undefined;
-  console.log("Save Done");
+  saving = false;
+  return true;
+}
+
+export async function manualSave() {
+  if (patchState === undefined) return sendToast("Nothing to save");
+  sendToast("Saving");
+  const saved = await save(patchState.patches);
+  if (saved) sendToast("Saved");
+  else sendToast("Nothing to save");
 }
