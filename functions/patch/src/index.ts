@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import admin from "firebase-admin";
+import admin, { firestore } from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
 
@@ -58,6 +58,7 @@ type PatchedSectionProps = {
 }
 type SectionPatch = Partial<PatchedSectionProps>;
 type Patch = Record<number, SectionPatch>;
+type RequestData = Record<number, Patch | null>;
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
@@ -82,31 +83,19 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const patch1: Patch = {
-    1: {
-      text: "hi"
-    }
-  };
-
-  const patch2: Patch = {
-    2: {
-      text: "there"
-    },
-    5: {
-      endParagraph: true
-    }
-  }
-
-  const patchesToAdd: Record<number, Patch> = {
-    2: patch1,
-    10: patch2
-  };
+  const data: RequestData = req.body;
 
   const patchesCollection = store.collection(`users/${userId}/transcripts/${transcriptId}/patches`);
-  const writes = Object.entries(patchesToAdd).map(([idx, patch]) => {
+  const writes = Object.entries(data).map(([idx, patch]) => {
     const docId = idx.padStart(10, "0");
     const docRef = patchesCollection.doc(docId);
-    return docRef.set(patch)
+    if (patch === null) {
+      return docRef.delete();
+    } else {
+      return docRef.set({
+        creationTime: firestore.FieldValue.serverTimestamp()
+      });
+    }
   })
   await Promise.all(writes);
 
@@ -116,7 +105,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 const store = admin.initializeApp().firestore();
 
 const cors = corsFactory({ origin: true });
-const app = express().use(cors).use(validateFirebaseIdToken);
+const app = express().use(cors).use(validateFirebaseIdToken).use(express.json());
 app.put("*", handleRequest);
 
 export const run = app;
