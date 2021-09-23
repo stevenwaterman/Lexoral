@@ -92,10 +92,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     if (patch === null) {
       return docRef.delete();
     } else {
-      return docRef.set({
-        creationTime: admin.firestore.FieldValue.serverTimestamp(),
-        ...patch
-      });
+      return docRef.set(patch);
     }
   })
   await Promise.all(writes);

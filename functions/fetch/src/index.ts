@@ -8,6 +8,13 @@ import {Readable} from "stream";
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 
+type PatchedSectionProps = {
+  text: string;
+  endParagraph: boolean;
+}
+type SectionPatch = Partial<PatchedSectionProps>;
+type Patch = Record<number, SectionPatch>;
+
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
 // `Authorization: Bearer <Firebase ID Token>`.
@@ -103,7 +110,12 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   if (!audioFileUrl) return;
 
   const transcriptName = transcript.get("name");
-  const patches = transcript.get("patches") ?? [];
+
+  const patchesCollection = store.collection(`users/${userId}/transcripts/${transcriptId}/patches`);
+  const patchesSnapshot = await patchesCollection.get();
+  const patchesRead: Array<[number, Record<string, SectionPatch>]> = patchesSnapshot.docs.map(doc => [parseInt(doc.id), doc.data()]);
+  patchesRead.sort((a,b) => a[0] - b[0]);
+  const patches: Patch[] = patchesRead.map(([_, patch]) => patch);
 
   const response = {
     audioUrl: audioFileUrl,
