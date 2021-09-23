@@ -1,4 +1,4 @@
-import admin, { firestore } from "firebase-admin";
+import admin from "firebase-admin";
 import { PubSub } from "@google-cloud/pubsub";
 
 const store = admin.initializeApp().firestore()
@@ -23,11 +23,11 @@ export async function run(event: any) {
 
   const credit = user.get("secondsCredit");
   const duration = transcript.get("duration");
-  
+
   let paid = false;
   if (credit >= duration) {
     userDoc.update({
-      secondsCredit: firestore.FieldValue.increment(-duration)
+      secondsCredit: admin.firestore.FieldValue.increment(-duration)
     });
     paid = true;
   }

@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import admin, { firestore } from "firebase-admin";
+import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
 
@@ -93,7 +93,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
       return docRef.delete();
     } else {
       return docRef.set({
-        creationTime: firestore.FieldValue.serverTimestamp()
+        creationTime: admin.firestore.FieldValue.serverTimestamp()
       });
     }
   })
