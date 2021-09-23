@@ -115,7 +115,7 @@ function createPatchStore(): PatchStore {
 
 let initialised: boolean = false;
 let minAddedIdx: number | undefined = undefined;
-deriveDebounced(patchStore, 5).subscribe(state => {
+deriveDebounced(patchStore, 3).subscribe(state => {
   if (state === undefined) return;
   patchStore.commit();
   save(state.patches);

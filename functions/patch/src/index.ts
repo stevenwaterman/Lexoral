@@ -71,6 +71,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
+  // TODO do this in a transaction
+
   const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
   const transcript = await transcriptDoc.get();
   if (!transcript.exists) {
@@ -88,9 +90,6 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 
   const patchesCollection = store.collection(`users/${userId}/transcripts/${transcriptId}/patches`);
 
-  const lastPatchQuery = await patchesCollection.orderBy(admin.firestore.FieldPath.documentId(), "desc").limit(1).get();
-  const dbMaxString = lastPatchQuery.docs?.[0]?.id;
-
   let writtenMaxId: number | undefined = undefined;
   const writes = Object.entries(data)
     .map(([idxString, patch]) => {
@@ -101,16 +100,23 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
       return patchesCollection.doc(docId).set(patch);
     });
 
-  const deletes: Promise<WriteResult>[] = [];
-  if (dbMaxString !== undefined && writtenMaxId !== undefined) {
-    const dbMaxIdx = parseInt(dbMaxString);
+  const dbMaxIdx: number | undefined = transcript.get("maxPatch");
+  if (writtenMaxId !== undefined && dbMaxIdx !== undefined) {
     for (let i = writtenMaxId + 1; i <= dbMaxIdx; i++) {
       const docId = i.toString().padStart(10, "0");
       const call = patchesCollection.doc(docId).delete();
-      deletes.push(call);
+      writes.push(call);
     }
   }
-  await Promise.all([...writes, ...deletes]);
+
+  if (writtenMaxId !== undefined) {
+    const call = transcriptDoc.update({
+      maxPatch: writtenMaxId
+    })
+    writes.push(call);
+  }
+
+  await Promise.all(writes);
 
   res.sendStatus(201);
 }
