@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
+import { WriteResult } from "@google-cloud/firestore";
 
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
@@ -11,12 +12,12 @@ type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 // `Authorization: Bearer <Firebase ID Token>`.
 // when decoded successfully, the ID Token content will be added as `req.user`.
 async function validateFirebaseIdToken(
-  req: HydratedRequestInput, 
+  req: HydratedRequestInput,
   res: Response,
   next: NextFunction
 ) {
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
-      !(req.cookies && req.cookies.__session)) {
+    !(req.cookies && req.cookies.__session)) {
     console.error(
       'No Firebase ID token was passed as a Bearer token in the Authorization header.',
       'Make sure you authorize your request by providing the following HTTP header:',
@@ -31,7 +32,7 @@ async function validateFirebaseIdToken(
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split('Bearer ')[1];
-  } else if(req.cookies) {
+  } else if (req.cookies) {
     // Read the ID Token from cookie.
     idToken = req.cookies.__session;
   } else {
@@ -58,7 +59,7 @@ type PatchedSectionProps = {
 }
 type SectionPatch = Partial<PatchedSectionProps>;
 type Patch = Record<number, SectionPatch>;
-type RequestData = Record<number, Patch | null>;
+type RequestData = Record<number, Patch>;
 
 async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const req = reqInput as HydratedRequest;
@@ -86,16 +87,30 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const data: RequestData = req.body;
 
   const patchesCollection = store.collection(`users/${userId}/transcripts/${transcriptId}/patches`);
-  const writes = Object.entries(data).map(([idx, patch]) => {
-    const docId = idx.padStart(10, "0");
-    const docRef = patchesCollection.doc(docId);
-    if (patch === null) {
-      return docRef.delete();
-    } else {
-      return docRef.set(patch);
+
+  const lastPatchQuery = await patchesCollection.orderBy(admin.firestore.FieldPath.documentId(), "desc").limit(1).get();
+  const dbMaxString = lastPatchQuery.docs?.[0]?.id;
+
+  let writtenMaxId: number | undefined = undefined;
+  const writes = Object.entries(data)
+    .map(([idxString, patch]) => {
+      const idx = parseInt(idxString);
+      writtenMaxId = Math.max(writtenMaxId ?? idx, idx);
+
+      const docId = idxString.padStart(10, "0");
+      return patchesCollection.doc(docId).set(patch);
+    });
+
+  const deletes: Promise<WriteResult>[] = [];
+  if (dbMaxString !== undefined && writtenMaxId !== undefined) {
+    const dbMaxIdx = parseInt(dbMaxString);
+    for (let i = writtenMaxId + 1; i <= dbMaxIdx; i++) {
+      const docId = i.toString().padStart(10, "0");
+      const call = patchesCollection.doc(docId).delete();
+      deletes.push(call);
     }
-  })
-  await Promise.all(writes);
+  }
+  await Promise.all([...writes, ...deletes]);
 
   res.sendStatus(201);
 }

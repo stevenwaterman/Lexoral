@@ -9,10 +9,7 @@
   $: setUser(user);  
 
   async function getData(): Promise<void> {
-    const params = new URLSearchParams(window.location.search);
-    const transcriptId = params.get("id");
-    if (transcriptId === null) throw new Error("Missing transcript ID");
-    return fetchTranscript(transcriptId)
+    return fetchTranscript()
       .then(res => {
         const audioTimings = initialiseStores(res.transcript, res.patches);
         return initAudio(audioTimings, res.audioUrl);

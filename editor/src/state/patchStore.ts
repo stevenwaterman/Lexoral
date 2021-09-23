@@ -14,12 +14,14 @@ export type PatchState = {
   patches: Patch[];
   cursor: number;
 };
+
 export type PatchStore = Readable<PatchState> & {
   undo: () => void;
   redo: () => void;
   appendFull: (...patches: Patch[]) => void;
   append: (idx: number, patch: SectionPatch) => void;
   init: (...patches: Patch[]) => void;
+  commit: () => void;
 };
 
 export const patchStore: PatchStore = createPatchStore();
@@ -30,7 +32,10 @@ function createPatchStore(): PatchStore {
     cursor: 0
   });
 
+  let finalized: boolean = true;
+
   function undo() {
+    commit();
     store.update(state => {
       state.cursor = Math.max(0, state.cursor - 1);
       return state;
@@ -38,20 +43,52 @@ function createPatchStore(): PatchStore {
   }
 
   function redo() {
+    commit();
     store.update(state => {
       state.cursor = Math.min(state.patches.length, state.cursor + 1);
       return state;
     });
   }
 
-  function appendFull(...patches: Patch[]) {
+  function appendFull(patch: Patch) {
     store.update(state => {
-      minAddedIdx = Math.min(minAddedIdx, state.cursor);
+      minAddedIdx = Math.min(minAddedIdx ?? state.cursor, state.cursor);
 
-      state.patches.splice(state.cursor, state.patches.length, ...patches);
+      const removed = state.patches.splice(state.cursor, state.patches.length);
+      if (state.patches.length === 0 || removed.length > 0 || finalized) {
+        // Add new patch
+        state.patches.push(patch);
+        finalized = false;
+      } else {
+        // Edit last patch
+        const lastPatch = state.patches[state.patches.length - 1] as Patch;
+        Object.entries(patch)
+          .forEach(([key, data]) => {
+            const idx = parseInt(key);
+            const lastPatchSection = lastPatch[idx];
+            if (lastPatchSection === undefined) {
+              lastPatch[idx] = data
+            } else {
+              lastPatch[idx] = {
+                ...lastPatchSection,
+                ...data
+              }
+            }
+          })
+        }
       state.cursor = state.patches.length;
       return state;
-    })
+    });
+  }
+
+  function append(idx: number, patch: SectionPatch) {
+    return appendFull({
+      [idx]: patch
+    });
+  }
+
+  function commit() {
+    finalized = true;
   }
 
   function init(...patches: Patch[]) {
@@ -61,14 +98,8 @@ function createPatchStore(): PatchStore {
     });
 
     initialised = true;
-    minAddedIdx = patches.length;
-    dbMaxIdx = patches.length - 1;
-  }
-
-  function append(idx: number, patch: SectionPatch) {
-    return appendFull({
-      [idx]: patch
-    });
+    minAddedIdx = undefined;
+    commit();
   }
   
   return {
@@ -77,16 +108,17 @@ function createPatchStore(): PatchStore {
     redo,
     appendFull,
     append,
-    init
+    init,
+    commit
   };
 }
 
 let initialised: boolean = false;
-let minAddedIdx: number = 0;
-let dbMaxIdx: number = 0;
+let minAddedIdx: number | undefined = undefined;
 deriveDebounced(patchStore, 5).subscribe(state => {
   if (state === undefined) return;
-  save(state.patches)
+  patchStore.commit();
+  save(state.patches);
 });
 
 async function save(patches: Patch[]) {
@@ -94,10 +126,14 @@ async function save(patches: Patch[]) {
     console.log("save called before init, cancelling");
     return;
   }
+
+  if (minAddedIdx === undefined) {
+    console.log("Nothing added since last time, cancelling");
+    return;
+  }
   const addStartIdx = minAddedIdx;
   const addEndIdx = patches.length - 1;
-  const deleteEnd = dbMaxIdx;
-  console.log("Save started", { addStartIdx, addEndIdx, deleteEnd, patches });
+  console.log("Save started", { initialised, minAddedIdx, addStartIdx, addEndIdx });
 
   let needed = false;
   const request: Record<number, Patch | null> = {};
@@ -105,10 +141,8 @@ async function save(patches: Patch[]) {
     needed = true;
     request[i] = getAssertExists(patches, i);
   }
-  for (let i = addEndIdx + 1; i <= deleteEnd; i++) {
-    needed = true;
-    request[i] = null;
-  }
+
+  console.log("Request", request)
 
   if (!needed) {
     console.log("Cancelled save, unnecessary");
@@ -117,7 +151,6 @@ async function save(patches: Patch[]) {
 
   await patchTranscript(request);
 
-  minAddedIdx = addEndIdx;
-  dbMaxIdx = addEndIdx;
+  minAddedIdx = undefined;
   console.log("Save Done");
 }

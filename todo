@@ -5,7 +5,6 @@ audio:
   * Option to continue / restart
 
 sections:
-  automatically create paragraphs
   patch locking + committing
 
   -- Remove superfluous punctuation
@@ -22,6 +21,10 @@ sections:
 UX:
   _Some kind of help / tutorial_
 
+  - Add error handling
+  - Add manual save function
+
+  - Add export
   - Add export dialog where you can choose file name and swap between txt / srt / copy to clipboard
   - Clicky buttons for everything
   
@@ -60,10 +63,12 @@ Cloud:
   provide a way to resume a transcription after not having enough money
   let the user see their transcripts in the controller
   host the controller
+  add features to the controller
   -- add pre-upload audio editing + size checking (web audio api)
   don't throw uncaught exceptions
   Add start + end stages not just end stages
   Choose function runner memory size based on file length
+  Set content-length in signed upload url based on reasonable max bitrate (500kbps?) and user credit available
 
 Refactoring:
   abstract auth code out of fetch function into reusable library

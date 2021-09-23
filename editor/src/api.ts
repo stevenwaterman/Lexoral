@@ -19,11 +19,18 @@ function assertUser(): User {
   return user;
 }
 
-export async function fetchTranscript(transcriptId: string): Promise<FetchTranscriptResult> {
+function getTranscriptId(): string {
+  const params = new URLSearchParams(window.location.search);
+  const transcriptId = params.get("id");
+  if (transcriptId === null) throw new Error("Missing transcript ID");
+  return transcriptId;
+}
+
+export async function fetchTranscript(): Promise<FetchTranscriptResult> {
   return assertUser()
     .getIdToken()
     .then(idToken =>
-      fetch(`https://europe-west2-lexoral-test.cloudfunctions.net/fetch?transcript=${transcriptId}`, {
+      fetch(`https://europe-west2-lexoral-test.cloudfunctions.net/fetch?transcript=${getTranscriptId()}`, {
         method: "get",
         headers: {
           "Authorization": `Bearer ${idToken}`
@@ -39,7 +46,7 @@ export async function fetchTranscript(transcriptId: string): Promise<FetchTransc
 export async function patchTranscript(patches: Record<number, Patch | null>): Promise<Response> {
   return assertUser()
     .getIdToken()
-    .then(idToken => fetch("https://europe-west2-lexoral-test.cloudfunctions.net/patch?transcript=VWhYn86xAweQmEvCZxoW", {
+    .then(idToken => fetch(`https://europe-west2-lexoral-test.cloudfunctions.net/patch?transcript=${getTranscriptId()}`, {
       method: "put",
       headers: {
         "Authorization": `Bearer ${idToken}`,
