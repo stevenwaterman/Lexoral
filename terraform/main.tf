@@ -14,6 +14,12 @@ terraform {
 
 data "google_project" "project" {}
 
+resource "google_app_engine_application" "app" {
+  project     = data.google_project.project.project_id
+  location_id = "europe-west2"
+  database_type = "CLOUD_FIRESTORE"
+}
+
 resource "google_storage_bucket" "audio" {
   name = "${data.google_project.project.project_id}-raw-audio"
   storage_class = "REGIONAL"

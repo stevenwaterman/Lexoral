@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import corsFactory from "cors";
 import express from "express";
-import { WriteResult } from "@google-cloud/firestore";
+import { FieldValue, WriteResult } from "@google-cloud/firestore";
 
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
@@ -111,7 +111,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
 
   if (writtenMaxId !== undefined) {
     const call = transcriptDoc.update({
-      maxPatch: writtenMaxId
+      maxPatch: writtenMaxId,
+      updated: FieldValue.serverTimestamp
     })
     writes.push(call);
   }

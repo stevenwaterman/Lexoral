@@ -2,6 +2,7 @@ import { Storage } from "@google-cloud/storage";
 import express, { json, NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
 import cors from "cors";
+import { FieldValue } from "@google-cloud/firestore";
 
 type HydratedRequestInput = Request & { user?: admin.auth.DecodedIdToken };
 type HydratedRequest = Request & { user: admin.auth.DecodedIdToken };
@@ -70,10 +71,17 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     return;
   }
 
-  const audioData = { stage: "pre-upload", name };
-  const stored = await store.collection(`users/${req.user.uid}/transcripts`).add(audioData);
+  const transcriptData = { 
+    stage: "pre-upload",
+    name,
+    duration: -1,
+    created: FieldValue.serverTimestamp,
+    updated: FieldValue.serverTimestamp
+  };
+  const stored = await store.collection(`users/${req.user.uid}/transcripts`).add(transcriptData);
   const transcriptId = stored.id;
-  console.log("Created audio id", transcriptId);
+
+  console.log("Created transcript id", transcriptId);
 
   const options = {
     version: 'v4',

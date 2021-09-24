@@ -10,6 +10,9 @@
   })
 
   let user: User | null | undefined = undefined;
+  $: if (user && !user.emailVerified) location.pathname = "/auth/verify";
+  $: if (user === null) location.pathname = "/auth/login";
+
   const auth = getAuth();
   setPersistence(auth, browserLocalPersistence);
   onAuthStateChanged(auth, state => user = state);

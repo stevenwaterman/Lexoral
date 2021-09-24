@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { User } from "firebase/auth";
+  import ReadyTranscripts from "./transcripts/ReadyTranscripts.svelte";
 
   export let user: User | null;
 
@@ -82,16 +83,12 @@
 
 </style>
 
+<!-- 
 {#if user === null}
   Welcome to Lexoral
 {:else}
   Welcome, {user.email}
   <button on:click={sendRequest}>Fetch</button>
-  <!-- <form method="post" enctype="multipart/form-data" action="https://europe-west2-lexoral-test.cloudfunctions.net/upload">
-    <input id="file_upload" type="file" name="file" accept="audio/*">
-    <input type="submit">
-  </form> -->
-
   <form method="post" enctype="multipart/form-data" on:submit|preventDefault={upload}>
     <div>
       <label for="file_upload">Choose audio to upload</label>
@@ -101,4 +98,9 @@
       <input type="submit">
     </div>
   </form>
+{/if} 
+-->
+
+{#if user !== null}
+  <ReadyTranscripts user={user}/>
 {/if}

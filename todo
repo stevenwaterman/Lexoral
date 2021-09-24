@@ -60,12 +60,32 @@ Cloud:
   let the user see their transcripts in the controller
   host the controller
   add features to the controller
-  -- add pre-upload audio editing + size checking (web audio api)
   don't throw uncaught exceptions
   Add start + end stages not just end stages
   Choose function runner memory size based on file length
   Set content-length in signed upload url based on reasonable max bitrate (500kbps?) and user credit available
+  Audomatically add firestore rules
 
 Refactoring:
   abstract auth code out of fetch function into reusable library
   abstract 
+
+Add testing
+Allow local run of both frontends at once
+-- add pre-upload audio editing + size checking (web audio api)
+
+
+
+
+Improve UI on controller
+Host all frontends on Google Cloud
+Remove hardcoded things from frontends
+
+
+
+
+List of your transcripts
+Ability to add new transcript
+Ability to delete transcript
+Ability to log out
+

@@ -10,7 +10,8 @@
 
   const app = initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
-    authDomain: "lexoral-test.firebaseapp.com"
+    authDomain: "lexoral-test.firebaseapp.com",
+    projectId: "lexoral-test"
   })
 
   let currentUser: User | null | undefined = undefined;
