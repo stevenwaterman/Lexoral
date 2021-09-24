@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getDb } from "../db";
   import type { User } from "firebase/auth";
-  import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+  import { collection, getDocs, limit, onSnapshot, orderBy, query, QueryDocumentSnapshot, where } from "firebase/firestore";
   import type { DocumentData, QuerySnapshot } from "firebase/firestore";
   import TranscriptEntry from "./ReadyTranscript.svelte";
 
@@ -23,17 +23,25 @@
     }
   }
 
-  function getTranscripts(order: typeof sort, dir: typeof direction): Promise<QuerySnapshot<DocumentData>> {
+  function updateQuery(order: typeof sort, dir: typeof direction) {
     const transcriptCollection = collection(getDb(), "users", user.uid, "transcripts");
     const q = query(transcriptCollection, orderBy(order, dir), limit(10));
-    return getDocs(q);
-  }  
+
+    unsub();
+    unsub = onSnapshot(q, snapshot => {
+      docs = snapshot.docs;
+    })
+  }
+
+  let unsub: () => void = () => {};
+  let docs: QueryDocumentSnapshot<DocumentData>[] = [];
+  $: updateQuery(sort, direction);
 </script>
 
 <style>
   .table {
     display: grid;
-    grid-template-columns: auto auto auto auto auto;
+    grid-template-columns: repeat(5, 1fr);
     gap: 1em;
   }
 
@@ -41,69 +49,69 @@
     font-weight: bold;
     cursor: pointer;
     border-bottom: 1px solid black;
+    user-select: none;
+  }
+
+  .empty {
+    grid-column: span 5;
   }
 </style>
 
-{#await getTranscripts(sort, direction)}
-  Fetching transcripts
-{:then transcripts}
-  <div class="table">
-    <span class="header" on:click="{() => setSort("name")}">
-      Name
-      {#if sort === "name"}
-        {#if direction === "asc"}
-          ▲
-        {:else}
-          ▼
-        {/if}
+
+<div class="table">
+  <span class="header" on:click="{() => setSort("name")}">
+    Name
+    {#if sort === "name"}
+      {#if direction === "asc"}
+        ▲
+      {:else}
+        ▼
       {/if}
-    </span>
+    {/if}
+  </span>
 
-    <span class="header" on:click="{() => setSort("duration")}">
-      Length
-      {#if sort === "duration"}
-        {#if direction === "asc"}
-          ▲
-        {:else}
-          ▼
-        {/if}
+  <span class="header" on:click="{() => setSort("duration")}">
+    Length
+    {#if sort === "duration"}
+      {#if direction === "asc"}
+        ▲
+      {:else}
+        ▼
       {/if}
-    </span>
+    {/if}
+  </span>
 
-    <span class="header" on:click="{() => setSort("created")}">
-      Created
-      {#if sort === "created"}
-        {#if direction === "asc"}
-          ▲
-        {:else}
-          ▼
-        {/if}
+  <span class="header" on:click="{() => setSort("created")}">
+    Created
+    {#if sort === "created"}
+      {#if direction === "asc"}
+        ▲
+      {:else}
+        ▼
       {/if}
-    </span>
+    {/if}
+  </span>
 
-    <span class="header" on:click="{() => setSort("updated")}">
-      Updated
-      {#if sort === "updated"}
-        {#if direction === "asc"}
-          ▲
-        {:else}
-          ▼
-        {/if}
+  <span class="header" on:click="{() => setSort("updated")}">
+    Updated
+    {#if sort === "updated"}
+      {#if direction === "asc"}
+        ▲
+      {:else}
+        ▼
       {/if}
-    </span>
+    {/if}
+  </span>
 
-    <span class="header">
-      Ready
-    </span>
+  <span class="header">
+    Ready
+  </span>
 
-    {#each transcripts.docs as transcript}
-      <TranscriptEntry transcript={transcript}/>
-    {:else}
-      <li>
-        No transcripts
-      </li>
-    {/each}
-  </div>
-{:catch err}
-  {err}
-{/await}
+  {#each docs as transcript}
+    <TranscriptEntry transcript={transcript}/>
+  {:else}
+    <span class="empty">
+      No transcripts
+    </span>
+  {/each}
+</div>

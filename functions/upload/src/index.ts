@@ -75,8 +75,8 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
     stage: "pre-upload",
     name,
     duration: -1,
-    created: FieldValue.serverTimestamp,
-    updated: FieldValue.serverTimestamp
+    created: FieldValue.serverTimestamp(),
+    updated: FieldValue.serverTimestamp()
   };
   const stored = await store.collection(`users/${req.user.uid}/transcripts`).add(transcriptData);
   const transcriptId = stored.id;

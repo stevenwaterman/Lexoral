@@ -112,7 +112,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   if (writtenMaxId !== undefined) {
     const call = transcriptDoc.update({
       maxPatch: writtenMaxId,
-      updated: FieldValue.serverTimestamp
+      updated: FieldValue.serverTimestamp()
     })
     writes.push(call);
   }
