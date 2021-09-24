@@ -1,3 +1,11 @@
+# Terraform IAM
+
+The credentials for terraform should have the following permissions:
+
+* Editor
+* App engine creator
+* Cloud functions admin
+
 # APIs
 
 Lexoral makes use of a number of APIs that need to be manually enabled before you can do `terraform apply` on a new project:

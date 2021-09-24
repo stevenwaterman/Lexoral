@@ -1,11 +1,7 @@
 <script lang="ts">
   import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-  import type { User } from "firebase/auth";
-  
-  export let user: User | null;
-  $: if (user !== null) {
-    // TODO log out the current user
-  }
+
+  // TODO handle already logged in user
 
   let emailComponent: HTMLInputElement;
   let passwordComponent: HTMLInputElement;

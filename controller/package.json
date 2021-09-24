@@ -33,6 +33,7 @@
     "fontawesome-svelte": "^2.0.1",
     "query-string": "^7.0.0",
     "svelte-css-vars": "0.0.2",
-    "svelte-navigator": "^3.1.5"
+    "svelte-navigator": "^3.1.5",
+    "svelte-simple-modal": "^1.0.3"
   }
 }

@@ -65,10 +65,12 @@ Cloud:
   Choose function runner memory size based on file length
   Set content-length in signed upload url based on reasonable max bitrate (500kbps?) and user credit available
   Audomatically add firestore rules
+  Share transcript with other users
 
 Refactoring:
   abstract auth code out of fetch function into reusable library
-  abstract 
+  convert frontend package json to dry
+  split into client + server + info folders
 
 Add testing
 Allow local run of both frontends at once
@@ -80,12 +82,14 @@ Allow local run of both frontends at once
 Improve UI on controller
 Host all frontends on Google Cloud
 Remove hardcoded things from frontends
+Remove patch function, replace with clientside terraform
 
 
 
 
-List of your transcripts
-Ability to add new transcript
-Ability to delete transcript
-Ability to log out
+
+Pagination
+Progress meter
+Link to editor
+Delete button
 

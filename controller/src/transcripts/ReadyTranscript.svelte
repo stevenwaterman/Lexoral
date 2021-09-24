@@ -43,9 +43,9 @@
   $: ready = stage === "ready";
 
   function getDurationString(duration: number | undefined): string {
-    if (duration === undefined) return "";
-    if (duration === -1) return "";
-    
+    if (duration === undefined) return "-";
+    if (duration === -1) return "-";
+
     let seconds = duration;
     const hours = Math.floor(seconds / 3600);
     seconds -= hours * 3600;
@@ -85,6 +85,7 @@
     const daySecs = hourSecs * 24;
     const weekSecs = daySecs * 7;
 
+    if (seconds < 1) return "now";
     if (seconds === 1) return "a second ago";
     if (seconds < minuteSecs) return `${seconds} seconds ago`;
     if (seconds < minuteSecs * 2) return "a minute ago";

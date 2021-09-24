@@ -5,22 +5,22 @@
   import Login from "./auth/Login.svelte";
   import Signup from "./auth/Signup.svelte";
   import Verify from "./auth/Verify.svelte";
-  import { browserLocalPersistence, getAuth, onAuthStateChanged, setPersistence } from "firebase/auth";
   import type { User } from "firebase/auth";
+  import Modal from "svelte-simple-modal"
+  import { initUserStore } from "./auth/user";
 
-  const app = initializeApp({
+  initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
     authDomain: "lexoral-test.firebaseapp.com",
     projectId: "lexoral-test"
   })
+  initUserStore();
 
   let currentUser: User | null | undefined = undefined;
   $: if (currentUser && !currentUser.emailVerified && location.pathname !== "/auth/verify") location.pathname = "/auth/verify";
   $: if (currentUser === null && location.pathname !== "/auth/login" && location.pathname !== "/auth/signup") location.pathname = "/auth/login";
 
-  const auth = getAuth();
-  setPersistence(auth, browserLocalPersistence);
-  onAuthStateChanged(auth, user => currentUser = user);
+  
 </script>
 
 <style>
@@ -35,7 +35,7 @@
 
     --info: #9CAFD3;
     --warn: #F6AE2D;
-    --error: #E47A77;
+    --error: var(--red-1);
 
     --primary: #8BA861;
     --secondary: #9CAFD3;
@@ -85,21 +85,53 @@
     width: 100%;
     height: 100%;
   }
+
+  :global(button) {
+    font-size: 1em;
+    padding: 0.5em 1em 0.5em 1em;
+    transition-property: background-color, color;
+    transition-duration: 200ms;
+    border: none;
+    border-radius: 0.5em;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+
+    background-color: var(--blue-1);
+    color: var(--light-text);
+  }
+
+  :global(button:hover) {
+    background-color: var(--green-3);
+    color: var(--text);
+  }
+
+  :global(button:active) {
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  }
+
+  :global(input) {
+    font-size: 0.75em;
+    padding: 0.5em 1em 0.5em 1em;
+    border: 1px solid var(--form-border);
+    border-radius: 0.5em;
+    text-decoration: none;
+  }
 </style>
 
-{#if currentUser !== undefined}
+<Modal>
   <Router>
-      <Route path="/">
-        <Home user={currentUser}/>
-      </Route>
-      <Route path="/auth/login">
-        <Login user={currentUser}/>
-      </Route>
-      <Route path="/auth/signup">
-        <Signup user={currentUser}/>
-      </Route>
-      <Route path="/auth/verify">
-        <Verify user={currentUser}/>
-      </Route>
+    <Route path="/">
+      <Home/>
+    </Route>
+    <Route path="/auth/login">
+      <Login/>
+    </Route>
+    <Route path="/auth/signup">
+      <Signup/>
+    </Route>
+    <Route path="/auth/verify">
+      <Verify/>
+    </Route>
   </Router>
-{/if}
+</Modal>

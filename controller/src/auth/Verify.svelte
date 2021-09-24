@@ -1,8 +1,10 @@
 <script lang="ts">
   import { sendEmailVerification } from "firebase/auth";
   import type { User } from "firebase/auth";
+  import { userStore } from "./user";
   
-  export let user: User | null;
+  let user: User | null;
+  $: user = $userStore
 
   $: if (user === null) location.pathname = "/auth/login";
   $: if (user?.emailVerified) location.pathname = "/";

@@ -1,11 +1,10 @@
 <script lang="ts">
   import { getDb } from "../db";
-  import type { User } from "firebase/auth";
   import { collection, getDocs, limit, onSnapshot, orderBy, query, QueryDocumentSnapshot, where } from "firebase/firestore";
   import type { DocumentData, QuerySnapshot } from "firebase/firestore";
   import TranscriptEntry from "./ReadyTranscript.svelte";
-
-  export let user: User;
+  import { userStore } from "../auth/user";
+  import type { User } from "firebase/auth";
 
   let sort: "name" | "duration" | "created" | "updated" = "updated";
   let direction: "asc" | "desc" = "desc";
@@ -23,7 +22,7 @@
     }
   }
 
-  function updateQuery(order: typeof sort, dir: typeof direction) {
+  function updateQuery(user: User, order: typeof sort, dir: typeof direction) {
     const transcriptCollection = collection(getDb(), "users", user.uid, "transcripts");
     const q = query(transcriptCollection, orderBy(order, dir), limit(10));
 
@@ -35,7 +34,11 @@
 
   let unsub: () => void = () => {};
   let docs: QueryDocumentSnapshot<DocumentData>[] = [];
-  $: updateQuery(sort, direction);
+
+  let user: User | null;
+  $: user = $userStore;
+
+  $: if (user) updateQuery(user, sort, direction);
 </script>
 
 <style>
