@@ -61,7 +61,7 @@ jobs:
         path: frontend/demo
 
   commit-gh-pages:
-    needs: [build-editor, build-landing, build-demo]
+    needs: [build-editor, build-landing, build-demo, build-dashboard]
     runs-on: ubuntu-latest
 
     steps:
@@ -119,7 +119,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i -g dry-dry
+    - run: npm i -g dry-drya
     - run: dry ci && dry run build
       working-directory: functions/${{ matrix.functionName }}
     - uses: actions/upload-artifact@v2
@@ -128,7 +128,7 @@ jobs:
         path: functions/${{ matrix.functionName }}/dist
 
   deploy:
-    needs: [build-functions, build-editor, build-demo, build-landing]
+    needs: [build-functions]
     runs-on: ubuntu-latest
 
     steps:
