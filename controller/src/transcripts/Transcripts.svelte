@@ -131,14 +131,6 @@
   li {
     display: contents;
   }
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid black;
-    height: 100%;
-  }
 </style>
 
 <ol class="table">
