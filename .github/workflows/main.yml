@@ -60,43 +60,40 @@ jobs:
         name: demo
         path: frontend/demo
 
-        commit-gh-pages:
-          needs: [build-editor, build-landing, build-demo]
-          runs-on: ubuntu-latest
-      
-          steps:
-          - uses: actions/checkout@v2
-          - run: |
-              git config --local user.email "action@github.com"
-              git config --local user.name "GitHub Action"
-              git checkout --orphan gh-pages
-              git reset --hard
-          - uses: actions/download-artifact@v2
-            with:
-              name: demo
-              path: demo
-          - uses: actions/download-artifact@v2
-            with:
-              name: editor
-              path: editor
-          - uses: actions/download-artifact@v2
-            with:
-              name: landing
-          - uses: actions/download-artifact@v2
-            with:
-              name: dashboard
-              path: dashboard
-          - run: |
-              git add ./*
-              git commit -m "Update hosted version"
-          - uses: ad-m/github-push-action@master
-            with:
-              github_token: ${{ secrets.GITHUB_TOKEN }}
-              force: true
-              branch: gh-pages
+  commit-gh-pages:
+    needs: [build-editor, build-landing, build-demo]
+    runs-on: ubuntu-latest
 
-
-
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan gh-pages
+        git reset --hard
+    - uses: actions/download-artifact@v2
+      with:
+        name: demo
+        path: demo
+    - uses: actions/download-artifact@v2
+      with:
+        name: editor
+        path: editor
+    - uses: actions/download-artifact@v2
+      with:
+        name: landing
+    - uses: actions/download-artifact@v2
+      with:
+        name: dashboard
+        path: dashboard
+    - run: |
+        git add ./*
+        git commit -m "Update hosted version"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: gh-pages
 
   build-functions:
     runs-on: ubuntu-latest
