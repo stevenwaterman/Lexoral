@@ -8,6 +8,9 @@
   import type { User } from "firebase/auth";
   import Modal from "svelte-simple-modal"
   import { initUserStore } from "./auth/user";
+  import { library } from '@fortawesome/fontawesome-svg-core';
+  import { faEdit } from '@fortawesome/free-solid-svg-icons';
+  library.add(faEdit);
 
   initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",

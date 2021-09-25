@@ -43,9 +43,11 @@
 
 <style>
   .table {
+    margin: 2em;
+    padding: 0;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 1em;
+    row-gap: 0.5em;
   }
 
   .header {
@@ -55,66 +57,78 @@
     user-select: none;
   }
 
+  .header:hover {
+    background-color: var(--blue-3);
+  }
+
   .empty {
     grid-column: span 5;
+  }
+  
+  li {
+    display: contents;
   }
 </style>
 
 
-<div class="table">
-  <span class="header" on:click="{() => setSort("name")}">
-    Name
-    {#if sort === "name"}
-      {#if direction === "asc"}
-        ▲
-      {:else}
-        ▼
+<ol class="table">
+  <li>
+    <span class="header" on:click="{() => setSort("name")}">
+      Name
+      {#if sort === "name"}
+        {#if direction === "asc"}
+          ▲
+        {:else}
+          ▼
+        {/if}
       {/if}
-    {/if}
-  </span>
+    </span>
 
-  <span class="header" on:click="{() => setSort("duration")}">
-    Length
-    {#if sort === "duration"}
-      {#if direction === "asc"}
-        ▲
-      {:else}
-        ▼
+    <span class="header" on:click="{() => setSort("duration")}">
+      Length
+      {#if sort === "duration"}
+        {#if direction === "asc"}
+          ▲
+        {:else}
+          ▼
+        {/if}
       {/if}
-    {/if}
-  </span>
+    </span>
 
-  <span class="header" on:click="{() => setSort("created")}">
-    Created
-    {#if sort === "created"}
-      {#if direction === "asc"}
-        ▲
-      {:else}
-        ▼
+    <span class="header" on:click="{() => setSort("created")}">
+      Created
+      {#if sort === "created"}
+        {#if direction === "asc"}
+          ▲
+        {:else}
+          ▼
+        {/if}
       {/if}
-    {/if}
-  </span>
+    </span>
 
-  <span class="header" on:click="{() => setSort("updated")}">
-    Updated
-    {#if sort === "updated"}
-      {#if direction === "asc"}
-        ▲
-      {:else}
-        ▼
+    <span class="header" on:click="{() => setSort("updated")}">
+      Updated
+      {#if sort === "updated"}
+        {#if direction === "asc"}
+          ▲
+        {:else}
+          ▼
+        {/if}
       {/if}
-    {/if}
-  </span>
+    </span>
 
-  <span class="header">
-    Ready
-  </span>
+    <span class="header">
+      Ready
+    </span>
+  </li>
 
   {#each docs as transcript}
     <TranscriptEntry transcript={transcript}/>
   {:else}
-    <span class="empty">
-      No transcripts
-    </span>
+    <li>
+      <span class="empty">
+        No transcripts
+      </span>
+    </li>
   {/each}
-</div>
+</ol>

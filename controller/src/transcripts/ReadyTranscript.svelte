@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { DocumentData, QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
+  import { FontAwesomeIcon } from "fontawesome-svelte";
 
   export let transcript: QueryDocumentSnapshot<DocumentData>;
 
@@ -113,12 +114,40 @@
   }
 </script>
 
-<span>{name}</span>
-<span>{durationStr}</span>
-<span title={createdTooltip}>{createdString}</span>
-<span title={updatedTooltip}>{updatedString}</span>
-{#if ready}
-  <span>✓</span>
-{:else}
-  <span title={stage}>⧗</span>
-{/if}
+<style>
+  li {
+    display: contents;
+  }
+
+  li:hover span {
+    background-color: var(--blue-3)
+  }
+
+  span {
+    padding-right: 1em;
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  a {
+    display: contents;
+    text-decoration: inherit;
+    color: inherit
+  }
+</style>
+
+<li class:clickable={ready}>
+  <a href={link}>
+    <span>{name}</span>
+    <span>{durationStr}</span>
+    <span title={createdTooltip}>{createdString}</span>
+    <span title={updatedTooltip}>{updatedString}</span>
+    {#if ready}
+      <span>✓</span>
+    {:else}
+      <span title={stage}>⧗</span>
+    {/if}
+  </a>
+</li>
