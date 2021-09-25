@@ -9,6 +9,7 @@
   import { initUserStore, userStore } from "./auth/user";
   import Header from "./header/Header.svelte";
   import Transcripts from "./transcripts/Transcripts.svelte";
+import RequireAuth from "./auth/RequireAuth.svelte";
 
   initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
@@ -16,12 +17,6 @@
     projectId: "lexoral-test"
   })
   initUserStore();
-
-  let user: User | null | undefined;
-  $: user = $userStore;
-  
-  $: if (user && !user.emailVerified && !location.pathname.startsWith("/dashboard/auth/verify")) location.pathname = "/dashboard/auth/verify";
-  $: if (user === null && !location.pathname.startsWith("/dashboard/auth/login") && !location.pathname.startsWith("/dashboard/auth/signup")) location.pathname = "/dashboard/auth/login";  
 </script>
 
 <style>
@@ -138,13 +133,15 @@
   }
 </style>
 
-{#if user !== undefined}
+{#if $userStore !== undefined}
   <Modal>
     <div class="container">
       <Header/>
       <Router>
         <Route path="/">
-          <Transcripts/>
+          <RequireAuth>
+            <Transcripts/>
+          </RequireAuth>
         </Route>
         <Route path="/auth/login">
           <Login/>
