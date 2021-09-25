@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { uploadFile } from "../api";
   import { creditStore, toCreditString } from "../credit/credit";
-  import Loading from "./Loading.svelte";
+  import Loading from "../Loading.svelte";
 
   const { close } = getContext("simple-modal");
 
@@ -99,6 +99,10 @@
   .loadingContainer {
     align-self: center;
   }
+
+  .buttonContainer {
+    align-self: center;
+  }
 </style>
 
 
@@ -126,12 +130,17 @@
         <p class="error">Insufficient credit: Add {toCreditString(-remainingCredit)} to proceed</p>
       {:else}
         <p>Your remaining credit will be: {toCreditString(remainingCredit)}</p>
-
-        {#if !uploading}
-          <button on:click|preventDefault={attemptUpload}>Save</button>
-        {/if}
       {/if}
     {/if}
+  {/if}
+
+  {#if !uploading}
+    <div class="buttonContainer">
+      <button on:click|preventDefault={close}>Cancel</button>
+      {#if audioUrl && duration && affordable}
+        <button on:click|preventDefault={attemptUpload}>Confirm</button>
+      {/if}
+    </div>
   {/if}
 
   {#if uploading}

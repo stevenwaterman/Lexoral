@@ -6,11 +6,3 @@ declare module "svelte-simple-modal" {
     }
   }
 }
-
-declare module "fontawesome-svelte" {
-  export class FontAwesomeIcon {
-    $$prop_def: {
-      icon: string
-    }
-  }
-}

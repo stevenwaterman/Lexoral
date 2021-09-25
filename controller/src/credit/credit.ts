@@ -9,7 +9,7 @@ export const creditStore: Readable<number | undefined> = { subscribe: internalCr
 let unsub: () => void = () => {};
 userStore.subscribe(user => {
   unsub();
-  if (user === null) {
+  if (!user) {
     unsub = () => {};
     return;
   }
@@ -17,7 +17,6 @@ userStore.subscribe(user => {
   const docRef = doc(getDb(), "users", user.uid);
   unsub = onSnapshot(docRef, snapshot => {
     const credit = snapshot.get("secondsCredit");
-    console.log(credit);
     internalCreditStore.set(credit);
   });
 })

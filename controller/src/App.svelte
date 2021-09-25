@@ -1,16 +1,14 @@
 <script lang="ts">
   import { initializeApp } from "firebase/app";
   import { Router, Route } from "svelte-navigator";
-  import Home from "./Home.svelte";
   import Login from "./auth/Login.svelte";
   import Signup from "./auth/Signup.svelte";
   import Verify from "./auth/Verify.svelte";
   import type { User } from "firebase/auth";
   import Modal from "svelte-simple-modal"
-  import { initUserStore } from "./auth/user";
-  import { library } from '@fortawesome/fontawesome-svg-core';
-  import { faEdit } from '@fortawesome/free-solid-svg-icons';
-  library.add(faEdit);
+  import { initUserStore, userStore } from "./auth/user";
+  import Header from "./header/Header.svelte";
+  import Transcripts from "./transcripts/Transcripts.svelte";
 
   initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
@@ -19,11 +17,11 @@
   })
   initUserStore();
 
-  let currentUser: User | null | undefined = undefined;
-  $: if (currentUser && !currentUser.emailVerified && location.pathname !== "/auth/verify") location.pathname = "/auth/verify";
-  $: if (currentUser === null && location.pathname !== "/auth/login" && location.pathname !== "/auth/signup") location.pathname = "/auth/login";
-
+  let user: User | null | undefined;
+  $: user = $userStore;
   
+  $: if (user && !user.emailVerified && location.pathname !== "/auth/verify") location.pathname = "/auth/verify";
+  $: if (user === null && location.pathname !== "/auth/login" && location.pathname !== "/auth/signup") location.pathname = "/auth/login";  
 </script>
 
 <style>
@@ -119,22 +117,45 @@
     border: 1px solid var(--form-border);
     border-radius: 0.5em;
     text-decoration: none;
+    outline: none;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.window) {
+    color: var(--text);
+    background-color: var(--page-background);
+    box-sizing: border-box;
+    font-size: 18pt;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   }
 </style>
 
-<Modal>
-  <Router>
-    <Route path="/">
-      <Home/>
-    </Route>
-    <Route path="/auth/login">
-      <Login/>
-    </Route>
-    <Route path="/auth/signup">
-      <Signup/>
-    </Route>
-    <Route path="/auth/verify">
-      <Verify/>
-    </Route>
-  </Router>
-</Modal>
+{#if user !== undefined}
+  <Modal>
+    <div class="container">
+      <Header/>
+      <Router>
+        <Route path="/">
+          <Transcripts/>
+        </Route>
+        <Route path="/auth/login">
+          <Login/>
+        </Route>
+        <Route path="/auth/signup">
+          <Signup/>
+        </Route>
+        <Route path="/auth/verify">
+          <Verify/>
+        </Route>
+      </Router>
+    </div>
+  </Modal>
+{/if}

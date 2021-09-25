@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { DocumentData, QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
-  import { FontAwesomeIcon } from "fontawesome-svelte";
 
   export let transcript: QueryDocumentSnapshot<DocumentData>;
 
@@ -125,6 +124,8 @@
 
   span {
     padding-right: 1em;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
   }
 
   .clickable {

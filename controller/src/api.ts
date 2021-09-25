@@ -1,11 +1,11 @@
 import type { User } from "firebase/auth";
 import { userStore } from "./auth/user";
 
-let user: User | null = null;
+let user: User | null | undefined = undefined;
 userStore.subscribe(state => user = state);
 
 function assertUser(): User {
-  if (user === null) throw new Error("User is undefined when calling authenticated api");
+  if (!user) throw new Error("User is undefined when calling authenticated api");
   return user;
 }
 

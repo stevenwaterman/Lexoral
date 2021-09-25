@@ -5,7 +5,9 @@
   const { open } = getContext("simple-modal");
 
   function showModal() {
-    open(UploadModal);
+    open(UploadModal, {}, {
+      closeButton: false
+    });
   }
 </script>
 

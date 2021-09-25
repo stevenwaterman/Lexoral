@@ -3,12 +3,12 @@
   import type { User } from "firebase/auth";
   import { userStore } from "./user";
   
-  let user: User | null;
+  let user: User | null | undefined;
   $: user = $userStore
 
-  $: if (user === null) location.pathname = "/auth/login";
+  $: if (!user) location.pathname = "/auth/login";
   $: if (user?.emailVerified) location.pathname = "/";
-  $: if (user !== null && !user.emailVerified) {
+  $: if (user && !user.emailVerified) {
     sendEmailVerification(user, {
       url: "http://localhost:5000/"
     })
