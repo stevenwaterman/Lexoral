@@ -6,8 +6,8 @@
   let user: User | null | undefined;
   $: user = $userStore
 
-  $: if (!user) location.pathname = "/auth/login";
-  $: if (user?.emailVerified) location.pathname = "/";
+  $: if (!user) location.pathname = "/dashboard/auth/login";
+  $: if (user?.emailVerified) location.pathname = "/dashboard";
   $: if (user && !user.emailVerified) {
     sendEmailVerification(user, {
       url: "http://localhost:5000/"

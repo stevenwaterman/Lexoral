@@ -14,9 +14,9 @@
     createUserWithEmailAndPassword(auth, email, password)
       .then(({user}) => {
         if (user.emailVerified) {
-          location.pathname = "/"
+          location.pathname = "/dashboard"
         } else {
-          location.pathname = "/auth/verify"
+          location.pathname = "/dashboard/auth/verify"
         }
       })
       .catch(err => {
