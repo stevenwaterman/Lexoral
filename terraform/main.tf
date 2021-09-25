@@ -14,40 +14,6 @@ terraform {
 
 data "google_project" "project" {}
 
-# Frontend
-
-resource "google_storage_bucket" "website" {
-  name = "${data.google_project.project.project_id}-website"
-  storage_class = "REGIONAL"
-  location = "europe-west2"
-  uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
-
-  website {
-    main_page_suffix = "index.html"
-    not_found_page = "index.html"
-  }
-}
-
-resource "google_storage_default_object_acl" "website_acl" {
-  bucket      = google_storage_bucket.website.name
-  role_entity = ["READER:allUsers"]
-}
-
-resource "google_storage_bucket_object" "website_src" {
-  name   = "website"
-  bucket = google_storage_bucket.website.name
-  source = "${path.module}/../../website"
-}
-
-
-
-
-
-
-
-# Backend:
-
 resource "google_app_engine_application" "app" {
   project     = data.google_project.project.project_id
   location_id = "europe-west2"
