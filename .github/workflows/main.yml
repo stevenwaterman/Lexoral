@@ -6,6 +6,23 @@ on:
       - master
 
 jobs:
+  build-dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm ci
+      working-directory: frontend/dashboard
+    - run: npm run build
+      working-directory: frontend/dashboard
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dashboard
+        path: frontend/dashboard/public
+
   build-editor:
     runs-on: ubuntu-latest
 
@@ -15,13 +32,13 @@ jobs:
       with:
         node-version: '14'
     - run: npm ci
-      working-directory: editor
+      working-directory: frontend/editor
     - run: npm run build
-      working-directory: editor
+      working-directory: frontend/editor
     - uses: actions/upload-artifact@v2
       with:
-        name: website/editor
-        path: editor/public
+        name: editor
+        path: frontend/editor/public
 
   build-landing:
     runs-on: ubuntu-latest
@@ -30,8 +47,8 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/upload-artifact@v2
       with:
-        name: website/landing
-        path: landing
+        name: landing
+        path: frontend/landing
 
   build-demo:
     runs-on: ubuntu-latest
@@ -40,8 +57,46 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/upload-artifact@v2
       with:
-        name: website
-        path: demo
+        name: demo
+        path: frontend/demo
+
+        commit-gh-pages:
+          needs: [build-editor, build-landing, build-demo]
+          runs-on: ubuntu-latest
+      
+          steps:
+          - uses: actions/checkout@v2
+          - run: |
+              git config --local user.email "action@github.com"
+              git config --local user.name "GitHub Action"
+              git checkout --orphan gh-pages
+              git reset --hard
+          - uses: actions/download-artifact@v2
+            with:
+              name: demo
+              path: demo
+          - uses: actions/download-artifact@v2
+            with:
+              name: editor
+              path: editor
+          - uses: actions/download-artifact@v2
+            with:
+              name: landing
+          - uses: actions/download-artifact@v2
+            with:
+              name: dashboard
+              path: dashboard
+          - run: |
+              git add ./*
+              git commit -m "Update hosted version"
+          - uses: ad-m/github-push-action@master
+            with:
+              github_token: ${{ secrets.GITHUB_TOKEN }}
+              force: true
+              branch: gh-pages
+
+
+
 
   build-functions:
     runs-on: ubuntu-latest
@@ -72,7 +127,7 @@ jobs:
       working-directory: functions/${{ matrix.functionName }}
     - uses: actions/upload-artifact@v2
       with:
-        name: functions/${{ matrix.functionName }}
+        name: ${{ matrix.functionName }}
         path: functions/${{ matrix.functionName }}/dist
 
   deploy:
@@ -81,9 +136,30 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - uses: actions/download-artifact@v2
       with:
-        path: terraform
+        name: editor
+        path: terraform/website/editor
+
+    - uses: actions/download-artifact@v2
+        with:
+          name: demo
+          path: terraform/website/demo
+
+    - uses: actions/download-artifact@v2
+        with:
+          name: landing
+          path: terraform/website
+
+    - uses: actions/download-artifact@v2
+        with:
+          name: dashboard
+          path: terraform/website/dashboard
+
+    - uses: actions/download-artifact@v2
+      with:
+        path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
     - run: terraform init
       working-directory: terraform 
