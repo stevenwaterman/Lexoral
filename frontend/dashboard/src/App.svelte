@@ -9,7 +9,7 @@
   import { initUserStore, userStore } from "./auth/user";
   import Header from "./header/Header.svelte";
   import Transcripts from "./transcripts/Transcripts.svelte";
-import RequireAuth from "./auth/RequireAuth.svelte";
+  import RequireAuth from "./auth/RequireAuth.svelte";
 
   initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
