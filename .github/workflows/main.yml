@@ -136,27 +136,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - uses: actions/download-artifact@v2
-      with:
-        name: editor
-        path: terraform/website/editor
-
-    - uses: actions/download-artifact@v2
-        with:
-          name: demo
-          path: terraform/website/demo
-
-    - uses: actions/download-artifact@v2
-        with:
-          name: landing
-          path: terraform/website
-
-    - uses: actions/download-artifact@v2
-        with:
-          name: dashboard
-          path: terraform/website/dashboard
-
     - uses: actions/download-artifact@v2
       with:
         path: terraform/functions
