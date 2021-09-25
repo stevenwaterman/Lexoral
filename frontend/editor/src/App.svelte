@@ -10,7 +10,7 @@
   })
 
   let user: User | null | undefined = undefined;
-  $: if (user?.emailVerified) location.pathname = "/dashboard/auth/verify";
+  $: if (user?.emailVerified === false) location.pathname = "/dashboard/auth/verify";
   $: if (user === null) location.pathname = "/dashboard/auth/login";
 
   const auth = getAuth();
