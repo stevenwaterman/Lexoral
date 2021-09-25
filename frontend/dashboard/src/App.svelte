@@ -4,12 +4,11 @@
   import Login from "./auth/Login.svelte";
   import Signup from "./auth/Signup.svelte";
   import Verify from "./auth/Verify.svelte";
-  import type { User } from "firebase/auth";
   import Modal from "svelte-simple-modal"
   import { initUserStore, userStore } from "./auth/user";
   import Header from "./header/Header.svelte";
   import Transcripts from "./transcripts/Transcripts.svelte";
-  import RequireAuth from "./auth/RequireAuth.svelte";
+  import AuthPath from "./auth/AuthPath.svelte";
 
   initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
@@ -137,12 +136,10 @@
   <Modal>
     <div class="container">
       <Header/>
-      <Router>
-        <Route path="/">
-          <RequireAuth>
+      <Router basepath="/dashboard">
+        <AuthPath path="/">
             <Transcripts/>
-          </RequireAuth>
-        </Route>
+        </AuthPath>
         <Route path="/auth/login">
           <Login/>
         </Route>

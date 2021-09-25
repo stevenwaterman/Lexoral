@@ -2,12 +2,13 @@
   import { sendEmailVerification } from "firebase/auth";
   import type { User } from "firebase/auth";
   import { userStore } from "./user";
+  import { navigate } from "svelte-navigator";
   
   let user: User | null | undefined;
   $: user = $userStore
 
-  $: if (!user) location.pathname = "/dashboard/auth/login";
-  $: if (user?.emailVerified) location.pathname = "/dashboard";
+  $: if (!user) navigate("/dashboard/auth/login");
+  $: if (user?.emailVerified) navigate("/dashboard");
   $: if (user && !user.emailVerified) {
     sendEmailVerification(user, {
       url: "http://localhost:5000/"
