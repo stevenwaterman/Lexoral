@@ -20,8 +20,8 @@
   let user: User | null | undefined;
   $: user = $userStore;
   
-  $: if (user && !user.emailVerified && location.pathname !== "/dashboard/auth/verify") location.pathname = "/dashboard/auth/verify";
-  $: if (user === null && location.pathname !== "/dashboard/auth/login" && location.pathname !== "/dashboard/auth/signup") location.pathname = "/dashboard/auth/login";  
+  $: if (user && !user.emailVerified && !location.pathname.startsWith("/dashboard/auth/verify")) location.pathname = "/dashboard/auth/verify";
+  $: if (user === null && !location.pathname.startsWith("/dashboard/auth/login") && !location.pathname.startsWith("/dashboard/auth/signup")) location.pathname = "/dashboard/auth/login";  
 </script>
 
 <style>
