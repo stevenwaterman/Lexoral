@@ -4,7 +4,7 @@
   "author": "Steven Waterman",
   "license": "GPL-3.0-only",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && ./createPaths.sh",
     "dev": "rollup -c -w",
     "start": "serve -n -s -l 5000 public",
     "validate": "svelte-check"
