@@ -4,8 +4,8 @@
 
   export let path: string;
 
-  if ($userStore === null) navigate("/dashboard/auth/login");
-  if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify");
+  $: if ($userStore === null) navigate("/dashboard/auth/login");
+  $: if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify");
 </script>
 
 <Route path={path}>

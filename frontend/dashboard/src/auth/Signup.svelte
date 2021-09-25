@@ -3,6 +3,7 @@
   // TODO handle already logged in user
 
   import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { navigate } from "svelte-navigator";
   
   let emailComponent: HTMLInputElement;
   let passwordComponent: HTMLInputElement;
@@ -14,9 +15,9 @@
     createUserWithEmailAndPassword(auth, email, password)
       .then(({user}) => {
         if (user.emailVerified) {
-          location.pathname = "/dashboard"
+          navigate("/dashboard")
         } else {
-          location.pathname = "/dashboard/auth/verify"
+          navigate("/dashboard/auth/verify")
         }
       })
       .catch(err => {
@@ -52,5 +53,5 @@
     <input id="password" type="password" bind:this={passwordComponent} />
   </div>
 
-  <input type="submit" />
+  <input type="submit" value="Sign Up" />
 </form>
