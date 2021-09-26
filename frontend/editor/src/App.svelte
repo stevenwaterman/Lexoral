@@ -5,13 +5,13 @@
   import DataWrapper from "./DataWrapper.svelte";
 
   initializeApp({
-    apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
+    apiKey: process.env["FIREBASE_API_KEY"],
     authDomain: `${process.env["PROJECT_ID"]}.firebaseapp.com`
   })
 
   let user: User | null | undefined = undefined;
-  $: if (user?.emailVerified === false) location.pathname = "/dashboard/auth/verify";
-  $: if (user === null) location.pathname = "/dashboard/auth/login";
+  $: if (user?.emailVerified === false) location.pathname = "/dashboard/auth/verify/";
+  $: if (user === null) location.pathname = "/dashboard/auth/login/";
 
   const auth = getAuth();
   setPersistence(auth, browserLocalPersistence);
