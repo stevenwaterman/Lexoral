@@ -45,8 +45,8 @@ export default {
     }),
 
     injectProcessEnv({ 
-      PROJECT_ID: "lexoral-stage",
-      FIREBASE_API_KEY: "AIzaSyBxFFOSL7yfPksJMK1drBBabOWlOWLwDE4"
+      PROJECT_ID: process.env["PROJECT_ID"],
+      FIREBASE_API_KEY: process.env["FIREBASE_API_KEY"]
     }),
 
 		// If we're building for production (npm run build

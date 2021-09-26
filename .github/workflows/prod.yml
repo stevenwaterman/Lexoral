@@ -1,0 +1,126 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  build-frontends:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        frontendName:
+          - dashboard
+          - editor
+
+    env:
+      PROJECT_ID: lexoral-prod
+      FIREBASE_API_KEY: AIzaSyBU8Uc2XMlksFDa-WP27u4yL4I5Q1_Ddbg
+
+    steps:       
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm ci && npm run build
+      working-directory: frontend/${{ matrix.functionName }}
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.functionName }}
+        path: frontend/public/${{ matrix.functionName }}
+
+  deploy-frontend:
+    needs: [build-frontends]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create variables
+      id: vars
+      run: |
+          branch=${GITHUB_REF##*/} 
+          echo "::set-output name=branch::${branch}"
+    
+    - uses: actions/checkout@v2
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
+        git reset --hard
+        git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
+        mv frontend/public/* .
+        rm -r frontend
+    - uses: actions/download-artifact@v2
+      with:
+        name: editor
+        path: editor
+    - uses: actions/download-artifact@v2
+      with:
+        name: dashboard
+        path: dashboard
+    - run: |
+        git add ./*
+        git commit -m "Update hosted version"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: ${{ steps.vars.outputs.branch }}-deployed-frontend
+
+  build-functions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        functionName:
+          - adjust
+          - align
+          - charge_credit
+          - fetch
+          - patch
+          - signup
+          - transcode_envelope
+          - transcode_playback
+          - transcode_transcription
+          - transcribe
+          - transcription_watcher
+          - upload
+          - upload_watcher
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm i -g dry-dry
+    - run: dry ci && dry run build
+      working-directory: functions/${{ matrix.functionName }}
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.functionName }}
+        path: functions/${{ matrix.functionName }}/dist
+
+  deploy-backend:
+    needs: [build-functions]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create variables
+      id: vars
+      run: |
+          branch=${GITHUB_REF##*/} 
+          echo "::set-output name=branch::${branch}"
+          echo "::set-output name=creds::${branch^^}_GOOGLE_CREDENTIALS"
+
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        path: terraform/functions
+    - uses: hashicorp/setup-terraform@v1
+    - run: terraform init
+      working-directory: terraform/${{ steps.vars.outputs.branch }}
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}
+    - run: terraform apply -auto-approve
+      working-directory: terraform/${{ steps.vars.outputs.branch }}
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}

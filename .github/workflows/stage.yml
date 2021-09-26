@@ -4,45 +4,34 @@ on:
   push:
     branches:
       - prod
-      - stage
 
 jobs:
-  build-dashboard:
+  build-frontends:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        frontendName:
+          - dashboard
+          - editor
 
-    steps:
+    env:
+      PROJECT_ID: lexoral-stage
+      FIREBASE_API_KEY: AIzaSyBxFFOSL7yfPksJMK1drBBabOWlOWLwDE4
+
+    steps:       
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci
-      working-directory: frontend/dashboard
-    - run: npm run build
-      working-directory: frontend/dashboard
+    - run: npm ci && npm run build
+      working-directory: frontend/${{ matrix.functionName }}
     - uses: actions/upload-artifact@v2
       with:
-        name: dashboard
-        path: frontend/public/dashboard
-
-  build-editor:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - run: npm ci
-      working-directory: frontend/editor
-    - run: npm run build
-      working-directory: frontend/editor
-    - uses: actions/upload-artifact@v2
-      with:
-        name: editor
-        path: frontend/public/editor
+        name: ${{ matrix.functionName }}
+        path: frontend/public/${{ matrix.functionName }}
 
   deploy-frontend:
-    needs: [build-editor, build-dashboard]
+    needs: [build-frontends]
     runs-on: ubuntu-latest
 
     steps:
