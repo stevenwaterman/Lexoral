@@ -1,5 +1,5 @@
 provider "google" {
-  project = "lexoral-test"
+  project = "lexoral-stage"
   region  = "europe-west2"
   zone    = "europe-west2-b"
 }
