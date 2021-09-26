@@ -51,7 +51,6 @@ jobs:
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
     
-
     - uses: actions/checkout@v2
     - run: |
         git config --local user.email "action@github.com"
@@ -113,19 +112,22 @@ jobs:
   deploy-backend:
     needs: [build-functions]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
 
     steps:
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v2
       with:
         path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
     - run: terraform init
-      working-directory: terraform 
+      working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
     - run: terraform apply -auto-approve
-      working-directory: terraform
+      working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
