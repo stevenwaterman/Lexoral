@@ -13,5 +13,5 @@ terraform {
 }
 
 module "lexoral" {
-  source = "./modules/lexoral"
+  source = "../modules/lexoral"
 }
