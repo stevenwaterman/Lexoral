@@ -1,9 +1,10 @@
-name: AutomaticHost
+name: Deploy
 
 on:
   push:
     branches:
       - master
+      - test
 
 jobs:
   build-dashboard:
@@ -45,13 +46,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+    
+
     - uses: actions/checkout@v2
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout --orphan gh-pages
+        git checkout --orphan ${{ steps.extract_branch.outputs.branch }}-deployed-frontend
         git reset --hard
-        git checkout master -- frontend/public
+        git checkout ${{ steps.extract_branch.outputs.branch }} -- frontend/public
         mv frontend/public/* .
         rm -r frontend
     - uses: actions/download-artifact@v2
@@ -69,7 +76,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
-        branch: gh-pages
+        branch: ${{ steps.extract_branch.outputs.branch }}-deployed-frontend
 
   build-functions:
     runs-on: ubuntu-latest
@@ -106,6 +113,7 @@ jobs:
   deploy-backend:
     needs: [build-functions]
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
 
     steps:
     - uses: actions/checkout@v2
