@@ -41,7 +41,7 @@ jobs:
         path: frontend/public/editor
 
   deploy-frontend:
-    needs: [build-editor, build-landing, build-demo, build-dashboard]
+    needs: [build-editor, build-dashboard]
     runs-on: ubuntu-latest
 
     steps:
