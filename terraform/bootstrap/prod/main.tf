@@ -20,7 +20,12 @@ resource "google_service_account" "terraform_service_account" {
   display_name = "terraform"
 }
 
-resource "google_project_iam_member" "terraform_role_binding" {
+resource "google_project_iam_member" "terraform_role_binding_editor" {
   role    = "roles/editor"
+  member  = "serviceAccount:${google_service_account.terraform_service_account.email}"
+}
+
+resource "google_project_iam_member" "terraform_role_binding_owner" {
+  role    = "roles/owner"
   member  = "serviceAccount:${google_service_account.terraform_service_account.email}"
 }

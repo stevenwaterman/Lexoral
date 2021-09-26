@@ -13,6 +13,7 @@ Lexoral makes use of a number of APIs that need to be manually enabled before yo
 - https://console.cloud.google.com/apis/library/firestore.googleapis.com
 - https://console.cloud.google.com/marketplace/product/google/speech.googleapis.com
 - https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com
+- https://console.cloud.google.com/apis/library/cloudfunctions.googleapis.com
 
 # In-console setup
 
