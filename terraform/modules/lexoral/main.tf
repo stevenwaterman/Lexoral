@@ -79,21 +79,21 @@ resource "google_storage_bucket" "functions_code" {
 
 
 module "signup" {
-  source = "./signupFunction"
+  source = "../signupFunction"
   name = "signup"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
 }
 
 module "upload" {
-  source = "./httpFunction"
+  source = "../httpFunction"
   name = "upload"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
 }
 
 module "upload_watcher" {
-  source = "./storageFunction"
+  source = "../storageFunction"
   name = "upload_watcher"
   bucket = google_storage_bucket.functions_code.name
   watch = google_storage_bucket.audio.name
@@ -105,7 +105,7 @@ resource "google_pubsub_topic" "post_upload" {
 }
 
 module "transcode_playback" {
-  source = "./pubsubFunction"
+  source = "../pubsubFunction"
   name = "transcode_playback"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.post_upload.name
@@ -118,7 +118,7 @@ resource "google_pubsub_topic" "transcoded_playback" {
 }
 
 module "charge_credit" {
-  source = "./pubsubFunction"
+  source = "../pubsubFunction"
   name = "charge_credit"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.transcoded_playback.name
@@ -134,7 +134,7 @@ resource "google_pubsub_topic" "not_paid" {
 }
 
 module "transcode_transcription" {
-  source = "./pubsubFunction"
+  source = "../pubsubFunction"
   name = "transcode_transcription"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.paid.name
@@ -147,7 +147,7 @@ resource "google_pubsub_topic" "transcoded_transcription" {
 }
 
 module "transcode_envelope" {
-  source = "./pubsubFunction"
+  source = "../pubsubFunction"
   name = "transcode_envelope"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.transcoded_transcription.name
@@ -160,7 +160,7 @@ resource "google_pubsub_topic" "transcoded_envelope" {
 }
 
 module "transcribe" {
-  source = "./pubsubFunction"
+  source = "../pubsubFunction"
   name = "transcribe"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.transcoded_envelope.name
@@ -168,7 +168,7 @@ module "transcribe" {
 }
 
 module "transcription_watcher" {
-  source = "./storageFunction"
+  source = "../storageFunction"
   name = "transcription_watcher"
   bucket = google_storage_bucket.functions_code.name
   watch = google_storage_bucket.raw_transcripts.name
@@ -180,7 +180,7 @@ resource "google_pubsub_topic" "transcribed" {
 }
 
 module "align" {
-  source = "./pubsubFunction"
+  source = "../pubsubFunction"
   name = "align"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.transcribed.name
@@ -193,7 +193,7 @@ resource "google_pubsub_topic" "aligned" {
 }
 
 module "adjust" {
-  source = "./pubsubFunction"
+  source = "../pubsubFunction"
   name = "adjust"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.aligned.name
@@ -202,14 +202,14 @@ module "adjust" {
 }
 
 module "fetch" {
-  source = "./httpFunction"
+  source = "../httpFunction"
   name = "fetch"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
 }
 
 module "patch" {
-  source = "./httpFunction"
+  source = "../httpFunction"
   name = "patch"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
