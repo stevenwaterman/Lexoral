@@ -127,8 +127,8 @@ jobs:
     - run: terraform init
       working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.[steps.extract_branch.outputs.creds] }}
+        GOOGLE_CREDENTIALS: ${{ secrets[steps.extract_branch.outputs.creds] }}
     - run: terraform apply -auto-approve
       working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.[steps.extract_branch.outputs.creds] }}
+        GOOGLE_CREDENTIALS: ${{ secrets[steps.extract_branch.outputs.creds] }}
