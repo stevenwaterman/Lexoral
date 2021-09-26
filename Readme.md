@@ -1,4 +1,4 @@
-![Lexoral Logo](/landing/card.png)
+![Lexoral Logo](/assets/card.png)
 
 ## The Transcription Tool You Wish Existed.
 
