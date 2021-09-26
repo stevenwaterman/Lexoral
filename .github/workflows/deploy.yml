@@ -50,13 +50,13 @@ jobs:
       id: vars
       run: |
           branch=${GITHUB_REF##*/} 
-          echo "::set-output name=branch::${branch^^}"
+          echo "::set-output name=branch::${branch}"
     
     - uses: actions/checkout@v2
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
+        git checkout -b --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
         git reset --hard
         git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
         mv frontend/public/* .
@@ -119,9 +119,9 @@ jobs:
       id: vars
       run: |
           branch=${GITHUB_REF##*/} 
-          echo "::set-output name=branch::${branch^^}"
+          echo "::set-output name=branch::${branch}"
           echo "::set-output name=creds::${branch^^}_GOOGLE_CREDENTIALS"
-          
+
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v2
       with:
