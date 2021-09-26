@@ -24,11 +24,11 @@ jobs:
       with:
         node-version: '14'
     - run: npm ci && npm run build
-      working-directory: frontend/${{ matrix.functionName }}
+      working-directory: frontend/${{ matrix.frontendName }}
     - uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.functionName }}
-        path: frontend/public/${{ matrix.functionName }}
+        name: ${{ matrix.frontendName }}
+        path: frontend/public/${{ matrix.frontendName }}
 
   deploy-frontend:
     needs: [build-frontends]
