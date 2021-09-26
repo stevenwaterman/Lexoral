@@ -1,3 +1,7 @@
+# Bootstrap
+
+Run `terraform init` and `terraform apply` on the two bootstrap projects to create the remote state buckets
+
 # Terraform IAM
 
 The credentials for terraform should have the following permissions:
