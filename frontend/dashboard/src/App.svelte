@@ -11,9 +11,9 @@
   import AuthPath from "./auth/AuthPath.svelte";
 
   initializeApp({
-    apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
-    authDomain: "lexoral-test.firebaseapp.com",
-    projectId: "lexoral-test"
+    apiKey: process.env["FIREBASE_API_KEY"],
+    authDomain: `${process.env["PROJECT_ID"]}.firebaseapp.com`,
+    projectId: process.env["PROJECT_ID"]
   })
   initUserStore();
 </script>

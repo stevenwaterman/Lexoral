@@ -3,7 +3,7 @@
   // TODO handle already logged in user
 
   import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { navigate } from "svelte-navigator";
+  import { navigate } from "svelte-navigator";
   
   let emailComponent: HTMLInputElement;
   let passwordComponent: HTMLInputElement;

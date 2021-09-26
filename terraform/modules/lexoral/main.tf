@@ -6,6 +6,11 @@ resource "google_app_engine_application" "app" {
   database_type = "CLOUD_FIRESTORE"
 }
 
+resource "google_project_iam_member" "app-engine-sa-signblobs" {
+  role    = "roles/appengineflex.serviceAgent"
+  member  = "serviceAccount:${data.google_project.project.project_id}@appspot.gserviceaccount.com"
+}
+
 resource "google_storage_bucket" "audio" {
   name = "${data.google_project.project.project_id}-raw-audio"
   storage_class = "REGIONAL"

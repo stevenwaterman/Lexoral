@@ -6,7 +6,7 @@
 
   initializeApp({
     apiKey: "AIzaSyBv7G95FIPXdpLE3Ft6aMJ2PHmt6ng28FM",
-    authDomain: "lexoral-test.firebaseapp.com"
+    authDomain: `${process.env["PROJECT_ID"]}.firebaseapp.com`
   })
 
   let user: User | null | undefined = undefined;

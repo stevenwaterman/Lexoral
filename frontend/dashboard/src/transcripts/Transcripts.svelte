@@ -2,7 +2,7 @@
   import { getDb } from "../db";
   import { collection, getDocs, limit, onSnapshot, orderBy, query, QueryDocumentSnapshot, startAfter, where } from "firebase/firestore";
   import type { DocumentData, QuerySnapshot } from "firebase/firestore";
-  import TranscriptEntry from "./Transcript.svelte";
+  import Transcript from "./Transcript.svelte";
   import { userStore } from "../auth/user";
   import type { User } from "firebase/auth";
   import Loading from "../Loading.svelte";
@@ -76,6 +76,8 @@
 
   let unsub: () => void = () => {};
   let pages: QueryDocumentSnapshot<DocumentData>[][] = [];
+  let transcripts: QueryDocumentSnapshot<DocumentData>[];
+  $: transcripts = pages.flat();
 
   function last<T>(list: T[] | undefined): T | undefined {
     if (list === undefined) return undefined;
@@ -126,6 +128,7 @@
 
   .empty {
     grid-column: span 5;
+    text-align: center;
   }
   
   li {
@@ -184,14 +187,16 @@
     </span>
   </li>
 
-  {#each pages as page}
-    {#each page as transcript}
-      <TranscriptEntry transcript={transcript}/>
-    {/each}
+  {#each transcripts as transcript (transcript.id)}
+    <Transcript transcript={transcript}/>
   {:else}
     <li>
       <span class="empty">
-        Loading
+        {#if allLoaded}
+          You have no transcripts
+        {:else}
+          Loading...
+        {/if}
       </span>
     </li>
   {/each}

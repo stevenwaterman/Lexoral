@@ -1,11 +1,11 @@
 import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+import injectProcessEnv from 'rollup-plugin-inject-process-env';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -42,11 +42,12 @@ export default {
 		typescript({
 			sourceMap: !production,
 			inlineSources: !production
-		}),
-
-		// Watch the `public` directory and refresh the
-		// browser on changes when not in production
-		!production && livereload('public'),
+    }),
+    
+    injectProcessEnv({ 
+      PROJECT_ID: "lexoral-stage",
+      FIREBASE_API_KEY: "AIzaSyBxFFOSL7yfPksJMK1drBBabOWlOWLwDE4"
+    }),
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify

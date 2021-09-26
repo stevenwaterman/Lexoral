@@ -12,7 +12,7 @@ function assertUser(): User {
 export async function uploadFile(file: File, name: string) {
   return assertUser().getIdToken()
     .then(idToken =>
-      fetch("https://europe-west2-lexoral-test.cloudfunctions.net/upload", {
+      fetch(`https://europe-west2-${process.env["PROJECT_ID"]}.cloudfunctions.net/upload`, {
         method: "post",
         headers: {
           "Authorization": `Bearer ${idToken}`,

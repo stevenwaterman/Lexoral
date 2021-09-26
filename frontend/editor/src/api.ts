@@ -30,7 +30,7 @@ export async function fetchTranscript(): Promise<FetchTranscriptResult> {
   return assertUser()
     .getIdToken()
     .then(idToken =>
-      fetch(`https://europe-west2-lexoral-test.cloudfunctions.net/fetch?transcript=${getTranscriptId()}`, {
+      fetch(`https://europe-west2-${process.env["PROJECT_ID"]}.cloudfunctions.net/fetch?transcript=${getTranscriptId()}`, {
         method: "get",
         headers: {
           "Authorization": `Bearer ${idToken}`
@@ -46,7 +46,7 @@ export async function fetchTranscript(): Promise<FetchTranscriptResult> {
 export async function patchTranscript(patches: Record<number, Patch | null>): Promise<Response> {
   return assertUser()
     .getIdToken()
-    .then(idToken => fetch(`https://europe-west2-lexoral-test.cloudfunctions.net/patch?transcript=${getTranscriptId()}`, {
+    .then(idToken => fetch(`https://europe-west2-${process.env["PROJECT_ID"]}.cloudfunctions.net/patch?transcript=${getTranscriptId()}`, {
       method: "put",
       headers: {
         "Authorization": `Bearer ${idToken}`,

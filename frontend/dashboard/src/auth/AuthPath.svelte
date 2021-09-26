@@ -1,15 +1,12 @@
 <script lang="ts">
-  import { userStore } from "./user";
-  import { navigate, Route } from "svelte-navigator";
-
+  import { Route } from "svelte-navigator";
+  import AuthPathGuard from "./AuthPathGuard.svelte";
+  
   export let path: string;
-
-  $: if ($userStore === null) navigate("/dashboard/auth/login");
-  $: if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify");
 </script>
 
 <Route path={path}>
-  {#if $userStore?.emailVerified}
+  <AuthPathGuard>
     <slot/>
-  {/if}
+  </AuthPathGuard>
 </Route>

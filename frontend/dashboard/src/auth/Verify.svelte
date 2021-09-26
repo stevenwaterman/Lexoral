@@ -11,7 +11,7 @@
   $: if (user?.emailVerified) navigate("/dashboard");
   $: if (user && !user.emailVerified) {
     sendEmailVerification(user, {
-      url: "http://localhost:5000/"
+      url: "https://lexoral.com/dashboard"
     })
   }
 </script>
