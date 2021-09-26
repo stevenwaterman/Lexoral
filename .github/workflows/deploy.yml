@@ -117,6 +117,7 @@ jobs:
     - name: Extract branch name
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      run: echo "##[set-output name=creds;]$(echo ${GITHUB_REF#refs/heads/}_GOOGLE_CREDENTIALS)"
       id: extract_branch
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v2
@@ -126,8 +127,8 @@ jobs:
     - run: terraform init
       working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        GOOGLE_CREDENTIALS: ${{ secrets.[steps.extract_branch.outputs.creds] }}
     - run: terraform apply -auto-approve
       working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        GOOGLE_CREDENTIALS: ${{ secrets.[steps.extract_branch.outputs.creds] }}
