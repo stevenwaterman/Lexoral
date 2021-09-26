@@ -46,18 +46,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
+    - name: Create variables
+      id: vars
+      run: |
+          branch=${GITHUB_REF##*/} 
+          echo "::set-output name=branch::${branch^^}"
     
     - uses: actions/checkout@v2
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout --orphan ${{ steps.extract_branch.outputs.branch }}-deployed-frontend
+        git checkout --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
         git reset --hard
-        git checkout ${{ steps.extract_branch.outputs.branch }} -- frontend/public
+        git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
         mv frontend/public/* .
         rm -r frontend
     - uses: actions/download-artifact@v2
@@ -75,7 +76,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
-        branch: ${{ steps.extract_branch.outputs.branch }}-deployed-frontend
+        branch: ${{ steps.vars.outputs.branch }}-deployed-frontend
 
   build-functions:
     runs-on: ubuntu-latest
@@ -114,10 +115,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      run: echo "##[set-output name=creds;]$(echo ${GITHUB_REF#refs/heads/}_GOOGLE_CREDENTIALS)"
+    - name: Create variables
+      id: vars
+      run: |
+          branch=${GITHUB_REF##*/} 
+          echo "::set-output name=branch::${branch^^}"
+          echo "::set-output name=creds::${branch^^}_GOOGLE_CREDENTIALS"
       id: extract_branch
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v2
@@ -125,10 +128,10 @@ jobs:
         path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
     - run: terraform init
-      working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
+      working-directory: terraform/${{ steps.vars.outputs.branch }}
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets[steps.extract_branch.outputs.creds] }}
+        GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}
     - run: terraform apply -auto-approve
-      working-directory: terraform/${{ steps.extract_branch.outputs.branch }}
+      working-directory: terraform/${{ steps.vars.outputs.branch }}
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets[steps.extract_branch.outputs.creds] }}
+        GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}
