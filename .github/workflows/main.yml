@@ -57,9 +57,11 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: editor
+        path: editor
     - uses: actions/download-artifact@v2
       with:
         name: dashboard
+        path: dashboard
     - run: |
         git add ./*
         git commit -m "Update hosted version"
