@@ -32,7 +32,7 @@ import { userStore } from "../auth/user";
 </style>
 
 <nav>
-  <img class="logo" src="/dashboard/assets/smallBrand.svg" alt="logo"/>
+  <img class="logo" src="/assets/smallBrand.svg" alt="logo"/>
   {#if $userStore}
     <Credit/>
     <div class="buttons">

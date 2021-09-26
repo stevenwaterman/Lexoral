@@ -28,5 +28,5 @@
 </style>
 
 <div class="header" class:playing={$playingStore}>
-  <img class="logo" src="/editor/assets/smallBrand.svg" alt="logo"/>
+  <img class="logo" src="/assets/smallBrand.svg" alt="logo"/>
 </div>
