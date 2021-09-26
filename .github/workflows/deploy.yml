@@ -56,7 +56,7 @@ jobs:
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout -b --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
+        git checkout --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
         git reset --hard
         git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
         mv frontend/public/* .
