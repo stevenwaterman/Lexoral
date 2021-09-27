@@ -19,8 +19,8 @@ export async function run(event: any) {
   if (!user.exists) throw new Error("User " + userId + " profile missing");
   if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
 
-  const transcriptStage = transcript.get("post-upload");
-  if (transcriptStage !== "paid") throw new Error("Expected transcript stage post-upload, got " + transcriptStage)
+  const transcriptStage = transcript.get("stage");
+  if (transcriptStage !== "post-upload") throw new Error("Expected transcript stage post-upload, got " + transcriptStage)
 
   const filename = `${userId}_${transcriptId}`
 
