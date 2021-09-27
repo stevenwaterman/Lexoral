@@ -9,7 +9,15 @@
   let file: File | undefined = undefined;
 
   let placeholderName: string;
-  $: placeholderName = file?.name ?? "My Transcript"
+  $: placeholderName = getPlaceholderName(file);
+
+  function getPlaceholderName(file: File | undefined) {
+    if (file === undefined) return "My Transcript";
+    const fileName = file.name;
+    const lastDotIdx = fileName.lastIndexOf(".");
+    if (lastDotIdx === -1) return fileName;
+    return fileName.slice(0, lastDotIdx);
+  }
 
   let name: string | undefined;
 
