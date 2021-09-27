@@ -19,7 +19,7 @@ export async function run(event: any) {
   if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
 
   const transcriptStage = transcript.get("stage");
-  if (transcriptStage !== "inspected_audio") throw new Error("Expected transcript stage inspected_audio, got " + transcriptStage);
+  if (transcriptStage !== "transcoded_envelope") throw new Error("Expected transcript stage transcoded_envelope, got " + transcriptStage);
 
   const credit = user.get("secondsCredit");
   const duration = transcript.get("duration");
