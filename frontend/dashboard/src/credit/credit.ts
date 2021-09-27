@@ -27,7 +27,7 @@ export function toCreditString(credit: number | undefined): string {
   if (credit === 0) return "None";
 
   const hours = Math.floor(credit / 3600);
-  const minutes = Math.floor((credit - hours * 60) / 60);
+  const minutes = Math.floor((credit % 3600) / 60);
   const seconds = credit % 60;
 
   const hourString = hours.toString().padStart(2, "0");
