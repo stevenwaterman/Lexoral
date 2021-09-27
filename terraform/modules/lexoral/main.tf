@@ -25,8 +25,8 @@ resource "google_storage_bucket" "audio" {
   force_destroy = true # TODO remove this
 }
 
-resource "google_storage_bucket" "playback_audio" {
-  name = "${data.google_project.project.project_id}-playback-audio"
+resource "google_storage_bucket" "envelope_audio" {
+  name = "${data.google_project.project.project_id}-envelope-audio"
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
