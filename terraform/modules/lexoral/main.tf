@@ -116,6 +116,7 @@ module "transcode_playback" {
   topic = google_pubsub_topic.post_upload.name
   project_id = data.google_project.project.project_id
   memory = 1024
+  timeout = 540
 }
 
 resource "google_pubsub_topic" "transcoded_playback" {
@@ -145,6 +146,7 @@ module "transcode_transcription" {
   topic = google_pubsub_topic.paid.name
   project_id = data.google_project.project.project_id
   memory = 1024
+  timeout = 540
 }
 
 resource "google_pubsub_topic" "transcoded_transcription" {
@@ -158,6 +160,7 @@ module "transcode_envelope" {
   topic = google_pubsub_topic.transcoded_transcription.name
   project_id = data.google_project.project.project_id
   memory = 1024
+  timeout = 540
 }
 
 resource "google_pubsub_topic" "transcoded_envelope" {

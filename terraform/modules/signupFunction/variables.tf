@@ -18,3 +18,9 @@ variable "project_id" {
   description = "The GCP project ID."
   type        = string
 }
+
+variable "timeout" {
+  description = "The duration in seconds before the function returns error"
+  type        = number
+  default     = 60
+}

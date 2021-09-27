@@ -15,6 +15,7 @@ resource "google_cloudfunctions_function" "function" {
   runtime     = "nodejs14"
 
   available_memory_mb   = var.memory
+  timeout               = var.timeout
   source_archive_bucket = var.bucket
   source_archive_object = google_storage_bucket_object.function_src.name
   entry_point           = "run"
