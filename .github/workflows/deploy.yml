@@ -82,11 +82,10 @@ jobs:
           - align
           - charge_credit
           - fetch
+          - inspect_audio
           - patch
           - signup
           - transcode_envelope
-          - transcode_playback
-          - transcode_transcription
           - transcribe
           - transcription_watcher
           - upload
