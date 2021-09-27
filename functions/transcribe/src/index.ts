@@ -23,10 +23,10 @@ export async function run(event: any) {
   const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-raw/${userId}_${transcriptId}`;
 
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
-    encoding: "LINEAR16",
+    // encoding: "LINEAR16",
     languageCode: "en-US",
     maxAlternatives: 5,
-    audioChannelCount: 1,
+    // audioChannelCount: 1,
     enableAutomaticPunctuation: true,
     enableWordTimeOffsets: true,
     useEnhanced: true,
