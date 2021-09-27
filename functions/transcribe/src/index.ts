@@ -4,6 +4,11 @@ import admin from "firebase-admin";
 const store = admin.initializeApp().firestore()
 const speechClient = new speech.v1p1beta1.SpeechClient();
 
+const encodingMap: Record<string, protos.google.cloud.speech.v1p1beta1.IRecognitionConfig["encoding"]> = {
+  wav: "LINEAR16",
+  mp3: "MP3"
+}
+
 export async function run(event: any) {
   const messageData = JSON.parse(Buffer.from(event.data, "base64").toString());
   const { userId, transcriptId } = messageData;
@@ -22,7 +27,14 @@ export async function run(event: any) {
   const inputUri: string = `gs://${process.env["PROJECT_ID"]}-raw-audio/${userId}_${transcriptId}`;
   const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-raw/${userId}_${transcriptId}`;
 
+  const format = transcript.get("audio.format");
+  const encoding = encodingMap[format];
+
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
+    encoding,
+    sampleRateHertz: transcript.get("audio.sampleRate"),
+    audioChannelCount: transcript.get("audio.channels"),
+
     languageCode: "en-US",
     maxAlternatives: 5,
     enableAutomaticPunctuation: true,

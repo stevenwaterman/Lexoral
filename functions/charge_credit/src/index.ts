@@ -22,7 +22,7 @@ export async function run(event: any) {
   if (transcriptStage !== "transcoded-envelope") throw new Error("Expected transcript stage transcoded-envelope, got " + transcriptStage);
 
   const credit = user.get("secondsCredit");
-  const duration = transcript.get("duration");
+  const duration = transcript.get("audio.duration");
   const cost = Math.ceil(duration);
 
   let paid = false;

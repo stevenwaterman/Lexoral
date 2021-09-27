@@ -74,7 +74,9 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   const transcriptData = { 
     stage: "pre-upload",
     name,
-    duration: -1,
+    audio: {
+      duration: -1,
+    },
     created: FieldValue.serverTimestamp(),
     updated: FieldValue.serverTimestamp()
   };
