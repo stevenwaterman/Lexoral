@@ -1,9 +1,10 @@
-name: Deploy Production
+name: Deploy
 
 on:
   push:
     branches:
       - prod
+      - stage
 
 jobs:
   build-frontends:
@@ -14,17 +15,21 @@ jobs:
           - dashboard
           - editor
 
-    env:
-      PROJECT_ID: lexoral-prod
-      FIREBASE_API_KEY: AIzaSyBU8Uc2XMlksFDa-WP27u4yL4I5Q1_Ddbg
+    steps:
+    - name: Create variables
+      id: vars
+      run: |
+          branch=${GITHUB_REF##*/} 
+          echo "::set-output name=branch::${branch}"
 
-    steps:       
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
     - run: npm ci && npm run build
       working-directory: frontend/${{ matrix.frontendName }}
+      env:
+        BRANCH: ${{ steps.vars.outputs.branch }}
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.frontendName }}
@@ -50,6 +55,7 @@ jobs:
         git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
         mv frontend/public/* .
         rm -r frontend
+        git rm -r --cached frontend
     - uses: actions/download-artifact@v2
       with:
         name: editor
@@ -59,13 +65,43 @@ jobs:
         name: dashboard
         path: dashboard
     - run: |
-        git add ./*
+        git add .
         git commit -m "Update hosted version"
     - uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         branch: ${{ steps.vars.outputs.branch }}-deployed-frontend
+
+  gh-pages:
+    needs: [deploy-frontend]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create variables
+      id: vars
+      run: |
+          branch=${GITHUB_REF##*/} 
+          echo "::set-output name=branch::${branch}"
+    - uses: actions/checkout@v2
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan gh-pages
+        git reset --hard
+        git clone -b prod-deployed-frontend ${{ github.server_url }}/${{ github.repository }}.git prod
+        git clone -b stage-deployed-frontend ${{ github.server_url }}/${{ github.repository }}.git stage
+        rm -r prod/.git
+        rm -r stage/.git
+        mv prod/* .
+        rm -r prod
+        git add .
+        git commit -m "Updated hosted ${{ steps.vars.outputs.branch }}"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: gh-pages
 
   build-functions:
     runs-on: ubuntu-latest
@@ -116,11 +152,7 @@ jobs:
       with:
         path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
-    - run: terraform init
-      working-directory: terraform/${{ steps.vars.outputs.branch }}
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}
-    - run: terraform apply -auto-approve
+    - run: terraform init && terraform apply -auto-approve
       working-directory: terraform/${{ steps.vars.outputs.branch }}
       env:
         GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}
