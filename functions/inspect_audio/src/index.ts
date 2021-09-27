@@ -29,15 +29,14 @@ export async function run(event: any) {
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
   const metadata = await inspectAudio(sourceFile);
+  const duration = metadata.format.duration;
+  if (duration === undefined) throw new Error("Duration was undefined");
   
-  const streamCount = metadata.format.nb_streams;
-  if (streamCount !== 1) throw new Error("Expected 1 stream, actually " + streamCount);
-
-  await transcriptDoc.update({ stage: "transcoded-envelope" });
+  await transcriptDoc.update({ stage: "inspected_audio", duration });
 
   const message = { userId, transcriptId };
   const buffer = Buffer.from(JSON.stringify(message));
-  const topicName = `projects/${process.env["PROJECT_ID"]}/topics/transcoded-envelope`;
+  const topicName = `projects/${process.env["PROJECT_ID"]}/topics/inspected-audio`;
   await pubSubClient.topic(topicName).publish(buffer);
 }
 

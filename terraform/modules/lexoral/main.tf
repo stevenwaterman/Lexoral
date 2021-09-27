@@ -39,22 +39,6 @@ resource "google_storage_bucket" "playback_audio" {
   force_destroy = true # TODO remove this
 }
 
-resource "google_storage_bucket" "transcription_audio" {
-  name = "${data.google_project.project.project_id}-transcription-audio"
-  storage_class = "REGIONAL"
-  location = "europe-west2"
-  uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
-}
-
-resource "google_storage_bucket" "envelope_audio" {
-  name = "${data.google_project.project.project_id}-envelope-audio"
-  storage_class = "REGIONAL"
-  location = "europe-west2"
-  uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
-}
-
 resource "google_storage_bucket" "raw_transcripts" {
   name = "${data.google_project.project.project_id}-transcripts-raw"
   storage_class = "REGIONAL"
@@ -109,9 +93,9 @@ resource "google_pubsub_topic" "post_upload" {
   name = "post-upload"
 }
 
-module "transcode_playback" {
+module "inspect_audio" {
   source = "../pubsubFunction"
-  name = "transcode_playback"
+  name = "inspect_audio"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.post_upload.name
   project_id = data.google_project.project.project_id
@@ -119,15 +103,15 @@ module "transcode_playback" {
   timeout = 540
 }
 
-resource "google_pubsub_topic" "transcoded_playback" {
-  name = "transcoded-playback"
+resource "google_pubsub_topic" "inspected_audio" {
+  name = "inspected-audio"
 }
 
 module "charge_credit" {
   source = "../pubsubFunction"
   name = "charge_credit"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.transcoded_playback.name
+  topic = google_pubsub_topic.inspected_audio.name
   project_id = data.google_project.project.project_id
 }
 
@@ -139,25 +123,11 @@ resource "google_pubsub_topic" "not_paid" {
   name = "not-paid"
 }
 
-module "transcode_transcription" {
-  source = "../pubsubFunction"
-  name = "transcode_transcription"
-  bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.paid.name
-  project_id = data.google_project.project.project_id
-  memory = 1024
-  timeout = 540
-}
-
-resource "google_pubsub_topic" "transcoded_transcription" {
-  name = "transcoded-transcription"
-}
-
 module "transcode_envelope" {
   source = "../pubsubFunction"
   name = "transcode_envelope"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.transcoded_transcription.name
+  topic = google_pubsub_topic.paid.name
   project_id = data.google_project.project.project_id
   memory = 1024
   timeout = 540

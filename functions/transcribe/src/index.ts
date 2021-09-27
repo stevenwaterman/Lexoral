@@ -19,14 +19,12 @@ export async function run(event: any) {
   const transcriptStage = transcript.get("stage");
   if (transcriptStage !== "transcoded-envelope") throw new Error("Expected transcript stage transcoded-envelope, got " + transcriptStage);
 
-  const inputUri: string = `gs://${process.env["PROJECT_ID"]}-transcription-audio/${userId}_${transcriptId}.wav`;
+  const inputUri: string = `gs://${process.env["PROJECT_ID"]}-raw-audio/${userId}_${transcriptId}`;
   const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-raw/${userId}_${transcriptId}`;
 
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
-    // encoding: "LINEAR16",
     languageCode: "en-US",
     maxAlternatives: 5,
-    // audioChannelCount: 1,
     enableAutomaticPunctuation: true,
     enableWordTimeOffsets: true,
     useEnhanced: true,

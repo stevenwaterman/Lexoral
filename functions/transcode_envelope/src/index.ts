@@ -20,7 +20,7 @@ export async function run(event: any) {
   if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
 
   const transcriptStage = transcript.get("stage");
-  if (transcriptStage !== "transcoded-transcription") throw new Error("Expected transcript stage transcoded-transcription, got " + transcriptStage)
+  if (transcriptStage !== "paid") throw new Error("Expected transcript stage paid, got " + transcriptStage)
 
   const filename = `${userId}_${transcriptId}`
 

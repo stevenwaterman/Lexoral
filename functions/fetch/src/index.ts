@@ -96,7 +96,7 @@ async function handleRequest(reqInput: HydratedRequestInput, res: Response) {
   }
   const transcriptJson = JSON.parse(transcriptString);
 
-  const audioFile = audioBucket.file(`${userId}_${transcriptId}.mp3`);
+  const audioFile = audioBucket.file(`${userId}_${transcriptId}`);
   const audioFileUrl = await audioFile.getSignedUrl({
     action: "read",
     version: "v4",
@@ -146,7 +146,7 @@ async function readTranscript(userId: string, transcriptId: string): Promise<str
 
 const store = admin.initializeApp().firestore();
 const storage = new Storage();
-const audioBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
+const audioBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
 const transcriptBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts`);
 
 const cors = corsFactory({ origin: true });
