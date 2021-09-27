@@ -9,6 +9,11 @@ import injectProcessEnv from 'rollup-plugin-inject-process-env';
 
 const production = !process.env.ROLLUP_WATCH;
 
+const firebaseApiKeys = {
+  stage: "AIzaSyBxFFOSL7yfPksJMK1drBBabOWlOWLwDE4",
+  prod: "AIzaSyBU8Uc2XMlksFDa-WP27u4yL4I5Q1_Ddbg"
+}
+
 export default {
 	input: 'src/main.ts',
 	output: {
@@ -45,8 +50,8 @@ export default {
     }),
 
     injectProcessEnv({ 
-      PROJECT_ID: process.env["PROJECT_ID"],
-      FIREBASE_API_KEY: process.env["FIREBASE_API_KEY"]
+      PROJECT_ID: `lexoral-${process.env["BRANCH"]}`,
+      FIREBASE_API_KEY: firebaseApiKeys[process.env["BRANCH"]]
     }),
 
 		// If we're building for production (npm run build
