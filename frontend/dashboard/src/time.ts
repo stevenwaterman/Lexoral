@@ -3,7 +3,7 @@ import { readable, Readable } from "svelte/store";
 export const timeStore: Readable<Date> = readable(new Date(), set => {
   const interval = setInterval(() => {
     set(new Date());
-  }, 1000)
+  }, 60 * 1000)
 
   return () => clearInterval(interval);
 });
@@ -19,9 +19,7 @@ export function getRelativeTime(time: Date | undefined, now: Date): string {
   const daySecs = hourSecs * 24;
   const weekSecs = daySecs * 7;
 
-  if (seconds < 1) return "now";
-  if (seconds === 1) return "a second ago";
-  if (seconds < minuteSecs) return `${seconds} seconds ago`;
+  if (seconds < minuteSecs) return "now";
   if (seconds < minuteSecs * 2) return "a minute ago";
   if (seconds < hourSecs) return `${Math.floor(seconds / minuteSecs)} minutes ago`;
   if (seconds < hourSecs * 2) return "an hour ago";
