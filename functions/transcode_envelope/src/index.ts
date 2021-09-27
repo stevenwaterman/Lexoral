@@ -27,9 +27,8 @@ export async function run(event: any) {
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
 
-  await transcodeEnvelope(storage, filename, sourceFile);
-
-  await transcriptDoc.update({ stage: "transcoded-envelope" });
+  const duration = await transcodeEnvelope(storage, filename, sourceFile);
+  await transcriptDoc.update({ stage: "transcoded-envelope", duration });
 
   const message = { userId, transcriptId };
   const buffer = Buffer.from(JSON.stringify(message));
@@ -37,12 +36,12 @@ export async function run(event: any) {
   await pubSubClient.topic(topicName).publish(buffer);
 }
 
-async function transcodeEnvelope(storage: Storage, name: string, sourceFile: File): Promise<void> {
+async function transcodeEnvelope(storage: Storage, name: string, sourceFile: File): Promise<number> {
   const envelopeBucket = storage.bucket(`${process.env["PROJECT_ID"]}-envelope-audio`);
   const envelopeFile = envelopeBucket.file(`${name}.pcm`);
   const envelope = envelopeFile.createWriteStream();
 
-  return new Promise<void>(resolve => {
+  return new Promise(resolve => {
     ffmpeg(sourceFile.createReadStream())
       .noVideo()
       .audioFilter("aeval=abs(val(0))")
@@ -50,7 +49,24 @@ async function transcodeEnvelope(storage: Storage, name: string, sourceFile: Fil
       .audioFilter("aresample=1000")
       .format("s16le")
       .output(envelope, {end: true})
-      .on("end", resolve)
+      .on("end", (_, stderr: string) => {
+        const sizeLines = stderr.split("\n").filter(line => line.trimStart().startsWith("size="))
+        const line = sizeLines[sizeLines.length - 1];
+        if (line === undefined) throw new Error("No size lines in ffmpeg output: " + stderr);
+
+        const regexResult = /time=[^ ]+/.exec(line)
+        if (regexResult === null) throw new Error("No time found in ffmpeg size line: " + line);
+        const matchString = regexResult[0] as string;
+        const timeString = matchString.substring(5);
+        const [hourStr, minuteStr, secondStr] = timeString.split(":");
+        if (!hourStr || !minuteStr || !secondStr) throw new Error("Missing colon in time string: " + timeString);
+        const hour = parseInt(hourStr);
+        const minute = parseInt(minuteStr);
+        const second = parseFloat(secondStr);
+
+        const totalSeconds = hour * 3600 + minute * 60 + second;
+        resolve(totalSeconds)
+      })
       .run()
   });
 }

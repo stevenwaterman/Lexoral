@@ -93,9 +93,9 @@ resource "google_pubsub_topic" "post_upload" {
   name = "post-upload"
 }
 
-module "inspect_audio" {
+module "transcode_envelope" {
   source = "../pubsubFunction"
-  name = "inspect_audio"
+  name = "transcode_envelope"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.post_upload.name
   project_id = data.google_project.project.project_id
@@ -103,15 +103,15 @@ module "inspect_audio" {
   timeout = 540
 }
 
-resource "google_pubsub_topic" "inspected_audio" {
-  name = "inspected-audio"
+resource "google_pubsub_topic" "transcoded_envelope" {
+  name = "transcoded-envelope"
 }
 
 module "charge_credit" {
   source = "../pubsubFunction"
   name = "charge_credit"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.inspected_audio.name
+  topic = google_pubsub_topic.transcoded_envelope.name
   project_id = data.google_project.project.project_id
 }
 
@@ -123,25 +123,11 @@ resource "google_pubsub_topic" "not_paid" {
   name = "not-paid"
 }
 
-module "transcode_envelope" {
-  source = "../pubsubFunction"
-  name = "transcode_envelope"
-  bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.paid.name
-  project_id = data.google_project.project.project_id
-  memory = 1024
-  timeout = 540
-}
-
-resource "google_pubsub_topic" "transcoded_envelope" {
-  name = "transcoded-envelope"
-}
-
 module "transcribe" {
   source = "../pubsubFunction"
   name = "transcribe"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.transcoded_envelope.name
+  topic = google_pubsub_topic.paid.name
   project_id = data.google_project.project.project_id
 }
 
