@@ -23,11 +23,12 @@ export async function run(event: any) {
 
   const credit = user.get("secondsCredit");
   const duration = transcript.get("duration");
+  const cost = Math.ceil(duration);
 
   let paid = false;
-  if (credit >= duration) {
+  if (credit >= cost) {
     userDoc.update({
-      secondsCredit: admin.firestore.FieldValue.increment(-duration)
+      secondsCredit: admin.firestore.FieldValue.increment(-cost)
     });
     paid = true;
   }
