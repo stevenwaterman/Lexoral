@@ -11,7 +11,7 @@
   $: name = transcript.get("name");
 
   let duration: number | undefined;
-  $: duration = transcript.get("duration");
+  $: duration = transcript.get("audio.duration");
 
   let durationStr: string;
   $: durationStr = getDurationString(duration);
