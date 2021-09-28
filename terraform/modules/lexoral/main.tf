@@ -1,45 +1,5 @@
 data "google_project" "project" {}
 
-resource "google_project_service" "workflows_api" {
-  service            = "workflows.googleapis.com"
-}
-
-resource "google_project_service" "cloudresourcemanager_api" {
-  service            = "cloudresourcemanager.googleapis.com"
-}
-
-resource "google_project_service" "cloudbuild_api" {
-  service            = "cloudbuild.googleapis.com"
-}
-
-resource "google_project_service" "appengine_api" {
-  service            = "appengine.googleapis.com"
-}
-
-resource "google_project_service" "firestore_api" {
-  service            = "firestore.googleapis.com"
-}
-
-resource "google_project_service" "cloudfunctions_api" {
-  service            = "cloudfunctions.googleapis.com"
-}
-
-resource "google_project_service" "speech_api" {
-  service            = "speech.googleapis.com"
-}
-
-resource "google_project_service" "cloudidentity_api" {
-  service            = "cloudidentity.googleapis.com"
-}
-
-resource "google_project_service" "iam_api" {
-  service            = "iam.googleapis.com"
-}
-
-resource "google_project_service" "iamcredentials_api" {
-  service            = "iamcredentials.googleapis.com"
-}
-
 resource "google_app_engine_application" "app" {
   project     = data.google_project.project.project_id
   location_id = "europe-west2"
