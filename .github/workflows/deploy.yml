@@ -137,7 +137,7 @@ jobs:
           functions/master/utils/dist
           functions/master/utils/package.json
           functions/master/utils/package-lock.json
-          functions/master/index.json
+          functions/master/index.js
           functions/master/package.json
 
   deploy-backend:
