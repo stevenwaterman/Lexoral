@@ -42,9 +42,12 @@ resource "google_app_engine_application" "app" {
   database_type = "CLOUD_FIRESTORE"
 }
 
+data "google_app_engine_default_service_account" "default" {
+}
+
 resource "google_project_iam_member" "app-engine-sa-signblobs" {
   role    = "roles/appengineflex.serviceAgent"
-  member  = "serviceAccount:${data.google_project.project.project_id}@appspot.gserviceaccount.com"
+  member  = "serviceAccount:${data.google_app_engine_default_service_account.default.email}"
 }
 
 resource "google_storage_bucket" "audio" {
@@ -215,7 +218,37 @@ module "patch" {
   project_id = data.google_project.project.project_id
 }
 
-resource "google_project_service" "workflows" {
-  service            = "workflows.googleapis.com"
-  disable_on_destroy = false
+
+resource "google_workflows_workflow" "workflows_example" {
+  name            = "sample-workflow"
+  region          = "europe-west4"
+  description     = "A sample workflow"
+  service_account = data.google_app_engine_default_service_account.default.unique_id
+  source_contents = <<-EOF
+  # This is a sample workflow, feel free to replace it with your source code
+  #
+  # This workflow does the following:
+  # - reads current time and date information from an external API and stores
+  #   the response in CurrentDateTime variable
+  # - retrieves a list of Wikipedia articles related to the day of the week
+  #   from CurrentDateTime
+  # - returns the list of articles as an output of the workflow
+  # FYI, In terraform you need to escape the $$ or it will cause errors.
+
+  - getCurrentTime:
+      call: http.get
+      args:
+          url: https://us-central1-workflowsample.cloudfunctions.net/datetime
+      result: CurrentDateTime
+  - readWikipedia:
+      call: http.get
+      args:
+          url: https://en.wikipedia.org/w/api.php
+          query:
+              action: opensearch
+              search: $${CurrentDateTime.body.dayOfTheWeek}
+      result: WikiResult
+  - returnOutput:
+      return: $${WikiResult.body[1]}
+EOF
 }

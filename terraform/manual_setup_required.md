@@ -2,10 +2,6 @@
 
 Run `terraform init` and `terraform apply` on the two bootstrap projects to create the remote state buckets
 
-# APIs
-
-Lexoral makes use of a number of APIs that need to be manually enabled before you can do `terraform apply` on a new project:
-
 # In-console setup
 
 * Add an Email/Password provider to Identity Platform
