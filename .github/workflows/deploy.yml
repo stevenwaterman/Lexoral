@@ -120,7 +120,7 @@ jobs:
     - run: npm i -g dry-dry
     - run: dry run noop --dry-keep-package-json
       working-directory: functions/${{ matrix.functionName }}
-    - run: cp ${{ matrix.functionName }} master/code
+    - run: cp -r ${{ matrix.functionName }} master/code
       working-directory: functions
     - run: npm ci && npm run build
       working-directory: functions/master/code
