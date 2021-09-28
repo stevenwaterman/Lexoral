@@ -1,39 +1,17 @@
 import ffmpeg from "fluent-ffmpeg";
 import { File, Storage } from "@google-cloud/storage";
-import { PubSub } from "@google-cloud/pubsub";
+import { Request, Response } from "express";
 import admin from "firebase-admin";
+import utils from "lexoral-utils";
 
-const store = admin.initializeApp().firestore()
-const storage = new Storage();
-const pubSubClient = new PubSub();
-
-export async function run(event: any) {
-  const messageData = JSON.parse(Buffer.from(event.data, "base64").toString());
-  const { userId, transcriptId } = messageData;
-  if (!userId) throw new Error("userId not found in message");
-  if (!transcriptId) throw new Error("transcriptId not found in message");
-
-  const userDoc = store.doc(`users/${userId}`);
-  const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
-  const [user, transcript] = await Promise.all([userDoc.get(), transcriptDoc.get()]);
-  if (!user.exists) throw new Error("User " + userId + " profile missing");
-  if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
-
-  const transcriptStage = transcript.get("stage");
-  if (transcriptStage !== "post-upload") throw new Error("Expected transcript stage post-upload, got " + transcriptStage)
-
-  const filename = `${userId}_${transcriptId}`
+async function handleRequest(req: Request, res: Response) {
+  const { user, transcript } = await utils.userTranscript.getAll(req, res, store);
+  const filename = `${user.id}_${transcript.id}`
 
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
-
   const audio = await transcodeEnvelope(storage, filename, sourceFile);
-  await transcriptDoc.update({ stage: "transcoded-envelope", audio });
-
-  const message = { userId, transcriptId };
-  const buffer = Buffer.from(JSON.stringify(message));
-  const topicName = `projects/${process.env["PROJECT_ID"]}/topics/transcoded-envelope`;
-  await pubSubClient.topic(topicName).publish(buffer);
+  await transcript.doc.update({ stage: "transcoded-envelope", audio });
 }
 
 type EnvelopeMetadata = {
@@ -107,3 +85,7 @@ function getMetadata(lines: string[]): {
   if (channels === undefined) throw new Error("Unrecognised channel layout: " + channelString);
   return { format, sampleRate, channels };
 }
+
+const store = admin.initializeApp().firestore();
+const storage: Storage = new Storage();
+export const run = utils.http.get(handleRequest);

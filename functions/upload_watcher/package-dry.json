@@ -4,7 +4,6 @@
     "extends": "../package-dry.json"
   },
   "dependencies": {
-    "firebase-admin": "managed",
-    "@google-cloud/pubsub": "managed"
+    "firebase-admin": "managed"
   }
 }
