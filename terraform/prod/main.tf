@@ -1,4 +1,4 @@
-provider "google" {
+provider "google-beta" {
   project = "lexoral-prod"
   region  = "europe-west2"
   zone    = "europe-west2-b"
