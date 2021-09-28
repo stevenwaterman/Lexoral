@@ -89,6 +89,7 @@ jobs:
         path: functions/utils/dist
 
   build-functions:
+    needs: [build-utils]
     runs-on: ubuntu-latest
     strategy:
       matrix:
