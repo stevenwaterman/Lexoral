@@ -1,6 +1,7 @@
 {
   "name": "lexoral-master",
   "version": "1.0.0",
+  "main": "index.js",
   "type": "module",
   "author": "Steven Waterman",
   "license": "GPL-3.0-only",

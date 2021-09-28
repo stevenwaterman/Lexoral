@@ -118,14 +118,26 @@ jobs:
         name: utils
         path: functions/master/utils
     - run: npm i -g dry-dry
-    - run: dry ci && dry run build && mv dist/package.json package.json
+    - run: dry run noop --dry-keep-package-json
       working-directory: functions/${{ matrix.functionName }}
     - run: cp ${{ matrix.functionName }} master/code
       working-directory: functions
+    - run: npm ci && npm run build
+      working-directory: functions/master/code
+    - run: npm i
+      working-directory: functions/master
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.functionName }}
-        path: functions/master
+        path: |
+          functions/master/code/dist
+          functions/master/code/package.json
+          functions/master/code/package-lock.json
+          functions/master/utils/dist
+          functions/master/utils/package.json
+          functions/master/utils/package-lock.json
+          functions/master/index.json
+          functions/master/package.json
 
   deploy-backend:
     needs: [build-functions]
