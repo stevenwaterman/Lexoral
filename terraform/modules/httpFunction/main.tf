@@ -19,7 +19,7 @@ resource "google_cloudfunctions_function" "function" {
   source_archive_bucket = var.bucket
   source_archive_object = google_storage_bucket_object.function_src.name
   trigger_http          = true
-  entry_point           = "run"
+  entry_point           = "entry"
   environment_variables = {
     PROJECT_ID = var.project_id
   }
