@@ -3,11 +3,6 @@ provider "google" {
   region  = "europe-west2"
   zone    = "europe-west2-b"
 }
-provider "google-beta" {
-  project = "lexoral-prod"
-  region  = "europe-west2"
-  zone    = "europe-west2-b"
-}
 provider "archive" {}
 
 terraform {

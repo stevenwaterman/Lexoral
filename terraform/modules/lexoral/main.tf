@@ -158,11 +158,18 @@ module "patch" {
 
 
 
-resource "google_workflows_workflow" "workflows_example" {
-  provider        = google-beta
-  name            = "sample-workflow"
+resource "google_workflows_workflow" "pre_transcribe_workflow" {
+  provider        = google
+  name            = "pre_transcribe"
   region          = "europe-west4"
-  description     = "A sample workflow"
   service_account = data.google_app_engine_default_service_account.default.unique_id
-  source_contents = file("${path.root}/../../functions/workflow.yml")
+  source_contents = file("${path.root}/../../workflows/preTranscribe.yml")
+}
+
+resource "google_workflows_workflow" "post_transcribe_workflow" {
+  provider        = google
+  name            = "post_transcribe"
+  region          = "europe-west4"
+  service_account = data.google_app_engine_default_service_account.default.unique_id
+  source_contents = file("${path.root}/../../workflows/postTranscribe.yml")
 }

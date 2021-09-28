@@ -1,10 +1,6 @@
 main:
     params: [user_id, transcript_id]
     steps:
-        - log_request:
-            call: sys.log
-            args:
-                text: ${"upload called, " + user_id + ", " + transcript_id}
         - vars:
             assign:
                 - exec_id: ${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
@@ -50,55 +46,6 @@ main:
             call: assert_2xx
             args:
               status: ${transcribe_response.status}
-
-        - create_transcribe_callback:
-            call: events.create_callback_endpoint
-            args:
-                http_callback_method: "POST"
-            result: transcribe_callback
-        - store_transcribe_callback:
-            call: googleapis.firestore.v1.projects.databases.documents.patch
-            args:
-                name: ${store_workflow_root + user_id + "/transcripts/" + transcript_id}
-                updateMask:
-                    fieldPaths: ['transcribe_callback']
-                body:
-                    fields:
-                        upload:
-                            stringValue: ${transcribe_callback.url}
-            result: store_transcribe_callback_result
-        - await_transcribe_callback:
-            call: events.await_callback
-            args:
-                callback: ${transcribe_callback}
-                timeout: 3600
-            result: transcribe_callback_request
-
-        - align:
-            call: http.get
-            args:
-              url: ${function_root + "align"}
-              query:
-                user: user_id
-                transcript: transcript_id
-            result: align_response
-        - align_check:
-            call: assert_2xx
-            args:
-              status: ${align_response.status}
-
-        - adjust:
-            call: http.get
-            args:
-              url: ${function_root + "adjust"}
-              query:
-                user: user_id
-                transcript: transcript_id
-            result: adjust_response
-        - align_check:
-            call: assert_2xx
-            args:
-              status: ${adjust_response.status}
 
         - success:
             return: "SUCCESS"
