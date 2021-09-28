@@ -159,7 +159,6 @@ module "patch" {
 
 
 resource "google_workflows_workflow" "pre_transcribe_workflow" {
-  provider        = google
   name            = "pre_transcribe"
   region          = "europe-west4"
   service_account = data.google_app_engine_default_service_account.default.unique_id
@@ -167,7 +166,6 @@ resource "google_workflows_workflow" "pre_transcribe_workflow" {
 }
 
 resource "google_workflows_workflow" "post_transcribe_workflow" {
-  provider        = google
   name            = "post_transcribe"
   region          = "europe-west4"
   service_account = data.google_app_engine_default_service_account.default.unique_id
