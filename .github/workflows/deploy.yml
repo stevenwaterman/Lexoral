@@ -86,7 +86,9 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: utils
-        path: functions/utils
+        path: |
+          functions/utils/dist
+          functions/utils/package-lock.json
 
   build-functions:
     needs: [build-utils]
@@ -116,7 +118,7 @@ jobs:
         name: utils
         path: functions/master/utils
     - run: npm i -g dry-dry
-    - run: dry ci && dry run build
+    - run: dry ci && dry run build && mv dist/package.json package.json
       working-directory: functions/${{ matrix.functionName }}
     - run: cp ${{ matrix.functionName }} master/code
       working-directory: functions
