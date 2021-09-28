@@ -159,6 +159,7 @@ module "patch" {
 
 
 resource "google_workflows_workflow" "workflows_example" {
+  provider        = google-beta
   name            = "sample-workflow"
   region          = "europe-west4"
   description     = "A sample workflow"

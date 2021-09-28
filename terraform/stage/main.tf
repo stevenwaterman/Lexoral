@@ -1,3 +1,8 @@
+provider "google" {
+  project = "lexoral-stage"
+  region  = "europe-west2"
+  zone    = "europe-west2-b"
+}
 provider "google-beta" {
   project = "lexoral-stage"
   region  = "europe-west2"
