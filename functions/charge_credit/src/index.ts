@@ -20,5 +20,4 @@ async function handleRequest(req: Request, res: Response) {
 }
 
 const store = admin.initializeApp().firestore();
-const storage: Storage = new Storage();
 export const run = utils.http.get(handleRequest);
