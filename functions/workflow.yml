@@ -12,8 +12,6 @@ main:
                 - store_users_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/users/"}
                 - store_workflow_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/workflow/"}
 
-          result: store_upload_callback_result
-
         - transcode_envelope:
             call: http.get
             args:
@@ -110,7 +108,7 @@ assert_2xx:
   steps:
   - compare:
       switch:
-      - condition: ${status >= 200 && status < 300}
+      - condition: ${status >= 200 AND status < 300}
         next: end
   - fail:
       raise: ${"Expected 2xx http response, actually " + status}
