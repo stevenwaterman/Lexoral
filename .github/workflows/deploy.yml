@@ -86,7 +86,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: utils
-        path: functions/utils/dist
+        path: functions/utils
 
   build-functions:
     needs: [build-utils]
@@ -114,14 +114,16 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: utils
-        path: functions/utils/dist
+        path: functions/master/utils
     - run: npm i -g dry-dry
     - run: dry ci && dry run build
       working-directory: functions/${{ matrix.functionName }}
+    - run: cp ${{ matrix.functionName }} master/code
+      working-directory: functions
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.functionName }}
-        path: functions/${{ matrix.functionName }}/dist
+        path: functions/master
 
   deploy-backend:
     needs: [build-functions]

@@ -18,6 +18,7 @@
     "@google-cloud/storage": "5.14.2",
     "@google-cloud/firestore": "4.15.1",
     "cors": "2.8.5",
-    "firebase-admin": "9.11.1"
+    "firebase-admin": "9.11.1",
+    "express": "4.17.1"
   }
 }

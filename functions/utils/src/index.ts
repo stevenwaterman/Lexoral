@@ -1,7 +1,7 @@
-import * as userTranscript from "./userTranscript";
-import * as storage from "./storage";
-import * as http from "./http";
-import * as auth from "./auth";
+import * as userTranscript from "./userTranscript.js";
+import * as storage from "./storage.js";
+import * as http from "./http.js";
+import * as auth from "./auth.js";
 
 export default {
   auth,

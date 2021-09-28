@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Firestore, DocumentReference, DocumentSnapshot } from "@google-cloud/firestore";
-import { respondError } from "./internal/respond";
-import { check } from "./auth";
+import { respondError } from "./internal/respond.js";
+import { check } from "./auth.js";
 
 export type UserTranscriptIds = {
   userId: string;

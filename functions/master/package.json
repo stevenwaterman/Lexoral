@@ -1,0 +1,11 @@
+{
+  "name": "lexoral-master",
+  "version": "1.0.0",
+  "type": "module",
+  "author": "Steven Waterman",
+  "license": "GPL-3.0-only",
+  "devDependencies": {},
+  "dependencies": {
+    "code": "file:./code"
+  }
+}
