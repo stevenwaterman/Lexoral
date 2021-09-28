@@ -1,13 +1,12 @@
 {
   "name": "lexoral-align",
   "dry": {
-    "extends": "../package-dry.json"
+    "extends": "../package-dry-http.json"
   },
   "devDependencies": {
     "@google-cloud/speech": "managed"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "managed",
     "@google-cloud/storage": "managed",
     "firebase-admin": "managed",
     "seqalign": "managed"

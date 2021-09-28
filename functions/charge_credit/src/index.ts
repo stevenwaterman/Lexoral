@@ -1,49 +1,24 @@
 import admin from "firebase-admin";
-import { PubSub } from "@google-cloud/pubsub";
+import utils from "lexoral-utils";
+import { Request, Response } from "express";
 
-const store = admin.initializeApp().firestore()
-const pubSubClient = new PubSub();
+async function handleRequest(req: Request, res: Response) {
+  const { user, transcript } = await utils.userTranscript.getAll(req, res, store);
 
-export async function run(event: any) {
-  const messageData = JSON.parse(Buffer.from(event.data, "base64").toString());
-  const { userId, transcriptId } = messageData;
-  if (!userId) throw new Error("userId not found in message");
-  if (!transcriptId) throw new Error("transcriptId not found in message");
-
-  const userDoc = store.doc(`users/${userId}`);
-  const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
-  const [user, transcript] = await Promise.all([
-    await userDoc.get(),
-    await transcriptDoc.get()
-  ]);
-  if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
-
-  const transcriptStage = transcript.get("stage");
-  if (transcriptStage !== "transcoded-envelope") throw new Error("Expected transcript stage transcoded-envelope, got " + transcriptStage);
-
-  const credit = user.get("secondsCredit");
-  const duration = transcript.get("audio.duration");
+  const credit = user.data.get("secondsCredit");
+  const duration = transcript.data.get("audio.duration");
   const cost = Math.ceil(duration);
 
-  let paid = false;
   if (credit >= cost) {
-    userDoc.update({
+    user.doc.update({
       secondsCredit: admin.firestore.FieldValue.increment(-cost)
     });
-    paid = true;
-  }
-
-  const message = { userId, transcriptId };
-  const buffer = Buffer.from(JSON.stringify(message));
-  let topicName: string;
-
-  if (paid) {
-    await transcriptDoc.update({ stage: "paid" });
-    topicName = `projects/${process.env["PROJECT_ID"]}/topics/paid`;
   } else {
-    await transcriptDoc.update({ stage: "not-paid" });
-    topicName = `projects/${process.env["PROJECT_ID"]}/topics/not-paid`;
+    res.status(402).send("Insufficent credit");
+    return;
   }
-
-  await pubSubClient.topic(topicName).publish(buffer);
 }
+
+const store = admin.initializeApp().firestore();
+const storage: Storage = new Storage();
+export const run = utils.http.get(handleRequest);

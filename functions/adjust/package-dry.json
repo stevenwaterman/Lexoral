@@ -1,10 +1,9 @@
 {
   "name": "lexoral-adjust",
   "dry": {
-    "extends": "../package-dry.json"
+    "extends": "../package-dry-http.json"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "managed",
     "@google-cloud/storage": "managed",
     "firebase-admin": "managed"
   }

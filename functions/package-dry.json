@@ -1,7 +1,7 @@
 {
   "name": "parent",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
     "build": "tsc && cp package.json dist/",
@@ -10,20 +10,23 @@
   "author": "Steven Waterman",
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "@types/node": "^16.4.7",
-    "typescript": "^4.3.5"
+    "@types/node": "16.4.7",
+    "typescript": "4.3.5"
   },
   "dependencyManagement": {
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/fluent-ffmpeg": "^2.1.18",
-    "@google-cloud/pubsub": "^2.17.0",
-    "@google-cloud/storage": "^5.14.2",
-    "@google-cloud/speech": "^4.8.1",
-    "firebase-admin": "^9.11.1",
-    "seqalign": "^1.0.3",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "fluent-ffmpeg": "^2.1.2"
+    "@types/cors": "2.8.12",
+    "@types/express": "4.17.13",
+    "@types/fluent-ffmpeg": "2.1.18",
+    "@google-cloud/pubsub": "2.17.0",
+    "@google-cloud/storage": "5.14.2",
+    "@google-cloud/speech": "4.8.1",
+    "firebase-admin": "9.11.1",
+    "seqalign": "1.0.3",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "fluent-ffmpeg": "2.1.2"
+  },
+  "dependencies": {
+    "lexoral-utils": "file:../utils"
   }
 }

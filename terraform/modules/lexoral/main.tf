@@ -50,6 +50,14 @@ resource "google_storage_bucket" "raw_transcripts" {
   force_destroy = true # TODO remove this
 }
 
+resource "google_storage_bucket" "aligned_transcripts" {
+  name = "${data.google_project.project.project_id}-transcripts-aligned"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
+  uniform_bucket_level_access = true
+  force_destroy = true # TODO remove this
+}
+
 resource "google_storage_bucket" "transcripts" {
   name = "${data.google_project.project.project_id}-transcripts"
   storage_class = "REGIONAL"

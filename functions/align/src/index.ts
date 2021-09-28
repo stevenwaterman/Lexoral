@@ -1,11 +1,11 @@
-import { Readable } from "stream";
 import { NWaligner } from "seqalign";
 import { protos } from "@google-cloud/speech";
 import { Storage } from "@google-cloud/storage";
-import { PubSub } from "@google-cloud/pubsub";
 import admin from "firebase-admin";
+import utils from "lexoral-utils";
+import { Request, Response } from "express";
 
-type Response = protos.google.cloud.speech.v1p1beta1.IRecognizeResponse;
+type SpeechResponse = protos.google.cloud.speech.v1p1beta1.IRecognizeResponse;
 type Result = protos.google.cloud.speech.v1p1beta1.ISpeechRecognitionResult;
 type Alternative = protos.google.cloud.speech.v1p1beta1.ISpeechRecognitionAlternative;
 type Word = protos.google.cloud.speech.v1p1beta1.IWordInfo;
@@ -43,53 +43,18 @@ type WordAlternative = {
   }
 };
 
-const store = admin.initializeApp().firestore();
-const storage = new Storage();
-const pubSubClient = new PubSub();
+async function handleRequest(req: Request, res: Response) {
+  const { user, transcript } = await utils.userTranscript.getAll(req, res, store);
+  const filename = `${user.id}_${transcript.id}`;
 
-export async function run(event: any) {
-  const messageData = JSON.parse(Buffer.from(event.data, "base64").toString());
-  const { userId, transcriptId } = messageData;
-  if (!userId) throw new Error("userId not found in message");
-  if (!transcriptId) throw new Error("transcriptId not found in message");
-
-  const userDoc = store.doc(`users/${userId}`);
-  const transcriptDoc = store.doc(`users/${userId}/transcripts/${transcriptId}`);
-  const [user, transcript] = await Promise.all([userDoc.get(), transcriptDoc.get()]);
-  if (!user.exists) throw new Error("User " + userId + " profile missing");
-  if (!transcript.exists) throw new Error("Transcript " + userId + "/" + transcriptId + " doc missing");
-
-  const transcriptStage = transcript.get("stage");
-  if (transcriptStage !== "transcribed") throw new Error("Expected transcript stage transcribed, got " + transcriptStage)
-
-  const data = await readFile(userId, transcriptId);
-  const json: Response = JSON.parse(data);
-  const aligned = transform(json);
-
-  await transcriptDoc.update({ stage: "aligned" });
-
-  const message = { userId, transcriptId, aligned };
-  const buffer = Buffer.from(JSON.stringify(message));
-  const topicName = `projects/${process.env["PROJECT_ID"]}/topics/aligned`;
-  await pubSubClient.topic(topicName).publish(buffer);
+  await utils.storage.readBuffer(storage, "transcripts-raw", filename)
+    .then(buf => buf.toString("utf8"))
+    .then(str => JSON.parse(str))
+    .then(json => transform(json))
+    .then(aligned => utils.storage.writeJson(storage, "transcripts-aligned", filename, aligned))
 }
 
-async function streamToString (stream: Readable): Promise<string> {
-  const chunks: Buffer[] = [];
-  return new Promise<string>((resolve, reject) => {
-    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
-    stream.on('error', (err) => reject(err));
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-  })
-}
-
-async function readFile(userId: string, transcriptId: string): Promise<string> {
-  const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcripts-raw`);
-  const file = bucket.file(`${userId}_${transcriptId}`);
-  return await streamToString(file.createReadStream());
-}
-
-function transform(response: Response): Output {
+function transform(response: SpeechResponse): Output {
   if (!response.results) return [];
   return response.results.flatMap(result => precompute(result));
 }
@@ -100,8 +65,7 @@ function precompute(result: Result): OutputSection[] {
   const alignedSequences: Record<number, string> = align(alternatives);
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
-  const collapsedAlternatives = collapseAlternatives(wordAlternatives);
-  return collapsedAlternatives.map((alternative) => ({
+  return wordAlternatives.map((alternative) => ({
     options: alternative.words.map(({word}) => word),
     startTime: alternative.time.start,
     endTime: alternative.time.end,
@@ -233,35 +197,6 @@ function transposeAlternatives(timedAlternatives: TimedAlternative[], alternativ
   return wordAlternatives;
 }
 
-const punctuation = [".", ",", "?", "!", ";", ":", "-"];
-const sentenceEndingPunctuation = [".", "?", "!"];
-
-function collapseAlternatives(wordAlternatives: WordAlternative[]): WordAlternative[] {
-  // Combine sequential options where there's only one choice and it's not the end of a sentence and the previous option isn't too long
-  return wordAlternatives.reduce(collapseOneAlternative, []);
-}
-
-function collapseOneAlternative(collapsed: WordAlternative[], alternative: WordAlternative): WordAlternative[] {
-  return [...collapsed, alternative]; // disable collapsing
-
-  if (collapsed.length === 0) return [...collapsed, alternative]; // First one
-  if (alternative.words.length > 1) return [...collapsed, alternative]; // More than one option
-
-  const last = collapsed[collapsed.length - 1];
-  if (last.words.length > 1) return [...collapsed, alternative]; // More than one option in the last section
-
-  const lastWord = last.words[0].word;
-  if (lastWord.length > 30) return [...collapsed, alternative]; // Last section is too long to extend further
-
-  const lastCharacter = lastWord[lastWord.length - 1];
-  if (punctuation.includes(lastCharacter)) return [...collapsed, alternative]; // Last section ends in punctuation
-   
-  last.words[0].word = last.words[0].word + " " + alternative.words[0].word;
-  last.words[0].confidence = last.words[0].confidence * alternative.words[0].confidence;
-  last.time.end = alternative.time.end;
-  return collapsed;
-}
-
 function breakSequences(alignedSequences: Record<number, string>, alternatives: Alternative[]) {
   // Find the location of any spaces that appear in all the aligned sequences
   const wordBreakSet: Set<number> = Object.values(alignedSequences).map(sequence => indexesOf(sequence, " ")).reduce((a, b) => intersection(a, b));
@@ -340,3 +275,7 @@ function wordTime(word: Word): { start: number, end: number } {
 
   return { start: startSeconds, end: endSeconds };
 }
+
+const store = admin.initializeApp().firestore();
+const storage: Storage = new Storage();
+export const run = utils.http.get(handleRequest);

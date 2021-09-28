@@ -1,10 +1,12 @@
 import admin from "firebase-admin";
 import { PubSub } from "@google-cloud/pubsub";
+import { test } from "lexoral-utils";
 
 const store = admin.initializeApp().firestore();
 const pubSubClient = new PubSub();
 
 export async function run({ name }: { name: string }) {
+  console.log(test)
   const [userId, transcriptId] = name.split("_");
   if (userId === undefined || transcriptId === undefined) throw new Error("File name formatted wrong: " + name);
 
