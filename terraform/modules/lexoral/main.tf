@@ -163,5 +163,5 @@ resource "google_workflows_workflow" "workflows_example" {
   region          = "europe-west4"
   description     = "A sample workflow"
   service_account = data.google_app_engine_default_service_account.default.unique_id
-  source_contents = file("workflow.yml")
+  source_contents = file("./workflow.yml")
 }
