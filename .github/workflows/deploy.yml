@@ -117,14 +117,14 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: utils
-        path: functions/master/utils
+        path: functions/utils
     - run: npm i -g dry-dry
-    - run: dry run noop --dry-keep-package-json
+    - run: dry run build --dry-keep-package-json
       working-directory: functions/${{ matrix.functionName }}
     - run: cp -r ${{ matrix.functionName }} master/code
       working-directory: functions
-    - run: npm ci && npm run build
-      working-directory: functions/master/code
+    - run: cp -r utils master/utils
+      working-directory: functions
     - run: npm i
       working-directory: functions/master
     - uses: actions/upload-artifact@v2
