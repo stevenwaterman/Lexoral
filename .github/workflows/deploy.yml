@@ -88,6 +88,7 @@ jobs:
         name: utils
         path: |
           functions/utils/dist
+          functions/utils/package.json
           functions/utils/package-lock.json
 
   build-functions:
