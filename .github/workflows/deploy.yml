@@ -73,6 +73,21 @@ jobs:
         force: true
         branch: ${{ steps.vars.outputs.branch }}-deployed-frontend
 
+  build-utils:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm ci && npm run build
+      working-directory: functions/utils
+    - uses: actions/upload-artifact@v2
+      with:
+        name: utils
+        path: functions/utils/dist
+
   build-functions:
     runs-on: ubuntu-latest
     strategy:
@@ -95,6 +110,10 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
+    - uses: actions/download-artifact@v2
+      with:
+        name: utils
+        path: functions/utils/dist
     - run: npm i -g dry-dry
     - run: dry ci && dry run build
       working-directory: functions/${{ matrix.functionName }}
