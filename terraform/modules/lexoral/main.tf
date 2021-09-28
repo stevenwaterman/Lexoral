@@ -82,6 +82,7 @@ module "upload" {
   name = "upload"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
+  public = true
 }
 
 module "upload_watcher" {
@@ -92,12 +93,8 @@ module "upload_watcher" {
   project_id = data.google_project.project.project_id
 }
 
-resource "google_pubsub_topic" "post_upload" {
-  name = "post-upload"
-}
-
 module "transcode_envelope" {
-  source = "../pubsubFunction"
+  source = "../httpFunction"
   name = "transcode_envelope"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.post_upload.name
@@ -106,28 +103,16 @@ module "transcode_envelope" {
   timeout = 540
 }
 
-resource "google_pubsub_topic" "transcoded_envelope" {
-  name = "transcoded-envelope"
-}
-
 module "charge_credit" {
-  source = "../pubsubFunction"
+  source = "../httpFunction"
   name = "charge_credit"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.transcoded_envelope.name
   project_id = data.google_project.project.project_id
 }
 
-resource "google_pubsub_topic" "paid" {
-  name = "paid"
-}
-
-resource "google_pubsub_topic" "not_paid" {
-  name = "not-paid"
-}
-
 module "transcribe" {
-  source = "../pubsubFunction"
+  source = "../httpFunction"
   name = "transcribe"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.paid.name
@@ -142,12 +127,8 @@ module "transcription_watcher" {
   project_id = data.google_project.project.project_id
 }
 
-resource "google_pubsub_topic" "transcribed" {
-  name = "transcribed"
-}
-
 module "align" {
-  source = "../pubsubFunction"
+  source = "../httpFunction"
   name = "align"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.transcribed.name
@@ -155,12 +136,8 @@ module "align" {
   memory = 8192
 }
 
-resource "google_pubsub_topic" "aligned" {
-  name = "aligned"
-}
-
 module "adjust" {
-  source = "../pubsubFunction"
+  source = "../httpFunction"
   name = "adjust"
   bucket = google_storage_bucket.functions_code.name
   topic = google_pubsub_topic.aligned.name
@@ -173,6 +150,7 @@ module "fetch" {
   name = "fetch"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
+  public = true
 }
 
 module "patch" {
@@ -180,7 +158,9 @@ module "patch" {
   name = "patch"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
+  public = true
 }
+
 
 
 resource "google_workflows_workflow" "workflows_example" {
@@ -188,31 +168,5 @@ resource "google_workflows_workflow" "workflows_example" {
   region          = "europe-west4"
   description     = "A sample workflow"
   service_account = data.google_app_engine_default_service_account.default.unique_id
-  source_contents = <<-EOF
-  # This is a sample workflow, feel free to replace it with your source code
-  #
-  # This workflow does the following:
-  # - reads current time and date information from an external API and stores
-  #   the response in CurrentDateTime variable
-  # - retrieves a list of Wikipedia articles related to the day of the week
-  #   from CurrentDateTime
-  # - returns the list of articles as an output of the workflow
-  # FYI, In terraform you need to escape the $$ or it will cause errors.
-
-  - getCurrentTime:
-      call: http.get
-      args:
-          url: https://us-central1-workflowsample.cloudfunctions.net/datetime
-      result: CurrentDateTime
-  - readWikipedia:
-      call: http.get
-      args:
-          url: https://en.wikipedia.org/w/api.php
-          query:
-              action: opensearch
-              search: $${CurrentDateTime.body.dayOfTheWeek}
-      result: WikiResult
-  - returnOutput:
-      return: $${WikiResult.body[1]}
-EOF
+  source_contents = file("../../../functions/workflow.yml")
 }

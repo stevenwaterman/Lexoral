@@ -26,6 +26,7 @@ resource "google_cloudfunctions_function" "function" {
 }
 
 resource "google_cloudfunctions_function_iam_member" "invoker" {
+  count  = var.public ? 1 : 0
   cloud_function = google_cloudfunctions_function.function.name
   role   = "roles/cloudfunctions.invoker"
   member = "allUsers"

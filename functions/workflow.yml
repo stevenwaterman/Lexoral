@@ -1,0 +1,116 @@
+main:
+    params: [user_id, transcript_id]
+    steps:
+        - log_request:
+            call: sys.log
+            args:
+                text: ${"upload called, " + user_id + ", " + transcript_id}
+        - vars:
+            assign:
+                - exec_id: ${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+                - function_root: ${"https://europe-west2-" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + ".cloudfunctions.net/"}
+                - store_users_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/users/"}
+                - store_workflow_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/workflow/"}
+
+          result: store_upload_callback_result
+
+        - transcode_envelope:
+            call: http.get
+            args:
+              url: ${function_root + "transcode_envelope"}
+              query:
+                user: user_id
+                transcript: transcript_id
+            result: transcode_envelope_response
+        - transcode_envelope_check:
+            call: assert_2xx
+            args:
+              status: ${transcode_envelope_response.status}
+
+        - charge_credit:
+            call: http.get
+            args:
+              url: ${function_root + "charge_credit"}
+              query:
+                user: user_id
+                transcript: transcript_id
+            result: charge_credit_response
+        - charge_credit_check:
+            call: assert_2xx
+            args:
+              status: ${charge_credit_response.status}
+
+        - transcribe:
+            call: http.get
+            args:
+              url: ${function_root + "transcribe"}
+              query:
+                user: user_id
+                transcript: transcript_id
+            result: transcribe_response
+        - transcribe_check:
+            call: assert_2xx
+            args:
+              status: ${transcribe_response.status}
+
+        - create_transcribe_callback:
+            call: events.create_callback_endpoint
+            args:
+                http_callback_method: "POST"
+            result: transcribe_callback
+        - store_transcribe_callback:
+            call: googleapis.firestore.v1.projects.databases.documents.patch
+            args:
+                name: ${store_workflow_root + user_id + "/transcripts/" + transcript_id}
+                updateMask:
+                    fieldPaths: ['transcribe_callback']
+                body:
+                    fields:
+                        upload:
+                            stringValue: ${transcribe_callback.url}
+            result: store_transcribe_callback_result
+        - await_transcribe_callback:
+            call: events.await_callback
+            args:
+                callback: ${transcribe_callback}
+                timeout: 3600
+            result: transcribe_callback_request
+
+        - align:
+            call: http.get
+            args:
+              url: ${function_root + "align"}
+              query:
+                user: user_id
+                transcript: transcript_id
+            result: align_response
+        - align_check:
+            call: assert_2xx
+            args:
+              status: ${align_response.status}
+
+        - adjust:
+            call: http.get
+            args:
+              url: ${function_root + "adjust"}
+              query:
+                user: user_id
+                transcript: transcript_id
+            result: adjust_response
+        - align_check:
+            call: assert_2xx
+            args:
+              status: ${adjust_response.status}
+
+        - success:
+            return: "SUCCESS"
+
+assert_2xx:
+  params: [status]
+  steps:
+  - compare:
+      switch:
+      - condition: ${status >= 200 && status < 300}
+        next: end
+  - fail:
+      raise: ${"Expected 2xx http response, actually " + status}

@@ -24,3 +24,9 @@ variable "timeout" {
   type        = number
   default     = 60
 }
+
+variable "public" {
+  description = "Whether the function is externally callable"
+  type        = bool
+  default     = false
+}
