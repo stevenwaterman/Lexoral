@@ -97,7 +97,6 @@ module "transcode_envelope" {
   source = "../httpFunction"
   name = "transcode_envelope"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.post_upload.name
   project_id = data.google_project.project.project_id
   memory = 1024
   timeout = 540
@@ -107,7 +106,6 @@ module "charge_credit" {
   source = "../httpFunction"
   name = "charge_credit"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.transcoded_envelope.name
   project_id = data.google_project.project.project_id
 }
 
@@ -115,7 +113,6 @@ module "transcribe" {
   source = "../httpFunction"
   name = "transcribe"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.paid.name
   project_id = data.google_project.project.project_id
 }
 
@@ -131,7 +128,6 @@ module "align" {
   source = "../httpFunction"
   name = "align"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.transcribed.name
   project_id = data.google_project.project.project_id
   memory = 8192
 }
@@ -140,7 +136,6 @@ module "adjust" {
   source = "../httpFunction"
   name = "adjust"
   bucket = google_storage_bucket.functions_code.name
-  topic = google_pubsub_topic.aligned.name
   project_id = data.google_project.project.project_id
   memory = 8192
 }
