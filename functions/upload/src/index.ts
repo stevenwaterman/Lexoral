@@ -6,16 +6,18 @@ import utils from "lexoral-utils";
 
 async function handleRequest(req: Request, res: Response) {
   const user = await utils.auth.check(req, res);
+  const userDoc = store.doc(`users/${user.uid}`);
+  const userData = await userDoc.get();
+
+  const credit = userData.get("secondsCredit");
+  if (credit <= 0) {
+    res.status(402).send("Account has no credit");
+    return;
+  }
 
   const name = req.body["name"];
   if (name === undefined) {
     res.status(400).send("Missing 'name' field in body");
-    return;
-  }
-
-  const credit = user.data.get("secondsCredit");
-  if (credit <= 0) {
-    res.status(402).send("Account has no credit");
     return;
   }
 
