@@ -32,6 +32,10 @@ resource "google_project_service" "cloudidentity_api" {
   service            = "cloudidentity.googleapis.com"
 }
 
+resource "google_project_service" "iam_api" {
+  service            = "iam.googleapis.com"
+}
+
 resource "google_project_service" "iamcredentials_api" {
   service            = "iamcredentials.googleapis.com"
 }
