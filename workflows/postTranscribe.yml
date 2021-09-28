@@ -29,7 +29,7 @@ main:
                 user: user_id
                 transcript: transcript_id
             result: adjust_response
-        - align_check:
+        - adjust_check:
             call: assert_2xx
             args:
               status: ${adjust_response.status}
