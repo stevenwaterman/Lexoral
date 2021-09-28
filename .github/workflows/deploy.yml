@@ -120,7 +120,7 @@ jobs:
       with:
         path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
-    - run: terraform init && terraform apply -auto-approve
+    - run: cat ./../functions/workflow.yml && terraform init && terraform apply -auto-approve
       working-directory: terraform/${{ steps.vars.outputs.branch }}
       env:
         GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}
