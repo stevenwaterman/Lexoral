@@ -12,6 +12,8 @@ const assert2xx: SubWorkflow = {
           }
         ]
       },
+    },
+    {
       fail: {
         raise: '${"Expected 2xx http response, actually " + status}'
       }
