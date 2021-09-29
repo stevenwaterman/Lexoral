@@ -11,9 +11,7 @@ export async function run({ name }: { name: string }) {
   const [execution] = await workflow.createExecution({
     parent: workflow.workflowPath(projectId, "europe-west4", "pre_transcribe"),
     execution: {
-      argument: JSON.stringify({
-        config: { userId, transcriptId }
-      })
+      argument: JSON.stringify({ userId, transcriptId })
     }
   });
   console.log("Executing workflow", execution.name);
