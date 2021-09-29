@@ -1,11 +1,16 @@
-import admin from "firebase-admin";
 import utils from "lexoral-utils";
+import { ExecutionsClient } from "@google-cloud/workflows";
 
 export async function run({ name }: { name: string }) {
   const [userId, transcriptId] = name.split("_");
   if (userId === undefined || transcriptId === undefined) throw new Error("File name formatted wrong: " + name);
-  // TODO improve logging here
-  // TODO call the workflow here
+
+  const projectId = process.env["PROJECT_ID"];
+  if (projectId === undefined) throw new Error("PROJECT_ID env var not set");
+  const [execution] = await workflow.createExecution({
+    parent: workflow.workflowPath(projectId, "europe-west3", "postTranscribe")
+  });execution
+  console.log("Executing workflow", execution);
 }
 
-const store = admin.initializeApp().firestore();
+const workflow = new ExecutionsClient();
