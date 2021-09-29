@@ -7,9 +7,9 @@ export async function run({ name }: { name: string }) {
 
   const projectId = process.env["PROJECT_ID"];
   if (projectId === undefined) throw new Error("PROJECT_ID env var not set");
-  
+
   const [execution] = await workflow.createExecution({
-    parent: workflow.workflowPath(projectId, "europe-west4", "preTranscribe"),
+    parent: workflow.workflowPath(projectId, "europe-west4", "post_transcribe"),
     execution: {
       argument: JSON.stringify({
         config: { userId, transcriptId }
