@@ -170,12 +170,12 @@ resource "google_workflows_workflow" "pre_transcribe_workflow" {
   name            = "pre_transcribe"
   region          = "europe-west4"
   service_account = data.google_app_engine_default_service_account.default.unique_id
-  source_contents = file("${path.root}/../functions/workflows/pre_transcribe.yml")
+  source_contents = file("${path.root}/../functions/workflows/pre_transcribe.json")
 }
 
 resource "google_workflows_workflow" "post_transcribe_workflow" {
   name            = "post_transcribe"
   region          = "europe-west4"
   service_account = data.google_app_engine_default_service_account.default.unique_id
-  source_contents = file("${path.root}/../function/workflows/post_transcribe.yml")
+  source_contents = file("${path.root}/../function/workflows/post_transcribe.json")
 }
