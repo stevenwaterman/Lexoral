@@ -37,7 +37,6 @@ async function handleRequest(req: Request, res: Response) {
     config
   });
 
-  await transcript.doc.update({ stage: "transcription-sent" });
   res.sendStatus(200);
 }
 

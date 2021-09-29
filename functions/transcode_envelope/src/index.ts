@@ -11,7 +11,7 @@ async function handleRequest(req: Request, res: Response) {
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
   const audio = await transcodeEnvelope(storage, filename, sourceFile);
-  await transcript.doc.update({ stage: "transcoded-envelope", audio });
+  await transcript.doc.update({ audio });
   res.sendStatus(201);
 }
 
