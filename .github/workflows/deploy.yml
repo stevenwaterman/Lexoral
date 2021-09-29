@@ -26,7 +26,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci && npm run build
+    - run: npm ci
+      working-directory: frontend/${{ matrix.frontendName }}
+    - run: npm run build
       working-directory: frontend/${{ matrix.frontendName }}
       env:
         BRANCH: ${{ steps.vars.outputs.branch }}
@@ -81,7 +83,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci && npm run synth
+    - run: npm ci
+      working-directory: workflows
+    - run: npm run synth
       working-directory: workflows
     - uses: actions/upload-artifact@v2
       with:
@@ -96,7 +100,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci && npm run build
+    - run: npm ci
+      working-directory: functions/utils
+    - run: npm run build
       working-directory: functions/utils
     - uses: actions/upload-artifact@v2
       with:
@@ -134,7 +140,9 @@ jobs:
         name: utils
         path: functions/utils
     - run: npm i -g dry-dry
-    - run: dry ci && dry run build --dry-keep-package-json
+    - run: dry ci
+      working-directory: functions/${{ matrix.functionName }}
+    - run: dry run build --dry-keep-package-json
       working-directory: functions/${{ matrix.functionName }}
     - run: cp -r ${{ matrix.functionName }} master/code
       working-directory: functions
