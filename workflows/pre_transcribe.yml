@@ -21,7 +21,7 @@ main:
         - transcode_envelope_check:
             call: assert_2xx
             args:
-              status: ${transcode_envelope_response.status}
+              status: ${transcode_envelope_response.code}
 
         - charge_credit:
             call: http.get
@@ -36,7 +36,7 @@ main:
         - charge_credit_check:
             call: assert_2xx
             args:
-              status: ${charge_credit_response.status}
+              status: ${charge_credit_response.code}
 
         - transcribe:
             call: http.get
@@ -51,7 +51,7 @@ main:
         - transcribe_check:
             call: assert_2xx
             args:
-              status: ${transcribe_response.status}
+              status: ${transcribe_response.code}
 
         - success:
             return: "SUCCESS"

@@ -21,7 +21,7 @@ main:
         - align_check:
             call: assert_2xx
             args:
-              status: ${align_response.status}
+              status: ${align_response.code}
 
         - adjust:
             call: http.get
@@ -36,7 +36,7 @@ main:
         - adjust_check:
             call: assert_2xx
             args:
-              status: ${adjust_response.status}
+              status: ${adjust_response.code}
 
         - success:
             return: "SUCCESS"
