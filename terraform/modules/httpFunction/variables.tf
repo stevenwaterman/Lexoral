@@ -30,8 +30,3 @@ variable "public" {
   type        = bool
   default     = false
 }
-
-variable "sa_email" {
-  description = "The default google app engine service account email"
-  type        = string
-}
