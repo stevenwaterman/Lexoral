@@ -43,7 +43,7 @@ async function handleRequest(req: Request, res: Response) {
   const bucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`)
   await bucket.file(`${user.uid}_${transcript.id}`)
     .getSignedUrl(options)
-    .then(([url]) => res.status(200).send(url));
+    .then(([url]) => res.status(201).send(url));
 }
 
 const store = admin.initializeApp().firestore();

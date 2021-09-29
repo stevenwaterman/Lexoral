@@ -51,7 +51,8 @@ async function handleRequest(req: Request, res: Response) {
     .then(buf => buf.toString("utf8"))
     .then(str => JSON.parse(str))
     .then(json => transform(json))
-    .then(aligned => utils.storage.writeJson(storage, "transcripts-aligned", filename, aligned))
+    .then(aligned => utils.storage.writeJson(storage, "transcripts-aligned", filename, aligned));
+  res.sendStatus(201);
 }
 
 function transform(response: SpeechResponse): Output {

@@ -13,9 +13,9 @@ async function handleRequest(req: Request, res: Response) {
     user.doc.update({
       secondsCredit: admin.firestore.FieldValue.increment(-cost)
     });
+    res.sendStatus(200);
   } else {
     res.status(402).send("Insufficent credit");
-    return;
   }
 }
 

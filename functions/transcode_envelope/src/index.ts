@@ -12,6 +12,7 @@ async function handleRequest(req: Request, res: Response) {
   const sourceFile = sourceBucket.file(filename);
   const audio = await transcodeEnvelope(storage, filename, sourceFile);
   await transcript.doc.update({ stage: "transcoded-envelope", audio });
+  res.sendStatus(201);
 }
 
 type EnvelopeMetadata = {

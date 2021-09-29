@@ -38,6 +38,7 @@ async function handleRequest(req: Request, res: Response) {
   });
 
   await transcript.doc.update({ stage: "transcription-sent" });
+  res.sendStatus(200);
 }
 
 const speechClient = new speech.v1p1beta1.SpeechClient();
