@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/index.js",
-    "noop": ""
+    "start": "npm run build && node dist/index.js"
   },
   "author": "Steven Waterman",
   "license": "GPL-3.0-only",
