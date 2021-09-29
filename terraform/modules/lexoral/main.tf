@@ -91,6 +91,7 @@ module "upload" {
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   public = true
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 module "upload_watcher" {
@@ -108,6 +109,7 @@ module "transcode_envelope" {
   project_id = data.google_project.project.project_id
   memory = 1024
   timeout = 540
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 module "charge_credit" {
@@ -115,6 +117,7 @@ module "charge_credit" {
   name = "charge_credit"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 module "transcribe" {
@@ -122,6 +125,7 @@ module "transcribe" {
   name = "transcribe"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 module "transcription_watcher" {
@@ -138,6 +142,7 @@ module "align" {
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   memory = 8192
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 module "adjust" {
@@ -146,6 +151,7 @@ module "adjust" {
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   memory = 8192
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 module "fetch" {
@@ -154,6 +160,7 @@ module "fetch" {
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   public = true
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 module "patch" {
@@ -162,6 +169,7 @@ module "patch" {
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   public = true
+  sa_email = data.google_app_engine_default_service_account.default.email
 }
 
 

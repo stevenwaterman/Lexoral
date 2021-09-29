@@ -25,9 +25,16 @@ resource "google_cloudfunctions_function" "function" {
   }
 }
 
-resource "google_cloudfunctions_function_iam_member" "invoker" {
+resource "google_cloudfunctions_function_iam_member" "public_invoker" {
   count  = var.public ? 1 : 0
   cloud_function = google_cloudfunctions_function.function.name
   role   = "roles/cloudfunctions.invoker"
   member = "allUsers"
+}
+
+resource "google_cloudfunctions_function_iam_member" "private_invoker" {
+  count  = var.public ? 0 : 1
+  cloud_function = google_cloudfunctions_function.function.name
+  role   = "roles/cloudfunctions.invoker"
+  member = "serviceAccount:${var.sa_email}"
 }

@@ -16,7 +16,7 @@ export async function run({ name }: { name: string }) {
       })
     }
   });
-  console.log("Executing workflow", execution);
+  console.log("Executing workflow", execution.name);
 }
 
 const workflow = new ExecutionsClient();
