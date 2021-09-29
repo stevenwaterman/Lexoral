@@ -7,9 +7,8 @@ async function handleRequest(req: Request, res: Response) {
 
   const credit = user.data.get("secondsCredit");
   const duration = transcript.data.get("audio.duration");
-  const cost = Math.ceil(duration);
 
-  if (credit >= cost) {
+  if (credit >= duration) {
     user.doc.update({
       secondsCredit: admin.firestore.FieldValue.increment(-cost)
     });

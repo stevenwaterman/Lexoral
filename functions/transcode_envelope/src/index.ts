@@ -61,7 +61,8 @@ function getDuration(lines: string[]): number {
   const second = parseFloat(secondStr);
 
   const totalSeconds = hour * 3600 + minute * 60 + second;
-  return totalSeconds;
+  const rounded = Math.ceil(totalSeconds);
+  return rounded;
 }
 
 const channelMap: Record<string, number | undefined> = {

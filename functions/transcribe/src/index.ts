@@ -28,7 +28,7 @@ async function handleRequest(req: Request, res: Response) {
     enableAutomaticPunctuation: true,
     enableWordTimeOffsets: true,
     useEnhanced: true,
-    model: "video",
+    model: "video"
   };
 
   speechClient.longRunningRecognize({ 
