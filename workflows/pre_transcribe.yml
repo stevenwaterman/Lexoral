@@ -13,8 +13,8 @@ main:
             args:
               url: ${function_root + "transcode_envelope"}
               query:
-                user: user_id
-                transcript: transcript_id
+                user: ${user_id}
+                transcript: ${transcript_id}
               auth:
                 type: OIDC
             result: transcode_envelope_response
@@ -28,8 +28,8 @@ main:
             args:
               url: ${function_root + "charge_credit"}
               query:
-                user: user_id
-                transcript: transcript_id
+                user: ${user_id}
+                transcript: ${transcript_id}
               auth:
                 type: OIDC
             result: charge_credit_response
@@ -43,8 +43,8 @@ main:
             args:
               url: ${function_root + "transcribe"}
               query:
-                user: user_id
-                transcript: transcript_id
+                user: ${user_id}
+                transcript: ${transcript_id}
               auth:
                 type: OIDC
             result: transcribe_response

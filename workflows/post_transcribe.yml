@@ -13,8 +13,8 @@ main:
             args:
               url: ${function_root + "align"}
               query:
-                user: user_id
-                transcript: transcript_id
+                user: ${user_id}
+                transcript: ${transcript_id}
               auth:
                 type: OIDC
             result: align_response
@@ -28,8 +28,8 @@ main:
             args:
               url: ${function_root + "adjust"}
               query:
-                user: user_id
-                transcript: transcript_id
+                user: ${user_id}
+                transcript: ${transcript_id}
               auth:
                 type: OIDC
             result: adjust_response
