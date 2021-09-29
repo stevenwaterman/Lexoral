@@ -10,7 +10,7 @@ async function handleRequest(req: Request, res: Response) {
 
   if (credit >= duration) {
     user.doc.update({
-      secondsCredit: admin.firestore.FieldValue.increment(-cost)
+      secondsCredit: admin.firestore.FieldValue.increment(-duration)
     });
     res.sendStatus(200);
   } else {
