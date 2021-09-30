@@ -82,7 +82,7 @@ export type WriteDocumentStep = {
     body: {
       fields: Record<string, WriteDocumentField>;
     };
-    updateMask: {
+    updateMask?: {
       fieldPaths: string;
     }
   }
