@@ -85,10 +85,6 @@
     padding-bottom: 0.25em;
   }
 
-  .clickable {
-    cursor: pointer;
-  }
-
   a {
     display: contents;
     text-decoration: inherit;
@@ -96,8 +92,8 @@
   }
 </style>
 
-<li class:clickable={ready}>
-  <a href={link}>
+<li>
+  <a href={ready ? link : undefined}>
     <span>{name}</span>
     <span>{durationStr}</span>
     <span title={createdTooltip}>{getRelativeTime(created, $timeStore)}</span>
