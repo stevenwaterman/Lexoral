@@ -7,9 +7,10 @@ html {
   --focus: #8BA861;
   --strong-focus: #E47A77;
 
-  --info: #9CAFD3;
-  --warn: #F6AE2D;
-  --error: #E47A77;
+  --info: var(--blue-1);
+  --warn: var(--yellow-1);
+  --error: var(--red-1);
+  --success: var(--green-1);
 
   --primary: #8BA861;
   --secondary: #9CAFD3;

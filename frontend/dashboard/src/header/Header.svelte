@@ -8,8 +8,7 @@ import { userStore } from "../auth/user";
 <style>
   nav {
     height: 3em;
-    background-color: var(--grey-1);
-    color: var(--light-text);
+    background-color: var(--yellow-3);
     display: flex;
     flex-direction: row;
     justify-content: space-between;

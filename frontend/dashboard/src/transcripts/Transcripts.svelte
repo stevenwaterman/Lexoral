@@ -9,7 +9,7 @@
 
   const pageSize = 10;
 
-  let sort: "name" | "duration" | "created" | "updated" = "updated";
+  let sort: "name" | "audio.duration" | "created" | "updated" = "updated";
   let direction: "asc" | "desc" = "desc";
 
   function setSort(newSort: typeof sort) {
@@ -19,7 +19,7 @@
     } else {
       sort = newSort;
       if (sort === "name") direction = "asc";
-      else if (sort === "duration") direction = "asc";
+      else if (sort === "audio.duration") direction = "asc";
       else if (sort === "created") direction = "desc";
       else if (sort === "updated") direction = "desc";
     }
@@ -149,9 +149,9 @@
       {/if}
     </span>
 
-    <span class="header" on:click="{() => setSort("duration")}">
+    <span class="header" on:click="{() => setSort("audio.duration")}">
       Length
-      {#if sort === "duration"}
+      {#if sort === "audio.duration"}
         {#if direction === "asc"}
           ▲
         {:else}
@@ -183,7 +183,7 @@
     </span>
 
     <span class="header">
-      Ready
+      Status
     </span>
   </li>
 

@@ -31,8 +31,8 @@
   let updatedTooltip: string | undefined;
   $: updatedTooltip = getTimeTooltip(updated);
 
-  let stage: string | undefined;
-  $: stage = transcript.get("stage");
+  let stage: "uploading" | "processing" | "ready" | "error" | "unknown";
+  $: stage = transcript.get("stage") ?? "unknown";
 
   let ready: boolean;
   $: ready = stage === "ready";
@@ -90,6 +90,10 @@
     text-decoration: inherit;
     color: inherit
   }
+
+  .icon {
+    font-weight: bolder;
+  }
 </style>
 
 <li>
@@ -98,10 +102,16 @@
     <span>{durationStr}</span>
     <span title={createdTooltip}>{getRelativeTime(created, $timeStore)}</span>
     <span title={updatedTooltip}>{getRelativeTime(updated, $timeStore)}</span>
-    {#if ready}
-      <span>✓</span>
-    {:else}
-      <span title={stage}>⧗</span>
+    {#if stage === "unknown"}
+      <span class="icon" style={`color: var(--warn)`}>?</span>
+    {:else if stage === "uploading"}
+      <span class="icon" style={`color: var(--info)`}>⇫ Uploading</span>
+    {:else if stage === "processing"}
+      <span class="icon" style={`color: var(--info)`}>⧗ Processing</span>
+    {:else if stage === "ready"}
+      <span class="icon" style={`color: var(--success)`}>✓ Ready</span>
+    {:else if stage === "error"}
+      <span class="icon" style={`color: var(--error)`}>⚠ Contact Support</span>
     {/if}
   </a>
 </li>
