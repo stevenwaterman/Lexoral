@@ -1,35 +1,10 @@
-import { Workflow, SubWorkflowStep } from "../types.js";
+import { Workflow, TryCatchStep } from "../types.js";
 import { userTranscriptConfigVars } from "../components/variables.js";
 import { logWorkflow, setTranscriptStage } from "../components/firestore.js";
 import { subworkflows, callSub } from "../subworkflows/subworkflows.js";
 
-const callInner: SubWorkflowStep = {
-  call: "inner",
-  args: {
-    config: '${config}'
-  }
-}
-
-export const postTranscribe: Workflow = {
-  main: {
-    params: ["config"],
-    try: {
-      steps: [
-        { callInner }
-      ]
-    },
-    except: {
-      "as": "e",
-      steps: [
-        { errorStage: setTranscriptStage("error") },
-        { raiseError: {
-          raise: '${e}'
-        }}
-      ]
-    }
-  },
-  inner: {
-    params: ['config'],
+const tryCatchStep: TryCatchStep = {
+  try: {
     steps: [
       { vars: userTranscriptConfigVars() },
       { checkStage: callSub.assertTranscriptStage("processing") },
@@ -42,6 +17,24 @@ export const postTranscribe: Workflow = {
           return: 'SUCCESS'
         }
       }
+    ]
+  },
+  except: {
+    as: "e",
+    steps: [
+      { errorStage: setTranscriptStage("error") },
+      { raiseError: {
+        raise: '${e}'
+      }}
+    ]
+  }
+}
+
+export const postTranscribe: Workflow = {
+  main: {
+    params: ["config"],
+    steps: [
+      { tryCatch: tryCatchStep }
     ]
   },
   ...subworkflows

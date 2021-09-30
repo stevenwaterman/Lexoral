@@ -4,7 +4,7 @@ import { TranscriptStages } from "../components/firestore";
 const getTranscript: ReadDocumentStep = {
   call: "googleapis.firestore.v1.projects.databases.documents.get",
   args: {
-    name: '${"projects/" + project_id + "/databases/(default)/documents/users/" + user_id + "/transcripts/" + transcript_id}',
+    name: '${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/users/" + user_id + "/transcripts/" + transcript_id}',
   },
   result: "transcript_document"
 }
