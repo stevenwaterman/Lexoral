@@ -7,7 +7,7 @@ const assert2xx: SubWorkflow = {
       compare: {
         switch: [
           {
-            condition: '${status >= 200 AND status < 300}',
+            condition: '${status >= 200 and status < 300}',
             next: 'end'
           }
         ]
@@ -15,7 +15,7 @@ const assert2xx: SubWorkflow = {
     },
     {
       fail: {
-        raise: '${"Expected 2xx http response, actually " + status}'
+        raise: '${"Expected 2xx http response, actually " + string(status)}'
       }
     }
   ]
