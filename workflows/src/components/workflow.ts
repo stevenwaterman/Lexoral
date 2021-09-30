@@ -1,3 +1,4 @@
+import { Timestamp } from "@google-cloud/firestore";
 export type Workflow = {
   main: SubWorkflow
 } & Record<string, SubWorkflow>;
@@ -53,13 +54,37 @@ export type SubWorkflowStep = {
   args: Record<string, string>;
 }
 
+export type LogStep = {
+  call: "sys.log";
+  args: {
+    text: string | number | Array<string | number> | Record<string, string | number>;
+    severity?: "DEBUG" | "INFO" | "NOTICE" | "WARNING" | "ERROR" | "CRITICAL" | "ALERT" | "EMERGENCY";
+  };
+}
+
 export type FailStep = {
   raise: string;
 }
+
+export type WriteDocumentStep = {
+  call: "googleapis.firestore.v1.projects.databases.documents.patch";
+  args: {
+    name: string;
+    body: {
+      fields: Record<string, WriteDocumentField>;
+    };
+  }
+}
+type WriteDocumentField = 
+  Record<"booleanValue", boolean> |
+  Record<"doubleValue", number> |
+  Record<"integerValue", number> |
+  Record<"stringValue", string> |
+  Record<"timestampValue", Timestamp>;
 
 export type BaseStep = {
   next?: string;
   return?: string;
 }
 
-export type Step = BaseStep & (VariableStep | ConditionStep | HttpStep | SleepStep | SubWorkflowStep | FailStep | {});
+export type Step = BaseStep & (VariableStep | ConditionStep | HttpStep | SleepStep | SubWorkflowStep | FailStep | LogStep | WriteDocumentStep | {});

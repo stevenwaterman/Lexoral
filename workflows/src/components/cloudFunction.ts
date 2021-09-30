@@ -1,36 +1,48 @@
-import { StepWrapper, HttpStep, SubWorkflowStep } from "./workflow.js";
+import { StepWrapper, HttpStep, SubWorkflowStep, LogStep } from "./workflow.js";
 
 type CloudFunctionNames = "adjust" | "align" | "charge_credit" | "transcode_envelope" | "transcribe"
 
-export function checkedFunctionStepNamed(stepName: string, functionName: CloudFunctionNames): [StepWrapper<HttpStep>, StepWrapper<SubWorkflowStep>] {
-  return [
-    {
-      [stepName]: {
-        call: 'http.get',
-        args: {
-          url: '${function_root + "' + functionName + '"}',
-          query: {
-            user: '${user_id}',
-            transcript: '${transcript_id}'
-          },
-          auth: {
-            type: 'OIDC'
-          }
-        },
-        result: stepName + '_response'
+export function checkedFunctionStepNamed(stepName: string, functionName: CloudFunctionNames): [StepWrapper<LogStep>, StepWrapper<HttpStep>, StepWrapper<SubWorkflowStep>] {
+  const logStep: LogStep = {
+    call: "sys.log",
+    args: {
+      text: `${stepName} started`
+    }
+  }
+
+  const httpStep: HttpStep = {
+    call: 'http.get',
+    args: {
+      url: '${function_root + "' + functionName + '"}',
+      query: {
+        user: '${user_id}',
+        transcript: '${transcript_id}'
+      },
+      auth: {
+        type: 'OIDC'
       }
     },
+    result: stepName + '_response'
+  };
+
+  const assertStep: SubWorkflowStep = {
+    call: 'assert_2xx',
+    args: {
+      response: '${' + stepName + '_response}'
+    }
+  };
+
+  return [
     {
-      [stepName + "_check"]: {
-        call: 'assert_2xx',
-        args: {
-          response: '${' + stepName + '_response}'
-        }
-      }
+      [`${stepName}_log`]: logStep
+    }, {
+      [stepName]: httpStep
+    }, {
+      [`${stepName}_check`]: assertStep
     }
   ]
 }
 
-export function checkedFunctionStep(functionName: CloudFunctionNames): [StepWrapper<HttpStep>, StepWrapper<SubWorkflowStep>] {
+export function checkedFunctionStep(functionName: CloudFunctionNames): [StepWrapper<LogStep>, StepWrapper<HttpStep>, StepWrapper<SubWorkflowStep>] {
   return checkedFunctionStepNamed(functionName, functionName);
 }

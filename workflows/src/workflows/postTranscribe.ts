@@ -2,6 +2,7 @@ import { Workflow } from "../components/workflow.js";
 import assert2xx from "../components/assert2xx.js";
 import { checkedFunctionStep } from "../components/cloudFunction.js";
 import { variables } from "../components/variables.js";
+import { logWorkflow } from "../components/firestore.js";
 
 export const postTranscribe: Workflow = {
   main: {
@@ -13,6 +14,7 @@ export const postTranscribe: Workflow = {
         exec_id: '${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}',
         function_root: '${"https://europe-west2-" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + ".cloudfunctions.net/"}'
       }),
+      ...logWorkflow("post_transcribe"),
       ...checkedFunctionStep("align"),
       ...checkedFunctionStep("adjust"),
       {
