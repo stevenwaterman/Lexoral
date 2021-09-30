@@ -1,6 +1,8 @@
 import { StepWrapper, HttpStep, SubWorkflowStep } from "./workflow.js";
 
-export function checkedFunctionStep(stepName: string, functionName: string = stepName): [StepWrapper<HttpStep>, StepWrapper<SubWorkflowStep>] {
+type CloudFunctionNames = "adjust" | "align" | "charge_credit" | "transcode_envelope" | "transcribe"
+
+export function checkedFunctionStepNamed(stepName: string, functionName: CloudFunctionNames): [StepWrapper<HttpStep>, StepWrapper<SubWorkflowStep>] {
   return [
     {
       [stepName]: {
@@ -22,9 +24,13 @@ export function checkedFunctionStep(stepName: string, functionName: string = ste
       [stepName + "_check"]: {
         call: 'assert_2xx',
         args: {
-          status: '${' + stepName + '_response.code}'
+          response: '${' + stepName + '_response}'
         }
       }
     }
   ]
+}
+
+export function checkedFunctionStep(functionName: CloudFunctionNames): [StepWrapper<HttpStep>, StepWrapper<SubWorkflowStep>] {
+  return checkedFunctionStepNamed(functionName, functionName);
 }

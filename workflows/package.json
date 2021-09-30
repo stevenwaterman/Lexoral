@@ -13,5 +13,7 @@
     "@types/node": "16.4.7",
     "typescript": "4.3.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "yaml": "^1.10.2"
+  }
 }

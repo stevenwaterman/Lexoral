@@ -1,13 +1,13 @@
 import { SubWorkflow } from "./workflow.js";
 
 const assert2xx: SubWorkflow = {
-  params: ['status'],
+  params: ['response'],
   steps: [
     {
       compare: {
         switch: [
           {
-            condition: '${status >= 200 and status < 300}',
+            condition: '${response.code >= 200 and response.code < 300}',
             next: 'end'
           }
         ]
@@ -15,7 +15,7 @@ const assert2xx: SubWorkflow = {
     },
     {
       fail: {
-        raise: '${"Expected 2xx http response, actually " + string(status)}'
+        raise: '${"Expected 2xx http response, actually " + json.encode_to_string(response)}'
       }
     }
   ]
