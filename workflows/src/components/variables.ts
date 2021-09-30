@@ -1,6 +1,6 @@
-import { StepWrapper, VariableStep } from "./workflow";
+import { VariableStep } from "../types";
 
-export function variables(name: string, ...assignmentBlocks: Record<string, string | null>[]): [StepWrapper<VariableStep>] {
+export function variables(...assignmentBlocks: Record<string, string | null>[]): VariableStep {
   const variableStep: VariableStep = {
     assign: []
   };
@@ -12,6 +12,12 @@ export function variables(name: string, ...assignmentBlocks: Record<string, stri
     }
   });
   if (variableStep.assign.length > 10) throw new Error("Can only assign 10 variables per step");
-  const step: StepWrapper<VariableStep> = { [name]: variableStep };
-  return [step];
+  return variableStep;
+}
+
+export function userTranscriptConfigVars(): VariableStep {
+  return variables({
+    user_id: '${config.userId}',
+    transcript_id: '${config.transcriptId}',
+  })
 }

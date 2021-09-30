@@ -3,9 +3,22 @@ export type Workflow = {
   main: SubWorkflow
 } & Record<string, SubWorkflow>;
 
-export type SubWorkflow = {
+export type SubWorkflow = UncheckedSubWorkflow | CheckedSubworkflow;
+
+export type UncheckedSubWorkflow = {
   params: string[],
   steps: StepWrapper<any>[]
+}
+
+export type CheckedSubworkflow = {
+  params: string[]
+  try: {
+    steps: StepWrapper<any>[]
+  }
+  except: {
+    as: string;
+    steps: StepWrapper<any>[]
+  }
 }
 
 export type StepWrapper<STEP extends Step> = Record<string, STEP>;
@@ -81,6 +94,14 @@ type WriteDocumentField =
   Record<"integerValue", number> |
   Record<"stringValue", string> |
   Record<"timestampValue", Timestamp>;
+
+export type ReadDocumentStep = {
+  call: "googleapis.firestore.v1.projects.databases.documents.get";
+  args: {
+    name: string;
+  };
+  result: string
+}
 
 export type BaseStep = {
   next?: string;

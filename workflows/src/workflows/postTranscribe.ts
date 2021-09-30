@@ -1,22 +1,42 @@
-import { Workflow } from "../components/workflow.js";
-import assert2xx from "../components/assert2xx.js";
-import { checkedFunctionStep } from "../components/cloudFunction.js";
-import { variables } from "../components/variables.js";
-import { logWorkflow } from "../components/firestore.js";
+import { Workflow, SubWorkflowStep } from "../types.js";
+import { userTranscriptConfigVars } from "../components/variables.js";
+import { logWorkflow, setTranscriptStage } from "../components/firestore.js";
+import { subworkflows, callSub } from "../subworkflows/subworkflows.js";
+
+const callInner: SubWorkflowStep = {
+  call: "inner",
+  args: {
+    config: '${config}'
+  }
+}
 
 export const postTranscribe: Workflow = {
   main: {
+    params: ["config"],
+    try: {
+      steps: [
+        { callInner }
+      ]
+    },
+    except: {
+      "as": "e",
+      steps: [
+        { errorStage: setTranscriptStage("error") },
+        { raiseError: {
+          raise: '${e}'
+        }}
+      ]
+    }
+  },
+  inner: {
     params: ['config'],
     steps: [
-      ...variables("vars", {
-        user_id: '${config.userId}',
-        transcript_id: '${config.transcriptId}',
-        exec_id: '${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}',
-        function_root: '${"https://europe-west2-" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + ".cloudfunctions.net/"}'
-      }),
-      ...logWorkflow("post_transcribe"),
-      ...checkedFunctionStep("align"),
-      ...checkedFunctionStep("adjust"),
+      { vars: userTranscriptConfigVars() },
+      { checkStage: callSub.assertTranscriptStage("processing") },
+      { logWorkflow: logWorkflow("post_transcribe") },
+      { align: callSub.cloudFunction("align") },
+      { adjust: callSub.cloudFunction("adjust") },
+      { ready: setTranscriptStage("ready") },
       {
         success: {
           return: 'SUCCESS'
@@ -24,5 +44,5 @@ export const postTranscribe: Workflow = {
       }
     ]
   },
-  ...assert2xx
+  ...subworkflows
 }

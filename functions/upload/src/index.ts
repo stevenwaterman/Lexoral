@@ -26,6 +26,7 @@ async function handleRequest(req: Request, res: Response) {
     audio: {
       duration: -1,
     },
+    stage: "uploading",
     created: FieldValue.serverTimestamp(),
     updated: FieldValue.serverTimestamp()
   };

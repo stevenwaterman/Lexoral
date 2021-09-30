@@ -1,6 +1,6 @@
-import { SubWorkflow } from "./workflow.js";
+import { SubWorkflow, SubWorkflowStep } from "../types.js";
 
-const assert2xx: SubWorkflow = {
+const assert2xxSWF: SubWorkflow = {
   params: ['response'],
   steps: [
     {
@@ -21,6 +21,18 @@ const assert2xx: SubWorkflow = {
   ]
 };
 
+function callAssert2xx(responseVar: string): SubWorkflowStep {
+  return {
+    call: 'assert_2xx',
+    args: {
+      response: responseVar
+    }
+  };
+}
+
 export default {
-  assert_2xx: assert2xx
-};
+  swf: {
+    assert_2xx: assert2xxSWF
+  },
+  call: callAssert2xx
+}

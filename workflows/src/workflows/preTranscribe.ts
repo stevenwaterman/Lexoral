@@ -1,29 +1,49 @@
-import { Workflow } from "../components/workflow.js";
-import assert2xx from "../components/assert2xx.js";
-import { checkedFunctionStep } from "../components/cloudFunction.js";
-import { variables } from "../components/variables.js";
-import { logWorkflow } from "../components/firestore.js";
+import { Workflow, SubWorkflowStep } from "../types.js";
+import { userTranscriptConfigVars } from "../components/variables.js";
+import { logWorkflow, setTranscriptStage } from "../components/firestore.js";
+import { subworkflows, callSub } from "../subworkflows/subworkflows.js";
+
+const callInner: SubWorkflowStep = {
+  call: "inner",
+  args: {
+    config: '${config}'
+  }
+}
 
 export const preTranscribe: Workflow = {
   main: {
-    params: ['config'],
+    params: ["config"],
+    try: {
+      steps: [
+        { callInner }
+      ]
+    },
+    except: {
+      "as": "e",
+      steps: [
+        { errorStage: setTranscriptStage("error") },
+        { raiseError: {
+          raise: '${e}'
+        }}
+      ]
+    }
+    
+  },
+  inner: {
+    params: ["config"],
     steps: [
-      ...variables("vars", {
-        user_id: '${config.userId}',
-        transcript_id: '${config.transcriptId}',
-        exec_id: '${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}',
-        function_root: '${"https://europe-west2-" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + ".cloudfunctions.net/"}'
-      }),
-      ...logWorkflow("pre_transcribe"),
-      ...checkedFunctionStep("transcode_envelope"),
-      ...checkedFunctionStep("charge_credit"),
-      ...checkedFunctionStep("transcribe"),
-      {
-        success: {
+      { vars: userTranscriptConfigVars() },
+      { checkStage: callSub.assertTranscriptStage("uploading") },
+      { setStage: callSub.assertTranscriptStage("processing") },
+      { logWorkflow: logWorkflow("pre_transcribe") },
+      { transcode: callSub.cloudFunction("transcode_envelope") },
+      { charge: callSub.cloudFunction("charge_credit") },
+      { transcribe: callSub.cloudFunction("transcribe") },
+      { success: {
           return: 'SUCCESS'
         }
       }
     ]
   },
-  ...assert2xx
+  ...subworkflows
 }
