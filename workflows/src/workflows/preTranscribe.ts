@@ -1,4 +1,4 @@
-import { Workflow, TryCatchStep } from "../types.js";
+import { Workflow, TryCatchStep } from "../types/workflow.js";
 import { userTranscriptConfigVars } from "../components/variables.js";
 import { logWorkflow, setTranscriptStage } from "../components/firestore.js";
 import { subworkflows, callSub } from "../subworkflows/subworkflows.js";
@@ -23,8 +23,14 @@ const tryCatchStep: TryCatchStep = {
     as: "e",
     steps: [
       { errorStage: setTranscriptStage("error") },
+      { log: {
+        call: "sys.log",
+        args: {
+          text: '${"error: " + json.encode_to_string(e)}'
+        }
+      }},
       { raiseError: {
-        raise: '${e}'
+        raise: "error"
       }}
     ]
   }

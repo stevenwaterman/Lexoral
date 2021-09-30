@@ -1,10 +1,12 @@
+import { WriteDocumentStep } from "./firestore";
+
 export type Workflow = {
   main: SubWorkflow
 } & Record<string, SubWorkflow>;
 
 export type SubWorkflow = {
   params: string[],
-  steps: StepWrapper<any>[]
+  steps: StepWrapper<Step>[]
 }
 
 export type StepWrapper<STEP extends Step> = Record<string, STEP>;
@@ -48,11 +50,6 @@ export type SleepStep = {
   }
 }
 
-export type SubWorkflowStep = {
-  call: string;
-  args: Record<string, string>;
-}
-
 export type LogStep = {
   call: "sys.log";
   args: {
@@ -75,25 +72,6 @@ export type TryCatchStep = {
   }
 }
 
-export type WriteDocumentStep = {
-  call: "googleapis.firestore.v1.projects.databases.documents.patch";
-  args: {
-    name: string;
-    body: {
-      fields: Record<string, WriteDocumentField>;
-    };
-    updateMask?: {
-      fieldPaths: string;
-    }
-  }
-}
-type WriteDocumentField = 
-  Record<"booleanValue", boolean> |
-  Record<"doubleValue", number> |
-  Record<"integerValue", number> |
-  Record<"stringValue", string> |
-  Record<"timestampValue", Date>;
-
 export type ReadDocumentStep = {
   call: "googleapis.firestore.v1.projects.databases.documents.get";
   args: {
@@ -107,4 +85,4 @@ export type BaseStep = {
   return?: string;
 }
 
-export type Step = BaseStep & (VariableStep | ConditionStep | HttpStep | SleepStep | SubWorkflowStep | FailStep | LogStep | WriteDocumentStep | TryCatchStep | {});
+export type Step = BaseStep & (VariableStep | ConditionStep | HttpStep | SleepStep | FailStep | LogStep | WriteDocumentStep | ReadDocumentStep | TryCatchStep | {});

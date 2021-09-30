@@ -1,5 +1,6 @@
-import { SubWorkflow, ReadDocumentStep, SubWorkflowStep } from "../types";
+import { SubWorkflow, ReadDocumentStep } from "../types/workflow";
 import { TranscriptStages } from "../components/firestore";
+import { SubWorkflowStep } from "./subworkflows";
 
 const getTranscript: ReadDocumentStep = {
   call: "googleapis.firestore.v1.projects.databases.documents.get",

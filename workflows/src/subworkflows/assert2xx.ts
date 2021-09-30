@@ -1,4 +1,5 @@
-import { SubWorkflow, SubWorkflowStep } from "../types.js";
+import { SubWorkflow } from "../types/workflow.js";
+import { SubWorkflowStep } from "./subworkflows.js";
 
 const assert2xxSWF: SubWorkflow = {
   params: ['response'],
@@ -25,9 +26,9 @@ function callAssert2xx(responseVar: string): SubWorkflowStep {
   return {
     call: 'assert_2xx',
     args: {
-      response: responseVar
+      response: '${' + responseVar + '}'
     }
-  };
+  } as any;
 }
 
 export default {

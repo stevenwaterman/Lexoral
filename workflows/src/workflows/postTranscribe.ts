@@ -1,4 +1,4 @@
-import { Workflow, TryCatchStep } from "../types.js";
+import { Workflow, TryCatchStep } from "../types/workflow.js";
 import { userTranscriptConfigVars } from "../components/variables.js";
 import { logWorkflow, setTranscriptStage } from "../components/firestore.js";
 import { subworkflows, callSub } from "../subworkflows/subworkflows.js";

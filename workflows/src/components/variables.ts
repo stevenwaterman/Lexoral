@@ -1,4 +1,4 @@
-import { VariableStep } from "../types";
+import { VariableStep } from "../types/workflow";
 
 export function variables(...assignmentBlocks: Record<string, string | null>[]): VariableStep {
   const variableStep: VariableStep = {

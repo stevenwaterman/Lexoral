@@ -1,4 +1,5 @@
-import { HttpStep, SubWorkflowStep, LogStep, SubWorkflow } from "../types.js";
+import { HttpStep, LogStep, Step, SubWorkflow } from "../types/workflow.js";
+import { SubWorkflowStep } from "./subworkflows.js";
 import assert2xx from "./assert2xx.js";
 
 const logStep: LogStep = {
@@ -36,12 +37,8 @@ const cloudFunctionSWF: SubWorkflow = {
   ]
 };
 
-export const cloudFunction = {
-  cloud_function: cloudFunctionSWF
-};
-
 type CloudFunctionNames = "adjust" | "align" | "charge_credit" | "transcode_envelope" | "transcribe";
-export function callCloudFunction(name: CloudFunctionNames): SubWorkflowStep {
+function callCloudFunction(name: CloudFunctionNames): SubWorkflowStep {
   return {
     call: 'cloud_function',
     args: {
