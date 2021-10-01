@@ -169,7 +169,7 @@ module "delete_transcript_files" {
   name = "delete_transcript_files"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
-  watch = "/users/test/transcripts/test"
+  watch = "/users/{userId}/transcripts/{transcriptId}"
   event_type = "delete"
 }
 
