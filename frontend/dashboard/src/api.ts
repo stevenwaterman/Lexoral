@@ -44,7 +44,8 @@ export async function deleteTranscript(transcriptId: string) {
         method: "delete",
         headers: {
           "Authorization": `Bearer ${idToken}`
-        }
+        },
+        mode: "cors"
       })
     ).then(async res => {
       if (res.ok) return res;

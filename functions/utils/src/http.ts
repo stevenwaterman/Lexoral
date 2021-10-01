@@ -23,6 +23,7 @@ export function get(handler: RequestHandler): Express {
 export function post(handler: RequestHandler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
+  app.options("*", cors);
   app.post("*", (req, res, next) => {
     try {
       handler(req, res, next)
@@ -41,6 +42,7 @@ export function post(handler: RequestHandler): Express {
 export function put(handler: RequestHandler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
+  app.options("*", cors);
   app.put("*", (req, res, next) => {
     try {
       handler(req, res, next)
@@ -59,6 +61,7 @@ export function put(handler: RequestHandler): Express {
 export function del(handler: RequestHandler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
+  app.options("*", cors);
   app.delete("*", (req, res, next) => {
     try {
       handler(req, res, next)

@@ -105,9 +105,7 @@
     <span>{durationStr}</span>
     <span title={createdTooltip}>{getRelativeTime(created, $timeStore)}</span>
     <span title={updatedTooltip}>{getRelativeTime(updated, $timeStore)}</span>
-    {#if stage === "unknown"}
-      <span class="icon" style={`color: var(--warn)`}>?</span>
-    {:else if stage === "uploading"}
+    {#if stage === "uploading"}
       <span class="icon" style={`color: var(--info)`}>⇫ Uploading</span>
     {:else if stage === "processing"}
       <span class="icon" style={`color: var(--info)`}>⧗ Processing</span>
@@ -115,6 +113,8 @@
       <span class="icon" style={`color: var(--success)`}>✓ Ready</span>
     {:else if stage === "error"}
       <span class="icon" style={`color: var(--error)`}>⚠ Contact Support</span>
+    {:else}
+      <span class="icon" style={`color: var(--warn)`} title={stage}>? Unknown</span>
     {/if}
   </a>
   <div class="menuContainer">
