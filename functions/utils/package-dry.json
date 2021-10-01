@@ -1,0 +1,17 @@
+{
+  "name": "lexoral-utils",
+  "dry": {
+    "extends": "../package-dry.json"
+  },
+  "devDependencies": {
+    "@types/cors": "managed",
+    "@types/express": "managed"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "managed",
+    "@google-cloud/firestore": "managed",
+    "cors": "managed",
+    "firebase-admin": "managed",
+    "express": "managed"
+  }
+}

@@ -62,9 +62,10 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci
+    - run: npm i -g dry-dry
+    - run: dry ci
       working-directory: functions/utils
-    - run: npm run build
+    - run: dry run build --dry-keep-package-json
       working-directory: functions/utils
     - uses: actions/upload-artifact@v2
       with:
