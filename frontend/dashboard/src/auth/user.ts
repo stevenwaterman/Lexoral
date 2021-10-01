@@ -8,7 +8,3 @@ export function initUserStore() {
   setPersistence(auth, browserLocalPersistence);
   onAuthStateChanged(auth, user => internalUserStore.set(user));
 }
-
-userStore.subscribe(user => {
-  console.log("User:", user)
-})
