@@ -9,9 +9,9 @@ function wrap(handler: Handler): Handler {
     handler(req, res)
       .catch(err => {
         if (res.writableEnded) {
-          console.info("Handled error: " + err);
+          console.info("Handled error: " + JSON.stringify(err));
         } else {
-          console.error("Unhandled error: " + err);
+          console.error("Unhandled error: " + JSON.stringify(err));
           res.sendStatus(500);
         }
       })
