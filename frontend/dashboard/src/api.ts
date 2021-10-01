@@ -36,3 +36,19 @@ export async function uploadFile(file: File, name: string) {
       body: file
     }))
 }
+
+export async function deleteTranscript(transcriptId: string) {
+  return assertUser().getIdToken()
+    .then(idToken =>
+      fetch(`https://europe-west2-${process.env["PROJECT_ID"]}.cloudfunctions.net/delete_transcript?transcript=${transcriptId}`, {
+        method: "delete",
+        headers: {
+          "Authorization": `Bearer ${idToken}`
+        }
+      })
+    ).then(async res => {
+      if (res.ok) return res;
+      const text = await res.text();
+      throw new Error("Request was rejected: " + text);
+    });
+}

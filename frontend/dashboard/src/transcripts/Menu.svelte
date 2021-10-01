@@ -1,6 +1,8 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
+import { deleteTranscript } from "../api";
 
+  export let transcriptId: string;
   let visible: boolean = false;
 
   function show() {
@@ -9,6 +11,15 @@
 
   function hide() {
     visible = false;
+  }
+
+  function rename() {
+
+  }
+
+  function del() {
+    hide();
+    deleteTranscript(transcriptId);
   }
 </script>
 
@@ -55,8 +66,8 @@
   ⋮
   {#if visible}
   <ul on:mouseleave={hide} transition:slide>
-      <li>Rename</li>
-      <li>Delete</li>
+      <li on:click={rename}>Rename</li>
+      <li on:click={del}>Delete</li>
     </ul>
   {/if}
 </button>
