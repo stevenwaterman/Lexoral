@@ -1,0 +1,9 @@
+{
+  "name": "lexoral-delete-transcript-files",
+  "dry": {
+    "extends": "../package-dry-utils.json"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "managed"
+  }
+}

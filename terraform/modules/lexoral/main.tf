@@ -164,12 +164,13 @@ module "patch" {
   public = true
 }
 
-module "delete_transcript" {
-  source = "../httpFunction"
-  name = "delete_transcript"
+module "delete_transcript_files" {
+  source = "../fireStoreFunction"
+  name = "delete_transcript_files"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
-  public = true
+  watch = "/users/{userId}/transcripts/{transcriptId}"
+  event_type = "delete"
 }
 
 
