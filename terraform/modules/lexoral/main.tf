@@ -164,6 +164,14 @@ module "patch" {
   public = true
 }
 
+module "delete_transcript" {
+  source = "../httpFunction"
+  name = "delete_transcript"
+  bucket = google_storage_bucket.functions_code.name
+  project_id = data.google_project.project.project_id
+  public = true
+}
+
 
 
 resource "google_workflows_workflow" "pre_transcribe_workflow" {

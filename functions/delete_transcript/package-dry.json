@@ -1,0 +1,10 @@
+{
+  "name": "lexoral-delete-transcript",
+  "dry": {
+    "extends": "../package-dry-http.json"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "managed",
+    "firebase-admin": "managed"
+  }
+}

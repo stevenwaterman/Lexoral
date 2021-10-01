@@ -17,9 +17,6 @@
   let durationStr: string;
   $: durationStr = getDurationString(duration);
 
-  let now: Date;
-  $: now = new Date();
-
   let created: Date | undefined;
   $: created = transcript.get("created")?.toDate();
 

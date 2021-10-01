@@ -121,6 +121,7 @@ jobs:
           - adjust
           - align
           - charge_credit
+          - delete_transcript
           - fetch
           - patch
           - signup

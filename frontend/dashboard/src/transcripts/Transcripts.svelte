@@ -137,6 +137,10 @@
   li {
     display: contents;
   }
+
+  .spacer {
+    height: 4em;
+  }
 </style>
 
 <ol class="table">
@@ -192,8 +196,8 @@
     <span class="header"/>
   </li>
 
-  {#each transcripts as transcript (transcript.id)}
-    <Transcript transcript={transcript}/>
+  {#each transcripts as transcript, idx (transcript.id)}
+<Transcript transcript={transcript}/>
   {:else}
     <li>
       <span class="empty">
@@ -205,6 +209,7 @@
       </span>
     </li>
   {/each}
+  <div class="spacer"/>
 </ol>
 
 {#if !allLoaded}
