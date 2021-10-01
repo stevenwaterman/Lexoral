@@ -37,44 +37,6 @@ jobs:
         name: ${{ matrix.frontendName }}
         path: frontend/public/${{ matrix.frontendName }}
 
-  deploy-frontend:
-    needs: [build-frontends]
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Create variables
-      id: vars
-      run: |
-          branch=${GITHUB_REF##*/} 
-          echo "::set-output name=branch::${branch}"
-    
-    - uses: actions/checkout@v2
-    - run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git checkout --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
-        git reset --hard
-        git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
-        mv frontend/public/* .
-        rm -r frontend
-        git rm -r --cached frontend
-    - uses: actions/download-artifact@v2
-      with:
-        name: editor
-        path: editor
-    - uses: actions/download-artifact@v2
-      with:
-        name: dashboard
-        path: dashboard
-    - run: |
-        git add .
-        git commit -m "Update hosted version"
-    - uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
-        branch: ${{ steps.vars.outputs.branch }}-deployed-frontend
-
   synth-workflows:
     runs-on: ubuntu-latest
 
@@ -164,8 +126,52 @@ jobs:
           functions/master/index.js
           functions/master/package.json
 
+  deployment-gate:
+    needs: [build-frontends, build-functions, synth-workflows]
+    runs-on: ubuntu-latest
+    steps:
+      run: echo "Everything built successfully"
+
+  deploy-frontend:
+    needs: [deployment-gate]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create variables
+      id: vars
+      run: |
+          branch=${GITHUB_REF##*/} 
+          echo "::set-output name=branch::${branch}"
+    
+    - uses: actions/checkout@v2
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
+        git reset --hard
+        git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
+        mv frontend/public/* .
+        rm -r frontend
+        git rm -r --cached frontend
+    - uses: actions/download-artifact@v2
+      with:
+        name: editor
+        path: editor
+    - uses: actions/download-artifact@v2
+      with:
+        name: dashboard
+        path: dashboard
+    - run: |
+        git add .
+        git commit -m "Update hosted version"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: ${{ steps.vars.outputs.branch }}-deployed-frontend
+
   deploy-backend:
-    needs: [build-functions, synth-workflows]
+    needs: [deployment-gate]
     runs-on: ubuntu-latest
 
     steps:
