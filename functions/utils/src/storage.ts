@@ -52,7 +52,7 @@ export async function deleteFromAll(storage: Storage, userId: string, transcript
   const buckets = Object.keys(extensions) as Array<keyof typeof extensions>;
   const promises = buckets.map(bucket => 
      deleteFile(storage, bucket, fileName + extensions[bucket])
-      .catch(err => console.warn("Error when deleting all: ", err))
+      .catch(err => console.warn("Error when deleting all: ", JSON.stringify(err)))
   );
   return Promise.all(promises).then(() => {});
 }
