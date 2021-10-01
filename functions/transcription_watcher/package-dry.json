@@ -1,7 +1,7 @@
 {
   "name": "lexoral-transcription-watcher",
   "dry": {
-    "extends": "../package-dry.json"
+    "extends": "../package-dry-utils.json"
   },
   "dependencies": {
     "@google-cloud/workflows": "managed"

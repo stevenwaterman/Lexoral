@@ -1,7 +1,7 @@
 {
   "name": "lexoral-upload-watcher",
   "dry": {
-    "extends": "../package-dry.json"
+    "extends": "../package-dry-utils.json"
   },
   "dependencies": {
     "@google-cloud/workflows": "managed"

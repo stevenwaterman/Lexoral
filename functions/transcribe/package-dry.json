@@ -1,7 +1,7 @@
 {
   "name": "lexoral-transcribe",
   "dry": {
-    "extends": "../package-dry.json"
+    "extends": "../package-dry-util.json"
   },
   "dependencies": {
     "@google-cloud/speech": "managed",
