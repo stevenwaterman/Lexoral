@@ -118,6 +118,6 @@
     {/if}
   </a>
   <div class="menuContainer">
-    <Menu transcriptId={transcript.id}/>
+    <Menu transcript={transcript}/>
   </div>
 </li>

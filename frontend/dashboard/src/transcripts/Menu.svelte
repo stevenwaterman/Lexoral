@@ -1,8 +1,9 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
-import { deleteTranscript } from "../api";
+  import { deleteDoc } from "firebase/firestore"
+  import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
-  export let transcriptId: string;
+  export let transcript: QueryDocumentSnapshot<DocumentData>;
   let visible: boolean = false;
 
   function show() {
@@ -17,9 +18,8 @@ import { deleteTranscript } from "../api";
 
   }
 
-  function del() {
-    hide();
-    deleteTranscript(transcriptId);
+  async function del() {
+    await deleteDoc(transcript.ref);
   }
 </script>
 
