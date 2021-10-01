@@ -103,7 +103,7 @@
     padding-right: 2em;
     padding-bottom: 1em;
     display: grid;
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(5, 1fr) auto;
 
     overflow-y: auto;
     width: 100%;
@@ -116,13 +116,16 @@
 
     background-color: var(--page-background);
     font-weight: bold;
-    cursor: pointer;
     border-bottom: 1px solid black;
     user-select: none;
     margin-bottom: 0.5em;
   }
 
-  .header:hover {
+  .header.sortable {
+    cursor: pointer;
+  }
+
+  .header.sortable:hover {
     background-color: var(--blue-3);
   }
 
@@ -138,7 +141,7 @@
 
 <ol class="table">
   <li>
-    <span class="header" on:click="{() => setSort("name")}">
+    <span class="header sortable" on:click="{() => setSort("name")}">
       Name
       {#if sort === "name"}
         {#if direction === "asc"}
@@ -149,7 +152,7 @@
       {/if}
     </span>
 
-    <span class="header" on:click="{() => setSort("audio.duration")}">
+    <span class="header sortable" on:click="{() => setSort("audio.duration")}">
       Length
       {#if sort === "audio.duration"}
         {#if direction === "asc"}
@@ -160,7 +163,7 @@
       {/if}
     </span>
 
-    <span class="header" on:click="{() => setSort("created")}">
+    <span class="header sortable" on:click="{() => setSort("created")}">
       Created
       {#if sort === "created"}
         {#if direction === "asc"}
@@ -171,7 +174,7 @@
       {/if}
     </span>
 
-    <span class="header" on:click="{() => setSort("updated")}">
+    <span class="header sortable" on:click="{() => setSort("updated")}">
       Updated
       {#if sort === "updated"}
         {#if direction === "asc"}
@@ -185,6 +188,8 @@
     <span class="header">
       Status
     </span>
+
+    <span class="header"/>
   </li>
 
   {#each transcripts as transcript (transcript.id)}

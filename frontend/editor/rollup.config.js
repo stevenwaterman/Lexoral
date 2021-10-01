@@ -7,12 +7,13 @@ import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
 import injectProcessEnv from 'rollup-plugin-inject-process-env';
 
-const production = !process.env.ROLLUP_WATCH;
-
 const firebaseApiKeys = {
   stage: "AIzaSyBxFFOSL7yfPksJMK1drBBabOWlOWLwDE4",
   prod: "AIzaSyBU8Uc2XMlksFDa-WP27u4yL4I5Q1_Ddbg"
 }
+
+const branch = process.env.BRANCH;
+const production = branch === "prod";
 
 export default {
 	input: 'src/main.ts',
@@ -49,9 +50,9 @@ export default {
 			inlineSources: !production
     }),
     
-    injectProcessEnv({ 
-      PROJECT_ID: `lexoral-${process.env["BRANCH"]}`,
-      FIREBASE_API_KEY: firebaseApiKeys[process.env["BRANCH"]]
+    injectProcessEnv({
+      PROJECT_ID: `lexoral-${branch}`,
+      FIREBASE_API_KEY: firebaseApiKeys[branch],
     }),
 
 		// If we're building for production (npm run build

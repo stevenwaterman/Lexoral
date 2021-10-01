@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { DocumentData, QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
+  import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
   import { getRelativeTime, timeStore } from "../time";
+  import Menu from "./Menu.svelte";
 
   export let transcript: QueryDocumentSnapshot<DocumentData>;
 
@@ -76,7 +77,12 @@
   }
 
   li:hover span {
-    background-color: var(--blue-3)
+    background-color: var(--blue-3);
+  }
+
+  li:hover .menuContainer {
+    background-color: var(--blue-3);
+    color: var(--light-text);
   }
 
   span {
@@ -114,4 +120,7 @@
       <span class="icon" style={`color: var(--error)`}>⚠ Contact Support</span>
     {/if}
   </a>
+  <div class="menuContainer">
+    <Menu/>
+  </div>
 </li>
