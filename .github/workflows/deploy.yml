@@ -130,7 +130,7 @@ jobs:
     needs: [build-frontends, build-functions, synth-workflows]
     runs-on: ubuntu-latest
     steps:
-      run: echo "Everything built successfully"
+    - run: echo "Everything built successfully"
 
   deploy-frontend:
     needs: [deployment-gate]
