@@ -84,7 +84,7 @@ jobs:
           - adjust
           - align
           - charge_credit
-          - delete_transcript
+          - delete_transcript_files
           - fetch
           - patch
           - signup
