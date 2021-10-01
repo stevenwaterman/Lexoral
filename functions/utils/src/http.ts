@@ -1,78 +1,50 @@
-import { RequestHandler, Express } from "express";
+import { Express } from "express";
 import corsFactory from "cors";
-import express, { json } from "express";
+import express, { json, Request, Response } from "express";
 
-export function get(handler: RequestHandler): Express {
+type Handler = (req: Request, res: Response) => Promise<void>;
+
+function wrap(handler: Handler): Handler {
+  return async (req, res) => {
+    handler(req, res)
+      .catch(err => {
+        if (res.writableEnded) {
+          console.info("Handled error: " + err);
+        } else {
+          console.error("Unhandled error: " + err);
+          res.sendStatus(500);
+        }
+      })
+  };
+}
+
+export function get(handler: Handler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors);
-  app.get("*", (req, res, next) => {
-    try {
-      handler(req, res, next)
-    } catch(err) {
-      if (res.writableEnded) {
-        console.info("Handled error: " + err);
-      } else {
-        console.error("Unhandled error: " + err);
-        res.sendStatus(500);
-      }
-    }
-  });
+  app.get("*", wrap(handler));
   return app;
 }
 
-export function post(handler: RequestHandler): Express {
+export function post(handler: Handler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
   app.options("*", cors);
-  app.post("*", (req, res, next) => {
-    try {
-      handler(req, res, next)
-    } catch(err) {
-      if (res.writableEnded) {
-        console.info("Handled error: " + err);
-      } else {
-        console.error("Unhandled error: " + err);
-        res.sendStatus(500);
-      }
-    }
-  });
+  app.post("*", wrap(handler));
   return app;
 }
 
-export function put(handler: RequestHandler): Express {
+export function put(handler: Handler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
   app.options("*", cors);
-  app.put("*", (req, res, next) => {
-    try {
-      handler(req, res, next)
-    } catch(err) {
-      if (res.writableEnded) {
-        console.info("Handled error: " + err);
-      } else {
-        console.error("Unhandled error: " + err);
-        res.sendStatus(500);
-      }
-    }
-  });
+  app.put("*", wrap(handler));
   return app;
 }
 
-export function del(handler: RequestHandler): Express {
+export function del(handler: Handler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
   app.options("*", cors);
-  app.delete("*", (req, res, next) => {
-    try {
-      handler(req, res, next)
-    } catch(err) {
-      if (res.writableEnded) {
-        console.info("Handled error: " + err);
-      } else {
-        console.error("Unhandled error: " + err);
-        res.sendStatus(500);
-      }
-    }
-  });
+  app.delete("*", wrap(handler));
   return app;
 }
