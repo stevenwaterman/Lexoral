@@ -25,6 +25,6 @@ resource "google_cloudfunctions_function" "function" {
 
   event_trigger {
     event_type = "providers/cloud.firestore/eventTypes/document.${var.event_type}"
-    resource = "projects/${var.project_id}/databases/(default)/documents/var.watch"
+    resource = "projects/${var.project_id}/databases/(default)/documents/${var.watch}"
   }
 }
