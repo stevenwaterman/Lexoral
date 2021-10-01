@@ -28,7 +28,7 @@ jobs:
         node-version: '14'
     - run: npm ci
       working-directory: frontend/${{ matrix.frontendName }}
-    - run: npm run build
+    - run: npm run build-${{ steps.vars.outputs.branch }}
       working-directory: frontend/${{ matrix.frontendName }}
       env:
         BRANCH: ${{ steps.vars.outputs.branch }}

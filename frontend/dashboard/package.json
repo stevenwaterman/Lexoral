@@ -4,8 +4,8 @@
   "author": "Steven Waterman",
   "license": "GPL-3.0-only",
   "scripts": {
-    "prod": "rollup -c --environment BRANCH:prod",
-    "stage": "rollup -c --environment BRANCH:stage",
+    "build-prod": "rollup -c --environment BRANCH:prod",
+    "build-stage": "rollup -c --environment BRANCH:stage",
     "dev": "rollup -c -w --environment BRANCH:stage",
     "validate": "svelte-check"
   },
