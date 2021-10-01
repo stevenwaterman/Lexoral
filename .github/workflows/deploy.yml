@@ -26,7 +26,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci
+    - run: npm i
       working-directory: frontend/${{ matrix.frontendName }}
     - run: npm run build-${{ steps.vars.outputs.branch }}
       working-directory: frontend/${{ matrix.frontendName }}
@@ -45,7 +45,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci
+    - run: npm i
       working-directory: workflows
     - run: npm run synth
       working-directory: workflows
@@ -63,7 +63,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm i -g dry-dry
-    - run: dry ci
+    - run: dry i
       working-directory: functions/utils
     - run: dry run build --dry-keep-package-json
       working-directory: functions/utils
@@ -104,7 +104,7 @@ jobs:
         name: utils
         path: functions/utils
     - run: npm i -g dry-dry
-    - run: dry ci
+    - run: dry i
       working-directory: functions/${{ matrix.functionName }}
     - run: dry run build --dry-keep-package-json
       working-directory: functions/${{ matrix.functionName }}
