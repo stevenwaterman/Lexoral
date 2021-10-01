@@ -1,10 +1,7 @@
 {
-  "name": "parent-http",
+  "name": "parent-utils",
   "dry": {
-    "extends": "../package-dry-utils.json"
-  },
-  "devDependencies": {
-    "@types/express": "managed"
+    "extends": "../package-dry.json"
   },
   "dependencies": {
     "lexoral-utils": "file:../utils"
