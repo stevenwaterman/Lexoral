@@ -42,7 +42,8 @@ async function transcodeEnvelope(storage: Storage, name: string, sourceFile: Fil
 }
 
 function getDuration(lines: string[]): number {
-  const sizeLine = lines.find(line => line.trimStart().startsWith("size="))
+  const sizeLines = lines.filter(line => line.trimStart().startsWith("size="));
+  const sizeLine = sizeLines[sizeLines.length - 1];
   if (sizeLine === undefined) throw new Error("No size lines in ffmpeg output: " + JSON.stringify(lines));
 
   const regexResult = /time=[^ ]+/.exec(sizeLine)
