@@ -15,13 +15,21 @@ async function handleRequest(req: Request, res: Response) {
   const inputUri: string = `gs://${process.env["PROJECT_ID"]}-raw-audio/${user.id}_${transcript.id}`;
   const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-raw/${user.id}_${transcript.id}`;
 
-  const format = transcript.data.get("audio.format");
-  const encoding = encodingMap[format];
+  // const format = transcript.data.get("audio.format");
+  // const encoding = encodingMap[format];
+
+  const sampleRateHertz = transcript.data.get("audio.sampleRate");
+  const audioChannelCount = transcript.data.get("audio.channels");
+
+  // if (encoding === null || encoding === undefined) throw new Error("Unrecognised format: " + format);
+  if (sampleRateHertz < 6_000 || sampleRateHertz > 200_000) throw new Error("Sample rate is probably wrong: " + sampleRateHertz);
+  if (audioChannelCount < 1 || audioChannelCount > 10) throw new Error("Audio channel count is probably wrong: " + audioChannelCount);
+
 
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
-    encoding,
-    sampleRateHertz: transcript.data.get("audio.sampleRate"),
-    audioChannelCount: transcript.data.get("audio.channels"),
+    // encoding,
+    sampleRateHertz,
+    audioChannelCount,
 
     languageCode: "en-US",
     maxAlternatives: 5,
