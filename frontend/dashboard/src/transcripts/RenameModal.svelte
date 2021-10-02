@@ -65,7 +65,7 @@
   {#if !renaming}
     <div class="buttonContainer">
       <button on:click|preventDefault={close}>Cancel</button>
-      <button class="danger" on:click|preventDefault={deleteTranscript}>Update Name</button>
+      <button on:click|preventDefault={deleteTranscript}>Update Name</button>
     </div>
   {/if}
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-  import { getContext } from "svelte";
+  import { getContext, tick } from "svelte";
   import DeleteModal from "./DeleteModal.svelte";
   import RenameModal from "./RenameModal.svelte";
 
@@ -14,20 +14,36 @@
 
   function hide() {
     visible = false;
+    resetHideTimer();
   }
 
   const { open } = getContext("simple-modal");
 
-  function rename() {
+  async function rename() {
+    hide();
     open(RenameModal, { transcript }, {
       closeButton: false
     });
   }
 
   async function del() {
+    hide();
     open(DeleteModal, { transcript }, {
       closeButton: false
     });
+  }
+
+  let hideTimer: NodeJS.Timer | undefined = undefined;
+
+  function startHideTimer() {
+    hideTimer = setTimeout(hide, 500);
+  }
+
+  function resetHideTimer() {
+    if (hideTimer !== undefined) {
+      clearTimeout(hideTimer);
+      hideTimer = undefined;
+    }
   }
 </script>
 
@@ -70,10 +86,10 @@
   }
 </style>
 
-<button on:click={show} on:mouseleave={hide}>
+<button on:click|self={show} on:mouseleave={startHideTimer} on:mouseenter={resetHideTimer}>
   ⋮
   {#if visible}
-  <ul on:mouseleave={hide} transition:slide>
+    <ul transition:slide>
       <li on:click={rename}>Rename</li>
       <li on:click={del}>Delete</li>
     </ul>
