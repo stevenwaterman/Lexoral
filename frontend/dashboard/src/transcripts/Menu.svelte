@@ -1,7 +1,9 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
-  import { deleteDoc } from "firebase/firestore"
   import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+  import { getContext } from "svelte";
+  import DeleteModal from "./DeleteModal.svelte";
+  import RenameModal from "./RenameModal.svelte";
 
   export let transcript: QueryDocumentSnapshot<DocumentData>;
   let visible: boolean = false;
@@ -14,12 +16,18 @@
     visible = false;
   }
 
-  function rename() {
+  const { open } = getContext("simple-modal");
 
+  function rename() {
+    open(RenameModal, { transcript }, {
+      closeButton: false
+    });
   }
 
   async function del() {
-    await deleteDoc(transcript.ref);
+    open(DeleteModal, { transcript }, {
+      closeButton: false
+    });
   }
 </script>
 

@@ -79,6 +79,16 @@ button:hover {
   color: var(--text);
 }
 
+button.danger {
+  background-color: var(--red-1);
+  color: var(--light-text);
+}
+
+button.danger:hover {
+  background-color: var(--red-3);
+  color: var(--text);
+}
+
 button:active {
   box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }

@@ -7,7 +7,7 @@ type Context = {
     userId: string;
   }
 };
-export async function run(event: any, context: Context) {
+export async function run(event: any, context: Context) { 
   const { transcriptId, userId } = context.params;
   await utils.storage.deleteFromAll(storage, userId, transcriptId);
 }

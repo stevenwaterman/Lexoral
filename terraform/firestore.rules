@@ -7,6 +7,9 @@ service cloud.firestore {
 			match /transcripts/{transcriptId} {
 				allow read: if request.auth != null && request.auth.uid == userId;
         allow delete: if request.auth != null && request.auth.uid == userId;
+        allow update: if (request.auth != null && request.auth.uid == userId) && 
+          (request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['name']));
 			}
 		}
 	}
