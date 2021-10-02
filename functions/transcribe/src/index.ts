@@ -25,9 +25,8 @@ async function handleRequest(req: Request, res: Response) {
   if (sampleRateHertz < 6_000 || sampleRateHertz > 200_000) throw new Error("Sample rate is probably wrong: " + sampleRateHertz);
   if (audioChannelCount < 1 || audioChannelCount > 10) throw new Error("Audio channel count is probably wrong: " + audioChannelCount);
 
-
   const config: protos.google.cloud.speech.v1p1beta1.IRecognitionConfig = {
-    // encoding,
+    encoding: "ENCODING_UNSPECIFIED",
     sampleRateHertz,
     audioChannelCount,
 
@@ -39,7 +38,7 @@ async function handleRequest(req: Request, res: Response) {
     model: "video"
   };
 
-  speechClient.longRunningRecognize({ 
+  await speechClient.longRunningRecognize({ 
     audio: { uri: inputUri },
     outputConfig: { gcsUri: outputUri },
     config
