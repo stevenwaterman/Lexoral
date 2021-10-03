@@ -1,9 +1,10 @@
 import { derived, Readable, Writable, writable } from "svelte/store";
 import { assertUser, getTranscriptId } from "../api";
 import { getDb } from "./db";
-import { collection, query, FirestoreDataConverter, DocumentData, onSnapshot, DocumentChange, doc, QueryDocumentSnapshot, DocumentReference, updateDoc, writeBatch } from "firebase/firestore";
+import { collection, query, onSnapshot, DocumentChange, doc, DocumentReference, updateDoc, writeBatch } from "firebase/firestore";
 import { updateSelection } from "../input/selectionState";
 import { tick } from "svelte";
+import { deriveDebounced, deriveWithPrevious } from "../utils/stores";
 
 function getTranscriptDoc(): DocumentReference {
   return doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId());
@@ -49,19 +50,19 @@ function updatePatchStore(state: Record<number, Patch>, changes: DocumentChange<
 }
 
 
-
-
-
+let finalised = true;
 
 let cursor: number | undefined;
 internalCursorStore.subscribe(state => cursor = state);
 
-let maxPatch: number;
-internalPatchStore.subscribe(state => maxPatch = Math.max(...Object.keys(state).map(key => parseInt(key))));
-
 export type PatchState = Patch[];
 
+let maxPatch: number;
 const combinedPatchStore: Readable<PatchState> = derived([internalCursorStore, internalPatchStore], ([cursor, patches]) => {
+  maxPatch = Math.max(...Object.keys(patches).map(key => parseInt(key)));
+  if (cursor === undefined || cursor < maxPatch) finalised = true;
+  else finalised = false;
+
   const output: PatchState = [];
   if (cursor === undefined) return output;
   for (let i = 0; i <= cursor; i++) {
@@ -74,6 +75,14 @@ const combinedPatchStore: Readable<PatchState> = derived([internalCursorStore, i
 combinedPatchStore.subscribe(async () => {
   await tick();
   updateSelection();
+});
+
+/**
+ * Finalise the patches if nothing changes for a second
+ */
+deriveDebounced(combinedPatchStore, 3).subscribe(() => {
+  console.log("finalised")
+  finalised = true;
 });
 
 export type PatchStore = Readable<PatchState> & {
@@ -91,6 +100,8 @@ function undo(): Promise<void> {
   return updateDoc(transcriptDoc, {
     patchCursor: cursor - 1
   });
+
+  
 }
 
 function redo(): Promise<void> {
@@ -126,7 +137,15 @@ function appendFull(...patches: Patch[]): Promise<void> {
 }
 
 function append(idx: number, patch: SectionPatch): Promise<void> {
-  return appendFull({
+  if (cursor === undefined) return Promise.resolve();
+  if (finalised) return appendFull({
+    [idx]: patch
+  });
+
+  const patchIdStr = cursor.toString().padStart(10, "0");
+  const patchRef = doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches", patchIdStr);
+
+  return updateDoc(patchRef, {
     [idx]: patch
   });
 }
@@ -144,132 +163,3 @@ export const patchStore: PatchStore = {
   append,
   init
 }
-
-// function createPatchStore(): PatchStore {
-//   const store: Writable<PatchState> = writable({
-//     patches: [],
-//     cursor: 0
-//   });
-
-//   let finalized: boolean = true;
-
-//   function appendFull(patch: Patch) {
-//     store.update(state => {
-//       minAddedIdx = Math.min(minAddedIdx ?? state.cursor, state.cursor);
-
-//       const removed = state.patches.splice(state.cursor, state.patches.length);
-//       if (state.patches.length === 0 || removed.length > 0 || finalized) {
-//         // Add new patch
-//         state.patches.push(patch);
-//         finalized = false;
-//       } else {
-//         // Edit last patch
-//         const lastPatch = state.patches[state.patches.length - 1] as Patch;
-//         Object.entries(patch)
-//           .forEach(([key, data]) => {
-//             const idx = parseInt(key);
-//             const lastPatchSection = lastPatch[idx];
-//             if (lastPatchSection === undefined) {
-//               lastPatch[idx] = data
-//             } else {
-//               lastPatch[idx] = {
-//                 ...lastPatchSection,
-//                 ...data
-//               }
-//             }
-//           })
-//         }
-//       state.cursor = state.patches.length;
-//       return state;
-//     });
-//   }
-
-//   function append(idx: number, patch: SectionPatch) {
-//     return appendFull({
-//       [idx]: patch
-//     });
-//   }
-
-//   function commit() {
-//     finalized = true;
-//   }
-
-//   function init(...patches: Patch[]) {
-//     store.set({
-//       patches,
-//       cursor: patches.length
-//     });
-
-//     initialised = true;
-//     minAddedIdx = undefined;
-//     commit();
-//   }
-  
-//   return {
-//     subscribe: store.subscribe,
-//     undo,
-//     redo,
-//     appendFull,
-//     append,
-//     init,
-//     commit
-//   };
-// }
-
-// let initialised: boolean = false;
-// let minAddedIdx: number | undefined = undefined;
-// deriveDebounced(patchStore, 3).subscribe(async state => {
-//   if (state === undefined) return;
-//   patchStore.commit();
-//   const saved = await save(state.patches);
-//   if (saved) sendToast("AutoSaved");
-// });
-
-// let saving = false;
-// async function save(patches: Patch[]): Promise<boolean> {
-//   if (!initialised) {
-//     console.log("save called before init, cancelling");
-//     return false;
-//   }
-
-//   if (minAddedIdx === undefined) {
-//     console.log("Nothing added since last time, cancelling");
-//     return false;
-//   }
-//   const addStartIdx = minAddedIdx;
-//   const addEndIdx = patches.length - 1;
-
-//   let needed = false;
-//   const request: Record<number, Patch | null> = {};
-//   for (let i = addStartIdx; i <= addEndIdx; i++) {
-//     needed = true;
-//     request[i] = getAssertExists(patches, i);
-//   }
-
-//   if (!needed) {
-//     console.log("Cancelled save, unnecessary");
-//     saving = false;
-//     return false;
-//   }
-
-//   if (saving) {
-//     console.log("already saving");
-//     return false;
-//   }
-
-//   saving = true;
-
-//   await patchTranscript(request);
-
-//   minAddedIdx = undefined;
-//   saving = false;
-//   return true;
-// }
-
-// export async function manualSave() {
-//   if (patchState === undefined) return sendToast("Nothing to save");
-//   sendToast("Saving");
-//   const saved = await save(patchState.patches);
-//   if (saved) sendToast("Saved");
-//   else sendToast("Nothing to save");
-// }

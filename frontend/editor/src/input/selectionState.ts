@@ -129,7 +129,7 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
     spanOffset = 0;
     requiresSelectionUpdate = true;
   } else {
-    console.log("Unrecognised selection position", {node, offset, side});
+    // console.log("Unrecognised selection position", {node, offset, side});
     return;
   }
 

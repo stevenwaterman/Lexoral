@@ -51,8 +51,8 @@ export default {
     }),
     
     injectProcessEnv({
-      PROJECT_ID: `lexoral-${branch}`,
-      FIREBASE_API_KEY: firebaseApiKeys[branch],
+      PROJECT_ID: `lexoral-${branch ?? "stage"}`,
+      FIREBASE_API_KEY: firebaseApiKeys[branch ?? "stage"],
     }),
 
 		// If we're building for production (npm run build
