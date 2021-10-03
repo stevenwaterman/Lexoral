@@ -51,7 +51,7 @@ export default {
     }),
     
     injectProcessEnv({
-      PROJECT_ID: branch === "prod" ? "lexoral-prod" : "lexoral-stage",
+      PROJECT_ID: `lexoral-${branch ?? "stage"}`,
       FIREBASE_API_KEY: firebaseApiKeys[branch ?? "stage"],
     }),
 
