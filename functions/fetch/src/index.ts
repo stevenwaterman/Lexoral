@@ -4,13 +4,6 @@ import admin from "firebase-admin";
 import express from "express";
 import utils from "lexoral-utils";
 
-type PatchedSectionProps = {
-  text: string;
-  endParagraph: boolean;
-}
-type SectionPatch = Partial<PatchedSectionProps>;
-type Patch = Record<number, SectionPatch>;
-
 async function handleRequest(req: Request, res: Response) {
   const { user, transcript } = await utils.userTranscript.getAllAuth(req, res, store);
   const filename = `${user.id}_${transcript.id}`;
@@ -34,17 +27,11 @@ async function handleRequest(req: Request, res: Response) {
   if (!audioFileUrl) return;
 
   const transcriptName = transcript.data.get("name");
-  const patchesCollection = store.collection(`users/${user.id}/transcripts/${transcript.id}/patches`);
-  const patchesSnapshot = await patchesCollection.get();
-  const patchesRead: Array<[number, Record<string, SectionPatch>]> = patchesSnapshot.docs.map(doc => [parseInt(doc.id), doc.data()]);
-  patchesRead.sort((a,b) => a[0] - b[0]);
-  const patches: Patch[] = patchesRead.map(([_, patch]) => patch);
 
   const response = {
     audioUrl: audioFileUrl,
     transcript: transcriptJson,
-    name: transcriptName,
-    patches
+    name: transcriptName
   };
   
   res.status(200).contentType("json").send(response);

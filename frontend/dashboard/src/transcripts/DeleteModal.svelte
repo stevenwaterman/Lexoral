@@ -25,8 +25,7 @@
   .container {
     display: flex;
     flex-direction: column;
-  }
-
+  } 
   h1 {
     margin: 0;
     margin-bottom: 1em;

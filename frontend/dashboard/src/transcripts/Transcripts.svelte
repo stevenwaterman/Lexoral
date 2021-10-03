@@ -29,13 +29,10 @@
     const transcriptCollection = collection(getDb(), "users", user.uid, "transcripts");
     const q = query(transcriptCollection, orderBy(order, dir), limit(pageSize));
 
-    const page: QueryDocumentSnapshot<DocumentData>[] = [];
-
     unsub();
     unsub = onSnapshot(q, snapshot => {
-      page.splice(0, page.length, ...snapshot.docs);
-      pages = [page];
-    })
+      pages = [snapshot.docs];
+    });
   }
 
   function loadMore() {

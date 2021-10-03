@@ -3,14 +3,14 @@ import { createSectionStore, SectionState, SectionStore } from "./sectionStore";
 
 /** Initialise the text state of the app using the data returned from the API */
 export function initialiseStores(transcript: Omit<SectionState, "idx">[], patches: Patch[]): Record<number, { startTime: number; endTime: number }> {
-  patchStore.init(...patches);
+  patchStore.init();
 
   const withIdx: SectionState[] = transcript.map((section, idx) => ({ idx, ...section }));
   withIdx.forEach(createSectionStore);
 
-  if (patches.length === 0) {
-    createParagraphBreaks(withIdx);
-  }
+  // if (patches.length === 0) {
+  //   createParagraphBreaks(withIdx);
+  // }
 
   const audioTimings: Record<number, { startTime: number; endTime: number }> = {};
   withIdx.forEach(({ idx, startTime, endTime }) => {

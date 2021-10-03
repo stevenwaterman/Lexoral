@@ -36,8 +36,7 @@ function combinePatches(idx: number, patchState: PatchState): SectionPatch {
   let combinedPatch: SectionPatch = {};
   const keys: Array<keyof SectionPatch> = ["text", "endParagraph"];
 
-  for (let i = patchState.cursor - 1; i >= 0; i--) {
-    const patch = patchState.patches[i];
+  for(const patch of patchState) {
     const sectionPatch = patch?.[idx];
     if (sectionPatch === undefined) continue;
 

@@ -14,12 +14,12 @@ type FetchTranscriptResult = {
   audioUrl: string;
 }
 
-function assertUser(): User {
+export function assertUser(): User {
   if (user === undefined) throw new Error("User is undefined when calling authenticated api");
   return user;
 }
 
-function getTranscriptId(): string {
+export function getTranscriptId(): string {
   const params = new URLSearchParams(window.location.search);
   const transcriptId = params.get("id");
   if (transcriptId === null) throw new Error("Missing transcript ID");

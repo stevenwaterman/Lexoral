@@ -10,7 +10,6 @@
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
   import { findSectionNode } from "../text/selector";
-  import { manualSave } from "../state/patchStore";
   import { exportTranscript } from "../state/export";
 
   let altReleaseShouldPlay = false;
@@ -46,7 +45,8 @@
 
     if (event.key === "s" && event.ctrlKey) {
       event.preventDefault();
-      return manualSave();
+      // return manualSave();
+      return;
     }
 
     if (event.key === "e" && event.ctrlKey) {
