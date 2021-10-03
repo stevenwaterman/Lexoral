@@ -85,21 +85,9 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
   return { start, end };
 });
 
-/**
- * Update the selection state based on the current text selection in browser.
- * Runs with the next microtasks, after any updates have occurred.
- * Resolves once the updates are complete.
- */
-export async function updateSelection(): Promise<void> {
-  return new Promise(resolve => {
-    setTimeout(async () => {
-      await updateSelectionInternal();
-      resolve();
-    });
-  })
-}
+document.addEventListener("selectionchange", updateSelection);
 
-async function updateSelectionInternal() {
+export function updateSelection() {
   const selection = window.getSelection();
   if (selection === null) return;
 
@@ -114,7 +102,6 @@ async function updateSelectionInternal() {
   const late = inverted ? anchor : focus;
 
   selectionStoreInternal.set({ anchor, focus, early, late, inverted });
-  await tick();
 }
 
 function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "focus"): CursorPosition | undefined {
@@ -143,7 +130,7 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
     requiresSelectionUpdate = true;
   } else {
     console.log("Unrecognised selection position", {node, offset, side});
-    throw new Error("Unrecognised selection position");
+    return;
   }
 
   const paragraph = span.parentElement;

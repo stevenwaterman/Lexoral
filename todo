@@ -90,3 +90,5 @@ Remove patch function, replace with clientside terraform
 Context menu for transcripts
 Rename button
 Delete button
+
+with 2 tabs open, when refreshing one, the editor in the other sometimes sends you to the login page (probs related to process.env injection, also it seems like i)

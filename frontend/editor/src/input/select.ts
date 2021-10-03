@@ -1,4 +1,4 @@
-import { updateSelection, SectionSelection } from "./selectionState";
+import type { SectionSelection } from "./selectionState";
 import { findSectionNode } from "../text/selector";
 
 export async function selectExactly(selection: SectionSelection | undefined) {
@@ -12,7 +12,7 @@ export async function selectExactly(selection: SectionSelection | undefined) {
   if (!windowSelection) return;
 
   windowSelection.setBaseAndExtent(anchor, selection.anchor.offset + 1, focus, selection.focus.offset + 1);
-  await updateSelection();
+  // await updateSelection();
 }
 
 /** 
@@ -98,7 +98,7 @@ export async function selectPosition(node: Node | undefined, offset: number) {
   if (sel === null) return;
   sel.removeAllRanges();
   sel.addRange(range);
-  await updateSelection();
+  // await updateSelection();
 }
 
 /** 

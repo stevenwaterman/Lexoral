@@ -86,7 +86,6 @@ jobs:
           - charge_credit
           - delete_transcript_files
           - fetch
-          - patch
           - signup
           - transcode_envelope
           - transcribe

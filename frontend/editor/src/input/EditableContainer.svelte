@@ -2,7 +2,7 @@
   import {
     focusSectionIdxStore,
     focusSectionStore,
-    updateSelection
+    // updateSelection
   } from "./selectionState";
 
   import {
@@ -24,13 +24,13 @@
   // }
 
   async function mouseUp(event: MouseEvent) {
-    await updateSelection();
+    // await updateSelection();
     suppressAudioStore.set(false);
   }
 
   async function input(event: Event) {
     await updateText();
-    await updateSelection();
+    // await updateSelection();
   }
 
   async function updateText() {

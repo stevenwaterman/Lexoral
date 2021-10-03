@@ -2,6 +2,8 @@ import { derived, Readable, Writable, writable } from "svelte/store";
 import { assertUser, getTranscriptId } from "../api";
 import { getDb } from "./db";
 import { collection, query, FirestoreDataConverter, DocumentData, onSnapshot, DocumentChange, doc, QueryDocumentSnapshot, DocumentReference, updateDoc, writeBatch } from "firebase/firestore";
+import { updateSelection } from "../input/selectionState";
+import { tick } from "svelte";
 
 function getTranscriptDoc(): DocumentReference {
   return doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId());
@@ -14,13 +16,8 @@ type PatchedSectionProps = {
 export type SectionPatch = Partial<PatchedSectionProps>;
 export type Patch = Record<number, SectionPatch>;
 
-const internalCursorStore: Writable<number> = writable(0);
+const internalCursorStore: Writable<number | undefined> = writable(undefined);
 const internalPatchStore: Writable<Record<number, Patch>> = writable({});
-
-const converter: FirestoreDataConverter<Patch> = {
-  toFirestore: (patch: Patch) => patch,
-  fromFirestore: ({data}: QueryDocumentSnapshot<DocumentData>) => data()
-}
 
 function initCursorQuery() {
   onSnapshot(getTranscriptDoc(), doc => {
@@ -31,7 +28,7 @@ function initCursorQuery() {
 
 function initPatchQuery() {
   const patchCollection = collection(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches");
-  const q = query(patchCollection).withConverter(converter);
+  const q = query(patchCollection);
   onSnapshot(q, snapshot => {
     const changes = snapshot.docChanges();
     internalPatchStore.update(state => updatePatchStore(state, changes));
@@ -56,7 +53,7 @@ function updatePatchStore(state: Record<number, Patch>, changes: DocumentChange<
 
 
 
-let cursor: number;
+let cursor: number | undefined;
 internalCursorStore.subscribe(state => cursor = state);
 
 let maxPatch: number;
@@ -66,12 +63,17 @@ export type PatchState = Patch[];
 
 const combinedPatchStore: Readable<PatchState> = derived([internalCursorStore, internalPatchStore], ([cursor, patches]) => {
   const output: PatchState = [];
+  if (cursor === undefined) return output;
   for (let i = 0; i <= cursor; i++) {
     const patch = patches[i];
-    if (patch === undefined) throw new Error(`Patch ${i} is undefined - keys are ${Object.keys(patches)}}`);
-    output.push(patch);
+    if (patch !== undefined) output.push(patch);
   }
   return output;
+});
+
+combinedPatchStore.subscribe(async () => {
+  await tick();
+  updateSelection();
 });
 
 export type PatchStore = Readable<PatchState> & {
@@ -83,7 +85,7 @@ export type PatchStore = Readable<PatchState> & {
 };
 
 function undo(): Promise<void> {
-  if (cursor < 0) return Promise.resolve();
+  if (cursor === undefined || cursor < 0) return Promise.resolve();
 
   const transcriptDoc = getTranscriptDoc();
   return updateDoc(transcriptDoc, {
@@ -92,7 +94,7 @@ function undo(): Promise<void> {
 }
 
 function redo(): Promise<void> {
-  if (cursor >= maxPatch) return Promise.resolve();
+  if (cursor === undefined || cursor >= maxPatch) return Promise.resolve();
 
   const transcriptDoc = getTranscriptDoc();
   return updateDoc(transcriptDoc, {
@@ -101,13 +103,14 @@ function redo(): Promise<void> {
 }
 
 function appendFull(...patches: Patch[]): Promise<void> {
-  const newCursor = cursor + patches.length;
+  const oldCursor = cursor ?? -1;
+  const newCursor = oldCursor + patches.length;
 
   const batch = writeBatch(getDb());
   batch.update(getTranscriptDoc(), { patchCursor: newCursor });
 
   patches.forEach((patch, idx) => {
-    const patchId = cursor + idx + 1;
+    const patchId = oldCursor + idx + 1;
     const patchIdStr = patchId.toString().padStart(10, "0");
     const patchRef = doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches", patchIdStr);
     batch.set(patchRef, patch);

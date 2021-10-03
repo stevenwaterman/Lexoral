@@ -1,9 +1,0 @@
-{
-  "name": "lexoral-patch",
-  "dry": {
-    "extends": "../package-dry-http.json"
-  },
-  "dependencies": {
-    "firebase-admin": "managed"
-  }
-}

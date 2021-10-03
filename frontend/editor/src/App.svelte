@@ -6,8 +6,9 @@
 
   initializeApp({
     apiKey: process.env["FIREBASE_API_KEY"],
-    authDomain: `${process.env["PROJECT_ID"]}.firebaseapp.com`
-  })
+    authDomain: `${process.env["PROJECT_ID"]}.firebaseapp.com`,
+    projectId: process.env["PROJECT_ID"]
+  });
 
   let user: User | null | undefined = undefined;
   $: if (user?.emailVerified === false) location.pathname = "/dashboard/auth/verify/";

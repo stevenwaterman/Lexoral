@@ -1,4 +1,4 @@
-import { updateSelection, focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
+import { focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
 import { findSectionNode } from "../text/selector";
 import { tick } from "svelte";
 import { restoreSelection, saveSelection, selectSectionEnd, selectSectionStart } from "./select";
@@ -44,18 +44,12 @@ async function onKeyPressedInner(event: KeyboardEvent) {
 
   if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
     event.preventDefault();
-    saveSelection();
     patchStore.undo();
-    await tick();
-    return restoreSelection();
   }
 
   if (event.key === "y" && event.ctrlKey) {
     event.preventDefault();
-    saveSelection();
     patchStore.redo();
-    await tick();
-    return restoreSelection();
   }
 
   if (event.key === "ArrowLeft") {
@@ -97,7 +91,7 @@ async function onKeyPressedInner(event: KeyboardEvent) {
 }
 
 async function defaultBehaviour() {
-  await updateSelection();
+  // await updateSelection();
 }
 
 async function processEvent(event: KeyboardEvent, func: typeof leftArrow) {
@@ -114,7 +108,7 @@ async function mutateSelection(shift: boolean, focus: { node: Node; offset: numb
   const selection = window.getSelection();
   if (!selection) return;
   selection.setBaseAndExtent(anchor.node, anchor.offset, focus.node, focus.offset);
-  await updateSelection();
+  // await updateSelection();
 }
 
 function getAnchor(): { node: Node; offset: number } | undefined {

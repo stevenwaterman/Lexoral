@@ -156,14 +156,6 @@ module "fetch" {
   public = true
 }
 
-module "patch" {
-  source = "../httpFunction"
-  name = "patch"
-  bucket = google_storage_bucket.functions_code.name
-  project_id = data.google_project.project.project_id
-  public = true
-}
-
 module "delete_transcript_files" {
   source = "../fireStoreFunction"
   name = "delete_transcript_files" 
