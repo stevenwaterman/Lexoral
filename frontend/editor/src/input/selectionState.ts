@@ -4,6 +4,7 @@ import { tick } from "svelte";
 import { clampGet, clamp, getAssertExists } from "../utils/list";
 import { findSectionNode } from "../text/selector";
 import { allSectionsStore, MaybeSectionStore, Section, SectionStore } from "../state/sectionStore";
+import { patchStore } from "../state/patchStore";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -86,6 +87,11 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
 });
 
 document.addEventListener("selectionchange", updateSelection);
+
+patchStore.subscribe(async () => {
+  await tick();
+  updateSelection();
+});
 
 export function updateSelection() {
   const selection = window.getSelection();

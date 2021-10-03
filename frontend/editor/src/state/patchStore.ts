@@ -2,9 +2,7 @@ import { derived, Readable, Writable, writable } from "svelte/store";
 import { assertUser, getTranscriptId } from "../api";
 import { getDb } from "./db";
 import { collection, query, onSnapshot, DocumentChange, doc, DocumentReference, updateDoc, writeBatch } from "firebase/firestore";
-import { updateSelection } from "../input/selectionState";
-import { tick } from "svelte";
-import { deriveDebounced, deriveWithPrevious } from "../utils/stores";
+import { deriveDebounced } from "../utils/stores";
 
 function getTranscriptDoc(): DocumentReference {
   return doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId());
@@ -49,8 +47,24 @@ function updatePatchStore(state: Record<number, Patch>, changes: DocumentChange<
   return state;
 }
 
-
-let finalised = true;
+let pendingPatch: { patch: Patch, undone: boolean };
+const pendingPatchStore: Writable<{ patch: Patch, undone: boolean }> = writable({ patch: {}, undone: false });
+pendingPatchStore.subscribe(state => pendingPatch = state);
+function isPending(state: { patch: Patch, undone: boolean }): boolean {
+  if (Object.keys(state.patch).length === 0) return false;
+  if (state.undone) return false;
+  return true;
+}
+function isUndone(state: { patch: Patch, undone: boolean }): boolean {
+  if (Object.keys(state.patch).length === 0) return false;
+  if (state.undone) return true;
+  return false;
+}
+function clearPending() {
+  pendingPatchStore.set({ patch: {}, undone: false });
+}
+deriveDebounced(pendingPatchStore, 3).subscribe(() => appendFull());
+pendingPatchStore.subscribe(() => console.log("edited"))
 
 let cursor: number | undefined;
 internalCursorStore.subscribe(state => cursor = state);
@@ -58,54 +72,52 @@ internalCursorStore.subscribe(state => cursor = state);
 export type PatchState = Patch[];
 
 let maxPatch: number;
-const combinedPatchStore: Readable<PatchState> = derived([internalCursorStore, internalPatchStore], ([cursor, patches]) => {
+const combinedPatchStore: Readable<PatchState> = derived([internalCursorStore, internalPatchStore, pendingPatchStore], ([cursor, patches, pendingPatch]) => {
   maxPatch = Math.max(...Object.keys(patches).map(key => parseInt(key)));
-  if (cursor === undefined || cursor < maxPatch) finalised = true;
-  else finalised = false;
 
   const output: PatchState = [];
-  if (cursor === undefined) return output;
-  for (let i = 0; i <= cursor; i++) {
+  for (let i = 0; i <= (cursor ?? -1); i++) {
     const patch = patches[i];
     if (patch !== undefined) output.push(patch);
   }
+
+  if (isPending(pendingPatch)) {
+    output.push(pendingPatch.patch);
+  }
+
   return output;
-});
-
-combinedPatchStore.subscribe(async () => {
-  await tick();
-  updateSelection();
-});
-
-/**
- * Finalise the patches if nothing changes for a second
- */
-deriveDebounced(combinedPatchStore, 3).subscribe(() => {
-  console.log("finalised")
-  finalised = true;
 });
 
 export type PatchStore = Readable<PatchState> & {
   undo: () => Promise<void>;
   redo: () => Promise<void>;
   appendFull: (...patches: Patch[]) => Promise<void>;
-  append: (idx: number, patch: SectionPatch) => Promise<void>;
+  append: (idx: number, patch: SectionPatch) => void;
   init: () => void;
 };
 
 function undo(): Promise<void> {
-  if (cursor === undefined || cursor < 0) return Promise.resolve();
+  if (isPending(pendingPatch)) {
+    pendingPatchStore.update(state => ({...state, undone: true}));
+    return Promise.resolve();
+  }
 
+  if (cursor === undefined || cursor < 0) return Promise.resolve();
   const transcriptDoc = getTranscriptDoc();
   return updateDoc(transcriptDoc, {
     patchCursor: cursor - 1
   });
-
-  
 }
 
 function redo(): Promise<void> {
-  if (cursor === undefined || cursor >= maxPatch) return Promise.resolve();
+  if (cursor === undefined) return Promise.resolve();
+
+  if (cursor >= maxPatch) {
+    if (isUndone(pendingPatch)) {
+      pendingPatchStore.update(state => ({...state, undone: false}));
+    }
+    return Promise.resolve();
+  }
 
   const transcriptDoc = getTranscriptDoc();
   return updateDoc(transcriptDoc, {
@@ -113,7 +125,17 @@ function redo(): Promise<void> {
   });
 }
 
-function appendFull(...patches: Patch[]): Promise<void> {
+async function appendFull(...patches: Patch[]): Promise<void> {
+  if (isPending(pendingPatch)) {
+    patches.unshift(pendingPatch.patch);
+  }
+
+  if (patches.length === 0) {
+    console.log("Not Committing");
+    return Promise.resolve();
+  }
+  console.log("Committing " + JSON.stringify(patches));
+
   const oldCursor = cursor ?? -1;
   const newCursor = oldCursor + patches.length;
 
@@ -133,21 +155,21 @@ function appendFull(...patches: Patch[]): Promise<void> {
     batch.delete(patchRef);
   }
 
-  return batch.commit();
+  await batch.commit();
+  if (isPending(pendingPatch) || isUndone(pendingPatch)) {
+    clearPending();
+  }
 }
 
-function append(idx: number, patch: SectionPatch): Promise<void> {
-  if (cursor === undefined) return Promise.resolve();
-  if (finalised) return appendFull({
-    [idx]: patch
-  });
-
-  const patchIdStr = cursor.toString().padStart(10, "0");
-  const patchRef = doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches", patchIdStr);
-
-  return updateDoc(patchRef, {
-    [idx]: patch
-  });
+function append(idx: number, patch: SectionPatch) {
+  if (isUndone(pendingPatch)) {
+    pendingPatchStore.set({ patch: { [idx]: patch }, undone: false });
+  } else {
+    pendingPatchStore.update(state => {
+      state.patch[idx] = {...state.patch[idx], ...patch };
+      return state;
+    })
+  }
 }
 
 function init() {
