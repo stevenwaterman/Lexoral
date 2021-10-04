@@ -19,7 +19,8 @@ const httpStep: HttpStep = {
     },
     auth: {
       type: 'OIDC'
-    }
+    },
+    timeout: 540
   },
   result: 'function_response'
 };

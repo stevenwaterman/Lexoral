@@ -38,7 +38,7 @@ export type HttpStep = {
     auth?: {
       type: "OIDC" | "OAuth2";
     };
-    timeout?: string;
+    timeout?: number;
   };
   result?: string;
 }
