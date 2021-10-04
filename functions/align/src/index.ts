@@ -57,18 +57,19 @@ async function handleRequest(req: Request, res: Response) {
 
 function transform(response: SpeechResponse): Output {
   if (!response.results) return [];
-  return response.results.flatMap(result => precompute(result));
+  const output = response.results.flatMap(result => precompute(result));
+  if (output.length === 1 && Object.keys(output[0]).length === 0) {
+    console.log("output", output);
+    console.log("results", response.results);
+    console.log("response", response);
+  }
+  return output;
 }
 
 function precompute(result: Result): OutputSection[] {
   if (!result.alternatives) return [];
   const alternatives: Alternative[] = result.alternatives.filter(alternative => alternative.transcript);
   const alignedSequences: Record<number, string> = align(alternatives);
-  if (Object.keys(alignedSequences).length === 0) {
-    console.log("alignedSequences", alignedSequences)
-    console.log("alternatives", alternatives)
-    console.log("result.alternatives", result.alternatives)
-  }
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
   return wordAlternatives.map((alternative) => ({
@@ -206,11 +207,6 @@ function transposeAlternatives(timedAlternatives: TimedAlternative[], alternativ
 function breakSequences(alignedSequences: Record<number, string>, alternatives: Alternative[]): TimedAlternative[] {
   // Find the location of any spaces that appear in all the aligned sequences
   const sequenceBreakLocations: Set<number>[] = Object.values(alignedSequences).map(sequence => indexesOf(sequence, " "));
-  if (sequenceBreakLocations.length === 0) {
-    console.log("aligned", alignedSequences);
-    console.log("alternatives", alternatives);
-  }
-
   const wordBreakSet: Set<number> = sequenceBreakLocations.reduce((a, b) => intersection(a, b));
 
   const wordBreaks = [...wordBreakSet];
