@@ -57,16 +57,20 @@ async function handleRequest(req: Request, res: Response) {
 
 function transform(response: SpeechResponse): Output {
   if (!response.results) return [];
-  const output = response.results.flatMap(result => precompute(result, response));
-  return output;
+  return response.results.flatMap((result, idx) => precompute(result, idx));
 }
 
-function precompute(result: Result, response: SpeechResponse): OutputSection[] {
+function precompute(result: Result, idx: number): OutputSection[] {
   if (!result.alternatives) return [];
   const alternatives: Alternative[] = result.alternatives.filter(alternative => alternative.transcript);
   const alignedSequences: Record<number, string> = align(alternatives);
   if (Object.keys(alignedSequences).length === 0) {
-    console.log("response", response);
+    console.log("Aligned sequences empty", {
+      alternatives,
+      alignedSequences,
+      result,
+      idx
+    })
   }
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
