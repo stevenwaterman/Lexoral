@@ -57,19 +57,17 @@ async function handleRequest(req: Request, res: Response) {
 
 function transform(response: SpeechResponse): Output {
   if (!response.results) return [];
-  const output = response.results.flatMap(result => precompute(result));
-  if (output.length === 1 && Object.keys(output[0]).length === 0) {
-    console.log("output", output);
-    console.log("results", response.results);
-    console.log("response", response);
-  }
+  const output = response.results.flatMap(result => precompute(result, response));
   return output;
 }
 
-function precompute(result: Result): OutputSection[] {
+function precompute(result: Result, response: SpeechResponse): OutputSection[] {
   if (!result.alternatives) return [];
   const alternatives: Alternative[] = result.alternatives.filter(alternative => alternative.transcript);
   const alignedSequences: Record<number, string> = align(alternatives);
+  if (Object.keys(alignedSequences).length === 0) {
+    console.log("response", response);
+  }
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
   return wordAlternatives.map((alternative) => ({
