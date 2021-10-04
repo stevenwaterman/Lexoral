@@ -3,6 +3,7 @@ import { Storage } from "@google-cloud/storage";
 import admin from "firebase-admin";
 import utils from "lexoral-utils";
 import { Request, Response } from "express";
+import axios, { AxiosResponse } from "axios";
 
 type SpeechResponse = protos.google.cloud.speech.v1p1beta1.IRecognizeResponse;
 type Result = protos.google.cloud.speech.v1p1beta1.ISpeechRecognitionResult;
@@ -33,12 +34,11 @@ const tokenUrl = metadataServerURL + functionURL;
 async function transform(response: SpeechResponse): Promise<Output> {
   if (!response.results) return [];
 
-  const token = await fetch(tokenUrl, {
-    method: "GET",
+  const token = await axios.get<string>(tokenUrl, {
     headers: {
       'Metadata-Flavor': 'Google'
-    },
-  }).then(res => res.text());
+    }
+  }).then(res => res.data);
 
   console.log(`Invoking ${response.results.length} workers`);
   const promises = response.results.map(result => invokeAligner(result, token));
@@ -49,14 +49,12 @@ async function transform(response: SpeechResponse): Promise<Output> {
 }
 
 async function invokeAligner(result: Result, token: string): Promise<OutputSection[]> {
-  return fetch(functionURL, {
-    method: "POST",
+  return axios.post<Result, AxiosResponse<OutputSection[]>>(functionURL, result, {
     headers: {
       Authorization: `bearer ${token}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(result) 
-  }).then(res => res.json());
+  }).then(res => res.data);
 }
 
 const store = admin.initializeApp().firestore();
