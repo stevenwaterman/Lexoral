@@ -138,7 +138,7 @@ module "align" {
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   memory = 256
-  timeout = 540
+  timeout = 120
 }
 
 module "align_worker" {
@@ -147,7 +147,7 @@ module "align_worker" {
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   memory = 256
-  timeout = 10
+  timeout = 60
 }
 
 module "adjust" {
