@@ -63,15 +63,20 @@ function transform(response: SpeechResponse): Output {
 function precompute(result: Result, idx: number): OutputSection[] {
   if (!result.alternatives) return [];
   const alternatives: Alternative[] = result.alternatives.filter(alternative => alternative.transcript);
+  /*
+  Sometimes you get a weird section like this:
+    {
+      "alternatives": [
+        {
+          
+        }
+      ],
+      "languageCode": "en-us",
+      "resultEndTime": "118.140s"
+    }
+  */
+  if (alternatives.length === 0) return [];
   const alignedSequences: Record<number, string> = align(alternatives);
-  if (Object.keys(alignedSequences).length === 0) {
-    console.log("Aligned sequences empty", {
-      alternatives,
-      alignedSequences,
-      result,
-      idx
-    })
-  }
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
   return wordAlternatives.map((alternative) => ({
