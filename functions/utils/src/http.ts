@@ -12,6 +12,7 @@ function wrap(handler: Handler): Handler {
           console.info("Handled error: " + JSON.stringify(err));
         } else {
           console.error("Unhandled error: " + JSON.stringify(err));
+          console.error(err.stack);
           res.sendStatus(500);
         }
       })
