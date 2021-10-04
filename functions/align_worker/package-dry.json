@@ -1,5 +1,5 @@
 {
-  "name": "lexoral-align",
+  "name": "lexoral-align-worker",
   "dry": {
     "extends": "../package-dry-http.json"
   },
@@ -7,7 +7,6 @@
     "@google-cloud/speech": "managed"
   },
   "dependencies": {
-    "@google-cloud/storage": "managed",
-    "firebase-admin": "managed"
+    "seqalign": "managed"
   }
 }

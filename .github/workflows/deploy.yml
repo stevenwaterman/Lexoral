@@ -83,6 +83,7 @@ jobs:
         functionName:
           - adjust
           - align
+          - align_worker
           - charge_credit
           - delete_transcript_files
           - fetch
