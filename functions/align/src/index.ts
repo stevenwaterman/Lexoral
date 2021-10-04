@@ -64,6 +64,11 @@ function precompute(result: Result): OutputSection[] {
   if (!result.alternatives) return [];
   const alternatives: Alternative[] = result.alternatives.filter(alternative => alternative.transcript);
   const alignedSequences: Record<number, string> = align(alternatives);
+  if (Object.keys(alignedSequences).length === 0) {
+    console.log("alignedSequences", alignedSequences)
+    console.log("alternatives", alternatives)
+    console.log("result.alternatives", result.alternatives)
+  }
   const timedAlternatives = breakSequences(alignedSequences, alternatives);
   const wordAlternatives = transposeAlternatives(timedAlternatives, alternatives);
   return wordAlternatives.map((alternative) => ({
