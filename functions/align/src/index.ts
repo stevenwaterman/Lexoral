@@ -198,9 +198,16 @@ function transposeAlternatives(timedAlternatives: TimedAlternative[], alternativ
   return wordAlternatives;
 }
 
-function breakSequences(alignedSequences: Record<number, string>, alternatives: Alternative[]) {
+function breakSequences(alignedSequences: Record<number, string>, alternatives: Alternative[]): TimedAlternative[] {
   // Find the location of any spaces that appear in all the aligned sequences
-  const wordBreakSet: Set<number> = Object.values(alignedSequences).map(sequence => indexesOf(sequence, " ")).reduce((a, b) => intersection(a, b));
+  const sequenceBreakLocations: Set<number>[] = Object.values(alignedSequences).map(sequence => indexesOf(sequence, " "));
+  if (sequenceBreakLocations.length === 0) {
+    console.log("aligned", alignedSequences);
+    console.log("alternatives", alternatives);
+  }
+
+  const wordBreakSet: Set<number> = sequenceBreakLocations.reduce((a, b) => intersection(a, b));
+
   const wordBreaks = [...wordBreakSet];
   wordBreaks.sort((a, b) => a - b);
 
