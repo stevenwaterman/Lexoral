@@ -1,7 +1,8 @@
 import { derived, Readable, writable, Writable } from "svelte/store"
 import { getOptions } from "../preprocess/align"
 import { paragraphLocationsStore } from "./paragraphLocationsStore";
-import { PatchState, patchStore, PatchStore, SectionPatch } from "./patchStore";
+import type { SectionCollapsedPatch } from "./patch/dbListener";
+import { patchInterface } from "./patch/patchInterface";
 
 export type Section = {
   idx: number;
@@ -23,48 +24,28 @@ export type SectionState = {
 export type MaybeSectionStore = Readable<Section | undefined>;
 export type SectionStore = Readable<Section>;
 
-function transformState({idx, startTime, endTime, options}: SectionState, patchState: PatchState): Section {
-  const combinedPatch = combinePatches(idx, patchState);
-  const endParagraph = combinedPatch.endParagraph ?? false;
-  const text = combinedPatch.text ?? options[0];
-  const edited = combinedPatch.text !== undefined;
+function transformState({idx, startTime, endTime, options}: SectionState, patch: SectionCollapsedPatch): Section {
+  const endParagraph = patch.endParagraph;
+  const text = patch.text ?? options[0];
+  const edited = patch.text !== null;
   const completions = getOptions(text, options);
   return { idx, startTime, endTime, completions, edited, text, endParagraph };
 }
 
-function combinePatches(idx: number, patchState: PatchState): SectionPatch {
-  let combinedPatch: SectionPatch = {};
-  const keys: Array<keyof SectionPatch> = ["text", "endParagraph"];
+export function createSectionStores(...sections: SectionState[]): SectionStore[] {
+  const stores: SectionStore[] = [];
+  for (const section of sections) {
+    const sectionPatchStore = patchInterface.getPatchStore(section.idx);
+    const store = derived(sectionPatchStore, patch => transformState(section, patch));
 
-  for(let i = patchState.length - 1; i >= 0; i--) {
-    const patch = patchState[i];
-    const sectionPatch = patch?.[idx];
-    if (sectionPatch === undefined) continue;
+    store.subscribe(section => {
+        paragraphLocationsStore.setEndParagraph(section.idx, section.endParagraph)
+    });
 
-    let done = true;
-    for (const key of keys) {
-      if (combinedPatch[key] === undefined) {
-        done = false;
-        combinedPatch[key] = sectionPatch[key] as any;
-      }
-    }
-
-    if (done) break;
+    stores.push(store);
   }
-
-  return combinedPatch;
-}
-
-export function createSectionStore(state: SectionState): SectionStore {
-  const store = derived(patchStore, patchState => transformState(state, patchState));
-  store.subscribe(section => paragraphLocationsStore.setEndParagraph(section.idx, section.endParagraph));
-
-  allSectionsStoreInternal.update(state => {
-    state.push(store);
-    return state;
-  })
-  
-  return store;
+  allSectionsStoreInternal.set(stores);
+  return stores;
 }
 
 export type AllSections = SectionStore[];

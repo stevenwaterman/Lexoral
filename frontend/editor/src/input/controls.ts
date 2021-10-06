@@ -2,7 +2,7 @@ import { focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
 import { findSectionNode } from "../text/selector";
 import { tick } from "svelte";
 import { selectSectionEnd, selectSectionStart } from "./select";
-import { Patch, patchStore } from "../state/patchStore";
+import { patchInterface } from "../state/patch/patchInterface";
 
 let focusSectionIdx: number | undefined = undefined;
 focusSectionIdxStore.subscribe(state => focusSectionIdx = state);
@@ -35,7 +35,7 @@ async function onKeyPressedInner(event: KeyboardEvent) {
     event.preventDefault();
     if (focusSectionIdx !== undefined) {
       const patchIdx = selection?.focusOffset === 1 ? focusSectionIdx - 1 : focusSectionIdx;
-      patchStore.append(patchIdx, { endParagraph: true })
+      patchInterface.append(patchIdx, { endParagraph: true })
       await tick();
       await selectSectionStart(focusSectionIdx)
       return;
@@ -44,12 +44,12 @@ async function onKeyPressedInner(event: KeyboardEvent) {
 
   if (event.key === "z" && event.ctrlKey && !event.shiftKey) {
     event.preventDefault();
-    patchStore.undo();
+    patchInterface.undo();
   }
 
   if (event.key === "y" && event.ctrlKey) {
     event.preventDefault();
-    patchStore.redo();
+    patchInterface.redo();
   }
 
   if (event.key === "ArrowLeft") {
@@ -253,7 +253,7 @@ async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx - 1)) {
-    patchStore.append(focusSectionIdx - 1, { endParagraph: false });
+    patchInterface.append(focusSectionIdx - 1, { endParagraph: false });
     await tick();
   }
   return selectSectionEnd(focusSectionIdx - 1);
@@ -264,13 +264,13 @@ async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Select
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx - 1)) {
-    patchStore.append(focusSectionIdx - 1, {
+    patchInterface.append(focusSectionIdx - 1, {
       text: "",
       endParagraph: false
     });
     await tick();
   } else {
-     patchStore.append(focusSectionIdx - 1, { text: "" });
+    patchInterface.append(focusSectionIdx - 1, { text: "" });
   }
 
   return selectSectionStart(focusSectionIdx - 1);
@@ -292,12 +292,10 @@ async function backspaceSelectedText(event: KeyboardEvent, selection: Selection)
   const startIdx = Math.min(anchorSectionIdx, focusSectionIdx);
   const endIdx = Math.max(anchorSectionIdx, focusSectionIdx);
 
-  const patch: Patch = {};
   for (let i = startIdx; i <= endIdx; i++) {
     // TODO should this keep the paragraph breaks in?
-    patch[i] = { text: "" };
+    patchInterface.append(i, { text: "" });
   }
-  patchStore.appendFull(patch);
 
   return selectSectionStart(startIdx);
 }
@@ -323,7 +321,7 @@ async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
   if (!focusSectionIdx) return;
 
   if (isParagraphEnd(focusSectionIdx)) {
-    patchStore.append(focusSectionIdx, { endParagraph: false })
+    patchInterface.append(focusSectionIdx, { endParagraph: false })
     await tick();
   }
   return selectSectionStart(focusSectionIdx + 1);
@@ -333,10 +331,8 @@ async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSectionIdx) return;
 
-  const patch: Patch = {};
-  patch[focusSectionIdx + 1] = { text: "" };
-  if (isParagraphEnd(focusSectionIdx)) patch[focusSectionIdx] = { endParagraph: false };
-  patchStore.appendFull(patch)
+  patchInterface.append(focusSectionIdx + 1, { text: "" });
+  if (isParagraphEnd(focusSectionIdx)) patchInterface.append(focusSectionIdx, { endParagraph: false });
 
   return selectSectionStart(focusSectionIdx + 1);
 }
@@ -357,12 +353,10 @@ async function deleteSelectedText(event: KeyboardEvent, selection: Selection) {
   const startIdx = Math.min(anchorSectionIdx, focusSectionIdx);
   const endIdx = Math.max(anchorSectionIdx, focusSectionIdx);
 
-  const patch: Patch = {};
   for (let i = startIdx; i <= endIdx; i++) {
     // TODO should this keep the paragraph breaks in?
-    patch[i] = { text: "" };
+    patchInterface.append(i, { text: "" });
   }
-  patchStore.appendFull(patch);
   
   return selectSectionEnd(endIdx);
 }

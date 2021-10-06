@@ -26,7 +26,14 @@ const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(p
   return output;
 })
 
+
+let paragraphData: Record<number, boolean> = {};
+paragraphDataStore.subscribe(state => paragraphData = state);
+
 function setEndParagraph(idx: number, endParagraph: boolean) {
+  const current = paragraphData[idx];
+  if (current === endParagraph) return;
+  
   paragraphDataStore.update(state => {
     state[idx] = endParagraph;
     return state;
@@ -34,7 +41,7 @@ function setEndParagraph(idx: number, endParagraph: boolean) {
 }
 
 export const paragraphLocationsStore: Readable<ParagraphLocation[]> & {
-  setEndParagraph: (idx: number, endParagraph: boolean) => void
+  setEndParagraph: (idx: number, endParagraph: boolean) => void;
 } = {
   subscribe: paragraphLocationsStoreInternal.subscribe,
   setEndParagraph

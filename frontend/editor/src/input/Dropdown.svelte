@@ -4,8 +4,8 @@
   import { selectNextSection, selectSectionStart } from "./select";
   import { playingStore } from "../audio/audio";
   import { findSectionNode } from "../text/selector";
-import type { Section } from "../state/sectionStore";
-import { patchStore } from "../state/patchStore";
+  import type { Section } from "../state/sectionStore";
+import { patchInterface } from "../state/patch/patchInterface";
 
   export let wrapper: HTMLDivElement | undefined;
 
@@ -92,7 +92,7 @@ import { patchStore } from "../state/patchStore";
   async function acceptOption() {
     if (section && visible && options.length > 0 && highlightIdx !== undefined) {
       const selectedOption = getAssertExists(options, highlightIdx);
-      patchStore.append(section.idx, { text: selectedOption });
+      patchInterface.append(section.idx, { text: selectedOption });
     }
     await selectNextSection(section?.idx);
   }

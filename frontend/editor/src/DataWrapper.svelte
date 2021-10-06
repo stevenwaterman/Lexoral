@@ -11,7 +11,11 @@
   async function getData(): Promise<void> {
     return fetchTranscript()
       .then(res => {
-        const audioTimings = initialiseStores(res.transcript, res.patches);
+        // TODO remove this
+        const transcript = res.transcript.slice(0, 10000);
+        console.log("Fetch done");
+        const audioTimings = initialiseStores(transcript);
+        console.log("Initialise done");
         return initAudio(audioTimings, res.audioUrl);
       });
   }

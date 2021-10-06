@@ -1,43 +1,42 @@
-import { Patch, patchStore } from "./patchStore";
-import { createSectionStore, SectionState, SectionStore } from "./sectionStore";
+import { patchInterface } from "./patch/patchInterface";
+import { createSectionStores, SectionState, SectionStore } from "./sectionStore";
 
 /** Initialise the text state of the app using the data returned from the API */
-export function initialiseStores(transcript: Omit<SectionState, "idx">[], patches: Patch[]): Record<number, { startTime: number; endTime: number }> {
-  patchStore.init();
-
+export function initialiseStores(transcript: Omit<SectionState, "idx">[]): Record<number, { startTime: number; endTime: number }> {
+  console.log(1);
   const withIdx: SectionState[] = transcript.map((section, idx) => ({ idx, ...section }));
-  withIdx.forEach(createSectionStore);
+  console.log(2);
+  createSectionStores(...withIdx);
+  console.log(3);
 
-  // if (patches.length === 0) {
-  //   createParagraphBreaks(withIdx);
-  // }
+
+  patchInterface.init();
+  console.log(4);
+
 
   const audioTimings: Record<number, { startTime: number; endTime: number }> = {};
   withIdx.forEach(({ idx, startTime, endTime }) => {
     audioTimings[idx] = { startTime, endTime };
   })
+  console.log(5);
 
+  // setTimeout(() => {createParagraphBreaks(withIdx)}, 10000)
+
+  console.log(6);
   return audioTimings;
 }
 
 function createParagraphBreaks(sections: SectionState[]) {
   let lastEligibleToEndParagraph: boolean = false;
   let time = 0;
-  let anyAdded = false;
 
-  const patch: Patch = {};
   sections.forEach(section => { // TODO this threshold should be configurable
     if (lastEligibleToEndParagraph && section.startTime - time > 0.3) {
-      anyAdded = true;
-      patch[section.idx - 1] = {
-        endParagraph: true
-      };
+      patchInterface.append(section.idx, { endParagraph: true });
     }
     lastEligibleToEndParagraph = isEligibleToEndParagraph(section);
     time = section.endTime;
   });
-
-  if (anyAdded) patchStore.appendFull(patch);
 }
 
 const punctuation = [".", "!", "?"];

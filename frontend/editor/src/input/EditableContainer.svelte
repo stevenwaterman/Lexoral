@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    focusSectionIdxStore,
-    focusSectionStore,
-    // updateSelection
-  } from "./selectionState";
+  import { focusSectionIdxStore } from "./selectionState";
 
   import {
     restoreSelection,
@@ -13,7 +9,7 @@
   import { findSectionNode } from "../text/selector";
   import { onKeyPressed } from "./controls";
   import { suppressAudioStore } from "../audio/audio";
-  import { patchStore } from "../state/patchStore";
+  import { patchInterface } from "../state/patch/patchInterface";
 
   async function mouseDown(event: MouseEvent) {
     suppressAudioStore.set(true);
@@ -43,7 +39,7 @@
     const trimmedContent = textContent.slice(1, textContent.length - 1);
 
     saveSelection();
-    patchStore.append(idx, { text: trimmedContent });
+    patchInterface.append(idx, { text: trimmedContent });
     restoreSelection();
   }
 </script>
