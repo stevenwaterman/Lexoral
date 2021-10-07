@@ -1,5 +1,5 @@
 import { derived, Readable } from "svelte/store";
-import { getAssertExists, getAssertExistsRecord } from "../../utils/list";
+import { forIn, getAssertExists, getAssertExistsRecord } from "../../utils/list";
 import { deriveConditionally } from "../../utils/stores";
 import { DbListener, Patch, SectionCollapsedPatch, SectionPatch } from "./dbListener";
 import { writePatchToFirestore } from "./dbWriter";
@@ -79,13 +79,13 @@ function createPatch(newValues: Record<number, SectionPatch["to"]> | undefined):
   
   let patchEmpty = true;
   const patch: Patch = {};
-  for (const idxStr in newValues) {
-    const idx = parseInt(idxStr);
-    const pendingData = getAssertExistsRecord(newValues, idx) as any;
+
+  forIn(newValues, (idx, pendingData: any) => {
     const dbData = getAssertExistsRecord(dbSectionData, idx) as any;
 
     let wroteAnyKeys = false;
     const sectionPatch = { from: {}, to: {} } as any;
+
     for (const key in pendingData) {
       const dbValue = dbData[key];
       const pendingValue = pendingData[key];
@@ -100,7 +100,7 @@ function createPatch(newValues: Record<number, SectionPatch["to"]> | undefined):
       patch[idx] = sectionPatch;
       patchEmpty = false;
     }
-  }
+  });
 
   if (patchEmpty) return undefined;
   else return patch;

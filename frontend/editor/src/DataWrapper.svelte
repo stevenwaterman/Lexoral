@@ -12,9 +12,9 @@
     return fetchTranscript()
       .then(res => {
         // TODO remove this
-        const transcript = res.transcript.slice(0, 10000);
+        // const transcript = res.transcript.slice(0, 10000);
         console.log("Fetch done");
-        const audioTimings = initialiseStores(transcript);
+        const audioTimings = initialiseStores(res.transcript);
         console.log("Initialise done");
         return initAudio(audioTimings, res.audioUrl);
       });

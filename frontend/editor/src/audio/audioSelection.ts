@@ -140,7 +140,10 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
 
     if (mutation[side].constrainWithinParagraph) {
       const paragraph = paragraphLocations.find(paragraph => paragraph.start <= sectionIdx && paragraph.end >= sectionIdx);
-      if (!paragraph) throw new Error(`Couldn't find paragraph for section idx ${sectionIdx}`);
+      if (!paragraph) {
+        debugger
+        throw new Error(`Couldn't find paragraph for section idx ${sectionIdx}`);
+      }
       const clampedIdx = clamp(offsetIdx, paragraph.start, paragraph.end);
       return clampGetRecord(allSections, clampedIdx);
     } else {

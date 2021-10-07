@@ -1,8 +1,8 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
-import { deriveConditionally, deriveUnwrap } from "../utils/stores";
-import { clampGet, clamp, getAssertExists } from "../utils/list";
+import { deriveConditionally, deriveUnwrap, deriveWithPrevious } from "../utils/stores";
+import { clampGet, clamp, getAssertExists, forIn } from "../utils/list";
 import { findSectionNode } from "../text/selector";
-import { allSectionsStore, MaybeSectionStore, Section, SectionStore } from "../state/sectionStore";
+import { allSectionsStore, getSectionSelectedStore, MaybeSectionStore, Section, SectionStore } from "../state/sectionStore";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -60,6 +60,36 @@ export const earlySectionIdxStore = derived(earlySectionStore, section => sectio
 export const lateSectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
 export const lateSectionIdxStore = derived(lateSectionStore, section => section?.idx);
 
+
+
+
+const selectionRangeStore = derived([earlySectionIdxStore, lateSectionIdxStore], ([early, late]) => ({early, late}));
+deriveWithPrevious(selectionRangeStore).subscribe(({ last, current }) => {
+  const updates: Record<number, boolean> = {};
+
+  const lastEarly = last?.early;
+  const lastLate = last?.late;
+  if (lastEarly !== undefined && lastLate !== undefined) {
+    for (let i = lastEarly; i <= lastLate; i++) {
+      updates[i] = false;
+    }
+  }
+  
+  const currentEarly = current.early;
+  const currentLate = current.late;
+  if (currentEarly !== undefined && currentLate !== undefined) {
+    for (let i = currentEarly; i <= currentLate; i++) {
+      updates[i] = true;
+    }
+  }
+
+  forIn(updates, (idx, selected) => {
+    getSectionSelectedStore(idx).set(selected);
+  })
+})
+
+
+
 /** Store indicating whether the selection is non-empty, ie are one or more characters selected */
 export const isTextSelectedStore: Readable<boolean> = derived(selectionStore, selection => {
   if (selection === undefined) return false;
@@ -87,6 +117,7 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
 document.addEventListener("selectionchange", updateSelection);
 
 export function updateSelection() {
+  console.time("update selection")
   const selection = window.getSelection();
   if (selection === null) return;
 
@@ -100,7 +131,9 @@ export function updateSelection() {
   const early = inverted ? focus : anchor;
   const late = inverted ? anchor : focus;
 
+  console.timeLog("update selection")
   selectionStoreInternal.set({ anchor, focus, early, late, inverted });
+  console.timeEnd("update selection")
 }
 
 function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "focus"): CursorPosition | undefined {

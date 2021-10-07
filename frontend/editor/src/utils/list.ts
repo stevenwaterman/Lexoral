@@ -75,7 +75,10 @@ export function clampGetRecord<V>(record: Record<number, V>, idx: number): V | u
 
 export function getAssertExists<T>(list: T[], idx: number): T {
   const elem = list[idx];
-  if (elem === undefined) throw new Error(`Idx ${idx} did not exist in list ${list}, asserted that it did`);
+  if (elem === undefined) {
+    debugger
+    throw new Error(`Idx ${idx} did not exist in list ${list}, asserted that it did`);
+  }
   return elem;
 }
 
@@ -83,4 +86,11 @@ export function getAssertExistsRecord<K extends string | number | symbol, V>(rec
   const elem = record[key];
   if (elem === undefined) throw new Error(`Idx ${key} did not exist in list ${record}, asserted that it did`);
   return elem;
+}
+
+export function forIn<V>(record: Record<number, V>, func: (key: number, value: V) => void): void {
+  for (const key in record) {
+    const idx = parseInt(key);
+    func(idx, record[idx] as V);
+  }
 }

@@ -2,7 +2,8 @@ import { Readable, writable, Writable } from "svelte/store";
 import { assertUser, getTranscriptId } from "../../api";
 import { getDb } from "../db";
 import { collection, query, onSnapshot, DocumentData, QuerySnapshot, DocumentChange } from "firebase/firestore";
-import { getAssertExists } from "../../utils/list";
+import { forIn, getAssertExists } from "../../utils/list";
+import { paragraphLocationsStore } from "../paragraphLocationsStore";
 
 type PatchProperty<KEY extends string, VALUE> = {
   from: Record<KEY, VALUE>;
@@ -18,7 +19,7 @@ export type SectionCollapsedPatch = {
   text: string | null;
   endParagraph: boolean;
 }
-type SectionCollapsedPatches = Record<number, Partial<SectionCollapsedPatch>>;
+export type SectionCollapsedPatches = Record<number, Partial<SectionCollapsedPatch>>;
 
 export class DbListener {
   private readonly patchHistory: PatchHistory = [];
@@ -69,14 +70,14 @@ export class DbListener {
   
     for (let i = from; i <= to; i++) {
       const patch = getAssertExists(this.patchHistory, i);
-      for (const sectionIdx in patch) {
-        const sectionPatch = patch[sectionIdx] as SectionPatch;
+      
+      forIn(patch, (sectionIdx, sectionPatch) => {
         const sectionCollapsed: Partial<SectionCollapsedPatch> = collapsed[sectionIdx] ?? {};
         collapsed[sectionIdx] = {
           ...sectionCollapsed,
           ...sectionPatch.to
         }
-      }
+      })
     }
   
     this.applyCollapsedPatch(collapsed);
@@ -92,28 +93,28 @@ export class DbListener {
   
     for (let i = from; i >= to; i--) {
       const patch = getAssertExists(this.patchHistory, i);
-      for (const sectionIdx in patch) {
-        const sectionPatch = patch[sectionIdx] as SectionPatch;
+
+      forIn(patch, (sectionIdx, sectionPatch) => {
         const sectionCollapsed: Partial<SectionCollapsedPatch> = collapsed[sectionIdx] ?? {};
         collapsed[sectionIdx] = {
           ...sectionCollapsed,
           ...sectionPatch.from
         }
-      }
+      })
     }
   
     this.applyCollapsedPatch(collapsed);
   }
 
   private applyCollapsedPatch(collapsed: SectionCollapsedPatches) {
-    for (const sectionIdx in collapsed) {
-      const adjustments = collapsed[sectionIdx] as SectionCollapsedPatch;
-      this.getSectionPatchStoreInternal(parseInt(sectionIdx))
+    forIn(collapsed, (sectionIdx, adjustments) => {
+      this.getSectionPatchStoreInternal(sectionIdx)
         .update(state => ({
           ...state,
           ...adjustments
         }));
-    }
+    })
+    paragraphLocationsStore.setEndParagraphBulk(collapsed);
   }
 
   init() {

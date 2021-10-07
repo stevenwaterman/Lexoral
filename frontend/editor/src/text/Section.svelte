@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { currentlyPlayingSectionIdxStore, suppressAudioStore } from "../audio/audio";
-  import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
+  import { currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "../state/sectionStore";
 
   export let sectionStore: SectionStore;
@@ -9,7 +8,7 @@
   $: last = $sectionStore.endParagraph;
 
   let highlight: boolean;
-  $: highlight = ($earlySectionIdxStore ?? 0) <= $sectionStore.idx && ($lateSectionIdxStore ?? 0) >= $sectionStore.idx;
+  $: highlight = $sectionStore.selected;
 
   let desiredText: string;
   $: desiredText = $sectionStore.text;
@@ -19,7 +18,7 @@
   .section {
     display: inline;
     white-space: pre-wrap;
-    transition: background 0.2s;
+    /* transition: background 0.2s; */
     min-width: 1em;
   }
 
@@ -55,7 +54,6 @@
   class:highlight
   class:placeholder={!$sectionStore.edited}
   class:sectionPlaying={$currentlyPlayingSectionIdxStore === $sectionStore.idx}
-  class:enableTextSelection={$suppressAudioStore}
   class:underline={desiredText.length === 0}
   data-sectionIdx={$sectionStore.idx}
 >

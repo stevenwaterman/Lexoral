@@ -20,7 +20,7 @@ export function initialiseStores(transcript: Omit<SectionState, "idx">[]): Recor
   })
   console.log(5);
 
-  // setTimeout(() => {createParagraphBreaks(withIdx)}, 10000)
+  setTimeout(() => {createParagraphBreaks(withIdx)}, 10000)
 
   console.log(6);
   return audioTimings;
@@ -32,7 +32,9 @@ function createParagraphBreaks(sections: SectionState[]) {
 
   sections.forEach(section => { // TODO this threshold should be configurable
     if (lastEligibleToEndParagraph && section.startTime - time > 0.3) {
-      patchInterface.append(section.idx, { endParagraph: true });
+
+      // TODO this is inefficient because it rerenders each time
+      patchInterface.append(section.idx - 1, { endParagraph: true });
     }
     lastEligibleToEndParagraph = isEligibleToEndParagraph(section);
     time = section.endTime;

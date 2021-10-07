@@ -1,21 +1,15 @@
 import { derived, Readable, writable, Writable } from "svelte/store";
-import { getAssertExists } from "../utils/list";
+import { forIn, getAssertExists } from "../utils/list";
+import type { SectionCollapsedPatches } from "./patch/dbListener";
 
 export type ParagraphLocation = {start: number, end: number};
 
-const paragraphDataStore: Writable<Record<number, boolean>> = writable({});
-const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(paragraphDataStore, locations => {
-  const idxs = Object.keys(locations).map(i => parseInt(i));
-  if (idxs.length === 0) return [];
-  idxs.sort((a,b) => a-b);
+const lastSectionIdxStore: Writable<number> = writable(-1);
 
-  const boundaries: number[] = [-1];
-  for (const idx of idxs) {
-    if (locations[idx]) boundaries.push(idx);
-  }
-
-  const lastIdx = idxs[idxs.length - 1] as number;
-  if (boundaries[boundaries.length - 1] !== lastIdx) boundaries.push(lastIdx);
+const paragraphDataStore: Writable<Set<number>> = writable(new Set<number>());
+const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived([paragraphDataStore, lastSectionIdxStore], ([locations, lastSectionIdx]) => {
+  const boundaries: number[] = [-1, ...locations, lastSectionIdx];
+  boundaries.sort((a,b) => a-b);
 
   const output: {start: number; end: number}[] = [];
   for(let i = 1; i < boundaries.length; i++) {
@@ -27,22 +21,45 @@ const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(p
 })
 
 
-let paragraphData: Record<number, boolean> = {};
+let paragraphData: Set<number>;
 paragraphDataStore.subscribe(state => paragraphData = state);
 
 function setEndParagraph(idx: number, endParagraph: boolean) {
-  const current = paragraphData[idx];
+  const current = paragraphData.has(idx);
   if (current === endParagraph) return;
   
   paragraphDataStore.update(state => {
-    state[idx] = endParagraph;
+    if (endParagraph) state.add(idx);
+    else state.delete(idx);
+    return state;
+  })
+}
+
+function setEndParagraphBulk(patches: SectionCollapsedPatches) {
+  const add: number[] = [];
+  const remove: number[] = [];
+
+  forIn(patches, (idx, { endParagraph }) => {
+    if (endParagraph === true) add.push(idx as any as number);
+    else if (endParagraph === false) remove.push(idx as any as number);
+  });
+
+  if (add.length === 0 && remove.length === 0) return;
+
+  paragraphDataStore.update(state => {
+    remove.forEach(idx => state.delete(idx));
+    add.forEach(idx => state.add(idx));
     return state;
   })
 }
 
 export const paragraphLocationsStore: Readable<ParagraphLocation[]> & {
   setEndParagraph: (idx: number, endParagraph: boolean) => void;
+  setEndParagraphBulk: (patches: SectionCollapsedPatches) => void;
+  setLastSectionIdx: (idx: number) => void;
 } = {
   subscribe: paragraphLocationsStoreInternal.subscribe,
-  setEndParagraph
+  setEndParagraph,
+  setEndParagraphBulk,
+  setLastSectionIdx: lastSectionIdxStore.set
 }
