@@ -8,8 +8,8 @@ import { PendingPatchState } from "./pendingPatchState";
 const dbListener = new DbListener();
 const pendingPatch = new PendingPatchState();
 
-function init() {
-  dbListener.init();
+function init(): Promise<boolean> {
+  return dbListener.init();
 }
 
 const sectionStores: Record<number, Readable<SectionCollapsedPatch>> = {};

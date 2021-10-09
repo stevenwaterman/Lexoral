@@ -1,13 +1,26 @@
 <script lang="ts">
-  import { playingStore } from "../audio/audio";
   import { getAssertExists } from "../utils/list";
 
   import Section from "./Section.svelte";
   import type { AllSections } from "../state/sectionStore";
-  import { allSectionsStore } from "../state/sectionStore";
+  import { onDestroy, onMount } from "svelte";
 
+  export let observer: IntersectionObserver | undefined;
+  export let sections: AllSections;
   export let start: number;
   export let end: number;
+
+  let visible: boolean = true;
+
+  export function setVisible(event: Event) {
+    visible = (event as CustomEvent<boolean>).detail;
+  }
+
+  let paragraphComponent: HTMLParagraphElement;
+  $: paragraphComponent?.addEventListener("setVisible", setVisible)
+
+  onMount(() => observer?.observe(paragraphComponent));
+  onDestroy(() => observer?.unobserve(paragraphComponent));
 
   function range(start: number, end: number): number[] {
     const output: number[] = [];
@@ -20,8 +33,6 @@
   let paragraphRange: number[];
   $: paragraphRange = range(start, end);
 
-  let sections: AllSections;
-  $: sections = $allSectionsStore;
 </script>
 
 <style>
@@ -36,8 +47,8 @@
   }
 </style>
 
-<p class="paragraph" class:nonePlaying={!$playingStore}>
-  {#each paragraphRange as idx}
-    <Section sectionStore={getAssertExists(sections, idx)}/>
+<p class="paragraph" bind:this={paragraphComponent}>
+  {#each paragraphRange as idx (idx)}
+    <Section sectionStore={getAssertExists(sections, idx)} last={idx === paragraphRange.length - 1} hidden={!visible}/>
   {/each}
 </p>

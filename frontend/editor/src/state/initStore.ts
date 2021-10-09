@@ -1,44 +1,36 @@
+import { paragraphLocationsStore } from "./paragraphLocationsStore";
 import { patchInterface } from "./patch/patchInterface";
 import { createSectionStores, SectionState, SectionStore } from "./sectionStore";
 
 /** Initialise the text state of the app using the data returned from the API */
-export function initialiseStores(transcript: Omit<SectionState, "idx">[]): Record<number, { startTime: number; endTime: number }> {
-  console.log(1);
+export async function initialiseStores(transcript: Omit<SectionState, "idx">[]): Promise<Record<number, { startTime: number; endTime: number }>> {
   const withIdx: SectionState[] = transcript.map((section, idx) => ({ idx, ...section }));
-  console.log(2);
   createSectionStores(...withIdx);
-  console.log(3);
 
-
-  patchInterface.init();
-  console.log(4);
-
+  const patchPromise = patchInterface.init();
 
   const audioTimings: Record<number, { startTime: number; endTime: number }> = {};
   withIdx.forEach(({ idx, startTime, endTime }) => {
     audioTimings[idx] = { startTime, endTime };
   })
-  console.log(5);
 
-  setTimeout(() => {createParagraphBreaks(withIdx)}, 10000)
-
-  console.log(6);
+  await patchPromise;
+  createParagraphBreaks(withIdx, 0.3);
   return audioTimings;
 }
 
-function createParagraphBreaks(sections: SectionState[]) {
+function createParagraphBreaks(sections: SectionState[], requiredSilence: number) {
+  const locations: Set<number> = new Set();
   let lastEligibleToEndParagraph: boolean = false;
   let time = 0;
 
   sections.forEach(section => { // TODO this threshold should be configurable
-    if (lastEligibleToEndParagraph && section.startTime - time > 0.3) {
-
-      // TODO this is inefficient because it rerenders each time
-      patchInterface.append(section.idx - 1, { endParagraph: true });
-    }
+    if (lastEligibleToEndParagraph && section.startTime - time > requiredSilence) locations.add(section.idx - 1);
     lastEligibleToEndParagraph = isEligibleToEndParagraph(section);
     time = section.endTime;
   });
+
+  paragraphLocationsStore.setDefaults(locations);
 }
 
 const punctuation = [".", "!", "?"];

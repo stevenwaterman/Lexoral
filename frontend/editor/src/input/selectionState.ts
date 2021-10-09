@@ -117,7 +117,6 @@ export const caretPositionStore: Readable<{start: boolean; end: boolean}> = deri
 document.addEventListener("selectionchange", updateSelection);
 
 export function updateSelection() {
-  console.time("update selection")
   const selection = window.getSelection();
   if (selection === null) return;
 
@@ -131,9 +130,7 @@ export function updateSelection() {
   const early = inverted ? focus : anchor;
   const late = inverted ? anchor : focus;
 
-  console.timeLog("update selection")
   selectionStoreInternal.set({ anchor, focus, early, late, inverted });
-  console.timeEnd("update selection")
 }
 
 function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "focus"): CursorPosition | undefined {

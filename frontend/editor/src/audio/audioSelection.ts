@@ -1,9 +1,9 @@
 import { Writable, writable, derived, Readable } from "svelte/store";
 import { selectionStore, earlySectionIdxStore, areMultipleSectionsSelectedStore, lateSectionIdxStore } from "../input/selectionState";
 import { deriveUnwrap, deriveDebounced, deriveConditionally } from "../utils/stores";
-import { clampGet, clampGetRecord, clamp } from "../utils/list";
-import { allSectionsStore, Section, SectionStore } from "../state/sectionStore";
-import { paragraphLocationsStore } from "../state/paragraphLocationsStore";
+import { clampGet, clamp, getAssertExistsRecord } from "../utils/list";
+import { allSectionsStore, Section, SectionState, SectionStore } from "../state/sectionStore";
+import { lastSectionIdxStore, paragraphLocationsStore } from "../state/paragraphLocationsStore";
 
 export const contextAmountStore: Writable<number> = writable(5);
 
@@ -129,8 +129,8 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
    * Store containing the section stores for the section at the [start / end] of the audio selection after applying the `sectionOffset` and `constrainWithinParagraph` mutations.
    */
   const offsetSectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ areMultipleSectionsSelectedStore, sectionIdxStore,  selectionStore, mutationStore, allSectionsStore,  paragraphLocationsStore], 
-    ([areMultipleSectionsSelected,      sectionIdx,       selection,      mutation,      allSections,       paragraphLocations]
+    [ areMultipleSectionsSelectedStore, sectionIdxStore,  selectionStore, mutationStore, allSectionsStore,  paragraphLocationsStore, lastSectionIdxStore], 
+    ([areMultipleSectionsSelected,      sectionIdx,       selection,      mutation,      allSections,       paragraphLocations,      lastSectionIdx]
   ) => {
     if (sectionIdx === undefined) return undefined;
     if (selection === undefined) return undefined;
@@ -145,9 +145,10 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
         throw new Error(`Couldn't find paragraph for section idx ${sectionIdx}`);
       }
       const clampedIdx = clamp(offsetIdx, paragraph.start, paragraph.end);
-      return clampGetRecord(allSections, clampedIdx);
+      return getAssertExistsRecord<number, SectionStore>(allSections, clampedIdx);
     } else {
-      return clampGetRecord(allSections, offsetIdx);
+      const clampedIdx = clamp(offsetIdx, 0, lastSectionIdx);
+      return getAssertExistsRecord<number, SectionStore>(allSections, clampedIdx);
     }
   });
   const offsetSectionStore: Readable<Section | undefined> = deriveUnwrap(offsetSectionStoreWrapped);
@@ -156,13 +157,15 @@ function applyMutations(side: "start" | "end"): Readable<{ time: number; section
    * Store containing the section before/after the offsetSection.
    */
   const gapsSectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ offsetSectionStore, mutationStore,  allSectionsStore], 
-    ([offsetSection,      mutation,       allSections]
+    [ offsetSectionStore,  allSectionsStore,  lastSectionIdxStore], 
+    ([offsetSection,       allSections,       lastSectionIdx]
   ) => {
     if (offsetSection === undefined) return undefined;
     const desiredIdx = offsetSection.idx + addGapsOffset;
-    return clampGetRecord(allSections, desiredIdx);
-  })
+    const clampedIdx = clamp(desiredIdx, 0, lastSectionIdx)
+    return getAssertExistsRecord<number, SectionStore>(allSections, clampedIdx);
+  });
+  
   const gapsSectionStore: Readable<Section | undefined> = deriveUnwrap(gapsSectionStoreWrapped);
 
   let timeStore: Readable<number | undefined>;

@@ -187,7 +187,7 @@
   <div class="wrapper" bind:this={wrapper}>
     <Dropdown wrapper={wrapper}/>
     <EditableContainer>
-      <Document />
+      <Document wrapper={wrapper}/>
     </EditableContainer>
   </div>
 </div>

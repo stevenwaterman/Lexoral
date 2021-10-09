@@ -1,9 +1,29 @@
 <script lang="ts">
   import Paragraph from "./Paragraph.svelte";
   import { paragraphLocationsStore } from "../state/paragraphLocationsStore";
-  import { updateSelection } from "../input/selectionState";
+  import type { AllSections } from "../state/sectionStore";
+  import { allSectionsStore } from "../state/sectionStore";
+
+  export let wrapper: HTMLDivElement;
+
+  let sections: AllSections;
+  $: sections = $allSectionsStore;
+
+  const observer = new IntersectionObserver(entries => {
+     entries.forEach(entry => {
+        const event = new CustomEvent("setVisible", { detail: entry.isIntersecting });
+        entry.target.dispatchEvent(event);
+     })
+  }, {
+    root: wrapper
+  });
 </script>
 
-{#each $paragraphLocationsStore as {start, end}}
-  <Paragraph start={start} end={end}/>
+{#each $paragraphLocationsStore as item, idx ([item.start, item.end])}
+  <Paragraph
+    observer={observer} 
+    sections={sections} 
+    start={item.start} 
+    end={item.end}
+  />
 {/each}

@@ -7,28 +7,24 @@
 
   export let user: User;
   $: setUser(user);  
-
-  async function getData(): Promise<void> {
-    return fetchTranscript()
-      .then(res => {
-        // TODO remove this
-        // const transcript = res.transcript.slice(0, 10000);
-        console.log("Fetch done");
-        const audioTimings = initialiseStores(res.transcript);
-        console.log("Initialise done");
-        return initAudio(audioTimings, res.audioUrl);
-      });
-  }
 </script>
 
 <style>
 
 </style>
 
-{#await getData()}
-  Loading your transcript
-{:then}
-  <Editor/>
+{#await fetchTranscript()}
+  Downloading Transcript
+{:then res}
+  {#await initialiseStores(res.transcript)}
+    Loading Transcript
+  {:then audioTimings}
+    {#await initAudio(audioTimings, res.audioUrl)}
+      Loading Audio
+    {:then}
+      <Editor/>
+    {/await}
+  {/await}
 {:catch err}
   {err}
 {/await}

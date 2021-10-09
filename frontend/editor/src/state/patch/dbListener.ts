@@ -17,7 +17,7 @@ type PatchHistory = Patch[];
 
 export type SectionCollapsedPatch = {
   text: string | null;
-  endParagraph: boolean;
+  endParagraph: boolean | null;
 }
 export type SectionCollapsedPatches = Record<number, Partial<SectionCollapsedPatch>>;
 
@@ -117,10 +117,18 @@ export class DbListener {
     paragraphLocationsStore.setEndParagraphBulk(collapsed);
   }
 
-  init() {
+  /**
+   * Returns true if the transcript has no patches
+   */
+  init(): Promise<boolean> {
     const patchCollection = collection(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches");
     const q = query(patchCollection);
-    onSnapshot(q, snapshot => this.processSnapshot(snapshot));
+    return new Promise<boolean>(resolve => {
+      onSnapshot(q, snapshot => {
+        this.processSnapshot(snapshot);
+        resolve(this.patchHistory.length === 0);
+      });
+    });
   }
 
   private processSnapshot(snapshot: QuerySnapshot<DocumentData>) {

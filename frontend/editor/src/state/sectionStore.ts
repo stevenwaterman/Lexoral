@@ -11,7 +11,7 @@ export type Section = {
   completions: string[];
   edited: boolean;
   text: string;
-  endParagraph: boolean;
+  endParagraph: boolean | null;
   
   selected: boolean;
 }

@@ -3,15 +3,8 @@
   import type { SectionStore } from "../state/sectionStore";
 
   export let sectionStore: SectionStore;
-
-  let last: boolean;
-  $: last = $sectionStore.endParagraph;
-
-  let highlight: boolean;
-  $: highlight = $sectionStore.selected;
-
-  let desiredText: string;
-  $: desiredText = $sectionStore.text;
+  export let last: boolean;
+  export let hidden: boolean;
 </script>
 
 <style>
@@ -31,11 +24,6 @@
     box-shadow: inset 0 -2px 0 var(--form-border);
   }
 
-  .section.enableTextSelection::selection {
-    background-color: rgba(76, 108, 169, 0.99);
-    color: var(--light-text);
-  }
-
   .highlight {
     background-color: var(--weak-focus);
   }
@@ -47,17 +35,22 @@
   .sectionPlaying {
     background-color: var(--focus);
   }
+
+  .hidden {
+    display: none;
+  }
 </style>
 
 <span
   class="section"
-  class:highlight
+  class:hidden={hidden}
+  class:highlight={$sectionStore.selected}
   class:placeholder={!$sectionStore.edited}
   class:sectionPlaying={$currentlyPlayingSectionIdxStore === $sectionStore.idx}
-  class:underline={desiredText.length === 0}
+  class:underline={$sectionStore.text.length === 0}
   data-sectionIdx={$sectionStore.idx}
 >
-  {`\u200b${desiredText}\u200b`}
-  <!-- {`/${desiredText}/`} -->
+  {`\u200b${$sectionStore.text}\u200b`}
+  <!-- {`/${sectionStore.text}/`} -->
 </span>
 {last ? "" : " "}
