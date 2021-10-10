@@ -19,7 +19,7 @@
   });
 </script>
 
-{#each $paragraphLocationsStore as item, idx ([item.start, item.end])}
+{#each $paragraphLocationsStore as item (item.start + (1 / item.end))}
   <Paragraph
     observer={observer} 
     sections={sections} 

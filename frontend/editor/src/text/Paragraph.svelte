@@ -11,13 +11,16 @@
   export let end: number;
 
   let visible: boolean = true;
-
-  export function setVisible(event: Event) {
-    visible = (event as CustomEvent<boolean>).detail;
-  }
+  let minHeight: number = 0;
 
   let paragraphComponent: HTMLParagraphElement;
   $: paragraphComponent?.addEventListener("setVisible", setVisible)
+
+
+  export function setVisible(event: Event) {
+    minHeight = paragraphComponent.clientHeight;
+    visible = (event as CustomEvent<boolean>).detail;
+  }
 
   onMount(() => observer?.observe(paragraphComponent));
   onDestroy(() => observer?.unobserve(paragraphComponent));
@@ -40,6 +43,9 @@
     margin-block-start: 0;
     margin-block-end: 0;
     padding-block-end: 1em;
+    box-sizing: border-box;
+
+    contain: style paint layout;
   }
 
   .paragraph::selection {
@@ -47,7 +53,7 @@
   }
 </style>
 
-<p class="paragraph" bind:this={paragraphComponent}>
+<p class="paragraph" bind:this={paragraphComponent} style={`min-height: ${minHeight}px`}>
   {#each paragraphRange as idx (idx)}
     <Section sectionStore={getAssertExists(sections, idx)} last={idx === paragraphRange.length - 1} hidden={!visible}/>
   {/each}
