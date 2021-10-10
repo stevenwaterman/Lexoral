@@ -5,7 +5,7 @@
   import { playingStore } from "../audio/audio";
   import { findSectionNode } from "../text/selector";
   import type { Section } from "../state/sectionStore";
-import { patchInterface } from "../state/patch/patchInterface";
+  import { patchInterface } from "../state/patch/patchInterface";
 
   export let wrapper: HTMLDivElement | undefined;
 

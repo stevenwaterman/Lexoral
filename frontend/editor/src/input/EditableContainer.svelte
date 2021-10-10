@@ -11,6 +11,8 @@
   import { suppressAudioStore } from "../audio/audio";
   import { patchInterface } from "../state/patch/patchInterface";
 
+  let wrapper: HTMLDivElement;
+
   async function mouseDown(event: MouseEvent) {
     suppressAudioStore.set(true);
   }
@@ -45,13 +47,24 @@
 </script>
 
 <style>
-  div {
+  .scroller {
+    position: fixed;
+
+    top: 80px;
+    right: 0;
+    bottom: 0px;
+    left: 0;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
     outline: none;
-    width: 100%;
   }
 </style>
 
 <div
+  class="scroller"
+  bind:this={wrapper}
   contenteditable
   tabindex={-1}
   on:keydown={onKeyPressed}
@@ -64,5 +77,5 @@
   on:dragstart|preventDefault
   on:cut|preventDefault
   on:paste|preventDefault>
-  <slot />
+  <slot wrapper={wrapper} />
 </div>

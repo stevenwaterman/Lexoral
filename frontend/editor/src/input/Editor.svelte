@@ -155,39 +155,15 @@
       return !loop
     });
   }
-
-  let wrapper: HTMLDivElement;
 </script>
-
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .wrapper {
-    flex-grow: 1;
-    padding: 8px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-</style>
 
 <svelte:body on:keydown={keyDown} on:keyup={keyUp}/>
 
 <ToastController/>
 
-<div class="container">
-  <Header/>
-  
-  <div class="wrapper" bind:this={wrapper}>
-    <Dropdown wrapper={wrapper}/>
-    <EditableContainer>
-      <Document wrapper={wrapper}/>
-    </EditableContainer>
-  </div>
-</div>
+<Header/>
+
+<EditableContainer let:wrapper>
+  <Dropdown wrapper={wrapper}/>
+  <Document wrapper={wrapper}/>
+</EditableContainer>
