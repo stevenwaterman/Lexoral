@@ -48,17 +48,9 @@
 
 <style>
   .scroller {
-    position: fixed;
-
-    top: 80px;
-    right: 0;
-    bottom: 0px;
-    left: 0;
-
-    overflow-y: scroll;
-    overflow-x: hidden;
-
     outline: none;
+    padding: 1em;
+    padding-top: 100px;
   }
 </style>
 

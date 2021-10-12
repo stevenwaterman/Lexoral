@@ -26,10 +26,6 @@
     top: 50vh;
     transform: translate(-50%, -50%);
   }
-
-  :global(body) {
-    overflow: hidden;
-  }
 </style>
 
 <svelte:body tabindex={-1}/>

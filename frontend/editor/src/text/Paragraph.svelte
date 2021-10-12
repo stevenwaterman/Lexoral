@@ -16,7 +16,6 @@
   let paragraphComponent: HTMLParagraphElement;
   $: paragraphComponent?.addEventListener("setVisible", setVisible)
 
-
   export function setVisible(event: Event) {
     minHeight = paragraphComponent.clientHeight;
     visible = (event as CustomEvent<boolean>).detail;
@@ -36,6 +35,9 @@
   let paragraphRange: number[];
   $: paragraphRange = range(start, end);
 
+
+  let style: string;
+  $: style = visible ? "" : `min-height: ${minHeight}px`
 </script>
 
 <style>
@@ -53,7 +55,7 @@
   }
 </style>
 
-<p class="paragraph" bind:this={paragraphComponent} style={`min-height: ${minHeight}px`}>
+<p class="paragraph" bind:this={paragraphComponent} style={style} class:hidden={!visible}>
   {#each paragraphRange as idx (idx)}
     <Section sectionStore={getAssertExists(sections, idx)} last={idx === paragraphRange.length - 1} hidden={!visible}/>
   {/each}

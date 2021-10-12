@@ -15,7 +15,8 @@
         entry.target.dispatchEvent(event);
      })
   }, {
-    root: wrapper
+    root: wrapper,
+    rootMargin: "500px 0px 500px"
   });
 </script>
 
