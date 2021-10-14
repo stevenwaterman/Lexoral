@@ -14,8 +14,9 @@ export async function initialiseStores(transcript: Omit<SectionState, "idx">[]):
     audioTimings[idx] = { startTime, endTime };
   })
 
-  await patchPromise;
   createParagraphBreaks(withIdx, 0.3);
+  
+  await patchPromise;
   return audioTimings;
 }
 

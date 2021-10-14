@@ -8,13 +8,12 @@
 
   import { findSectionNode } from "../text/selector";
   import { onKeyPressed } from "./controls";
-  import { suppressAudioStore } from "../audio/audio";
   import { patchInterface } from "../state/patch/patchInterface";
 
   let wrapper: HTMLDivElement;
 
   async function mouseDown(event: MouseEvent) {
-    suppressAudioStore.set(true);
+    // suppressAudioStore.set(true);
   }
 
   // async function mouseMove(event: MouseEvent) {
@@ -23,7 +22,7 @@
 
   async function mouseUp(event: MouseEvent) {
     // await updateSelection();
-    suppressAudioStore.set(false);
+    // suppressAudioStore.set(false);
   }
 
   async function input(event: Event) {

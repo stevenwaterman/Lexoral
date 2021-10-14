@@ -84,7 +84,7 @@ deriveWithPrevious(selectionRangeStore).subscribe(({ last, current }) => {
   }
 
   forIn(updates, (idx, selected) => {
-    getSectionSelectedStore(idx).set(selected);
+    getSectionSelectedStore(idx).update(state => ({ ...state, selected }));
   })
 })
 

@@ -14,6 +14,7 @@ export type Section = {
   endParagraph: boolean | null;
   
   selected: boolean;
+  playing: boolean;
 }
 
 export type SectionState = {
@@ -26,12 +27,12 @@ export type SectionState = {
 export type MaybeSectionStore = Readable<Section | undefined>;
 export type SectionStore = Readable<Section>;
 
-function transformState({idx, startTime, endTime, options}: SectionState, patch: SectionCollapsedPatch, selected: boolean): Section {
+function transformState({idx, startTime, endTime, options}: SectionState, patch: SectionCollapsedPatch, { selected, playing }: { selected: boolean, playing: boolean }): Section {
   const endParagraph = patch.endParagraph;
   const text = patch.text ?? options[0];
   const edited = patch.text !== null;
   const completions = getOptions(text, options);
-  return { idx, startTime, endTime, completions, edited, text, endParagraph, selected };
+  return { idx, startTime, endTime, completions, edited, text, endParagraph, selected, playing };
 }
 
 export function createSectionStores(...sections: SectionState[]): SectionStore[] {
@@ -51,11 +52,11 @@ export type AllSections = SectionStore[];
 const allSectionsStoreInternal: Writable<AllSections> = writable([]);
 export const allSectionsStore: Readable<AllSections> = {subscribe: allSectionsStoreInternal.subscribe};
 
-const sectionSelectedStores: Record<number, Writable<boolean>> = {};
-export function getSectionSelectedStore(idx: number): Writable<boolean> {
+const sectionSelectedStores: Record<number, Writable<{ selected: boolean, playing: boolean }>> = {};
+export function getSectionSelectedStore(idx: number): Writable<{ selected: boolean, playing: boolean }> {
   let current = sectionSelectedStores[idx];
   if (!current) {
-    current = writable(false);
+    current = writable({ selected: false, playing: false });
     sectionSelectedStores[idx] = current;
   }
 

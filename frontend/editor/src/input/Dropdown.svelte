@@ -2,7 +2,7 @@
   import { focusSectionIdxStore, focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { getAssertExists, modulo } from "../utils/list";
   import { selectNextSection, selectSectionStart } from "./select";
-  import { playingStore } from "../audio/audio";
+  import { playingStore } from "../audio/audioStatus";
   import { findSectionNode } from "../text/selector";
   import type { Section } from "../state/sectionStore";
   import { patchInterface } from "../state/patch/patchInterface";

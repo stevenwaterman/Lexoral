@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { currentlyPlayingSectionIdxStore } from "../audio/audio";
   import type { SectionStore } from "../state/sectionStore";
 
   export let sectionStore: SectionStore;
@@ -46,7 +45,7 @@
   class:hidden={hidden}
   class:highlight={$sectionStore.selected}
   class:placeholder={!$sectionStore.edited}
-  class:sectionPlaying={$currentlyPlayingSectionIdxStore === $sectionStore.idx}
+  class:sectionPlaying={$sectionStore.playing}
   class:underline={$sectionStore.text.length === 0}
   data-sectionIdx={$sectionStore.idx}
 >
