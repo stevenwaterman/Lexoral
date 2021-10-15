@@ -38,7 +38,7 @@ const cloudFunctionSWF: SubWorkflow = {
   ]
 };
 
-type CloudFunctionNames = "adjust" | "align" | "charge_credit" | "transcode_envelope" | "transcribe";
+type CloudFunctionNames = "adjust" | "align" | "charge_credit" | "transcode_envelope" | "transcode_playback" | "transcribe";
 function callCloudFunction(name: CloudFunctionNames): SubWorkflowStep {
   return {
     call: 'cloud_function',

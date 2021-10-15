@@ -19,7 +19,7 @@ import { initAudio } from "./audio/audioPlayer";
   {#await initialiseStores(res.transcript)}
     Loading Transcript
   {:then audioTimings}
-    {#await initAudio(res.audioUrl)}
+    {#await initAudio(res.audioUrl, audioTimings)}
       Loading Audio
     {:then}
       <Editor/>

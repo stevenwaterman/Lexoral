@@ -21,7 +21,7 @@ resource "google_storage_bucket" "audio" {
   uniform_bucket_level_access = true
   cors {
     origin          = ["http://localhost", "http://localhost:5000", "https://lexoral.com"]
-    method          = ["GET", "PUT"]
+    method          = ["PUT"]
     response_header = ["*"]
     max_age_seconds = 3600
   }
@@ -30,6 +30,14 @@ resource "google_storage_bucket" "audio" {
 
 resource "google_storage_bucket" "envelope_audio" {
   name = "${data.google_project.project.project_id}-envelope-audio"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
+  uniform_bucket_level_access = true
+  force_destroy = true # TODO remove this
+}
+
+resource "google_storage_bucket" "playback_audio" {
+  name = "${data.google_project.project.project_id}-playback-audio"
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
@@ -104,6 +112,15 @@ module "upload_watcher" {
 module "transcode_envelope" {
   source = "../httpFunction"
   name = "transcode_envelope"
+  bucket = google_storage_bucket.functions_code.name
+  project_id = data.google_project.project.project_id
+  memory = 1024
+  timeout = 540
+}
+
+module "transcode_playback" {
+  source = "../httpFunction"
+  name = "transcode_playback"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   memory = 1024

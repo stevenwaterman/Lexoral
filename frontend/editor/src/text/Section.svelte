@@ -48,6 +48,7 @@
   class:sectionPlaying={$sectionStore.playing}
   class:underline={$sectionStore.text.length === 0}
   data-sectionIdx={$sectionStore.idx}
+  title={`start: ${$sectionStore.startTime}, end: ${$sectionStore.endTime}`}
 >
   {`\u200b${$sectionStore.text}\u200b`}
   <!-- {`/${sectionStore.text}/`} -->

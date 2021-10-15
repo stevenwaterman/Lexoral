@@ -18,8 +18,8 @@ allSectionsStore.subscribe(state => allSections = state);
 
 
 export function getSelectionTimings(): { start: number, end: number } | null {
-  const startSectionIdx = offsetInParagraph(earlySelectionIdx, 0);
-  const endSectionIdx = offsetInParagraph(lateSelectionIdx, 0 );
+  const startSectionIdx = offsetInParagraph(earlySelectionIdx, -5);
+  const endSectionIdx = offsetInParagraph(lateSelectionIdx, 5);
 
   if (startSectionIdx === undefined) return null;
   if (endSectionIdx === undefined) return null;
@@ -36,7 +36,7 @@ export function getSelectionTimings(): { start: number, end: number } | null {
   const start = startSection.startTime;
   const end = endSection.endTime;
 
-  return {start, end};
+  return {start, end: 1000};
 }
 
 function offsetInParagraph(section: number | undefined, offset: number): number | undefined {

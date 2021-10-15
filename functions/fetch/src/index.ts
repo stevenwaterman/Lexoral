@@ -12,8 +12,8 @@ async function handleRequest(req: Request, res: Response) {
     .then(buffer => buffer.toString("utf8"))
     .then(str => JSON.parse(str));
 
-  const audioBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
-  const audioFile = audioBucket.file(filename);
+  const audioBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
+  const audioFile = audioBucket.file(`${filename}.mp3`);
   const audioFileUrl = await audioFile.getSignedUrl({
     action: "read",
     version: "v4",

@@ -89,6 +89,7 @@ jobs:
           - fetch
           - signup
           - transcode_envelope
+          - transcode_playback
           - transcribe
           - transcription_watcher
           - upload

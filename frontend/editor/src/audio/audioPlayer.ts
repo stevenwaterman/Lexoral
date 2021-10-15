@@ -1,10 +1,12 @@
 import { loopStore } from "./audioController";
-import { playingStore } from "./audioStatus";
+import { initSectionStartEnd, playingStore, updateCurrentlyPlaying } from "./audioStatus";
 import { getSelectionTimings } from "./audioTimings";
 
 let player: HTMLAudioElement;
 
-export function initAudio(src: string) {
+export function initAudio(src: string, timings: Record<number, { startTime: number; endTime: number }>) {
+  initSectionStartEnd(timings);
+
   player = document.createElement("audio");
   player.controls = true;
   player.style.zIndex = "2";
@@ -13,7 +15,10 @@ export function initAudio(src: string) {
   player.src = src;
 
   player.onplay = () => playingStore.set(true);
-  player.onpause = () => playingStore.set(false);
+  player.onpause = () => {
+    playingStore.set(false);
+    updateCurrentlyPlaying(null);
+  }
   // player.ontimeupdate = onTimeUpdate;
 }
 
@@ -34,6 +39,7 @@ export async function playAudio() {
   endTime = timings.end;
 
   await player.play();
+  onTimeUpdate();
 }
 
 export function stopAudio() {
@@ -41,16 +47,21 @@ export function stopAudio() {
 }
 
 
-
 function onTimeUpdate() {
   const time = player.currentTime;
-  console.log(startTime, time, endTime);
 
-  if (time < endTime) return;
+  if (time < endTime) {
+    updateCurrentlyPlaying(time);
+    requestAnimationFrame(onTimeUpdate);
+    return;
+  }
 
   if (loop) {
     player.currentTime = startTime;
-  } else {
-    player.pause();
+    updateCurrentlyPlaying(startTime);
+    requestAnimationFrame(onTimeUpdate);
+    return;
   }
+
+  player.pause();
 }
