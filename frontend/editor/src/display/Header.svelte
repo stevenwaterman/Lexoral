@@ -17,7 +17,7 @@
     transition: background 0.5s;
 
     background-color: var(--grey-3);
-    z-index: 1;
+    z-index: 2;
   }
 
   .playing {

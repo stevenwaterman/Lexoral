@@ -127,7 +127,7 @@
     position: absolute;
     max-width: 100vw;
     border: 1px solid var(--form-border);
-    z-index: 2;
+    z-index: 1;
     background: var(--page-background);
     display: flex;
     flex-direction: column;

@@ -1,8 +1,25 @@
-import { loopStore } from "./audioController";
+import { derived, writable, Writable } from "svelte/store";
+import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
+import { deriveDebounced } from "../utils/stores";
 import { initSectionStartEnd, playingStore, updateCurrentlyPlaying } from "./audioStatus";
 import { getSelectionTimings } from "./audioTimings";
 
+
+let initiated = false;
 let player: HTMLAudioElement;
+
+
+
+export const loopStore: Writable<boolean> = writable(false);
+export const volumeStore: Writable<number> = writable(1);
+export const rateStore: Writable<number> = writable(1);
+
+let startTime: number;
+let endTime: number;
+
+let loop: boolean;
+loopStore.subscribe(state => loop = state);
+
 
 export function initAudio(src: string, timings: Record<number, { startTime: number; endTime: number }>) {
   initSectionStartEnd(timings);
@@ -12,15 +29,16 @@ export function initAudio(src: string, timings: Record<number, { startTime: numb
 
   player.onplay = () => playingStore.set(true);
   player.onpause = () => playingStore.set(false);
+
+  volumeStore.subscribe(volume => player.volume = volume);
+  rateStore.subscribe(rate => player.playbackRate = rate);
+
+  initiated = true;
 }
 
-let startTime: number;
-let endTime: number;
-
-let loop: boolean;
-loopStore.subscribe(state => loop = state);
-
 export async function playAudio() {
+  if (!initiated) return;
+
   player.pause();
 
   const timings = getSelectionTimings();
@@ -38,6 +56,8 @@ export async function playAudio() {
 }
 
 export function stopAudio() {
+  if (!initiated) return;
+
   player.pause();
 }
 
@@ -61,3 +81,9 @@ function onTimeUpdate() {
 
   requestAnimationFrame(onTimeUpdate);
 }
+
+export const autoPlayStore: Writable<boolean> = writable(true);
+deriveDebounced(
+  derived([earlySectionIdxStore, lateSectionIdxStore], values => values),
+  0.05
+).subscribe(() => playAudio());

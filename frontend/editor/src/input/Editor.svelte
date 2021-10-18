@@ -8,8 +8,7 @@
   import EditableContainer from "./EditableContainer.svelte";
   import { exportTranscript } from "../state/export";
   import { playingStore } from "../audio/audioStatus";
-  import { playAudio, stopAudio } from "../audio/audioPlayer";
-  import { loopStore, volumeStore } from "../audio/audioController";
+  import { loopStore, playAudio, stopAudio, volumeStore } from "../audio/audioPlayer";
 
   let altReleaseShouldPlay = false;
 
