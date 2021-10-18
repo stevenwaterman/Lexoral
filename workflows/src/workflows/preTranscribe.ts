@@ -12,7 +12,7 @@ const tryCatchStep: TryCatchStep = {
       { logWorkflow: logWorkflow("pre_transcribe") },
       { envelope: callSub.cloudFunction("transcode_envelope") },
       { charge: callSub.cloudFunction("charge_credit") },
-      { envelope: callSub.cloudFunction("transcode_playback") },
+      { playback: callSub.cloudFunction("transcode_playback") },
       { transcribe: callSub.cloudFunction("transcribe") },
       { success: {
           return: 'SUCCESS'
