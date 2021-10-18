@@ -36,7 +36,7 @@ export function getSelectionTimings(): { start: number, end: number } | null {
   const start = startSection.startTime;
   const end = endSection.endTime;
 
-  return {start, end: 1000};
+  return {start, end};
 }
 
 function offsetInParagraph(section: number | undefined, offset: number): number | undefined {

@@ -8,18 +8,10 @@ export function initAudio(src: string, timings: Record<number, { startTime: numb
   initSectionStartEnd(timings);
 
   player = document.createElement("audio");
-  player.controls = true;
-  player.style.zIndex = "2";
-  player.style.position = "fixed";
-  document.body.prepend(player);
   player.src = src;
 
   player.onplay = () => playingStore.set(true);
-  player.onpause = () => {
-    playingStore.set(false);
-    updateCurrentlyPlaying(null);
-  }
-  // player.ontimeupdate = onTimeUpdate;
+  player.onpause = () => playingStore.set(false);
 }
 
 let startTime: number;
@@ -38,7 +30,10 @@ export async function playAudio() {
   startTime = timings.start;
   endTime = timings.end;
 
-  await player.play();
+  await player.play().catch(reason => {
+    console.error("play error: " + reason)
+  });
+
   onTimeUpdate();
 }
 
@@ -48,20 +43,21 @@ export function stopAudio() {
 
 
 function onTimeUpdate() {
+  if (player.paused) {
+    updateCurrentlyPlaying(null);
+    return;
+  }
+
   const time = player.currentTime;
 
   if (time < endTime) {
     updateCurrentlyPlaying(time);
-    requestAnimationFrame(onTimeUpdate);
-    return;
-  }
-
-  if (loop) {
+  } else if (loop) {
     player.currentTime = startTime;
     updateCurrentlyPlaying(startTime);
-    requestAnimationFrame(onTimeUpdate);
-    return;
+  } else {
+    player.pause();
   }
 
-  player.pause();
+  requestAnimationFrame(onTimeUpdate);
 }
