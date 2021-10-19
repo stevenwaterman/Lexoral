@@ -1,4 +1,5 @@
 import { derived, writable, Writable } from "svelte/store";
+import { sendToast } from "../display/toast/toasts";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { deriveDebounced } from "../utils/stores";
 import { initSectionStartEnd, playingStore, updateCurrentlyPlaying } from "./audioStatus";
@@ -8,11 +9,52 @@ import { getSelectionTimings } from "./audioTimings";
 let initiated = false;
 let player: HTMLAudioElement;
 
-
-
 export const loopStore: Writable<boolean> = writable(false);
-export const volumeStore: Writable<number> = writable(1);
-export const rateStore: Writable<number> = writable(1);
+
+const volumeStoreInternal: Writable<number> = writable(100);
+function decreaseVolume() {
+  volumeStoreInternal.update(volume => {
+    if (volume <= 5) return 5;
+    return volume - 5;
+  })
+}
+function increaseVolume() {
+  volumeStoreInternal.update(volume => {
+    if (volume >= 100) return 100;
+    return volume + 5;
+  })
+}
+export const volumeStore = {
+  subscribe: volumeStoreInternal.subscribe,
+  decrease: decreaseVolume,
+  increase: increaseVolume
+}
+volumeStore.subscribe(volume => sendToast(`Volume: ${volume}%`));
+
+
+const rateStoreInternal: Writable<number> = writable(100);
+function decreaseRate() {
+  rateStoreInternal.update(rate => {
+    if (rate <= 10) return 10;
+    if (rate <= 100) return rate - 10;
+    if (rate <= 300) return rate - 25;
+    return rate - 100;
+  })
+}
+function increaseRate() {
+  rateStoreInternal.update(rate => {
+    if (rate >= 500) return 500;
+    if (rate >= 300) return rate + 100;
+    if (rate >= 100) return rate + 25;
+    return rate + 10;
+  })
+}
+export const rateStore = {
+  subscribe: rateStoreInternal.subscribe,
+  decrease: decreaseRate,
+  increase: increaseRate
+}
+rateStore.subscribe(rate => sendToast(`Playback Rate: ${rate}%`));
 
 let startTime: number;
 let endTime: number;
@@ -30,8 +72,8 @@ export function initAudio(src: string, timings: Record<number, { startTime: numb
   player.onplay = () => playingStore.set(true);
   player.onpause = () => playingStore.set(false);
 
-  volumeStore.subscribe(volume => player.volume = volume);
-  rateStore.subscribe(rate => player.playbackRate = rate);
+  volumeStore.subscribe(volume => player.volume = volume / 100);
+  rateStore.subscribe(rate => player.playbackRate = rate / 100);
 
   initiated = true;
 }
@@ -82,8 +124,14 @@ function onTimeUpdate() {
   requestAnimationFrame(onTimeUpdate);
 }
 
-export const autoPlayStore: Writable<boolean> = writable(true);
+let autoPlay: boolean = true;
+export const autoPlayStore: Writable<boolean> = writable(autoPlay);
+autoPlayStore.subscribe(state => autoPlay = state);
+
 deriveDebounced(
   derived([earlySectionIdxStore, lateSectionIdxStore], values => values),
   0.05
-).subscribe(() => playAudio());
+).subscribe(() => {
+  if (autoPlay) playAudio();
+  else stopAudio();
+});

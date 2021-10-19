@@ -1,4 +1,4 @@
-import { writable, Writable } from "svelte/store";
+import { Readable, writable, Writable } from "svelte/store";
 import { getSectionSelectedStore } from "../state/sectionStore";
 import { getAssertExists } from "../utils/list";
 
@@ -26,6 +26,8 @@ function getSectionIdxForTime(time: number | null): number | null {
 }
 
 let lastPlayingSectionIdx: number | null = null;
+const lastPlayingSectionIdxStoreInternal: Writable<number | null> = writable(lastPlayingSectionIdx);
+export const lastPlayingSectionIdxStore: Readable<number | null> = { subscribe: lastPlayingSectionIdxStoreInternal.subscribe };
 
 export function updateCurrentlyPlaying(time: number | null) {
   const newPlayingSectionIdx = getSectionIdxForTime(time);
@@ -42,4 +44,9 @@ export function updateCurrentlyPlaying(time: number | null) {
   }
 
   lastPlayingSectionIdx = newPlayingSectionIdx;
+  if (newPlayingSectionIdx !== null) lastPlayingSectionIdxStoreInternal.set(newPlayingSectionIdx);
 }
+
+playingStore.subscribe(playing => {
+  if (!playing) lastPlayingSectionIdxStoreInternal.set(null);
+})

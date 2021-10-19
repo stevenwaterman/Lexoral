@@ -7,8 +7,11 @@
   import Dropdown from "./Dropdown.svelte";
   import EditableContainer from "./EditableContainer.svelte";
   import { exportTranscript } from "../state/export";
-  import { playingStore } from "../audio/audioStatus";
-  import { loopStore, playAudio, stopAudio, volumeStore } from "../audio/audioPlayer";
+  import { lastPlayingSectionIdxStore, playingStore } from "../audio/audioStatus";
+  import { autoPlayStore, loopStore, playAudio, rateStore, stopAudio, volumeStore } from "../audio/audioPlayer";
+  import { audioStyleStore } from "../audio/audioTimings";
+  import { findSectionNode } from "../text/selector";
+  import { selectEnd } from "./select";
 
   let altReleaseShouldPlay = false;
 
@@ -30,16 +33,15 @@
     }
 
     if (event.key === "Escape" && $playingStore) {
-      // TODO
-      // const idx = $lastPlayedSectionStore?.idx;
-      // if (idx !== undefined) {
-      //   const component = findSectionNode(idx);
-      //   if (component) {
-      //     event.preventDefault();
-      //     await selectEnd(component);
-      //     stopAudio();
-      //   }
-      // }
+      const idx = $lastPlayingSectionIdxStore;
+      if (idx !== null) {
+        const component = findSectionNode(idx);
+        if (component) {
+          event.preventDefault();
+          await selectEnd(component);
+          stopAudio();
+        }
+      }
     }
 
     if (event.key === "s" && event.ctrlKey) {
@@ -58,93 +60,35 @@
       altReleaseShouldPlay = false;
       switch(event.key) {
         case "c": return contextMode();
-        case "p": return paragraphMode();
         case "o": return onwardMode();
         case "l": return toggleLoop();
         case "a": return toggleAutoPlay();
-        case "ArrowLeft": return decreaseContext();
-        case "ArrowRight": return increaseContext();
-        case "ArrowUp": return increaseVolume();
-        case "ArrowDown": return decreaseVolume();
+        case "ArrowLeft": return rateStore.decrease();
+        case "ArrowRight": return rateStore.increase();
+        case "ArrowUp": return volumeStore.increase();
+        case "ArrowDown": return volumeStore.decrease();
       }
     }
   }
 
-  function getVolumeDecreaseAmount(volume: number): number {
-    if (volume <= 0.01) return 0;
-    if (volume <= 0.1) return 0.01;
-    if (volume <= 0.5) return 0.05;
-    return 0.1;
-  }
-
-  function getVolumeIncreaseAmount(volume: number): number {
-    if (volume === 1) return 0;
-    if (volume >= 0.5) return 0.10;
-    if (volume >= 0.1) return 0.05;
-    return 0.01;
-  }
-
-  function decreaseVolume() {
-    volumeStore.update(volume => {
-      const newVolume = volume - getVolumeDecreaseAmount(volume);
-      if (volume !== newVolume) sendToast(`Set volume: ${Math.round(newVolume)}%`);
-      return newVolume;
-    })
-  }
-
-  function increaseVolume() {
-    volumeStore.update(volume => {
-      const newVolume = volume + getVolumeIncreaseAmount(volume);
-      if (volume !== newVolume) sendToast(`Set volume: ${Math.round(newVolume)}%`);
-      return newVolume;
-    })
-  }
-
-  function decreaseContext() {
-    // TODO 
-    // contextAmountStore.update(amount => {
-    //   if (amount > 0) {
-    //     const newAmount = amount - 1;
-    //     sendToast(`Set context amount: ${newAmount}`);
-    //     return newAmount;
-    //   } else return amount;
-    // });
-  }
-
-  function increaseContext() {
-    // TODO 
-    // contextAmountStore.update(amount => {
-    //   const newAmount = amount + 1;
-    //   sendToast(`Set context amount: ${newAmount}`);
-    //   return newAmount;
-    // });
-  }
-
   function contextMode() {
-    // if ($audioModeStore === "context") return;
-    // audioModeStore.set("context");
-    // sendToast("Enabled audio mode: context");
-  }
-
-  function paragraphMode() {
-    // if ($audioModeStore === "paragraph") return;
-    // audioModeStore.set("paragraph");
-    // sendToast("Enabled audio mode: paragraph");
+    if ($audioStyleStore === "context") return;
+    audioStyleStore.set("context");
+    sendToast("Enabled audio mode: context");
   }
 
   function onwardMode() {
-    // if ($audioModeStore === "onward") return;
-    // audioModeStore.set("onward");
-    // sendToast("Enabled audio mode: onward");
+    if ($audioStyleStore === "onward") return;
+    audioStyleStore.set("onward");
+    sendToast("Enabled audio mode: onward");
   }
 
   function toggleAutoPlay() {
-    // TODO fix
-    // autoPlayStore.update(autoPlay => {
-    //   if (autoPlay) sendToast("Auto-play disabled")
-    //   else sendToast("Auto-play enabled")
-    //   return !autoPlay;
-    // });
+    autoPlayStore.update(autoPlay => {
+      if (autoPlay) sendToast("Auto-play disabled")
+      else sendToast("Auto-play enabled")
+      return !autoPlay;
+    });
   }
 
   function toggleLoop() {

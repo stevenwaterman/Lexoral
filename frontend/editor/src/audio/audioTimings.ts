@@ -1,4 +1,5 @@
 import { get_store_value } from "svelte/internal";
+import { Writable, writable } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { ParagraphLocation, paragraphLocationsStore } from "../state/paragraphLocationsStore";
 import { AllSections, allSectionsStore } from "../state/sectionStore";
@@ -15,15 +16,35 @@ paragraphLocationsStore.subscribe(state => paragraphLocations = state);
 let allSections: AllSections;
 allSectionsStore.subscribe(state => allSections = state);
 
-
+export type AudioStyle = "context" | "onward"
+let audioStyle: AudioStyle = "context";
+export const audioStyleStore: Writable<AudioStyle> = writable(audioStyle);
+audioStyleStore.subscribe(state => audioStyle = state);
 
 export function getSelectionTimings(): { start: number, end: number } | null {
+  if (earlySelectionIdx !== lateSelectionIdx) return getSelectionTimingsLiteral(earlySelectionIdx, lateSelectionIdx);
+  if (audioStyle === "context") return getSelectionTimingsContext();
+  else if (audioStyle === "onward") return getSelectionTimingsOnward();
+  else throw new Error("Unrecognised audio style " + audioStyle)
+}
+
+function getSelectionTimingsContext(): { start: number, end: number } | null {
   const startSectionIdx = offsetInParagraph(earlySelectionIdx, -5);
   const endSectionIdx = offsetInParagraph(lateSelectionIdx, 5);
+  return getSelectionTimingsLiteral(startSectionIdx, endSectionIdx);
+}
 
+function getSelectionTimingsOnward(): { start: number, end: number } | null {
+  const startSectionIdx = earlySelectionIdx;
+  const endSectionIdx = allSections.length - 1;
+  return getSelectionTimingsLiteral(startSectionIdx, endSectionIdx);
+}
+
+
+function getSelectionTimingsLiteral(startSectionIdx: number | undefined, endSectionIdx: number | undefined): { start: number, end: number } | null {
   if (startSectionIdx === undefined) return null;
   if (endSectionIdx === undefined) return null;
-
+  
   const startSectionStore = allSections[startSectionIdx];
   const endSectionStore = allSections[endSectionIdx];
 
