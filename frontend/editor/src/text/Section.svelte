@@ -38,6 +38,10 @@
   .hidden {
     display: none;
   }
+
+  .questionable {
+    border-bottom: 1px solid var(--error)
+  }
 </style>
 
 <span
@@ -47,8 +51,8 @@
   class:placeholder={!$sectionStore.edited}
   class:sectionPlaying={$sectionStore.playing}
   class:underline={$sectionStore.text.length === 0}
+  class:questionable={$sectionStore.completions.length > 1 && !$sectionStore.edited}
   data-sectionIdx={$sectionStore.idx}
-  title={`start: ${$sectionStore.startTime}, end: ${$sectionStore.endTime}`}
 >
   {`\u200b${$sectionStore.text}\u200b`}
   <!-- {`/${sectionStore.text}/`} -->

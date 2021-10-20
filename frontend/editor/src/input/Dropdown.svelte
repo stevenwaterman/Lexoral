@@ -13,7 +13,7 @@
   $: section = $focusSectionStore;
 
   let visible: boolean;
-  $: visible = !$isTextSelectedStore && section !== undefined && options.length > 0;
+  $: visible = !$isTextSelectedStore && section !== undefined && options.length > 1;
 
   let optionHeight: number;
   let left: number;

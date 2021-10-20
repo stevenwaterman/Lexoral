@@ -57,6 +57,7 @@
   class="scroller"
   bind:this={wrapper}
   contenteditable
+  spellcheck={false}
   tabindex={-1}
   on:keydown={onKeyPressed}
   on:mousedown={mouseDown}
