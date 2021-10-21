@@ -30,7 +30,7 @@ function getPatchStore(idx: number): Readable<SectionCollapsedPatch> {
     ...dbData,
     ...pendingData
   }));
-  return deriveConditionally(store, { text: null, endParagraph: false });
+  return deriveConditionally(store, { text: null, endParagraph: false, edited: null });
 }
 
 function undo() {

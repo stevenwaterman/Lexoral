@@ -11,13 +11,15 @@ type PatchProperty<KEY extends string, VALUE> = {
 }
 type PatchText = PatchProperty<"text", string | null>;
 type PatchParagraph = PatchProperty<"endParagraph", boolean>;
-export type SectionPatch = PatchText | PatchParagraph;
+type PatchEdited = PatchProperty<"edited", boolean>
+export type SectionPatch = PatchText | PatchParagraph | PatchEdited;
 export type Patch = Record<number, SectionPatch>;
 type PatchHistory = Patch[];
 
 export type SectionCollapsedPatch = {
   text: string | null;
   endParagraph: boolean | null;
+  edited: boolean | null;
 }
 export type SectionCollapsedPatches = Record<number, Partial<SectionCollapsedPatch>>;
 
@@ -39,7 +41,7 @@ export class DbListener {
   private getSectionPatchStoreInternal(idx: number): Writable<SectionCollapsedPatch> {
     let current = this.sectionPatchStores[idx];
     if (!current) {
-      current = writable({ text: null, endParagraph: false });
+      current = writable({ text: null, endParagraph: false, edited: null });
       this.sectionPatchStores[idx] = current;
     }
     return current;

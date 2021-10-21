@@ -5,6 +5,7 @@
     "strict": true,
     "types": ["node", "svelte"],
     "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
     // "exactOptionalPropertyTypes": true TODO enable this once svelte-check updates to TS 4.4
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,

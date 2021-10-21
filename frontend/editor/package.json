@@ -30,6 +30,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "an-array-of-english-words": "^2.0.0",
     "file-saver": "^2.0.5",
     "firebase": "^9.0.2",
     "fontawesome-svelte": "^2.0.1",

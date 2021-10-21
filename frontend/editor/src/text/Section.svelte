@@ -51,8 +51,9 @@
   class:placeholder={!$sectionStore.edited}
   class:sectionPlaying={$sectionStore.playing}
   class:underline={$sectionStore.text.length === 0}
-  class:questionable={$sectionStore.completions.length > 1 && !$sectionStore.edited}
+  class:questionable={$sectionStore.options.length > 1 && !$sectionStore.edited}
   data-sectionIdx={$sectionStore.idx}
+  title={$sectionStore.silenceBefore + " - " + $sectionStore.silenceAfter}
 >
   {`\u200b${$sectionStore.text}\u200b`}
   <!-- {`/${sectionStore.text}/`} -->

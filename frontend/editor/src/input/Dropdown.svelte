@@ -28,7 +28,7 @@
 
     left = sectionBox.left - wrapperBox.left
 
-    const boxHeight = section.completions.length * (optionHeight + 1) + 5;
+    const boxHeight = section.options.length * (optionHeight + 1) + 5;
     const desiredTop = sectionBox.top + sectionBox.height - wrapperBox.top;
     const desiredBottom = desiredTop + boxHeight;
 
@@ -46,11 +46,11 @@
   $: options = getOptions(section)
   function getOptions(section: Section | undefined): string[] {
     if (!section) return [];
-    const {completions, text, edited} = section;
+    const {options, text, edited} = section;
 
-    let options: string[] = completions;
+    let completions: string[] = options;
     if (!edited && text.length > 0) {
-      options = options.filter(option => option !== text);
+      completions = options.filter(option => option !== text);
       options.unshift(text);
     }
     return options;

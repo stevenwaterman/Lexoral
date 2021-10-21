@@ -2,7 +2,7 @@ import { derived, writable, Writable } from "svelte/store";
 import { sendToast } from "../display/toast/toasts";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { deriveDebounced } from "../utils/stores";
-import { initSectionStartEnd, playingStore, updateCurrentlyPlaying } from "./audioStatus";
+import { playingStore, updateCurrentlyPlaying } from "./audioStatus";
 import { getSelectionTimings } from "./audioTimings";
 
 
@@ -63,9 +63,7 @@ let loop: boolean;
 loopStore.subscribe(state => loop = state);
 
 
-export function initAudio(src: string, timings: Record<number, { startTime: number; endTime: number }>) {
-  initSectionStartEnd(timings);
-
+export function initAudio(src: string) {
   player = document.createElement("audio");
   player.src = src;
 

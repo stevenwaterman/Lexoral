@@ -1,17 +1,23 @@
+import { start } from "repl";
 import { Readable, writable, Writable } from "svelte/store";
 import { getSectionSelectedStore } from "../state/sectionStore";
+import { getSectionTimingStore } from "../state/timingsStore";
 import { getAssertExists } from "../utils/list";
 
 export const playingStore: Writable<boolean> = writable(false);
 
-let audioTimings: Array<{ startTime: number; endTime: number }>;
+const audioTimings: Array<{ startTime: number; endTime: number }> = [];
 
-export function initSectionStartEnd(timings: Record<number, { startTime: number; endTime: number }>) {
-  const sorted = Object.entries(timings)
-    .map(([key, value]) => [parseInt(key), value] as const);
-  sorted.sort((a,b) => (a[0] - b[0]));
+export function initAudioCurrentlyPlaying(sectionCount: number) {
+  for (let i = 0; i < sectionCount; i++) {
+    const data = { startTime: -1, endTime: -1};
+    audioTimings.push(data);
 
-  audioTimings = sorted.map(([_, val]) => val);
+    getSectionTimingStore(i).subscribe(({ startTime, endTime }) => {
+      data.startTime = startTime;
+      data.endTime = endTime;
+    });
+  }
 }
 
 function getSectionIdxForTime(time: number | null): number | null {
