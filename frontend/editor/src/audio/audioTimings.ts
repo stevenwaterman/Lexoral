@@ -2,7 +2,7 @@ import { get_store_value } from "svelte/internal";
 import { Writable, writable } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { ParagraphLocation, paragraphLocationsStore } from "../state/paragraphLocationsStore";
-import { AllSections, allSectionsStore } from "../state/sectionStore";
+import { AllSections, allSectionsStore } from "../state/section/combinedSectionStore";
 import { clamp } from "../utils/list";
 
 let earlySelectionIdx: number | undefined;

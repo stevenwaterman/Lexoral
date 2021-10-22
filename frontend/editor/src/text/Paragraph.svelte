@@ -57,6 +57,6 @@
 
 <p class="paragraph" bind:this={paragraphComponent} style={style} class:hidden={!visible}>
   {#each paragraphRange as idx (idx)}
-    <Section sectionStore={getAssertExists(sections, idx)} last={idx === paragraphRange.length - 1} hidden={!visible}/>
+    <Section sectionStore={getAssertExists(sections, idx)} hidden={!visible}/>
   {/each}
 </p>

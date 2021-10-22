@@ -2,7 +2,7 @@ import { Writable, writable, Readable, derived } from "svelte/store";
 import { deriveConditionally, deriveUnwrap, deriveWithPrevious } from "../utils/stores";
 import { clampGet, clamp, getAssertExists, forIn } from "../utils/list";
 import { findSectionNode } from "../text/selector";
-import { allSectionsStore, getSectionSelectedStore, MaybeSectionStore, Section, SectionStore } from "../state/sectionStore";
+import { allSectionsStore, getSectionSelectedStore, MaybeSectionStore, Section, SectionStore } from "../state/section/combinedSectionStore";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {

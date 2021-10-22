@@ -1,6 +1,6 @@
 import { doc, DocumentReference, writeBatch } from "firebase/firestore";
 import { assertUser, getTranscriptId } from "../../api";
-import { getDb } from "../db";
+import { getDb } from "./db";
 import type { Patch } from "./dbListener";
 
 function getMetaDoc(): DocumentReference {

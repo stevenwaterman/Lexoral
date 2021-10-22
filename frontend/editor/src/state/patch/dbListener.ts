@@ -1,6 +1,6 @@
 import { Readable, writable, Writable } from "svelte/store";
 import { assertUser, getTranscriptId } from "../../api";
-import { getDb } from "../db";
+import { getDb } from "./db";
 import { collection, query, onSnapshot, DocumentData, QuerySnapshot, DocumentChange } from "firebase/firestore";
 import { forIn, getAssertExists } from "../../utils/list";
 import { paragraphLocationsStore } from "../paragraphLocationsStore";
@@ -182,7 +182,6 @@ export class DbListener {
     } else {
       return false;
     }
-    
   }
 
   redo(): boolean {

@@ -1,5 +1,5 @@
 import type { User } from "firebase/auth";
-import type { SectionState } from "./state/sectionStore";
+import type { SectionState } from "./state/section/combinedSectionStore";
 
 let user: User | undefined = undefined;
 

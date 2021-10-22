@@ -1,6 +1,6 @@
 import { start } from "repl";
 import { Readable, writable, Writable } from "svelte/store";
-import { getSectionSelectedStore } from "../state/sectionStore";
+import { getSectionSelectedStore } from "../state/section/combinedSectionStore";
 import { getSectionTimingStore } from "../state/timingsStore";
 import { getAssertExists } from "../utils/list";
 

@@ -174,3 +174,7 @@ export function makeWritable<T>(baseStore: Writable<T>, derivedStore: Readable<T
     update: (updater: (value: T) => T) => baseStore.update(updater)
   }
 }
+
+export function makeReadonly<T>(baseStore: Writable<T>): Readable<T> {
+  return { subscribe: baseStore.subscribe };
+}
