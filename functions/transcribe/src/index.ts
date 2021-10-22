@@ -32,7 +32,7 @@ async function handleRequest(req: Request, res: Response) {
 
     languageCode: "en-US",
     maxAlternatives: 5,
-    enableAutomaticPunctuation: false,
+    enableAutomaticPunctuation: true,
     enableWordTimeOffsets: true,
     useEnhanced: true,
     model: "video"
