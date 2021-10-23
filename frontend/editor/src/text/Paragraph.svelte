@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { getAssertExists } from "../utils/list";
+  import { getAssertExistsRecord } from "../utils/list";
 
   import Section from "./Section.svelte";
-  import type { AllSections } from "../state/sectionStore";
   import { onDestroy, onMount } from "svelte";
+  import { sectionStores } from "../state/section/sectionStore";
 
   export let observer: IntersectionObserver | undefined;
-  export let sections: AllSections;
   export let start: number;
   export let end: number;
 
@@ -57,6 +56,6 @@
 
 <p class="paragraph" bind:this={paragraphComponent} style={style} class:hidden={!visible}>
   {#each paragraphRange as idx (idx)}
-    <Section sectionStore={getAssertExists(sections, idx)} hidden={!visible}/>
+    <Section sectionStore={getAssertExistsRecord(sectionStores, idx)} hidden={!visible}/>
   {/each}
 </p>

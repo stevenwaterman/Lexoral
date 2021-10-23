@@ -1,19 +1,26 @@
 <script lang="ts">
-  import { focusSectionIdxStore, focusSectionStore, isTextSelectedStore } from "./selectionState";
   import { getAssertExists, modulo } from "../utils/list";
-  import { selectNextSection, selectSectionStart } from "./select";
+  import { selectNextSection } from "./select";
   import { playingStore } from "../audio/audioStatus";
   import { findSectionNode } from "../text/selector";
-  import type { Section } from "../state/sectionStore";
   import { patchInterface } from "../state/patch/patchInterface";
+  import { focusSectionIdxStore, isTextSelectedStore } from "./selectionState";
+import { SectionStore, sectionStores } from "../state/section/sectionStore";
 
   export let wrapper: HTMLDivElement | undefined;
 
-  let section: Section | undefined;
-  $: section = $focusSectionStore;
+  let sectionIdx: number | undefined;
+  $: sectionIdx = $focusSectionIdxStore;
+
+  let section: SectionStore | undefined;
+  $: section = sectionIdx === undefined ? undefined : sectionStores[sectionIdx];
 
   let visible: boolean;
   $: visible = !$isTextSelectedStore && section !== undefined && options.length > 1;
+
+  // TODO
+
+  let rawOptions: [string, ...string[]] = [ "TODO" ];
 
   let optionHeight: number;
   let left: number;
@@ -28,7 +35,7 @@
 
     left = sectionBox.left - wrapperBox.left
 
-    const boxHeight = section.options.length * (optionHeight + 1) + 5;
+    const boxHeight = rawOptions.length * (optionHeight + 1) + 5;
     const desiredTop = sectionBox.top + sectionBox.height - wrapperBox.top;
     const desiredBottom = desiredTop + boxHeight;
 
@@ -42,19 +49,19 @@
   }
   $: resize(section);
 
-  let options: string[];
-  $: options = getOptions(section)
-  function getOptions(section: Section | undefined): string[] {
-    if (!section) return [];
-    const {options, text, edited} = section;
+  let options: string[] = [];
+  // $: options = getOptions(section)
+  // function getOptions(section: Section | undefined): string[] {
+  //   if (!section) return [];
+  //   const {options, text, edited} = section;
 
-    let completions: string[] = options;
-    if (!edited && text.length > 0) {
-      completions = options.filter(option => option !== text);
-      options.unshift(text);
-    }
-    return options;
-  }
+  //   let completions: string[] = options;
+  //   if (!edited && text.length > 0) {
+  //     completions = options.filter(option => option !== text);
+  //     options.unshift(text);
+  //   }
+  //   return options;
+  // }
 
   let selectedIdx: number = 0;
 

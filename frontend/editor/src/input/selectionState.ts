@@ -1,8 +1,8 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
 import { deriveConditionally, deriveUnwrap, deriveWithPrevious } from "../utils/stores";
-import { clampGet, clamp, getAssertExists, forIn } from "../utils/list";
+import { clamp, getAssertExists, forIn, getAssertExistsRecord } from "../utils/list";
 import { findSectionNode } from "../text/selector";
-import { allSectionsStore, getSectionSelectedStore, MaybeSectionStore, Section, SectionStore } from "../state/section/combinedSectionStore";
+import { SectionStore, sectionStores } from "../state/section/sectionStore"
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -31,36 +31,14 @@ export type SectionSelection = {
 const selectionStoreInternal: Writable<SectionSelection | undefined> = writable(undefined);
 export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(selectionStoreInternal, undefined);
 
-/**
- * Derive a store containing the selected section based from a store containing a cursor position
-*/
-export function deriveSectionSelectionStore(cursorPositionStore: Readable<undefined | Omit<CursorPosition, "offset">>): MaybeSectionStore {
-  // Use the section idx from the cursor position and the above store to derive a store containing the section store for the section containing the cursor
-  const sectionStoreWrapped: Readable<SectionStore | undefined> = derived(
-    [ allSectionsStore, cursorPositionStore],
-    ([allSections,      cursorPosition]
-  ) => {
-    if (cursorPosition === undefined) return undefined;
-    return clampGet(allSections, cursorPosition.section);
-  });
-  return deriveUnwrap(sectionStoreWrapped);
-}
-
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
 const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);
 
-export const anchorSectionStore: MaybeSectionStore = deriveSectionSelectionStore(anchorCursorPositionStore);
-export const anchorSectionIdxStore = derived(anchorSectionStore, section => section?.idx);
+export const anchorSectionIdxStore = derived(anchorCursorPositionStore, cursor => cursor?.section);
+export const focusSectionIdxStore = derived(focusCursorPositionStore, cursor => cursor?.section);
 
-export const focusSectionStore: MaybeSectionStore = deriveSectionSelectionStore(focusCursorPositionStore);
-export const focusSectionIdxStore = derived(focusSectionStore, section => section?.idx);
-
-export const earlySectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
-export const earlySectionIdxStore = derived(earlySectionStore, section => section?.idx);
-export const lateSectionStore: Readable<Section | undefined> = derived([selectionStore, anchorSectionStore, focusSectionStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
-export const lateSectionIdxStore = derived(lateSectionStore, section => section?.idx);
-
-
+export const earlySectionIdxStore = derived([selectionStore, anchorSectionIdxStore, focusSectionIdxStore], ([selection, anchor, focus]) => selection?.inverted ? focus : anchor);
+export const lateSectionIdxStore = derived([selectionStore, anchorSectionIdxStore, focusSectionIdxStore], ([selection, anchor, focus]) => selection?.inverted ? anchor : focus);
 
 
 const selectionRangeStore = derived([earlySectionIdxStore, lateSectionIdxStore], ([early, late]) => ({early, late}));
@@ -84,7 +62,7 @@ deriveWithPrevious(selectionRangeStore).subscribe(({ last, current }) => {
   }
 
   forIn(updates, (idx, selected) => {
-    getSectionSelectedStore(idx).update(state => ({ ...state, selected }));
+    getAssertExistsRecord(sectionStores, idx).selectedStore.set(selected);
   })
 })
 
@@ -103,15 +81,6 @@ export const areMultipleSectionsSelectedStore: Readable<boolean> = derived(selec
   if (selection === undefined) return false;
   if (selection.anchor.section !== selection.focus.section) return true;
   return false;
-});
-
-/** Store indicating whether the caret is at the start / end of the current section */
-export const caretPositionStore: Readable<{start: boolean; end: boolean}> = derived([focusSectionStore, selectionStore], ([section, selection]) => {
-  if (section === undefined || selection === undefined) return { start: false, end: false };
-  const start = selection.focus.offset === 0;
-  const textLength = findSectionNode(section.idx)?.textContent?.length ?? 0;
-  const end = selection.focus.offset >= textLength - 2;
-  return { start, end };
 });
 
 document.addEventListener("selectionchange", updateSelection);
@@ -183,19 +152,6 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
   }
 }
 
-
-/** The sections that currently have any of their text selected */
-export const selectedSectionsStore: Readable<SectionStore[]> = derived([earlySectionIdxStore, lateSectionIdxStore, allSectionsStore], ([rangeStart, rangeEnd, sections]) => {
-  // TODO this is probably a source of performance issues
-  if (rangeStart === undefined) return [];
-  if (rangeEnd === undefined) return [];
-  const output: SectionStore[] = [];
-  for (let i = rangeStart; i <= rangeEnd; i++) {
-    const section = getAssertExists(sections, i);
-    output.push(section);
-  }
-  return output;
-})
 
 /** Is the selection inverted, ie right-to-left, ie `anchor === late` */
 function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boolean {

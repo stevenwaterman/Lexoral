@@ -2,7 +2,7 @@ import { derived, Readable, writable, Writable } from "svelte/store"
 import { makeReadonly } from "../../utils/stores";
 import type { TranscriptEntry } from "../initStore";
 import { patchInterface } from "../patch/patchInterface";
-import { isKnownWord, capitalise } from "../wordStore";
+import { capitalise, isKnownWord } from "../wordStore";
 import { commaTimeStore, paragraphTimeStore, periodTimeStore } from "./defaultPunctuationStore";
 
 
@@ -11,8 +11,13 @@ export const sectionStores: Record<number, SectionStore> = {};
 
 export class SectionStore {
   readonly idx: number;
+
+  public startTime: number | undefined = undefined;
   readonly startTimeStore: Readable<number>;
+
+  public endTime: number | undefined = undefined;
   readonly endTimeStore: Readable<number>;
+
   private readonly rawOptionsStore: Readable<[string, ...string[]]>;
 
   constructor({ idx, startTime, endTime, options }: TranscriptEntry) {
@@ -20,6 +25,9 @@ export class SectionStore {
     this.startTimeStore = makeReadonly(writable(startTime));
     this.endTimeStore = makeReadonly(writable(endTime));
     this.rawOptionsStore = makeReadonly(writable(options));
+
+    this.startTimeStore.subscribe(state => this.startTime = state);
+    this.endTimeStore.subscribe(state => this.endTime = state);
 
     const sectionPatchStore = patchInterface.getPatchStore(idx);
     this.userTextStore = derived(sectionPatchStore, sectionPatch => sectionPatch.text);
@@ -30,17 +38,8 @@ export class SectionStore {
   }
 
 
-  private readonly selectedStoreInternal: Writable<boolean> = writable(false);
-  readonly selectedStore: Readable<boolean> = makeReadonly(this.selectedStoreInternal);
-  setSelected(selected: boolean) {
-    this.selectedStoreInternal.set(selected);
-  }
-
-  private readonly playingStoreInternal: Writable<boolean> = writable(false);
-  readonly playingStore: Readable<boolean> = makeReadonly(this.playingStoreInternal);
-  setPlaying(selected: boolean) {
-    this.playingStoreInternal.set(selected);
-  }
+  readonly selectedStore: Writable<boolean> = writable(false);
+  readonly playingStore: Writable<boolean> = writable(false);
 
 
   private readonly userTextStore: Readable<string | null>;
@@ -91,6 +90,7 @@ export class SectionStore {
   }
 
   
+  endsParagraph: boolean | undefined = undefined;
   private endsParagraphStoreInternal: Readable<boolean> | undefined = undefined;
   public get endsParagraphStore(): Readable<boolean> {
     if (this.endsParagraphStoreInternal !== undefined) return this.endsParagraphStoreInternal;
@@ -103,6 +103,7 @@ export class SectionStore {
         return silenceAfter >= requiredSilence
       }
     );
+    store.subscribe(state => this.endsParagraph = state);
     this.endsParagraphStoreInternal = store;
     return store;
   }
@@ -135,10 +136,8 @@ export class SectionStore {
     if (this.placeholderCapitalisationStoreInternal !== undefined) return this.placeholderCapitalisationStoreInternal;
     if (this.sectionBefore === undefined) throw new Error("Adjacent sections are not initialised");
     if (this.sectionBefore === null) return makeReadonly(writable(true));
-
-    const store = derived(this.sectionBefore.placeholderPunctuationStore, punctuation => punctuation === ".")
-    this.placeholderCapitalisationStoreInternal = store;
-    return store;
+    this.placeholderCapitalisationStoreInternal = this.sectionBefore.endsSentenceStore;
+    return this.placeholderCapitalisationStoreInternal;
   }
 
   private placeholderStoreInternal: Readable<string> | undefined = undefined;
@@ -171,6 +170,7 @@ export class SectionStore {
     return store;
   }
 
+  displayText: string | undefined = undefined;
   private displayTextStoreInternal: Readable<string> | undefined = undefined;
   public get displayTextStore(): Readable<string> {
     if (this.displayTextStoreInternal !== undefined) return this.displayTextStoreInternal;
@@ -179,7 +179,23 @@ export class SectionStore {
       if (userText !== null) return userText;
       else return placeholder;
     })
+    store.subscribe(state => this.displayText = state);
     this.displayTextStoreInternal = store;
+    return store;
+  }
+
+  private endsSentenceStoreInternal: Readable<boolean> | undefined = undefined;
+  public get endsSentenceStore(): Readable<boolean> {
+    if (this.endsSentenceStoreInternal !== undefined) return this.endsSentenceStoreInternal;
+
+    const store = derived(this.displayTextStore, text => {
+      const lastCharacter = text[text.length - 1] as string;
+      if (lastCharacter === ".") return true;
+      if (lastCharacter === "!") return true;
+      if (lastCharacter === "?") return true;
+      return false;
+    });
+    this.endsSentenceStoreInternal = store;
     return store;
   }
 }

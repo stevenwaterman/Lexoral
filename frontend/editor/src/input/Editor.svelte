@@ -12,6 +12,7 @@
   import { audioStyleStore } from "../audio/audioTimings";
   import { findSectionNode } from "../text/selector";
   import { selectEnd } from "./select";
+  import { commaTimeStore, paragraphTimeStore, periodTimeStore } from "../state/section/defaultPunctuationStore";
 
   let altReleaseShouldPlay = false;
 
@@ -110,3 +111,18 @@
   <Dropdown wrapper={wrapper}/>
   <Document wrapper={wrapper}/>
 </EditableContainer>
+
+<div>
+  <span>{$commaTimeStore}</span>
+  <input type="range" min={0.01} max={$periodTimeStore - 0.01} step={0.01} bind:value={$commaTimeStore}/> 
+</div>
+
+<div>
+  <span>{$periodTimeStore}</span>
+  <input type="range" min={$commaTimeStore + 0.01} max={$paragraphTimeStore - 0.01} step={0.01} bind:value={$periodTimeStore}/> 
+</div>
+
+<div>
+  <span>{$paragraphTimeStore}</span>
+  <input type="range" min={$periodTimeStore + 0.01} max={1} step={0.01} bind:value={$paragraphTimeStore}/>
+</div>

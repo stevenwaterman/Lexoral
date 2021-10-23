@@ -84,7 +84,10 @@ export function getAssertExists<T>(list: T[], idx: number): T {
 
 export function getAssertExistsRecord<K extends string | number | symbol, V>(record: Record<K, V>, key: K): V {
   const elem = record[key];
-  if (elem === undefined) throw new Error(`Idx ${key} did not exist in list ${record}, asserted that it did`);
+  if (elem === undefined) {
+    debugger
+    throw new Error(`Idx ${key} did not exist in list ${record}, asserted that it did`);
+  }
   return elem;
 }
 

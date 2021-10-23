@@ -1,5 +1,5 @@
 import type { User } from "firebase/auth";
-import type { SectionState } from "./state/section/combinedSectionStore";
+import type { TranscriptEntry } from "./state/initStore";
 
 let user: User | undefined = undefined;
 
@@ -8,7 +8,7 @@ export function setUser(newUser: User) {
 }
 
 type FetchTranscriptResult = {
-  transcript: Omit<SectionState, "idx">[];
+  transcript: Omit<TranscriptEntry, "idx">[];
   audioUrl: string;
 }
 

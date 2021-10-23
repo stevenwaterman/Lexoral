@@ -1,13 +1,8 @@
 <script lang="ts">
+  import { paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
   import Paragraph from "./Paragraph.svelte";
-  import { paragraphLocationsStore } from "../state/paragraphLocationsStore";
-  import type { AllSections } from "../state/sectionStore";
-  import { allSectionsStore } from "../state/sectionStore";
 
   export let wrapper: HTMLDivElement;
-
-  let sections: AllSections;
-  $: sections = $allSectionsStore;
 
   const observer = new IntersectionObserver(entries => {
      entries.forEach(entry => {
@@ -23,7 +18,6 @@
 {#each $paragraphLocationsStore as item (item.start + (1 / item.end))}
   <Paragraph
     observer={observer} 
-    sections={sections} 
     start={item.start} 
     end={item.end}
   />

@@ -1,22 +1,22 @@
 import { start } from "repl";
 import { Readable, writable, Writable } from "svelte/store";
-import { getSectionSelectedStore } from "../state/section/combinedSectionStore";
-import { getSectionTimingStore } from "../state/timingsStore";
-import { getAssertExists } from "../utils/list";
+import { sectionStores } from "../state/section/sectionStore"
+import { getAssertExists, getAssertExistsRecord } from "../utils/list";
+import { makeReadonly } from "../utils/stores";
 
 export const playingStore: Writable<boolean> = writable(false);
 
 const audioTimings: Array<{ startTime: number; endTime: number }> = [];
 
-export function initAudioCurrentlyPlaying(sectionCount: number) {
-  for (let i = 0; i < sectionCount; i++) {
+export function initAudioCurrentlyPlaying() {
+  const length = Object.keys(sectionStores).length;
+  for (let i = 0; i < length; i++) {
     const data = { startTime: -1, endTime: -1};
     audioTimings.push(data);
 
-    getSectionTimingStore(i).subscribe(({ startTime, endTime }) => {
-      data.startTime = startTime;
-      data.endTime = endTime;
-    });
+    const store = getAssertExistsRecord(sectionStores, i);
+    store.startTimeStore.subscribe(startTime => { data.startTime = startTime });
+    store.endTimeStore.subscribe(endTime => { data.endTime = endTime });
   }
 }
 
@@ -33,20 +33,18 @@ function getSectionIdxForTime(time: number | null): number | null {
 
 let lastPlayingSectionIdx: number | null = null;
 const lastPlayingSectionIdxStoreInternal: Writable<number | null> = writable(lastPlayingSectionIdx);
-export const lastPlayingSectionIdxStore: Readable<number | null> = { subscribe: lastPlayingSectionIdxStoreInternal.subscribe };
+export const lastPlayingSectionIdxStore: Readable<number | null> = makeReadonly(lastPlayingSectionIdxStoreInternal);
 
 export function updateCurrentlyPlaying(time: number | null) {
   const newPlayingSectionIdx = getSectionIdxForTime(time);
   if (newPlayingSectionIdx === lastPlayingSectionIdx) return;
 
   if (lastPlayingSectionIdx !== null) {
-    getSectionSelectedStore(lastPlayingSectionIdx)
-      .update(state => ({ ...state, playing: false }));
+    getAssertExistsRecord(sectionStores, lastPlayingSectionIdx).playingStore.set(false);
   }
 
   if (newPlayingSectionIdx !== null) {
-    getSectionSelectedStore(newPlayingSectionIdx)
-      .update(state => ({ ...state, playing: true }));
+    getAssertExistsRecord(sectionStores, newPlayingSectionIdx).playingStore.set(true);
   }
 
   lastPlayingSectionIdx = newPlayingSectionIdx;

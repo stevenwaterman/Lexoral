@@ -3,7 +3,6 @@ import { assertUser, getTranscriptId } from "../../api";
 import { getDb } from "./db";
 import { collection, query, onSnapshot, DocumentData, QuerySnapshot, DocumentChange } from "firebase/firestore";
 import { forIn, getAssertExists } from "../../utils/list";
-import { paragraphLocationsStore } from "../paragraphLocationsStore";
 
 type PatchProperty<KEY extends string, VALUE> = {
   from: Record<KEY, VALUE>;
@@ -41,7 +40,7 @@ export class DbListener {
   private getSectionPatchStoreInternal(idx: number): Writable<SectionCollapsedPatch> {
     let current = this.sectionPatchStores[idx];
     if (!current) {
-      current = writable({ text: null, endParagraph: false, edited: null });
+      current = writable({ text: null, endParagraph: null, edited: null });
       this.sectionPatchStores[idx] = current;
     }
     return current;
@@ -116,7 +115,7 @@ export class DbListener {
           ...adjustments
         }));
     })
-    paragraphLocationsStore.setEndParagraphBulk(collapsed);
+    // paragraphLocationsStore.setEndParagraphBulk(collapsed);
   }
 
   /**

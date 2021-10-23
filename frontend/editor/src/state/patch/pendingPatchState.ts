@@ -1,6 +1,5 @@
 import { Readable, writable, Writable } from "svelte/store";
 import { forIn } from "../../utils/list";
-import { paragraphLocationsStore } from "../paragraphLocationsStore";
 import type { SectionCollapsedPatch, SectionPatch } from "./dbListener";
 
 export class PendingPatchState {
@@ -66,9 +65,9 @@ export class PendingPatchState {
       this.sectionPatchData[idx] = sectionPatch;
     }
 
-    if ("endParagraph" in sectionPatch) {
-      paragraphLocationsStore.setEndParagraph(idx, sectionPatch["endParagraph"]);
-    }
+    // if ("endParagraph" in sectionPatch) {
+      // paragraphLocationsStore.setEndParagraph(idx, sectionPatch["endParagraph"]);
+    // }
 
     this.getSectionPatchStoreInternal(idx).set(sectionPatch);
   }

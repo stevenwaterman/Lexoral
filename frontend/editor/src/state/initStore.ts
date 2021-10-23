@@ -1,8 +1,9 @@
 import { initAudioCurrentlyPlaying } from "../audio/audioStatus";
 import { getAssertExists } from "../utils/list";
-import { paragraphLocationsStore } from "./paragraphLocationsStore";
+// import { paragraphLocationsStore } from "./paragraphLocationsStore";
 import { patchInterface } from "./patch/patchInterface";
-import { SectionStore } from "./section/sectionStore";
+import { paragraphLocationsStore } from "./section/paragraphLocationsStore";
+import { SectionStore } from "./section/sectionStore"
 import { initWords } from "./wordStore";
 
 export type TranscriptEntry = {
@@ -27,7 +28,8 @@ export async function initialiseStores(transcript: Omit<TranscriptEntry, "idx">[
     self.initAdjancentSections(prev, next);
   }
 
-  initAudioCurrentlyPlaying(withIdx.length)
+  paragraphLocationsStore.init();
+  initAudioCurrentlyPlaying();
 
   await Promise.all([wordsPromise, patchPromise]);
 }

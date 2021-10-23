@@ -1,6 +1,7 @@
 import { derived, Readable, writable, Writable } from "svelte/store";
-import { forIn, getAssertExists } from "../utils/list";
-import type { SectionCollapsedPatches } from "./patch/dbListener";
+import { forIn, getAssertExists } from "../../utils/list";
+import type { SectionCollapsedPatches } from "../patch/dbListener";
+import { sectionStores } from "./sectionStore";
 
 export type ParagraphLocation = { start: number, end: number };
 
@@ -61,14 +62,22 @@ function setEndParagraphBulk(patches: SectionCollapsedPatches) {
 }
 
 export const paragraphLocationsStore: Readable<ParagraphLocation[]> & {
+  init: () => void;
   setEndParagraph: (idx: number, endParagraph: boolean) => void;
   setEndParagraphBulk: (patches: SectionCollapsedPatches) => void;
   setLastSectionIdx: (idx: number) => void;
   setDefaults: (defaultEndParagraphs: Set<number>) => void;
 } = {
   subscribe: paragraphLocationsStoreInternal.subscribe,
+  init,
   setEndParagraph,
   setEndParagraphBulk,
   setLastSectionIdx: lastSectionIdxStore.set,
   setDefaults: paragraphDefaultsStore.set
+}
+
+function init() {
+  forIn(sectionStores, (idx, store) => {
+    store.endsParagraphStore.subscribe(endParagraph => setEndParagraph(idx, endParagraph));
+  });
 }

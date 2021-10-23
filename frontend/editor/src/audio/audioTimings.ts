@@ -1,8 +1,7 @@
-import { get_store_value } from "svelte/internal";
 import { Writable, writable } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
-import { ParagraphLocation, paragraphLocationsStore } from "../state/paragraphLocationsStore";
-import { AllSections, allSectionsStore } from "../state/section/combinedSectionStore";
+import { ParagraphLocation, paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
+import { sectionStores } from "../state/section/sectionStore"
 import { clamp } from "../utils/list";
 
 let earlySelectionIdx: number | undefined;
@@ -12,9 +11,6 @@ lateSectionIdxStore.subscribe(state => lateSelectionIdx = state);
 
 let paragraphLocations: ParagraphLocation[];
 paragraphLocationsStore.subscribe(state => paragraphLocations = state);
-
-let allSections: AllSections;
-allSectionsStore.subscribe(state => allSections = state);
 
 export type AudioStyle = "context" | "onward"
 let audioStyle: AudioStyle = "context";
@@ -36,7 +32,7 @@ function getSelectionTimingsContext(): { start: number, end: number } | null {
 
 function getSelectionTimingsOnward(): { start: number, end: number } | null {
   const startSectionIdx = earlySelectionIdx;
-  const endSectionIdx = allSections.length - 1;
+  const endSectionIdx = Object.keys(sectionStores).length - 1;
   return getSelectionTimingsLiteral(startSectionIdx, endSectionIdx);
 }
 
@@ -45,17 +41,14 @@ function getSelectionTimingsLiteral(startSectionIdx: number | undefined, endSect
   if (startSectionIdx === undefined) return null;
   if (endSectionIdx === undefined) return null;
   
-  const startSectionStore = allSections[startSectionIdx];
-  const endSectionStore = allSections[endSectionIdx];
+  const startSectionStore = sectionStores[startSectionIdx];
+  const endSectionStore = sectionStores[endSectionIdx];
 
   if (startSectionStore === undefined) return null;
   if (endSectionStore === undefined) return null;
 
-  const startSection = get_store_value(startSectionStore);
-  const endSection = get_store_value(endSectionStore);
-
-  const start = startSection.startTime;
-  const end = endSection.endTime;
+  const start = startSectionStore.startTime as number;
+  const end = endSectionStore.endTime as number;
 
   return {start, end};
 }
