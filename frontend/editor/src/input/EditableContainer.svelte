@@ -3,10 +3,10 @@
 
   import {
     restoreSelection,
-    saveSelection
+    saveSelection,
+    findSectionNode
   } from "./select";
 
-  import { findSectionNode } from "../text/selector";
   import { onKeyPressed } from "./controls";
   import { patchInterface } from "../state/patch/patchInterface";
 

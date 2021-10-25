@@ -6,8 +6,55 @@ import { capitalise, isKnownWord } from "../wordStore";
 import { commaTimeStore, paragraphTimeStore, periodTimeStore } from "./defaultPunctuationStore";
 
 
-export const sectionStores: Record<number, SectionStore> = {};
+type AtLeastOne<List extends any[]> = [List[0], ...List];
 
+type SectionStoreSubStoreKeys = 
+  "startTimeStore" |
+  "endTimeStore" |
+  "selectedStore" |
+  "playingStore" |
+  "editedStore" |
+  "silenceBeforeStore" |
+  "silenceAfterStore" |
+  "endsParagraphStore" |
+  "startsParagraphStore" |
+  "displayTextStore" |
+  "endsSentenceStore";
+
+type SectionStoreFullState = {
+  startTime: number | null;
+  endTime: number | null;
+  selected: boolean;
+  playing: boolean;
+  edited: boolean;
+  silenceBefore: number | null;
+  silenceAfter: number | null;
+  endsParagraph: boolean;
+  startsParagraph: boolean;
+  displayText: string;
+  endsSentence: boolean;
+}
+export type DeriveSectionKeys = Readonly<Array<keyof SectionStoreFullState>>;
+
+export type SectionStoreState<KEYS extends DeriveSectionKeys> = Pick<SectionStoreFullState, KEYS[number]>;
+
+export function deriveRelevant<KEYS extends DeriveSectionKeys>(sectionStore: SectionStore, keys: KEYS): Readable<SectionStoreState<KEYS>> {
+  const storeNames = keys.map(key => key + "Store") as Array<SectionStoreSubStoreKeys>;
+  const stores = storeNames.map(key => sectionStore[key]);
+  return derived(stores as AtLeastOne<typeof stores>, values => {
+    const data = {} as any;
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i] as any;
+      const value = values[i] as any;
+      data[key] = value
+    }
+    return data;
+  })
+}
+
+
+
+export const sectionStores: Record<number, SectionStore> = {};
 
 export class SectionStore {
   readonly idx: number;
@@ -116,7 +163,7 @@ export class SectionStore {
 
 
   private placeholderPunctuationStoreInternal: Readable<"," | "." | ""> | undefined = undefined;
-  public get placeholderPunctuationStore(): Readable<"," | "." | ""> {
+  private get placeholderPunctuationStore(): Readable<"," | "." | ""> {
     if (this.placeholderPunctuationStoreInternal !== undefined) return this.placeholderPunctuationStoreInternal;
 
     const store = derived([this.silenceAfterStore, commaTimeStore, periodTimeStore],
@@ -132,7 +179,7 @@ export class SectionStore {
   }
 
   private placeholderCapitalisationStoreInternal: Readable<boolean> | undefined = undefined;
-  public get placeholderCapitalisationStore(): Readable<boolean> {
+  private get placeholderCapitalisationStore(): Readable<boolean> {
     if (this.placeholderCapitalisationStoreInternal !== undefined) return this.placeholderCapitalisationStoreInternal;
     if (this.sectionBefore === undefined) throw new Error("Adjacent sections are not initialised");
     if (this.sectionBefore === null) return makeReadonly(writable(true));
@@ -141,7 +188,7 @@ export class SectionStore {
   }
 
   private placeholderStoreInternal: Readable<string> | undefined = undefined;
-  public get placeholderStore(): Readable<string> {
+  private get placeholderStore(): Readable<string> {
     if (this.placeholderStoreInternal !== undefined) return this.placeholderStoreInternal;
 
     const store = derived([

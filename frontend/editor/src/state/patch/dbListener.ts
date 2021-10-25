@@ -115,7 +115,6 @@ export class DbListener {
           ...adjustments
         }));
     })
-    // paragraphLocationsStore.setEndParagraphBulk(collapsed);
   }
 
   /**

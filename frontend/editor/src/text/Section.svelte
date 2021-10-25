@@ -1,31 +1,17 @@
 <script lang="ts">
   import type { Readable } from "svelte/store";
-  import type { SectionStore } from "../state/section/sectionStore";
+  import type { SectionStoreState } from "../state/section/sectionStore";
+  import type { sectionProps } from "./selector";
 
-  export let sectionStore: SectionStore;
+  export let idx: number;
+  export let sectionStore: Readable<SectionStoreState<typeof sectionProps>>;
   export let hidden: boolean;
-
-  let selectedStore: Readable<boolean>;
-  $: selectedStore = sectionStore.selectedStore;
-
-  let editedStore: Readable<boolean>;
-  $: editedStore = sectionStore.editedStore;
-
-  let playingStore: Readable<boolean>;
-  $: playingStore = sectionStore.playingStore;
-
-  let displayTextStore: Readable<string>;
-  $: displayTextStore = sectionStore.displayTextStore;
-
-  let endsParagraphStore: Readable<boolean>;
-  $: endsParagraphStore = sectionStore.endsParagraphStore;
 </script>
 
 <style>
   .section {
     display: inline;
     white-space: pre-wrap;
-    /* transition: background 0.2s; */
     min-width: 1em;
   }
 
@@ -62,13 +48,14 @@
 <span
   class="section"
   class:hidden
-  class:highlight={$selectedStore}
-  class:finalised={!$editedStore}
-  class:sectionPlaying={$playingStore}
-  class:underline={$displayTextStore.length === 0}
-  data-sectionIdx={sectionStore.idx}
+  class:highlight={$sectionStore.selected}
+  class:sectionPlaying={$sectionStore.playing}
+  class:underline={$sectionStore.displayText.length === 0}
+  class:placeholder={!$sectionStore.edited}
+  data-sectionIdx={idx}
+  title={`${$sectionStore.startTime} - ${$sectionStore.endTime}`}
 >
-  {`\u200b${$displayTextStore}\u200b`}
-  <!-- {`/${$displayTextStore}/`} -->
+  {`\u200b${$sectionStore.displayText}\u200b`}
+  <!-- {`/${state.displayText}/`} -->
 </span>
-{$endsParagraphStore ? "" : " "}
+{$sectionStore.endsParagraph ? "" : " "}

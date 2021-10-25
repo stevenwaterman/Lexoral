@@ -3,7 +3,8 @@
 
   import Section from "./Section.svelte";
   import { onDestroy, onMount } from "svelte";
-  import { sectionStores } from "../state/section/sectionStore";
+  import { deriveRelevant, sectionStores } from "../state/section/sectionStore";
+  import { sectionProps } from "./selector";
 
   export let observer: IntersectionObserver | undefined;
   export let start: number;
@@ -36,7 +37,7 @@
 
 
   let style: string;
-  $: style = visible ? "" : `min-height: ${minHeight}px`
+  $: style = visible ? "" : `min-height: ${minHeight}px`;
 </script>
 
 <style>
@@ -56,6 +57,10 @@
 
 <p class="paragraph" bind:this={paragraphComponent} style={style} class:hidden={!visible}>
   {#each paragraphRange as idx (idx)}
-    <Section sectionStore={getAssertExistsRecord(sectionStores, idx)} hidden={!visible}/>
+    <Section 
+      idx={idx}
+      sectionStore={deriveRelevant(getAssertExistsRecord(sectionStores, idx), sectionProps)} 
+      hidden={!visible}
+    />
   {/each}
 </p>

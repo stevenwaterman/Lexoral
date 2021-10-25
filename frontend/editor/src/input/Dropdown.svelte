@@ -1,11 +1,10 @@
 <script lang="ts">
   import { getAssertExists, modulo } from "../utils/list";
-  import { selectNextSection } from "./select";
+  import { findSectionNode, selectNextSection } from "./select";
   import { playingStore } from "../audio/audioStatus";
-  import { findSectionNode } from "../text/selector";
   import { patchInterface } from "../state/patch/patchInterface";
   import { focusSectionIdxStore, isTextSelectedStore } from "./selectionState";
-import { SectionStore, sectionStores } from "../state/section/sectionStore";
+  import { SectionStore, sectionStores } from "../state/section/sectionStore";
 
   export let wrapper: HTMLDivElement | undefined;
 

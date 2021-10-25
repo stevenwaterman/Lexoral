@@ -1,7 +1,6 @@
 import { focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
-import { findSectionNode } from "../text/selector";
 import { tick } from "svelte";
-import { selectSectionEnd, selectSectionStart } from "./select";
+import { findSectionNode, selectSectionEnd, selectSectionStart } from "./select";
 import { patchInterface } from "../state/patch/patchInterface";
 
 let focusSectionIdx: number | undefined = undefined;

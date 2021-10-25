@@ -1,5 +1,4 @@
 import type { SectionSelection } from "./selectionState";
-import { findSectionNode } from "../text/selector";
 
 export async function selectExactly(selection: SectionSelection | undefined) {
   if (!selection) return;
@@ -140,4 +139,8 @@ export function restoreSelection() {
   savedSelection = undefined;
 }
 
-
+export function findSectionNode(idx: number | undefined): HTMLSpanElement | undefined {
+  if (idx === undefined) return undefined;
+  const queryResult = document.querySelector(`[data-sectionIdx="${idx}"]`) as HTMLSpanElement | null;
+  return queryResult ?? undefined;
+}
