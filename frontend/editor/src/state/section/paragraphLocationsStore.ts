@@ -1,18 +1,17 @@
 import { derived, Readable, writable, Writable } from "svelte/store";
 import { forIn, getAssertExists } from "../../utils/list";
-import { sectionStores } from "./sectionStore";
+import { maxSectionIdx, sectionStores } from "./sectionStore";
 
 export type ParagraphLocation = { start: number, end: number };
 
-export const lastSectionIdxStore: Writable<number> = writable(-1);
-
-const paragraphDataStore: Writable<Set<number>> = writable(new Set());
-const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived([paragraphDataStore, lastSectionIdxStore], ([locations, lastSectionIdx]) => {
+const paragraphData: Set<number> = new Set();
+const paragraphDataStore: Writable<Set<number>> = writable(paragraphData);
+const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(paragraphDataStore, locations => {
   const sortedBoundaries = Array.from(locations);
   sortedBoundaries.sort((a,b) => a-b);
   sortedBoundaries.unshift(-1);
-  if (sortedBoundaries[sortedBoundaries.length - 1] !== lastSectionIdx) {
-    sortedBoundaries.push(lastSectionIdx);
+  if (sortedBoundaries[sortedBoundaries.length - 1] !== maxSectionIdx) {
+    sortedBoundaries.push(maxSectionIdx);
   }
 
   const output: {start: number; end: number}[] = [];
@@ -26,22 +25,23 @@ const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived([
 
 
 function setEndParagraph(idx: number, endParagraph: boolean) {
-  paragraphDataStore.update(state => {
-    if (endParagraph) state.add(idx);
-    else state.delete(idx);
-    return state;
-  })
+  if (endParagraph) {
+    if (paragraphData.has(idx)) return;
+    paragraphData.add(idx);
+  } else {
+    if (!paragraphData.has(idx)) return;
+    paragraphData.delete(idx);
+  }
+  paragraphDataStore.set(paragraphData);
 }
 
 export const paragraphLocationsStore: Readable<ParagraphLocation[]> & {
   init: () => void;
   setEndParagraph: (idx: number, endParagraph: boolean) => void;
-  setLastSectionIdx: (idx: number) => void;
 } = {
   subscribe: paragraphLocationsStoreInternal.subscribe,
   init,
   setEndParagraph,
-  setLastSectionIdx: lastSectionIdxStore.set
 }
 
 function init() {

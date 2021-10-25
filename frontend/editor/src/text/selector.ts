@@ -1,3 +1,1 @@
-import type { DeriveSectionKeys } from "../state/section/sectionStore";
-
-export const sectionProps = ["selected", "edited", "playing", "displayText", "silenceBefore", "silenceAfter", "endsParagraph", "startTime", "endTime"] as const;
+export const sectionProps = ["selected", "edited", "playing", "displayText", "endsParagraph", "completions"] as const;

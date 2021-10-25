@@ -111,6 +111,7 @@
   <Document wrapper={wrapper}/>
 </EditableContainer>
 
+<!-- 
 <div>
   <input type="range" min={0.01} max={$periodTimeStore - 0.01} step={0.01} bind:value={$commaTimeStore}/> 
   <span>{$commaTimeStore}</span>
@@ -125,3 +126,4 @@
   <input type="range" min={$periodTimeStore + 0.01} max={1} step={0.01} bind:value={$paragraphTimeStore}/>
   <span>{$paragraphTimeStore}</span>
 </div>
+-->

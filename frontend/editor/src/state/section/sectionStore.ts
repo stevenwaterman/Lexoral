@@ -1,9 +1,11 @@
 import { derived, Readable, writable, Writable } from "svelte/store"
+import { getOptions } from "./align";
 import { makeReadonly } from "../../utils/stores";
 import type { TranscriptEntry } from "../initStore";
 import { patchInterface } from "../patch/patchInterface";
 import { capitalise, isKnownWord } from "../wordStore";
 import { commaTimeStore, paragraphTimeStore, periodTimeStore } from "./defaultPunctuationStore";
+import { getCompletionStore } from "./completions";
 
 
 type AtLeastOne<List extends any[]> = [List[0], ...List];
@@ -19,7 +21,8 @@ type SectionStoreSubStoreKeys =
   "endsParagraphStore" |
   "startsParagraphStore" |
   "displayTextStore" |
-  "endsSentenceStore";
+  "endsSentenceStore" | 
+  "completionsStore";
 
 type SectionStoreFullState = {
   startTime: number | null;
@@ -33,9 +36,9 @@ type SectionStoreFullState = {
   startsParagraph: boolean;
   displayText: string;
   endsSentence: boolean;
+  completions: [string, ...string[]];
 }
 export type DeriveSectionKeys = Readonly<Array<keyof SectionStoreFullState>>;
-
 export type SectionStoreState<KEYS extends DeriveSectionKeys> = Pick<SectionStoreFullState, KEYS[number]>;
 
 export function deriveRelevant<KEYS extends DeriveSectionKeys>(sectionStore: SectionStore, keys: KEYS): Readable<SectionStoreState<KEYS>> {
@@ -52,9 +55,8 @@ export function deriveRelevant<KEYS extends DeriveSectionKeys>(sectionStore: Sec
   })
 }
 
-
-
 export const sectionStores: Record<number, SectionStore> = {};
+export let maxSectionIdx: number = -1;
 
 export class SectionStore {
   readonly idx: number;
@@ -65,13 +67,13 @@ export class SectionStore {
   public endTime: number | undefined = undefined;
   readonly endTimeStore: Readable<number>;
 
-  private readonly rawOptionsStore: Readable<[string, ...string[]]>;
+  private readonly rawOptions: [string, ...string[]];
 
   constructor({ idx, startTime, endTime, options }: TranscriptEntry) {
     this.idx = idx;
     this.startTimeStore = makeReadonly(writable(startTime));
     this.endTimeStore = makeReadonly(writable(endTime));
-    this.rawOptionsStore = makeReadonly(writable(options));
+    this.rawOptions = options;
 
     this.startTimeStore.subscribe(state => this.startTime = state);
     this.endTimeStore.subscribe(state => this.endTime = state);
@@ -82,6 +84,7 @@ export class SectionStore {
     this.editedStore = derived(this.userTextStore, text => text !== null);
 
     sectionStores[idx] = this;
+    maxSectionIdx = Math.max(maxSectionIdx, idx);
   }
 
 
@@ -187,34 +190,12 @@ export class SectionStore {
     return this.placeholderCapitalisationStoreInternal;
   }
 
-  private placeholderStoreInternal: Readable<string> | undefined = undefined;
-  private get placeholderStore(): Readable<string> {
-    if (this.placeholderStoreInternal !== undefined) return this.placeholderStoreInternal;
+  private completionsStoreInternal: Readable<[string, ...string[]]> | undefined = undefined;
+  public get completionsStore(): Readable<[string, ...string[]]> {
+    if (this.completionsStoreInternal !== undefined) return this.completionsStoreInternal;
 
-    const store = derived([
-      this.rawOptionsStore,
-      this.placeholderPunctuationStore,
-      this.placeholderCapitalisationStore
-    ], ([
-      options,
-      punctuation,
-      capitalisePlaceholder
-    ]) => {
-      const firstOption = options[0];
-      const punctuationRemoved = firstOption.replace(/[.,]/g, "");
-      const words = punctuationRemoved.split(" ");
-      const lowercaseWords = words.map(word => {
-        if (word === word.toUpperCase()) return word; // Keep eg USA all-caps
-        const lowercase = word.toLowerCase();
-        if (!isKnownWord(lowercase)) return capitalise(lowercase);
-        return lowercase;
-      })
-      const recombinedWords = lowercaseWords.join(" ") + punctuation;
-      if (capitalisePlaceholder) return capitalise(recombinedWords);
-      else return recombinedWords;
-    });
-    this.placeholderStoreInternal = store;
-    return store;
+    this.completionsStoreInternal = getCompletionStore(this.userTextStore, this.rawOptions, this.placeholderCapitalisationStore, this.placeholderPunctuationStore);
+    return this.completionsStoreInternal;
   }
 
   displayText: string | undefined = undefined;
@@ -222,10 +203,7 @@ export class SectionStore {
   public get displayTextStore(): Readable<string> {
     if (this.displayTextStoreInternal !== undefined) return this.displayTextStoreInternal;
 
-    const store = derived([this.userTextStore, this.placeholderStore], ([userText, placeholder]) => {
-      if (userText !== null) return userText;
-      else return placeholder;
-    })
+    const store = derived(this.completionsStore, completions => completions[0]);
     store.subscribe(state => this.displayText = state);
     this.displayTextStoreInternal = store;
     return store;

@@ -21,7 +21,7 @@
 
   .underline {
     padding-right: 0.5em;
-    box-shadow: inset 0 -2px 0 var(--form-border);
+    border-bottom: 1px solid var(--form-border);
   }
 
   .highlight {
@@ -41,7 +41,7 @@
   }
 
   .questionable {
-    border-bottom: 1px solid var(--error)
+    border-bottom: 1px solid var(--error);
   }
 </style>
 
@@ -52,8 +52,8 @@
   class:sectionPlaying={$sectionStore.playing}
   class:underline={$sectionStore.displayText.length === 0}
   class:placeholder={!$sectionStore.edited}
+  class:questionable={$sectionStore.completions.length > 1 && !$sectionStore.edited}
   data-sectionIdx={idx}
-  title={`${$sectionStore.startTime} - ${$sectionStore.endTime}`}
 >
   {`\u200b${$sectionStore.displayText}\u200b`}
   <!-- {`/${state.displayText}/`} -->

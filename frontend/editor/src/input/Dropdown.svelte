@@ -5,6 +5,7 @@
   import { patchInterface } from "../state/patch/patchInterface";
   import { focusSectionIdxStore, isTextSelectedStore } from "./selectionState";
   import { SectionStore, sectionStores } from "../state/section/sectionStore";
+  import type { Readable } from "svelte/store";
 
   export let wrapper: HTMLDivElement | undefined;
 
@@ -14,12 +15,14 @@
   let section: SectionStore | undefined;
   $: section = sectionIdx === undefined ? undefined : sectionStores[sectionIdx];
 
+  let completionsStore: Readable<[string, ...string[]]> | undefined;
+  $: completionsStore = section === undefined ? undefined : section.completionsStore;
+
+  let completions: string[];
+  $: completions = completionsStore === undefined ? [] : $completionsStore
+
   let visible: boolean;
-  $: visible = !$isTextSelectedStore && section !== undefined && options.length > 1;
-
-  // TODO
-
-  let rawOptions: [string, ...string[]] = [ "TODO" ];
+  $: visible = !$isTextSelectedStore && section !== undefined && completions.length > 1;
 
   let optionHeight: number;
   let left: number;
@@ -34,7 +37,7 @@
 
     left = sectionBox.left - wrapperBox.left
 
-    const boxHeight = rawOptions.length * (optionHeight + 1) + 5;
+    const boxHeight = completions.length * (optionHeight + 1) + 5;
     const desiredTop = sectionBox.top + sectionBox.height - wrapperBox.top;
     const desiredBottom = desiredTop + boxHeight;
 
@@ -48,24 +51,10 @@
   }
   $: resize(section);
 
-  let options: string[] = [];
-  // $: options = getOptions(section)
-  // function getOptions(section: Section | undefined): string[] {
-  //   if (!section) return [];
-  //   const {options, text, edited} = section;
-
-  //   let completions: string[] = options;
-  //   if (!edited && text.length > 0) {
-  //     completions = options.filter(option => option !== text);
-  //     options.unshift(text);
-  //   }
-  //   return options;
-  // }
-
   let selectedIdx: number = 0;
 
   let highlightIdx: number;
-  $: highlightIdx = modulo(selectedIdx, options.length);
+  $: highlightIdx = modulo(selectedIdx, completions.length);
 
   function resetIdx(..._: any[]) {
     selectedIdx = 0;
@@ -96,8 +85,8 @@
   }
 
   async function acceptOption() {
-    if (section && visible && options.length > 0 && highlightIdx !== undefined) {
-      const selectedOption = getAssertExists(options, highlightIdx);
+    if (section && visible && completions.length > 0 && highlightIdx !== undefined) {
+      const selectedOption = getAssertExists(completions, highlightIdx);
       patchInterface.append(section.idx, { text: selectedOption });
     }
     await selectNextSection(section?.idx);
@@ -184,7 +173,7 @@
     on:mouseenter={mouseEnter}
     on:mouseleave={mouseLeave}
   >
-    {#each options as option, idx}
+    {#each completions as option, idx}
       <span
         class="option"
         class:highlight={idx === highlightIdx}
