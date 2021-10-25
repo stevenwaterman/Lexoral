@@ -39,7 +39,7 @@ function sanitiseOption(option: string): string {
 
   const noPunctuationWords = lowercaseWords.map(word => {
     const lastLetter = word[word.length - 1];
-    if (lastLetter === "." || lastLetter === ",") return word.slice(0, word.length - 1);
+    if (lastLetter === "." || lastLetter === "," || lastLetter === "?" || lastLetter === "!") return word.slice(0, word.length - 1);
     else return word;
   });
 
