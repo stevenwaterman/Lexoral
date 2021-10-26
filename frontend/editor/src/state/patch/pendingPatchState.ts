@@ -1,3 +1,4 @@
+import { debug } from "console";
 import { Readable, writable, Writable } from "svelte/store";
 import { forIn } from "../../utils/list";
 import type { SectionCollapsedPatch, SectionPatch } from "./dbListener";
@@ -56,20 +57,17 @@ export class PendingPatchState {
 
   append(idx: number, sectionPatch: SectionPatch["to"]) {
     if (this.patchState === "pending") {
-      this.sectionPatchData[idx] = {
+      const data = {
         ...this.sectionPatchData[idx],
         ...sectionPatch
       }
+      this.sectionPatchData[idx] = data;
+      this.getSectionPatchStoreInternal(idx).set(data)
     } else {
       this.patchState = "pending";
       this.sectionPatchData[idx] = sectionPatch;
+      this.getSectionPatchStoreInternal(idx).set(sectionPatch);
     }
-
-    // if ("endParagraph" in sectionPatch) {
-      // paragraphLocationsStore.setEndParagraph(idx, sectionPatch["endParagraph"]);
-    // }
-
-    this.getSectionPatchStoreInternal(idx).set(sectionPatch);
   }
 
   clear() {

@@ -80,6 +80,7 @@ export class SectionStore {
 
     const sectionPatchStore = patchInterface.getPatchStore(idx);
     this.userTextStore = derived(sectionPatchStore, sectionPatch => sectionPatch.text);
+
     this.userEndParagraphStore = derived(sectionPatchStore, sectionPatch => sectionPatch.endParagraph);
     this.editedStore = derived(this.userTextStore, text => text !== null);
 
