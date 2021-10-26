@@ -21,7 +21,7 @@
 
   .underline {
     padding-right: 0.5em;
-    border-bottom: 1px solid var(--form-border);
+    box-shadow: inset 0px -1px 0px var(--form-border)
   }
 
   .highlight {
@@ -41,7 +41,7 @@
   }
 
   .questionable {
-    border-bottom: 1px solid var(--error);
+    box-shadow: inset 0px -1px 0px var(--error)
   }
 </style>
 

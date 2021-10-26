@@ -12,22 +12,8 @@
 
   let wrapper: HTMLDivElement;
 
-  async function mouseDown(event: MouseEvent) {
-    // suppressAudioStore.set(true);
-  }
-
-  // async function mouseMove(event: MouseEvent) {
-  //   if (event.buttons === 1) await updateSelection();
-  // }
-
-  async function mouseUp(event: MouseEvent) {
-    // await updateSelection();
-    // suppressAudioStore.set(false);
-  }
-
   async function input(event: Event) {
     await updateText();
-    // await updateSelection();
   }
 
   async function updateText() {
@@ -60,8 +46,6 @@
   spellcheck={false}
   tabindex={-1}
   on:keydown={onKeyPressed}
-  on:mousedown={mouseDown}
-  on:mouseup={mouseUp}
   on:input={input}
   on:dragover|preventDefault
   on:drop|preventDefault

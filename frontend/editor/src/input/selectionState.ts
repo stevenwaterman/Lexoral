@@ -2,6 +2,7 @@ import { Writable, writable, Readable, derived } from "svelte/store";
 import { deriveConditionally, deriveWithPrevious } from "../utils/stores";
 import { clamp, forIn, getAssertExistsRecord } from "../utils/list";
 import { sectionStores } from "../state/section/sectionStore"
+import { paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -126,12 +127,17 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
     spanOffset = 0;
     requiresSelectionUpdate = true;
   } else {
-    // console.log("Unrecognised selection position", {node, offset, side});
+    console.log("Unrecognised selection position", {node, offset, side});
+    debugger;
     return;
   }
 
   const paragraph = span.parentElement;
-  if (paragraph === null) return undefined;
+  if (paragraph === null) {
+    console.log("Unrecognised paragraph position");
+    debugger;
+    return;
+  };
 
   if (requiresSelectionUpdate) {
     const node = span.firstChild;
@@ -158,15 +164,4 @@ function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boo
   if (focus.section > anchor.section) return false;
 
   return focus.offset < anchor.offset;
-}
-
-/** What number sibling is the provided node? */
-function siblingIdx(node: Element): number {
-  let i = 0;
-  let sib = node.previousElementSibling;
-  while (sib !== null) {
-    sib = sib.previousElementSibling;
-    i++;
-  }
-  return i;
 }

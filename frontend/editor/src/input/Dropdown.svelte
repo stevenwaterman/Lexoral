@@ -142,7 +142,7 @@
   }
 
   .option {
-    white-space: nowrap;
+    white-space: pre;
     padding: 2px;
     cursor: pointer;
   }
@@ -181,7 +181,7 @@
         on:mouseenter="{() => mouseEnterOption(idx)}"
         on:click="{() => mouseClick(idx)}"
       >
-        {option}
+        {option.padEnd(1, " ")}
       </span>
     {/each}
   </div>

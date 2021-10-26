@@ -1,6 +1,6 @@
 import { focusSectionIdxStore, anchorSectionIdxStore } from "./selectionState";
 import { tick } from "svelte";
-import { findSectionNode, selectSectionEnd, selectSectionStart } from "./select";
+import { findSectionNode, restoreSelection, saveSelection, selectSectionEnd, selectSectionStart } from "./select";
 import { patchInterface } from "../state/patch/patchInterface";
 
 let focusSectionIdx: number | undefined = undefined;
@@ -36,7 +36,7 @@ async function onKeyPressedInner(event: KeyboardEvent) {
       const patchIdx = selection?.focusOffset === 1 ? focusSectionIdx - 1 : focusSectionIdx;
       patchInterface.append(patchIdx, { endParagraph: true })
       await tick();
-      await selectSectionStart(focusSectionIdx)
+      await selectSectionStart(patchIdx + 1);
       return;
     }
   }
@@ -251,28 +251,27 @@ async function backspaceAtStart(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSectionIdx) return;
 
+  selectSectionEnd(focusSectionIdx - 1);
+
   if (isParagraphEnd(focusSectionIdx - 1)) {
     patchInterface.append(focusSectionIdx - 1, { endParagraph: false });
-    await tick();
   }
-  return selectSectionEnd(focusSectionIdx - 1);
 }
 
 async function backspaceDeletingPrevious(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSectionIdx) return;
 
+  selectSectionStart(focusSectionIdx - 1);
+
   if (isParagraphEnd(focusSectionIdx - 1)) {
     patchInterface.append(focusSectionIdx - 1, {
       text: "",
       endParagraph: false
     });
-    await tick();
   } else {
     patchInterface.append(focusSectionIdx - 1, { text: "" });
   }
-
-  return selectSectionStart(focusSectionIdx - 1);
 }
 
 async function backspaceSelectedText(event: KeyboardEvent, selection: Selection) {
@@ -319,21 +318,21 @@ async function deleteAtEnd(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSectionIdx) return;
 
+  selectSectionStart(focusSectionIdx + 1);
+
   if (isParagraphEnd(focusSectionIdx)) {
-    patchInterface.append(focusSectionIdx, { endParagraph: false })
-    await tick();
+    patchInterface.append(focusSectionIdx, { endParagraph: false });
   }
-  return selectSectionStart(focusSectionIdx + 1);
 }
 
 async function deleteDeletingNext(event: KeyboardEvent, selection: Selection) {
   event.preventDefault();
   if (!focusSectionIdx) return;
 
+  selectSectionStart(focusSectionIdx + 1);
+
   patchInterface.append(focusSectionIdx + 1, { text: "" });
   if (isParagraphEnd(focusSectionIdx)) patchInterface.append(focusSectionIdx, { endParagraph: false });
-
-  return selectSectionStart(focusSectionIdx + 1);
 }
 
 async function deleteSelectedText(event: KeyboardEvent, selection: Selection) {
