@@ -170,8 +170,9 @@ export class SectionStore {
   private get placeholderPunctuationStore(): Readable<"," | "." | ""> {
     if (this.placeholderPunctuationStoreInternal !== undefined) return this.placeholderPunctuationStoreInternal;
 
-    const store = derived([this.silenceAfterStore, commaTimeStore, periodTimeStore],
-      ([silenceAfter, commaRequiredSilence, periodRequiredSilence]) => {
+    const store = derived([this.endsParagraphStore, this.silenceAfterStore, commaTimeStore, periodTimeStore],
+      ([endsParagraph, silenceAfter, commaRequiredSilence, periodRequiredSilence]) => {
+        if (endsParagraph) return ".";
         if (silenceAfter === null) return ".";
         if (silenceAfter >= periodRequiredSilence) return ".";
         if (silenceAfter >= commaRequiredSilence) return ",";
@@ -214,7 +215,8 @@ export class SectionStore {
   public get endsSentenceStore(): Readable<boolean> {
     if (this.endsSentenceStoreInternal !== undefined) return this.endsSentenceStoreInternal;
 
-    const store = derived(this.displayTextStore, text => {
+    const store = derived([this.endsParagraphStore, this.displayTextStore], ([endsParagraph, text]) => {
+      if (endsParagraph) return true;
       const lastCharacter = text[text.length - 1] as string;
       if (lastCharacter === ".") return true;
       if (lastCharacter === "!") return true;
