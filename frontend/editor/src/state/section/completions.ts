@@ -33,7 +33,7 @@ function sanitiseOption(option: string): string {
   const words = option.split(" ");
 
   const lowercaseWords = words.map(word => {
-    if (word === word.toUpperCase()) return word; // Keep eg USA all-caps
+    if (word.length > 1 && word === word.toUpperCase()) return word; // Keep eg USA all-caps
     return word.toLowerCase();
   });
 
