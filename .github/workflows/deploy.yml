@@ -131,7 +131,6 @@ jobs:
   deploy-frontend-stage:
     needs: [deployment-gate-stage]
     runs-on: ubuntu-latest
-    environment: stage
 
     steps:
     - uses: actions/checkout@v2
@@ -177,18 +176,9 @@ jobs:
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-  prod-deployment-approval:
-    needs: [deploy-frontend-stage, deploy-backend-stage]
-    runs-on: ubuntu-latest
-    environment: prod
-
-    steps:
-    - run: echo "Production deployment approved"
-
   build-frontends-prod:
     needs: [prod-deployment-approval]
     runs-on: ubuntu-latest
-    environment: prod
     
     strategy:
       matrix:
@@ -210,17 +200,25 @@ jobs:
         name: ${{ matrix.frontendName }}-prod
         path: frontend/public/${{ matrix.frontendName }}
 
-  deployment-gate-prod:
-    needs: [build-frontends-prod, build-functions, synth-workflows]
-    runs-on: ubuntu-latest
-
-    steps:
-    - run: echo "Everything built successfully"
-
-  deploy-frontend-prod:
-    needs: [deployment-gate-prod]
+  deploy-backend-prod:
+    needs: [build-frontends-prod]
     runs-on: ubuntu-latest
     environment: prod
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        path: terraform/functions
+    - uses: hashicorp/setup-terraform@v1
+    - run: terraform init && terraform apply -auto-approve
+      working-directory: terraform/prod
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+  deploy-frontend-prod:
+    needs: [deploy-backend-prod]
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -249,19 +247,3 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         branch: prod-deployed-frontend
-
-  deploy-backend-prod:
-    needs: [deployment-gate-prod]
-    runs-on: ubuntu-latest
-    environment: prod
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v2
-      with:
-        path: terraform/functions
-    - uses: hashicorp/setup-terraform@v1
-    - run: terraform init && terraform apply -auto-approve
-      working-directory: terraform/prod
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
