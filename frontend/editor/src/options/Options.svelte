@@ -108,23 +108,23 @@ import { exportTranscript, exportTranscriptPlainText } from "../state/export";
 
     <div class="spacer"></div>
     
-    <label for="speedSlider">Speed</label>
+    <label for="speedSlider" title="Alt+Right = Faster, Alt+Left = Slower">Speed</label>
     <span>{$rateStore}%</span>
     <input id="speedSlider" type="range" min={5} max={300} step={5} bind:value={$rateStore}/>
 
-    <label for="volumeSlider">Volume</label>
+    <label for="volumeSlider" title="Alt+Up = Louder, Alt+Down = Quieter">Volume</label>
     <span>{$volumeStore}%</span>
     <input id="volumeSlider" type="range" min={5} max={100} step={5} bind:value={$volumeStore}/>
 
     <div class="spacer"></div>
 
-    <label for="autoPlayCheckbox">AutoPlay</label>
+    <label for="autoPlayCheckbox" title="Alt+A">AutoPlay</label>
     <input id="autoPlayCheckbox" class="twoCol" type="checkbox" bind:checked={$autoPlayStore}>
 
-    <label for="loopCheckbox">Loop</label>
+    <label for="loopCheckbox" title="Alt+L">Loop</label>
     <input id="loopCheckbox" class="twoCol" type="checkbox" bind:checked={$loopStore}>
 
-    <label for="playMode">Mode</label>
+    <label for="playMode" title="Alt+C = Context, Alt+O = Onward">Mode</label>
     <select class="twoCol" bind:value={$audioStyleStore}>
       <option value="context">Context</option>
       <option value="onward">Onward</option>
@@ -133,18 +133,18 @@ import { exportTranscript, exportTranscriptPlainText } from "../state/export";
     <div class="spacer"></div>
 
     <div class="buttonRow3">
-      <button on:click={playAudio} disabled={$playingStore}>Play</button>
-      <button on:click={stopAudio} disabled={!$playingStore}>Stop</button>
-      <button on:click={jumpTo} disabled={!$playingStore}>Jump</button>
+      <button title="Alt" on:click={playAudio} disabled={$playingStore}>Play</button>
+      <button title="Alt" on:click={stopAudio} disabled={!$playingStore}>Stop</button>
+      <button title="Escape" on:click={jumpTo} disabled={!$playingStore}>Jump</button>
     </div>
 
     <div class="buttonRow2">
-      <button on:click={() => patchInterface.undo()}>Undo</button>
-      <button on:click={() => patchInterface.redo()}>Redo</button>
+      <button title="Ctrl+Z" on:click={() => patchInterface.undo()}>Undo</button>
+      <button title="Ctrl+Y" on:click={() => patchInterface.redo()}>Redo</button>
     </div>
 
     <div class="buttonRow2">
-      <button on:click={() => exportTranscript("txt")}>Save .txt</button>
+      <button title="Ctrl+E" on:click={() => exportTranscript("txt")}>Save .txt</button>
       <button on:click={() => exportTranscript("srt")}>Save .srt</button>
     </div>
   </div>
