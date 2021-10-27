@@ -177,7 +177,6 @@ jobs:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
   build-frontends-prod:
-    needs: [prod-deployment-approval]
     runs-on: ubuntu-latest
     
     strategy:
@@ -201,7 +200,7 @@ jobs:
         path: frontend/public/${{ matrix.frontendName }}
 
   deploy-backend-prod:
-    needs: [build-frontends-prod]
+    needs: [build-frontends-prod, deploy-frontend-stage, deploy-backend-stage]
     runs-on: ubuntu-latest
     environment: prod
 
