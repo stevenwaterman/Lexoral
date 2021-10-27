@@ -43,7 +43,7 @@ delete           = delete character after cursor
 ctrl
   + s            = Export transcript
   + z            = Undo
-  + you          = Redo
+  + y            = Redo
 
 # Audio Control:
 
@@ -55,10 +55,9 @@ alt              = play/pause audio
   + A            = toggle autoplay on/off (whether the audio starts automatically when you select a new section)
 
   + C            = (default) select 'context' audio mode (plays a few words either side of the current word)
-  + P            = select 'paragraph' audio mode (plays the paragraph containing the current word)
   + O            = select 'onward' audio mode (plays from the current word to the end of the document)
 
-  + left arrow   = decrease the amount of context in 'context' audio mode
-  + right arrow  = increase the amount of context in 'context' audio mode
+  + left arrow   = decrease the playback speed
+  + right arrow  = increase the playback speed
 
 escape           = pause audio and move cursor to last played word

@@ -11,7 +11,7 @@
   import { autoPlayStore, loopStore, playAudio, rateStore, stopAudio, volumeStore } from "../audio/audioPlayer";
   import { audioStyleStore } from "../audio/audioTimings";
   import { selectEnd, findSectionNode } from "./select";
-  import { commaTimeStore, paragraphTimeStore, periodTimeStore } from "../state/section/defaultPunctuationStore";
+  import Options from "../options/Options.svelte";
 
   let altReleaseShouldPlay = false;
 
@@ -52,7 +52,7 @@
 
     if (event.key === "e" && event.ctrlKey) {
       event.preventDefault();
-      return exportTranscript();
+      return exportTranscript("txt");
     }
 
     if (event.key !== "Alt" && event.altKey) {
@@ -100,30 +100,40 @@
   }
 </script>
 
+<style>
+  .grid {
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
+
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .mainSection {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+
+    position: relative;
+  }
+</style>
+
 <svelte:body on:keydown={keyDown} on:keyup={keyUp}/>
 
-<ToastController/>
+<div class="grid">
+  <Header/>
 
-<Header/>
+  <div class="mainSection">
+    <EditableContainer let:wrapper>
+      <Dropdown wrapper={wrapper}/>
+      <Document wrapper={wrapper}/>
+    </EditableContainer>
+    <ToastController/>
+  </div>
+  
 
-<EditableContainer let:wrapper>
-  <Dropdown wrapper={wrapper}/>
-  <Document wrapper={wrapper}/>
-</EditableContainer>
-
-<!-- 
-<div>
-  <input type="range" min={0.01} max={$periodTimeStore - 0.01} step={0.01} bind:value={$commaTimeStore}/> 
-  <span>{$commaTimeStore}</span>
+  <Options/>
 </div>
-
-<div>
-  <input type="range" min={$commaTimeStore + 0.01} max={$paragraphTimeStore - 0.01} step={0.01} bind:value={$periodTimeStore}/> 
-  <span>{$periodTimeStore}</span>
-</div>
-
-<div>
-  <input type="range" min={$periodTimeStore + 0.01} max={1} step={0.01} bind:value={$paragraphTimeStore}/>
-  <span>{$paragraphTimeStore}</span>
-</div>
--->

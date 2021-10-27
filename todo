@@ -1,9 +1,0 @@
-Performance:
-  Slow when selecting and deselecting lots of sections
-  updateSelection is called way too much
-  changing paragraphs rerenders everything
-  transform is called for every section on every edit
-
-test with <4 hour files
-
-Slight jank when scrolling up to a paragraph that is hidden then becomes visible but has been edited while hidden - either through undo/redo or a second client. Should be solved by temporarily unhiding things and recalculating height when they are edited.

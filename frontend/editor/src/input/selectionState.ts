@@ -128,7 +128,7 @@ function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "fo
     requiresSelectionUpdate = true;
   } else {
     console.log("Unrecognised selection position", {node, offset, side});
-    debugger;
+    // debugger;
     return;
   }
 

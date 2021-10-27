@@ -67,29 +67,37 @@ button {
   border: none;
   border-radius: 0.5em;
   outline: none;
-  cursor: pointer;
   text-decoration: none;
 
   background-color: var(--blue-1);
   color: var(--light-text);
 }
 
-button:hover {
+button:enabled {
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: var(--grey-2);
+  color: var(--light-text);
+}
+
+button:enabled:hover {
   background-color: var(--green-3);
   color: var(--text);
 }
 
-button.danger {
+button.danger:enabled {
   background-color: var(--red-1);
   color: var(--light-text);
 }
 
-button.danger:hover {
+button.danger:enabled:hover {
   background-color: var(--red-3);
   color: var(--text);
 }
 
-button:active {
+button:enabled:active {
   box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }
 

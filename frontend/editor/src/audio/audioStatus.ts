@@ -20,12 +20,21 @@ export function initAudioCurrentlyPlaying() {
   }
 }
 
+let lastSectionIdxLookupResult: { idx: number; startTime: number; endTime: number } | undefined = undefined;
 function getSectionIdxForTime(time: number | null): number | null {
   if (time === null) return null;
+  if (
+    lastSectionIdxLookupResult !== undefined &&
+    time >= lastSectionIdxLookupResult.startTime &&
+    time <= lastSectionIdxLookupResult.endTime
+  ) return lastSectionIdxLookupResult.idx;
   
   for (let i = 0; i < audioTimings.length; i++) {
     const { startTime, endTime } = getAssertExists(audioTimings, i);
-    if (time >= startTime && time <= endTime) return i;
+    if (time >= startTime && time <= endTime) {
+      lastSectionIdxLookupResult = { idx: i, startTime, endTime }
+      return i;
+    }
   }
 
   return null;

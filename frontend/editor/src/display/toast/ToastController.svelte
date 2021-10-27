@@ -10,9 +10,9 @@
     justify-content: flex-end;
     align-items: flex-end;
 
-    position: fixed;
-    bottom: 12px;
-    right: 24px;
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
 
     z-index: 1;
   }

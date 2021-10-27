@@ -1,12 +1,12 @@
 import { saveAs } from "file-saver";
 import { SectionStore, sectionStores } from "./section/sectionStore"
 
-export function exportTranscript() {
+export function exportTranscript(type: "txt" | "srt") {
   const entries = Object.entries(sectionStores).map(([key, val]) => [parseInt(key), val] as const);
   entries.sort((a, b) => a[0] - b[0]);
 
   const sections = entries.map(entry => entry[1]);
-  const output = exportTranscriptPlainText(sections);
+  const output = type === "txt" ? exportTranscriptPlainText(sections) : exportTranscriptSubtitles(sections);
   const blob = new Blob([output], {type: "text/plain;charset=utf-8"});
   saveAs(blob, "lexoralExport.txt");
 }

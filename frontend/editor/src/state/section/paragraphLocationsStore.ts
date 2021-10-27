@@ -9,7 +9,7 @@ export type ParagraphLocation = { start: number, end: number };
 
 const paragraphData: Set<number> = new Set();
 const paragraphDataStore: Writable<Set<number>> = writable(paragraphData);
-const debouncedParagraphDataStore: Readable<Set<number> | undefined> = deriveDebounced(paragraphDataStore, 0.05);
+const debouncedParagraphDataStore: Readable<Set<number> | undefined> = deriveDebounced(paragraphDataStore, 0.01);
 
 const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(debouncedParagraphDataStore, locations => {
   if (locations === undefined) return [];

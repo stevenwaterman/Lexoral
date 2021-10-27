@@ -34,8 +34,11 @@
 <style>
   .scroller {
     outline: none;
+    overflow-y: scroll;
+    height: 100%;
+    box-sizing: border-box;
+
     padding: 1em;
-    padding-top: 100px;
   }
 </style>
 

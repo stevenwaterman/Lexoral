@@ -4,20 +4,16 @@
 
 <style>
   .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-
     display: flex;
     flex-direction: row;
     justify-content: center;
     border-bottom: 1px solid var(--form-border);
-    margin-bottom: 10px;
     transition: background 0.5s;
 
     background-color: var(--grey-3);
     z-index: 2;
+
+    grid-column: 1 / 3;
   }
 
   .playing {
