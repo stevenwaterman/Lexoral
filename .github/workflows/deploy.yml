@@ -1,15 +1,13 @@
-name: Production Deploy
+name: Staging Deploy
 
 on:
-  workflow_run:
-    workflows: ["Staging Deploy"]
-    types:
-      - completed
+  push:
+    branches:
+      - stage
 
 jobs:
-  build-frontends:
+  build-frontends-stage:
     runs-on: ubuntu-latest
-    environment: prod
     
     strategy:
       matrix:
@@ -24,16 +22,15 @@ jobs:
         node-version: '14'
     - run: npm i
       working-directory: frontend/${{ matrix.frontendName }}
-    - run: npm run build-prod
+    - run: npm run build-stage
       working-directory: frontend/${{ matrix.frontendName }}
     - uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.frontendName }}
+        name: ${{ matrix.frontendName }}-stage
         path: frontend/public/${{ matrix.frontendName }}
 
   synth-workflows:
     runs-on: ubuntu-latest
-    environment: prod
 
     steps:
     - uses: actions/checkout@v2
@@ -51,7 +48,6 @@ jobs:
 
   build-utils:
     runs-on: ubuntu-latest
-    environment: prod
 
     steps:
     - uses: actions/checkout@v2
@@ -74,7 +70,6 @@ jobs:
   build-functions:
     needs: [build-utils]
     runs-on: ubuntu-latest
-    environment: prod
 
     strategy:
       matrix:
@@ -126,16 +121,104 @@ jobs:
           functions/master/index.js
           functions/master/package.json
 
-  deployment-gate:
-    needs: [build-frontends, build-functions, synth-workflows]
+  deployment-gate-stage:
+    needs: [build-frontends-stage, build-functions, synth-workflows]
     runs-on: ubuntu-latest
-    environment: prod
 
     steps:
     - run: echo "Everything built successfully"
 
-  deploy-frontend:
-    needs: [deployment-gate]
+  deploy-frontend-stage:
+    needs: [deployment-gate-stage]
+    runs-on: ubuntu-latest
+    environment: stage
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan stage-deployed-frontend
+        git reset --hard
+        git checkout stage -- frontend/public
+        mv frontend/public/* .
+        rm -r frontend
+        git rm -r --cached frontend
+    - uses: actions/download-artifact@v2
+      with:
+        name: editor-stage
+        path: editor
+    - uses: actions/download-artifact@v2
+      with:
+        name: dashboard-stage
+        path: dashboard
+    - run: |
+        git add .
+        git commit -m "Update hosted version"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: stage-deployed-frontend
+
+  deploy-backend-stage:
+    needs: [deployment-gate-stage]
+    runs-on: ubuntu-latest
+    environment: stage
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        path: terraform/functions
+    - uses: hashicorp/setup-terraform@v1
+    - run: terraform init && terraform apply -auto-approve
+      working-directory: terraform/stage
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+  prod-deployment-approval:
+    needs: [deploy-frontend-stage, deploy-backend-stage]
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+    - run: echo "Production deployment approved"
+
+  build-frontends-prod:
+    needs: [prod-deployment-approval]
+    runs-on: ubuntu-latest
+    environment: prod
+    
+    strategy:
+      matrix:
+        frontendName:
+          - dashboard
+          - editor
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm i
+      working-directory: frontend/${{ matrix.frontendName }}
+    - run: npm run build-prod
+      working-directory: frontend/${{ matrix.frontendName }}
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.frontendName }}-prod
+        path: frontend/public/${{ matrix.frontendName }}
+
+  deployment-gate-prod:
+    needs: [build-frontends-prod, build-functions, synth-workflows]
+    runs-on: ubuntu-latest
+
+    steps:
+    - run: echo "Everything built successfully"
+
+  deploy-frontend-prod:
+    needs: [deployment-gate-prod]
     runs-on: ubuntu-latest
     environment: prod
 
@@ -146,17 +229,17 @@ jobs:
         git config --local user.name "GitHub Action"
         git checkout --orphan prod-deployed-frontend
         git reset --hard
-        git checkout prod -- frontend/public
+        git checkout stage -- frontend/public
         mv frontend/public/* .
         rm -r frontend
         git rm -r --cached frontend
     - uses: actions/download-artifact@v2
       with:
-        name: editor
+        name: editor-prod
         path: editor
     - uses: actions/download-artifact@v2
       with:
-        name: dashboard
+        name: dashboard-prod
         path: dashboard
     - run: |
         git add .
@@ -167,8 +250,8 @@ jobs:
         force: true
         branch: prod-deployed-frontend
 
-  deploy-backend:
-    needs: [deployment-gate]
+  deploy-backend-prod:
+    needs: [deployment-gate-prod]
     runs-on: ubuntu-latest
     environment: prod
 
