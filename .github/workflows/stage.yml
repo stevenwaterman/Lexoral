@@ -1,9 +1,8 @@
-name: Deploy
+name: Staging
 
 on:
   push:
     branches:
-      - prod
       - stage
 
 jobs:
@@ -16,22 +15,14 @@ jobs:
           - editor
 
     steps:
-    - name: Create variables
-      id: vars
-      run: |
-          branch=${GITHUB_REF##*/} 
-          echo "::set-output name=branch::${branch}"
-
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
     - run: npm i
       working-directory: frontend/${{ matrix.frontendName }}
-    - run: npm run build-${{ steps.vars.outputs.branch }}
+    - run: npm run build-stage
       working-directory: frontend/${{ matrix.frontendName }}
-      env:
-        BRANCH: ${{ steps.vars.outputs.branch }}
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.frontendName }}
@@ -139,19 +130,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Create variables
-      id: vars
-      run: |
-          branch=${GITHUB_REF##*/} 
-          echo "::set-output name=branch::${branch}"
-    
     - uses: actions/checkout@v2
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout --orphan ${{ steps.vars.outputs.branch }}-deployed-frontend
+        git checkout --orphan stage-deployed-frontend
         git reset --hard
-        git checkout ${{ steps.vars.outputs.branch }} -- frontend/public
+        git checkout stage -- frontend/public
         mv frontend/public/* .
         rm -r frontend
         git rm -r --cached frontend
@@ -170,26 +155,19 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
-        branch: ${{ steps.vars.outputs.branch }}-deployed-frontend
+        branch: stage-deployed-frontend
 
   deploy-backend:
     needs: [deployment-gate]
     runs-on: ubuntu-latest
 
     steps:
-    - name: Create variables
-      id: vars
-      run: |
-          branch=${GITHUB_REF##*/} 
-          echo "::set-output name=branch::${branch}"
-          echo "::set-output name=creds::${branch^^}_GOOGLE_CREDENTIALS"
-
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v2
       with:
         path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
     - run: terraform init && terraform apply -auto-approve
-      working-directory: terraform/${{ steps.vars.outputs.branch }}
+      working-directory: terraform/stage
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets[steps.vars.outputs.creds] }}
+        GOOGLE_CREDENTIALS: ${{ STAGE_GOOGLE_CREDENTIALS }}
