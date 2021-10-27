@@ -1,14 +1,15 @@
-name: Staging Deploy
+name: Production Deploy
 
 on:
-  push:
-    branches:
-      - stage
+  workflow_run:
+    workflows: ["Staging Deploy"]
+    types:
+      - completed
 
 jobs:
   build-frontends:
     runs-on: ubuntu-latest
-    environment: stage
+    environment: prod
     
     strategy:
       matrix:
@@ -23,7 +24,7 @@ jobs:
         node-version: '14'
     - run: npm i
       working-directory: frontend/${{ matrix.frontendName }}
-    - run: npm run build-stage
+    - run: npm run build-prod
       working-directory: frontend/${{ matrix.frontendName }}
     - uses: actions/upload-artifact@v2
       with:
@@ -32,7 +33,7 @@ jobs:
 
   synth-workflows:
     runs-on: ubuntu-latest
-    environment: stage
+    environment: prod
 
     steps:
     - uses: actions/checkout@v2
@@ -50,7 +51,7 @@ jobs:
 
   build-utils:
     runs-on: ubuntu-latest
-    environment: stage
+    environment: prod
 
     steps:
     - uses: actions/checkout@v2
@@ -73,7 +74,7 @@ jobs:
   build-functions:
     needs: [build-utils]
     runs-on: ubuntu-latest
-    environment: stage
+    environment: prod
 
     strategy:
       matrix:
@@ -128,7 +129,7 @@ jobs:
   deployment-gate:
     needs: [build-frontends, build-functions, synth-workflows]
     runs-on: ubuntu-latest
-    environment: stage
+    environment: prod
 
     steps:
     - run: echo "Everything built successfully"
@@ -136,16 +137,16 @@ jobs:
   deploy-frontend:
     needs: [deployment-gate]
     runs-on: ubuntu-latest
-    environment: stage
+    environment: prod
 
     steps:
     - uses: actions/checkout@v2
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout --orphan stage-deployed-frontend
+        git checkout --orphan prod-deployed-frontend
         git reset --hard
-        git checkout stage -- frontend/public
+        git checkout prod -- frontend/public
         mv frontend/public/* .
         rm -r frontend
         git rm -r --cached frontend
@@ -164,12 +165,12 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
-        branch: stage-deployed-frontend
+        branch: prod-deployed-frontend
 
   deploy-backend:
     needs: [deployment-gate]
     runs-on: ubuntu-latest
-    environment: stage
+    environment: prod
 
     steps:
     - uses: actions/checkout@v2
@@ -178,14 +179,6 @@ jobs:
         path: terraform/functions
     - uses: hashicorp/setup-terraform@v1
     - run: terraform init && terraform apply -auto-approve
-      working-directory: terraform/stage
+      working-directory: terraform/prod
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-  prod-deployment-gate:
-    needs: [deploy-frontend, deploy-backend]
-    runs-on: ubuntu-latest
-    environment: prod
-
-    steps:
-    - run: echo "Production deployment approved"
