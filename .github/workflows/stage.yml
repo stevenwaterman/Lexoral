@@ -8,6 +8,8 @@ on:
 jobs:
   build-frontends:
     runs-on: ubuntu-latest
+    environment: stage
+    
     strategy:
       matrix:
         frontendName:
@@ -30,6 +32,7 @@ jobs:
 
   synth-workflows:
     runs-on: ubuntu-latest
+    environment: stage
 
     steps:
     - uses: actions/checkout@v2
@@ -47,6 +50,7 @@ jobs:
 
   build-utils:
     runs-on: ubuntu-latest
+    environment: stage
 
     steps:
     - uses: actions/checkout@v2
@@ -69,6 +73,8 @@ jobs:
   build-functions:
     needs: [build-utils]
     runs-on: ubuntu-latest
+    environment: stage
+
     strategy:
       matrix:
         functionName:
@@ -122,12 +128,15 @@ jobs:
   deployment-gate:
     needs: [build-frontends, build-functions, synth-workflows]
     runs-on: ubuntu-latest
+    environment: stage
+
     steps:
     - run: echo "Everything built successfully"
 
   deploy-frontend:
     needs: [deployment-gate]
     runs-on: ubuntu-latest
+    environment: stage
 
     steps:
     - uses: actions/checkout@v2
@@ -160,6 +169,7 @@ jobs:
   deploy-backend:
     needs: [deployment-gate]
     runs-on: ubuntu-latest
+    environment: stage
 
     steps:
     - uses: actions/checkout@v2
