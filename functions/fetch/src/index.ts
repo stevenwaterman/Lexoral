@@ -17,7 +17,7 @@ async function handleRequest(req: Request, res: Response) {
   const audioFileUrl = await audioFile.getSignedUrl({
     action: "read",
     version: "v4",
-    expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+    expires: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
   }).then(([url]) => url)
   .catch(err => {
     console.error(err);
