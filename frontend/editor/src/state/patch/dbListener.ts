@@ -125,6 +125,7 @@ export class DbListener {
     const q = query(patchCollection);
     return new Promise<boolean>(resolve => {
       onSnapshot(q, snapshot => {
+        console.log("Received DB Snapshot:", snapshot)
         this.processSnapshot(snapshot);
         resolve(this.patchHistory.length === 0);
       });

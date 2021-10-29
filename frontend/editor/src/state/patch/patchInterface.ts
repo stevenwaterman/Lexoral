@@ -67,11 +67,15 @@ async function commit() {
   const newPatch = createPatch(newValues);
 
   if (newPatch === undefined && lastCommonAncestor === lastCursor) {
-    console.log("No changes, not committing");
+    console.log("No changes, not committing", { lastCommonAncestor });
+  } else {
+    console.log("Committing changes: ", {  dbCursor, lastCommonAncestor, lastDbAncestor, lastCursor, newValues, newPatch })
   };
 
   await writePatchToFirestore(lastCommonAncestor, lastDbAncestor, newPatch);
   pendingPatch.clear();
+
+  console.log("Commit complete, pending changes cleared");
 }
 
 function createPatch(newValues: Record<number, SectionPatch["to"]> | undefined): Patch | undefined {
