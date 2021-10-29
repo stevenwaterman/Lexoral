@@ -179,7 +179,7 @@
         class:highlight={idx === highlightIdx}
         class:topBorder={idx !== 0}
         on:mouseenter="{() => mouseEnterOption(idx)}"
-        on:click="{() => mouseClick(idx)}"
+        on:mousedown="{() => mouseClick(idx)}"
       >
         {option.padEnd(1, " ")}
       </span>
