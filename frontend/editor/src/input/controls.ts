@@ -30,7 +30,7 @@ async function onKeyPressedInner(event: KeyboardEvent) {
 
   const selection = window.getSelection();
 
-  if (event.key === "Enter" && event.ctrlKey) {
+  if (event.key === "Enter" && !event.ctrlKey) {
     event.preventDefault();
     if (focusSectionIdx !== undefined) {
       const patchIdx = selection?.focusOffset === 1 ? focusSectionIdx - 1 : focusSectionIdx;

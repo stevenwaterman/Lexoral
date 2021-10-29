@@ -63,13 +63,13 @@
 
   function keyDown(event: KeyboardEvent) {
     makeOpaque();
-    if (event.key === "ArrowUp" && !event.ctrlKey && !event.altKey) {
+    if (event.key === "ArrowUp" && event.ctrlKey && !event.altKey) {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? 0) - 1;
-    } else if (event.key === "ArrowDown" && !event.ctrlKey && !event.altKey) {
+    } else if (event.key === "ArrowDown" && event.ctrlKey && !event.altKey) {
       event.preventDefault();
       if (visible) selectedIdx = (selectedIdx ?? -1) + 1;
-    } else if (event.key === "Enter" && !event.ctrlKey) {
+    } else if (event.key === "Enter" && event.ctrlKey) {
       event.preventDefault();
       acceptOption();
     }
