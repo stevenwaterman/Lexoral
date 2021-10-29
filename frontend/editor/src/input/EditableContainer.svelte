@@ -33,6 +33,8 @@
 
 <style>
   .scroller {
+    position: relative;
+    
     outline: none;
     overflow-y: scroll;
     height: 100%;

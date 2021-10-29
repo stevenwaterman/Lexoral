@@ -128,7 +128,7 @@
 
   <div class="mainSection">
     <EditableContainer let:wrapper>
-      <Dropdown wrapper={wrapper}/>
+      <Dropdown/>
       <Document wrapper={wrapper}/>
     </EditableContainer>
     <ToastController/>
