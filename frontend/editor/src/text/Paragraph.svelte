@@ -47,7 +47,8 @@
     padding-block-end: 1em;
     box-sizing: border-box;
 
-    contain: style paint layout;
+    position: relative;
+    contain: paint layout;
   }
 
   .paragraph::selection {
