@@ -25,11 +25,11 @@ function increaseVolume() {
   })
 }
 export const volumeStore = {
-  subscribe: volumeStoreInternal.subscribe,
+  ...volumeStoreInternal,
   decrease: decreaseVolume,
   increase: increaseVolume
 }
-volumeStore.subscribe(volume => sendToast(`Volume: ${volume}%`));
+deriveDebounced(volumeStore, 0.5).subscribe(volume => sendToast(`Volume: ${volume}%`));
 
 
 const rateStoreInternal: Writable<number> = writable(100);
@@ -50,11 +50,11 @@ function increaseRate() {
   })
 }
 export const rateStore = {
-  subscribe: rateStoreInternal.subscribe,
+  ...rateStoreInternal,
   decrease: decreaseRate,
   increase: increaseRate
 }
-rateStore.subscribe(rate => sendToast(`Playback Rate: ${rate}%`));
+deriveDebounced(rateStore, 0.5).subscribe(rate => sendToast(`Playback Rate: ${rate}%`));
 
 let startTime: number;
 let endTime: number;
