@@ -151,7 +151,7 @@ export class SectionStore {
       ([manualEndParagraph, silenceAfter, requiredSilence]) => {
         if (silenceAfter === null) return true;
         if (manualEndParagraph !== null) return manualEndParagraph;
-        return silenceAfter >= requiredSilence
+        return silenceAfter >= requiredSilence / 1000
       }
     );
     store.subscribe(state => this.endsParagraph = state);
@@ -174,8 +174,8 @@ export class SectionStore {
       ([endsParagraph, silenceAfter, commaRequiredSilence, periodRequiredSilence]) => {
         if (endsParagraph) return ".";
         if (silenceAfter === null) return ".";
-        if (silenceAfter >= periodRequiredSilence) return ".";
-        if (silenceAfter >= commaRequiredSilence) return ",";
+        if (silenceAfter >= periodRequiredSilence / 1000) return ".";
+        if (silenceAfter >= commaRequiredSilence / 1000) return ",";
         return "";
       }
     );

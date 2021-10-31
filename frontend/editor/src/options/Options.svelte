@@ -4,8 +4,8 @@
   import { audioStyleStore } from "../audio/audioTimings";
   import { lastPlayingSectionIdxStore, playingStore } from "../audio/audioStatus";
   import { findSectionNode, selectEnd } from "../input/select";
-import { patchInterface } from "../state/patch/patchInterface";
-import { exportTranscript, exportTranscriptPlainText } from "../state/export";
+  import { patchInterface } from "../state/patch/patchInterface";
+  import { exportTranscript, exportTranscriptPlainText } from "../state/export";
 
   async function jumpTo() {
     const idx = $lastPlayingSectionIdxStore;
@@ -15,6 +15,33 @@ import { exportTranscript, exportTranscriptPlainText } from "../state/export";
         await selectEnd(component);
         stopAudio();
       }
+    }
+  }
+
+  function commaChange() {
+    if ($commaTimeStore >= $periodTimeStore) {
+      periodTimeStore.set($commaTimeStore + 1);
+    }
+    if ($periodTimeStore >= $paragraphTimeStore) {
+      paragraphTimeStore.set($periodTimeStore + 1);
+    }
+  }
+
+  function periodChange() {
+    if ($commaTimeStore >= $periodTimeStore) {
+      commaTimeStore.set($periodTimeStore - 1);
+    }
+    if ($periodTimeStore >= $paragraphTimeStore) {
+      paragraphTimeStore.set($periodTimeStore + 1);
+    }
+  }
+
+  function paragraphChange() {
+    if ($periodTimeStore >= $paragraphTimeStore) {
+      periodTimeStore.set($paragraphTimeStore - 1);
+    }
+    if ($commaTimeStore >= $periodTimeStore) {
+      commaTimeStore.set($periodTimeStore - 1);
     }
   }
 </script>
@@ -88,23 +115,30 @@ import { exportTranscript, exportTranscriptPlainText } from "../state/export";
 
     align-items: center;
   }
+
+  input[type="number"] {
+    font-size: inherit;
+    height: 100%;
+    text-align: center;
+    margin-left: 1em;
+  }
 </style>
 
 <div class="container">
   <h2>Options</h2>
 
   <div class="grid">
-    <label for="commaSlider">Comma</label>
-    <span>{$commaTimeStore}s</span>
-    <input id="commaSlider" type="range" min={0.01} max={$periodTimeStore - 0.01} step={0.01} bind:value={$commaTimeStore}/>
+    <label for="commaSpinner">Comma</label>
+    <input id="commaSpinner" type="number" min={10} step={10} bind:value={$commaTimeStore} on:change={commaChange}/>
+    <span>ms</span>
 
-    <label for="periodSlider">Period</label>
-    <span>{$periodTimeStore}s</span>
-    <input id="periodSlider" type="range" min={$commaTimeStore + 0.01} max={$paragraphTimeStore - 0.01} step={0.01} bind:value={$periodTimeStore}/> 
+    <label for="periodSpinner">Period</label>
+    <input id="periodSpinner" type="number" min={20} step={10} bind:value={$periodTimeStore} on:change={periodChange}/>
+    <span>ms</span>
 
-    <label for="paragraphSlider">Paragraph</label>
-    <span>{$paragraphTimeStore}s</span>
-    <input id="paragraphSlider" type="range" min={$periodTimeStore + 0.01} max={2} step={0.01} bind:value={$paragraphTimeStore}/>
+    <label for="paragraphSpinner">Paragraph</label>
+    <input id="paragraphSpinner" type="number" min={30} step={10} bind:value={$paragraphTimeStore} on:change={paragraphChange}/>
+    <span>ms</span>
 
     <div class="spacer"></div>
     
