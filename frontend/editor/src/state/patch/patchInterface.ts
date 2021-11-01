@@ -1,15 +1,74 @@
 import { derived, Readable } from "svelte/store";
-import { forIn, getAssertExists, getAssertExistsRecord } from "../../utils/list";
+import { forIn, getAssertExistsRecord } from "../../utils/list";
 import { deriveConditionally } from "../../utils/stores";
 import { DbListener, Patch, SectionCollapsedPatch, SectionPatch } from "./dbListener";
 import { writePatchToFirestore } from "./dbWriter";
-import { PendingPatchState } from "./pendingPatchState";
+import { Pending, PendingPatchState } from "./pendingPatchState";
 
 const dbListener = new DbListener();
 const pendingPatch = new PendingPatchState();
 
-function init(): Promise<boolean> {
-  return dbListener.init();
+let dbCommaSilence: number | null = null;
+dbListener.commaSilenceStore.subscribe(state => dbCommaSilence = state);
+
+let dbPeriodSilence: number | null = null;
+dbListener.periodSilenceStore.subscribe(state => dbPeriodSilence = state);
+
+let dbParagraphSilence: number | null = null;
+dbListener.paragraphSilenceStore.subscribe(state => dbParagraphSilence = state);
+
+
+const commaSilenceStoreInternal: Readable<number> = derived(
+  [dbListener.commaSilenceStore, pendingPatch.commaSilenceStore], 
+  ([db, pending]) => {
+    if (pending === undefined) return db ?? 150;
+    else return pending ?? 0.15;
+});
+export const commaSilenceStore = {
+  subscribe: commaSilenceStoreInternal.subscribe,
+  set: (commaSilence: number) => {
+    pendingPatch.setCommaSilence(commaSilence);
+    setCommitTimer();
+  }
+};
+
+
+const periodSilenceStoreInternal: Readable<number> = derived(
+  [dbListener.periodSilenceStore, pendingPatch.periodSilenceStore], 
+  ([db, pending]) => {
+    if (pending === undefined) return db ?? 250;
+    else return pending ?? 0.25;
+});
+export const periodSilenceStore = {
+  subscribe: periodSilenceStoreInternal.subscribe,
+  set: (commaSilence: number) => {
+    pendingPatch.setPeriodSilence(commaSilence);
+    setCommitTimer();
+  }
+};
+
+
+const paragraphSilenceStoreInternal: Readable<number> = derived(
+  [dbListener.paragraphSilenceStore, pendingPatch.paragraphSilenceStore], 
+  ([db, pending]) => {
+    if (pending === undefined) return db ?? 500;
+    else return pending ?? 0.5;
+});
+export const paragraphSilenceStore = {
+  subscribe: paragraphSilenceStoreInternal.subscribe,
+  set: (commaSilence: number) => {
+    pendingPatch.setParagraphSilence(commaSilence);
+    setCommitTimer();
+  }
+};
+
+
+
+
+async function init(): Promise<boolean> {
+  const success = await dbListener.init();
+  if (!success) return false;
+  return true;
 }
 
 const sectionStores: Record<number, Readable<SectionCollapsedPatch>> = {};
@@ -63,14 +122,14 @@ async function commit() {
   const lastDbAncestor = dbCursor.max;
   const lastCursor = dbCursor.firebase;
 
-  const newValues: Record<number, SectionPatch["to"]> | undefined = pendingPatch.getPending();
+  const newValues: Pending | undefined = pendingPatch.getPending();
   const newPatch = createPatch(newValues);
 
-  if (newPatch === undefined && lastCommonAncestor === lastCursor) {
-    console.log("No changes, not committing", { lastCommonAncestor });
-  } else {
-    console.log("Committing changes: ", {  dbCursor, lastCommonAncestor, lastDbAncestor, lastCursor, newValues, newPatch })
-  };
+  // if (newPatch === undefined && lastCommonAncestor === lastCursor) {
+    // console.log("No changes, not committing", { lastCommonAncestor });
+  // } else {
+    // console.log("Committing changes: ", {  dbCursor, lastCommonAncestor, lastDbAncestor, lastCursor, newValues, newPatch })
+  // };
 
   await writePatchToFirestore(lastCommonAncestor, lastDbAncestor, newPatch);
   pendingPatch.clear();
@@ -78,13 +137,42 @@ async function commit() {
   console.log("Commit complete, pending changes cleared");
 }
 
-function createPatch(newValues: Record<number, SectionPatch["to"]> | undefined): Patch | undefined {
+function createPatch(newValues: Pending | undefined): Patch | undefined {
   if (newValues === undefined) return;
   
   let patchEmpty = true;
   const patch: Patch = {};
 
+  const metaPatch = { 
+    from: {} as any, 
+    to: {} as any
+  } as any;
+
+  const { commaSilence, periodSilence, paragraphSilence } = newValues.meta;
+  
+  if (commaSilence !== undefined) {
+    metaPatch.from.commaSilence = dbCommaSilence;
+    metaPatch.to.commaSilence = commaSilence;
+    patchEmpty = false;
+  }
+
+  if (periodSilence !== undefined) {
+    metaPatch.from.periodSilence = dbPeriodSilence;
+    metaPatch.to.periodSilence = periodSilence;
+    patchEmpty = false;
+  }
+
+  if (paragraphSilence !== undefined) {
+    metaPatch.from.paragraphSilence = dbParagraphSilence;
+    metaPatch.to.paragraphSilence = paragraphSilence;
+    patchEmpty = false;
+  }
+
+  if (!patchEmpty) patch.meta = metaPatch;
+
   forIn(newValues, (idx, pendingData: any) => {
+    if (isNaN(idx)) return;
+    
     const dbData = getAssertExistsRecord(dbSectionData, idx) as any;
 
     let wroteAnyKeys = false;
@@ -110,7 +198,13 @@ function createPatch(newValues: Record<number, SectionPatch["to"]> | undefined):
   else return patch;
 }
 
-export const patchInterface = { init, getPatchStore, undo, redo, append };
+export const patchInterface = { 
+  init, 
+  getPatchStore, 
+  undo, 
+  redo, 
+  append
+};
 
 window.onbeforeunload = () => {
   if (timer !== undefined) clearTimeout(timer);

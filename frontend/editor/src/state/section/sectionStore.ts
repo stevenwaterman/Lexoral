@@ -1,10 +1,7 @@
 import { derived, Readable, writable, Writable } from "svelte/store"
-import { getOptions } from "./align";
 import { makeReadonly } from "../../utils/stores";
 import type { TranscriptEntry } from "../initStore";
-import { patchInterface } from "../patch/patchInterface";
-import { capitalise, isKnownWord } from "../wordStore";
-import { commaTimeStore, paragraphTimeStore, periodTimeStore } from "./defaultPunctuationStore";
+import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../patch/patchInterface";
 import { getCompletionStore } from "./completions";
 
 
@@ -147,7 +144,7 @@ export class SectionStore {
     if (this.endsParagraphStoreInternal !== undefined) return this.endsParagraphStoreInternal;
 
     const store = derived(
-      [this.userEndParagraphStore, this.silenceAfterStore, paragraphTimeStore],
+      [this.userEndParagraphStore, this.silenceAfterStore, paragraphSilenceStore],
       ([manualEndParagraph, silenceAfter, requiredSilence]) => {
         if (silenceAfter === null) return true;
         if (manualEndParagraph !== null) return manualEndParagraph;
@@ -170,7 +167,7 @@ export class SectionStore {
   private get placeholderPunctuationStore(): Readable<"," | "." | ""> {
     if (this.placeholderPunctuationStoreInternal !== undefined) return this.placeholderPunctuationStoreInternal;
 
-    const store = derived([this.endsParagraphStore, this.silenceAfterStore, commaTimeStore, periodTimeStore],
+    const store = derived([this.endsParagraphStore, this.silenceAfterStore, commaSilenceStore, periodSilenceStore],
       ([endsParagraph, silenceAfter, commaRequiredSilence, periodRequiredSilence]) => {
         if (endsParagraph) return ".";
         if (silenceAfter === null) return ".";

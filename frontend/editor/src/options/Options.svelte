@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { periodTimeStore, commaTimeStore, paragraphTimeStore } from "../state/section/defaultPunctuationStore";
   import { autoPlayStore, loopStore, playAudio, rateStore, stopAudio, volumeStore } from "../audio/audioPlayer";
   import { audioStyleStore } from "../audio/audioTimings";
   import { lastPlayingSectionIdxStore, playingStore } from "../audio/audioStatus";
   import { findSectionNode, selectEnd } from "../input/select";
-  import { patchInterface } from "../state/patch/patchInterface";
-  import { exportTranscript, exportTranscriptPlainText } from "../state/export";
+  import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../state/patch/patchInterface";
+  import { exportTranscript } from "../state/export";
 
   async function jumpTo() {
     const idx = $lastPlayingSectionIdxStore;
@@ -19,29 +18,29 @@
   }
 
   function commaChange() {
-    if ($commaTimeStore >= $periodTimeStore) {
-      periodTimeStore.set($commaTimeStore + 1);
+    if ($commaSilenceStore >= $periodSilenceStore) {
+      periodSilenceStore.set($commaSilenceStore + 1);
     }
-    if ($periodTimeStore >= $paragraphTimeStore) {
-      paragraphTimeStore.set($periodTimeStore + 1);
+    if ($periodSilenceStore >= $paragraphSilenceStore) {
+      periodSilenceStore.set($periodSilenceStore + 1);
     }
   }
 
   function periodChange() {
-    if ($commaTimeStore >= $periodTimeStore) {
-      commaTimeStore.set($periodTimeStore - 1);
+    if ($commaSilenceStore >= $periodSilenceStore) {
+      commaSilenceStore.set($periodSilenceStore - 1);
     }
-    if ($periodTimeStore >= $paragraphTimeStore) {
-      paragraphTimeStore.set($periodTimeStore + 1);
+    if ($periodSilenceStore >= $paragraphSilenceStore) {
+      paragraphSilenceStore.set($periodSilenceStore + 1);
     }
   }
 
   function paragraphChange() {
-    if ($periodTimeStore >= $paragraphTimeStore) {
-      periodTimeStore.set($paragraphTimeStore - 1);
+    if ($periodSilenceStore >= $paragraphSilenceStore) {
+      periodSilenceStore.set($paragraphSilenceStore - 1);
     }
-    if ($commaTimeStore >= $periodTimeStore) {
-      commaTimeStore.set($periodTimeStore - 1);
+    if ($commaSilenceStore >= $periodSilenceStore) {
+      commaSilenceStore.set($periodSilenceStore - 1);
     }
   }
 </script>
@@ -129,15 +128,15 @@
 
   <div class="grid">
     <label for="commaSpinner">Comma</label>
-    <input id="commaSpinner" type="number" min={10} step={10} bind:value={$commaTimeStore} on:change={commaChange}/>
+    <input id="commaSpinner" type="number" min={10} step={10} bind:value={$commaSilenceStore} on:change={commaChange}/>
     <span>ms</span>
 
     <label for="periodSpinner">Period</label>
-    <input id="periodSpinner" type="number" min={20} step={10} bind:value={$periodTimeStore} on:change={periodChange}/>
+    <input id="periodSpinner" type="number" min={20} step={10} bind:value={$periodSilenceStore} on:change={periodChange}/>
     <span>ms</span>
 
     <label for="paragraphSpinner">Paragraph</label>
-    <input id="paragraphSpinner" type="number" min={30} step={10} bind:value={$paragraphTimeStore} on:change={paragraphChange}/>
+    <input id="paragraphSpinner" type="number" min={30} step={10} bind:value={$paragraphSilenceStore} on:change={paragraphChange}/>
     <span>ms</span>
 
     <div class="spacer"></div>

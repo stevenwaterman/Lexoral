@@ -3,16 +3,23 @@ import { assertUser, getTranscriptId } from "../../api";
 import { getDb } from "./db";
 import { collection, query, onSnapshot, DocumentData, QuerySnapshot, DocumentChange } from "firebase/firestore";
 import { forIn, getAssertExists } from "../../utils/list";
+import { makeReadonly } from "../../utils/stores";
 
 type PatchProperty<KEY extends string, VALUE> = {
   from: Record<KEY, VALUE>;
   to: Record<KEY, VALUE>;
 }
 type PatchText = PatchProperty<"text", string | null>;
-type PatchParagraph = PatchProperty<"endParagraph", boolean>;
-type PatchEdited = PatchProperty<"edited", boolean>
-export type SectionPatch = PatchText | PatchParagraph | PatchEdited;
-export type Patch = Record<number, SectionPatch>;
+type PatchEndParagraph = PatchProperty<"endParagraph", boolean>;
+export type SectionPatch = PatchText | PatchEndParagraph;
+
+type PatchCommaSilence = PatchProperty<"commaSilence", number | null>;
+type PatchPeriodSilence = PatchProperty<"periodSilence", number | null>;
+type PatchParagraphSilence = PatchProperty<"paragraphSilence", number | null>;
+export type MetaPatch = PatchCommaSilence | PatchPeriodSilence | PatchParagraphSilence;
+
+export type Patch = Record<number, SectionPatch> & { meta?: MetaPatch };
+
 type PatchHistory = Patch[];
 
 export type SectionCollapsedPatch = {
@@ -22,9 +29,24 @@ export type SectionCollapsedPatch = {
 }
 export type SectionCollapsedPatches = Record<number, Partial<SectionCollapsedPatch>>;
 
+export type MetaCollapsedPatch = {
+  commaSilence?: number | null;
+  periodSilence?: number | null;
+  paragraphSilence?: number | null;
+}
+
 export class DbListener {
   private readonly patchHistory: PatchHistory = [];
   private readonly sectionPatchStores: Record<number, Writable<SectionCollapsedPatch>> = {};
+
+  private readonly commaSilenceStoreInternal: Writable<number | null> = writable(null);
+  private readonly periodSilenceStoreInternal: Writable<number | null> = writable(null);
+  private readonly paragraphSilenceStoreInternal: Writable<number | null> = writable(null);
+
+  readonly commaSilenceStore: Readable<number | null> = makeReadonly(this.commaSilenceStoreInternal);
+  readonly periodSilenceStore: Readable<number | null> = makeReadonly(this.periodSilenceStoreInternal);
+  readonly paragraphSilenceStore: Readable<number | null> = makeReadonly(this.paragraphSilenceStoreInternal);
+
   private firebaseCursor: number = -1;
   private cursor: number = -1;
   private maxRedoPoint: number = -1;
@@ -67,21 +89,28 @@ export class DbListener {
    * @param to The destination cursor. If to < from, noop.
    */
   private applyPatches(from: number, to: number) {
-    const collapsed: SectionCollapsedPatches = {};
+    const collapsedSections: SectionCollapsedPatches = {};
+    let collapsedMeta: MetaCollapsedPatch = {};
   
     for (let i = from; i <= to; i++) {
       const patch = getAssertExists(this.patchHistory, i);
-      
-      forIn(patch, (sectionIdx, sectionPatch) => {
-        const sectionCollapsed: Partial<SectionCollapsedPatch> = collapsed[sectionIdx] ?? {};
-        collapsed[sectionIdx] = {
+
+      const metaPatch: Partial<MetaPatch["to"]> = patch["meta"]?.to ?? {};
+      collapsedMeta = { ...collapsedMeta, ...metaPatch };
+
+      for (const key in patch) {
+        if (key === "meta") continue;
+        const idx = parseInt(key);
+        const sectionPatch = patch[idx] as SectionPatch;
+        const sectionCollapsed: Partial<SectionCollapsedPatch> = collapsedSections[idx] ?? {};
+        collapsedSections[idx] = {
           ...sectionCollapsed,
           ...sectionPatch.to
         }
-      })
+      }
     }
   
-    this.applyCollapsedPatch(collapsed);
+    this.applyCollapsedPatch(collapsedSections, collapsedMeta);
   }
 
   /**
@@ -90,31 +119,43 @@ export class DbListener {
    * @param to The destination cursor. If to > from, noop.
    */
   private removePatches(from: number, to: number) {
-    const collapsed: SectionCollapsedPatches = {};
+    const collapsedSections: SectionCollapsedPatches = {};
+    let collapsedMeta: MetaCollapsedPatch = {};
   
     for (let i = from; i >= to; i--) {
       const patch = getAssertExists(this.patchHistory, i);
 
-      forIn(patch, (sectionIdx, sectionPatch) => {
-        const sectionCollapsed: Partial<SectionCollapsedPatch> = collapsed[sectionIdx] ?? {};
-        collapsed[sectionIdx] = {
+      const metaPatch: Partial<MetaPatch["to"]> = patch["meta"]?.from ?? {};
+      collapsedMeta = { ...collapsedMeta, ...metaPatch };
+
+      for (const key in patch) {
+        if (key === "meta") continue;
+        const idx = parseInt(key);
+        const sectionPatch = patch[idx] as SectionPatch;
+        const sectionCollapsed: Partial<SectionCollapsedPatch> = collapsedSections[idx] ?? {};
+        collapsedSections[idx] = {
           ...sectionCollapsed,
           ...sectionPatch.from
         }
-      })
+      }
     }
   
-    this.applyCollapsedPatch(collapsed);
+    this.applyCollapsedPatch(collapsedSections, collapsedMeta);
   }
 
-  private applyCollapsedPatch(collapsed: SectionCollapsedPatches) {
-    forIn(collapsed, (sectionIdx, adjustments) => {
+  private applyCollapsedPatch(collapsedSections: SectionCollapsedPatches, collapsedMeta: MetaCollapsedPatch) {
+    forIn(collapsedSections, (sectionIdx, adjustments) => {
       this.getSectionPatchStoreInternal(sectionIdx)
         .update(state => ({
           ...state,
           ...adjustments
         }));
     })
+
+    const { commaSilence, periodSilence, paragraphSilence } = collapsedMeta;
+    if (commaSilence !== undefined) this.commaSilenceStoreInternal.set(commaSilence);
+    if (periodSilence !== undefined) this.periodSilenceStoreInternal.set(periodSilence);
+    if (paragraphSilence !== undefined) this.paragraphSilenceStoreInternal.set(paragraphSilence);
   }
 
   /**
