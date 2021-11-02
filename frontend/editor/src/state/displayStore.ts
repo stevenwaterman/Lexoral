@@ -3,13 +3,18 @@ import { assertUser } from "../api";
 import { firestoreWritable, FirestoreWritable, FirestoreWritableField } from "../utils/firestoreWritable";
 import { getDb } from "./patch/db";
 
-type DisplayState = {
+export type DisplayState = {
   fontSize: number;
   pageWidth: number;
 }
 
+let initialised: boolean = false;
+
 async function init() {
-  const document: DocumentReference<DisplayState> = doc(getDb(), "users", assertUser().uid, "displaySettings") as DocumentReference<DisplayState>;
+  if (initialised) throw new Error("Display store is already initialised");
+  initialised = true;
+
+  const document: DocumentReference<DisplayState> = doc(getDb(), "users", assertUser().uid, "settings", "editorDisplay") as DocumentReference<DisplayState>;
   const initial: DisplayState = {
     fontSize: 12,
     pageWidth: 80
@@ -23,12 +28,18 @@ async function init() {
 let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize"> | undefined = undefined;
 let pageWidthStore: FirestoreWritableField<DisplayState, "pageWidth"> | undefined = undefined;
 
-export async function getFontSizeStore(): Promise<FirestoreWritableField<DisplayState, "fontSize">> {
-  if (fontSizeStore === undefined) await init();
+function getFontSizeStore(): FirestoreWritableField<DisplayState, "fontSize"> {
+  if (!initialised) throw new Error("Display store is not initialised");
   return fontSizeStore as FirestoreWritableField<DisplayState, "fontSize">;
 }
 
-export async function getPageWidthStore(): Promise<FirestoreWritableField<DisplayState, "pageWidth">> {
-  if (pageWidthStore === undefined) await init();
+function getPageWidthStore(): FirestoreWritableField<DisplayState, "fontSize"> {
+  if (!initialised) throw new Error("Display store is not initialised");
   return pageWidthStore as FirestoreWritableField<DisplayState, "pageWidth">;
+}
+
+export const displayStore = {
+  init,
+  getFontSizeStore,
+  getPageWidthStore
 }

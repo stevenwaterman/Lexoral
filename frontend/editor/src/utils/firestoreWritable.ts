@@ -33,7 +33,7 @@ export async function firestoreWritable<T extends Record<string, any>>(
 
   onSnapshot(document, snapshot => {
     const data = snapshot.data();
-    if (data !== undefined) dbStore.set(data);
+    if (data !== undefined) dbStore.set({ ...initial, ...data });
   });
 
 

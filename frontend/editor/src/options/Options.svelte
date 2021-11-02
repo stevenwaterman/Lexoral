@@ -5,7 +5,8 @@
   import { findSectionNode, selectEnd } from "../input/select";
   import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../state/patch/patchInterface";
   import { exportTranscript } from "../state/export";
-  import { getFontSizeStore, getPageWidthStore } from "../state/displayStore";
+  import type { DisplayState } from "../state/displayStore";
+  import { displayStore } from "../state/displayStore";
   import type { FirestoreWritableField } from "../utils/firestoreWritable";
 
   async function jumpTo() {
@@ -45,6 +46,12 @@
       commaSilenceStore.set($periodSilenceStore - 1);
     }
   }
+
+  let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize">;
+  $: fontSizeStore = displayStore.getFontSizeStore();
+
+  let pageWidthStore: FirestoreWritableField<DisplayState, "fontSize">;
+  $: pageWidthStore = displayStore.getPageWidthStore();
 </script>
 
 <style>

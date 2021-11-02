@@ -1,5 +1,5 @@
 import { derived, Readable } from "svelte/store";
-import { capitalise, isKnownWord } from "../wordStore";
+import { isKnownWord } from "../wordStore";
 import { getOptions } from "./align";
 
 export function getCompletionStore(
@@ -54,4 +54,8 @@ function sanitiseOption(option: string): string {
 function styliseOption(option: string, capitalisation: boolean, punctuation: string) {
   const maybeCapitalised = capitalisation ? capitalise(option) : option;
   return maybeCapitalised + punctuation;
+}
+
+export function capitalise(word: string): string {
+  return word.slice(0,1).toUpperCase() + word.slice(1);
 }

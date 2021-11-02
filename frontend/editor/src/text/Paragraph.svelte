@@ -1,10 +1,6 @@
 <script lang="ts">
-  import { getAssertExistsRecord } from "../utils/list";
-
   import Section from "./Section.svelte";
   import { onDestroy, onMount } from "svelte";
-  import { deriveRelevant, sectionStores } from "../state/section/sectionStore";
-  import { sectionProps } from "./selector";
 
   export let observer: IntersectionObserver | undefined;
   export let start: number;
@@ -60,7 +56,6 @@
   {#each paragraphRange as idx (idx)}
     <Section 
       idx={idx}
-      sectionStore={deriveRelevant(getAssertExistsRecord(sectionStores, idx), sectionProps)} 
       hidden={!visible}
     />
   {/each}

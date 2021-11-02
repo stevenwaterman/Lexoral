@@ -1,6 +1,5 @@
-import { start } from "repl";
 import { Readable, writable, Writable } from "svelte/store";
-import { sectionStores } from "../state/section/sectionStore"
+import { SectionStore, sectionStores } from "../state/section/sectionStore"
 import { getAssertExists, getAssertExistsRecord } from "../utils/list";
 import { makeReadonly } from "../utils/stores";
 
@@ -8,16 +7,13 @@ export const playingStore: Writable<boolean> = writable(false);
 
 const audioTimings: Array<{ startTime: number; endTime: number }> = [];
 
-export function initAudioCurrentlyPlaying() {
-  const length = Object.keys(sectionStores).length;
-  for (let i = 0; i < length; i++) {
+export function initAudioCurrentlyPlaying(sectionStores: SectionStore[]) {
+  sectionStores.forEach(store => {
     const data = { startTime: -1, endTime: -1};
-    audioTimings.push(data);
-
-    const store = getAssertExistsRecord(sectionStores, i);
     store.startTimeStore.subscribe(startTime => { data.startTime = startTime });
     store.endTimeStore.subscribe(endTime => { data.endTime = endTime });
-  }
+    audioTimings.push(data);
+  });
 }
 
 let lastSectionIdxLookupResult: { idx: number; startTime: number; endTime: number } | undefined = undefined;

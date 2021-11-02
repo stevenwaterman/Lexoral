@@ -1,5 +1,5 @@
 import type { User } from "firebase/auth";
-import type { TranscriptEntry } from "./state/initStore";
+import type { TranscriptEntry } from "./state/initialiseState";
 
 let user: User | undefined = undefined;
 

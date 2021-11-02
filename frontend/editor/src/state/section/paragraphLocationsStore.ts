@@ -1,9 +1,9 @@
 import { tick } from "svelte";
 import { derived, Readable, writable, Writable } from "svelte/store";
 import { restoreSelection, saveSelection } from "../../input/select";
-import { forIn, getAssertExists } from "../../utils/list";
+import { getAssertExists } from "../../utils/list";
 import { deriveDebounced } from "../../utils/stores";
-import { maxSectionIdx, sectionStores } from "./sectionStore";
+import { maxSectionIdx } from "./sectionStore";
 
 export type ParagraphLocation = { start: number, end: number };
 
@@ -49,17 +49,8 @@ function setEndParagraph(idx: number, endParagraph: boolean) {
 }
 
 export const paragraphLocationsStore: Readable<ParagraphLocation[]> & {
-  init: () => void;
   setEndParagraph: (idx: number, endParagraph: boolean) => void;
 } = {
   subscribe: paragraphLocationsStoreInternal.subscribe,
-  init,
   setEndParagraph,
 }
-
-function init() {
-  forIn(sectionStores, (idx, store) => {
-    store.endsParagraphStore.subscribe(endParagraph => setEndParagraph(idx, endParagraph));
-  });
-}
-

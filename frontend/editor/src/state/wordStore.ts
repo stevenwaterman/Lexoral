@@ -1,5 +1,6 @@
 let wordSet: Set<string>;
 
+/** No dependencies */
 export async function initWords() {
   return fetch("/assets/wordlist.txt")
     .then(res => res.text())
@@ -9,8 +10,4 @@ export async function initWords() {
 
 export function isKnownWord(word: string): boolean {
   return wordSet.has(word);
-}
-
-export function capitalise(word: string): string {
-  return word.slice(0,1).toUpperCase() + word.slice(1);
 }

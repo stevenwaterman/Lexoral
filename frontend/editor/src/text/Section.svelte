@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { Readable } from "svelte/store";
-  import type { SectionStoreState } from "../state/section/sectionStore";
-  import type { sectionProps } from "./selector";
+  import { sectionStores } from "../state/section/sectionStore";
+  import { getAssertExistsRecord } from "../utils/list";
 
   export let idx: number;
-  export let sectionStore: Readable<SectionStoreState<typeof sectionProps>>;
   export let hidden: boolean;
+  $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore, endsParagraphStore} = getAssertExistsRecord(sectionStores, idx));
 </script>
 
 <style>
@@ -48,14 +47,14 @@
 <span
   class="section"
   class:hidden
-  class:highlight={$sectionStore.selected}
-  class:sectionPlaying={$sectionStore.playing}
-  class:underline={$sectionStore.displayText.length === 0}
-  class:placeholder={!$sectionStore.edited}
-  class:questionable={$sectionStore.completions.length > 1 && !$sectionStore.edited}
+  class:highlight={$selectedStore}
+  class:sectionPlaying={$playingStore}
+  class:underline={$displayTextStore.length === 0}
+  class:placeholder={!$editedStore}
+  class:questionable={$completionsStore.length > 1 && !$editedStore}
   data-sectionIdx={idx}
 >
-  {`\u200b${$sectionStore.displayText}\u200b`}
-  <!-- {`/${state.displayText}/`} -->
+  {`\u200b${$displayTextStore}\u200b`}
+  <!-- {`/${$displayTextStore}/`} -->
 </span>
-{$sectionStore.endsParagraph ? "" : " "}
+{$endsParagraphStore ? "" : " "}

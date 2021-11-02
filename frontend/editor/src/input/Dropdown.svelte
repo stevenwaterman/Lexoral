@@ -4,7 +4,8 @@
   import { playingStore } from "../audio/audioStatus";
   import { patchInterface } from "../state/patch/patchInterface";
   import { focusSectionIdxStore, isTextSelectedStore } from "./selectionState";
-  import { SectionStore, sectionStores } from "../state/section/sectionStore";
+  import { sectionStores } from "../state/section/sectionStore";
+  import type { SectionStore } from "../state/section/sectionStore";
   import type { Readable } from "svelte/store";
 
   let sectionIdx: number | undefined;

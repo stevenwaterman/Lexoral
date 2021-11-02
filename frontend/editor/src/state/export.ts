@@ -1,4 +1,5 @@
 import { saveAs } from "file-saver";
+import { get_store_value } from "svelte/internal";
 import { SectionStore, sectionStores } from "./section/sectionStore"
 
 export function exportTranscript(type: "txt" | "srt") {
@@ -15,8 +16,10 @@ export function exportTranscriptPlainText(sections: SectionStore[]): string {
   return sections.map(sectionToPlainText).reduce((acc, elem) => acc + elem, "");
 }
 
-function sectionToPlainText(section: SectionStore): string {
-  return `${section.displayText}${section.endsParagraph ? "\n" : " "}`;
+function sectionToPlainText({ displayTextStore, endsParagraphStore }: SectionStore): string {
+  const displayText = get_store_value(displayTextStore);
+  const endsParagraph = get_store_value(endsParagraphStore);
+  return `${displayText}${endsParagraph ? "\n" : " "}`;
 }
 
 type Subtitle = {
@@ -31,17 +34,18 @@ export function exportTranscriptSubtitles(sections: SectionStore[]): string {
 
   const subtitles: Subtitle[] = [];
 
-  for (const section of sections) {
+  for (const { startTimeStore, endTimeStore, displayTextStore, endsParagraphStore } of sections) {
     if (startTime === undefined) {
-      startTime = section.startTime;
+      startTime = get_store_value(startTimeStore);
     }
-    text += " "
-    text += section.displayText;
 
-    if (section.endsParagraph) {
+    text += " "
+    text += get_store_value(displayTextStore);
+
+    if (get_store_value(endsParagraphStore)) {
       subtitles.push({
         startTime: startTime as number,
-        endTime: section.endTime as number,
+        endTime: get_store_value(endTimeStore) as number,
         text: text.trim()
       });
 

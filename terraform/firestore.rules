@@ -4,6 +4,11 @@ service cloud.firestore {
 		match /users/{userId} {
 			allow read: if request.auth != null && request.auth.uid == userId;
 
+      match /settings/{settingId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+
 			match /transcripts/{transcriptId} {
 				allow read: if request.auth != null && request.auth.uid == userId;
         allow delete: if request.auth != null && request.auth.uid == userId;

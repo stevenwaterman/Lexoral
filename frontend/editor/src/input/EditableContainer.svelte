@@ -9,7 +9,9 @@
 
   import { onKeyPressed } from "./controls";
   import { patchInterface } from "../state/patch/patchInterface";
-import { fontSizeStore, pageWidthStore } from "../state/displayStore";
+  import { displayStore } from "../state/displayStore";
+  import type { DisplayState } from "../state/displayStore";
+  import type { FirestoreWritableField } from "../utils/firestoreWritable";
 
   let wrapper: HTMLDivElement;
 
@@ -30,6 +32,12 @@ import { fontSizeStore, pageWidthStore } from "../state/displayStore";
     patchInterface.append(idx, { text: trimmedContent });
     restoreSelection();
   }
+
+  let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize">;
+  $: fontSizeStore = displayStore.getFontSizeStore();
+
+  let pageWidthStore: FirestoreWritableField<DisplayState, "fontSize">;
+  $: pageWidthStore = displayStore.getPageWidthStore();
 </script>
 
 <style>
