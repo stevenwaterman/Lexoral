@@ -5,7 +5,8 @@
   import { findSectionNode, selectEnd } from "../input/select";
   import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../state/patch/patchInterface";
   import { exportTranscript } from "../state/export";
-  import { fontSizeStore, pageWidthStore } from "../state/displayStore";
+  import { getFontSizeStore, getPageWidthStore } from "../state/displayStore";
+  import type { FirestoreWritableField } from "../utils/firestoreWritable";
 
   async function jumpTo() {
     const idx = $lastPlayingSectionIdxStore;
