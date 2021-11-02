@@ -5,6 +5,7 @@
   import { findSectionNode, selectEnd } from "../input/select";
   import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../state/patch/patchInterface";
   import { exportTranscript } from "../state/export";
+  import { fontSizeStore, pageWidthStore } from "../state/displayStore";
 
   async function jumpTo() {
     const idx = $lastPlayingSectionIdxStore;
@@ -180,5 +181,13 @@
       <button title="Ctrl+E" on:click={() => exportTranscript("txt")}>Save .txt</button>
       <button on:click={() => exportTranscript("srt")}>Save .srt</button>
     </div>
+
+    <label for="fontSize">Font Size</label>
+    <input id="fontSize" type="number" min={8} step={1} bind:value={$fontSizeStore}/>
+    <span>pt</span>
+
+    <label for="pageWidth">Page Width</label>
+    <input id="pageWidth" type="number" min={1} step={1} bind:value={$pageWidthStore}/>
+    <span>em</span>
   </div>
 </div>

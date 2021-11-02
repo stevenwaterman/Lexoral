@@ -116,8 +116,13 @@
     width: 100%;
     height: 100%;
     min-height: 0;
+    min-width: 0;
 
     position: relative;
+
+    border-left: 1px solid var(--form-border);
+    border-right: 1px solid var(--form-border);
+    background-color: var(--blue-2);
   }
 </style>
 

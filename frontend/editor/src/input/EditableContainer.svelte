@@ -9,6 +9,7 @@
 
   import { onKeyPressed } from "./controls";
   import { patchInterface } from "../state/patch/patchInterface";
+import { fontSizeStore, pageWidthStore } from "../state/displayStore";
 
   let wrapper: HTMLDivElement;
 
@@ -41,11 +42,16 @@
     box-sizing: border-box;
 
     padding: 1em;
+    max-width: 100%;
+    min-width: 0;
+    background-color: var(--page-background);
+    margin: auto;
   }
 </style>
 
 <div
   class="scroller"
+  style={`width: ${$pageWidthStore}em; font-size: ${$fontSizeStore}pt;`}
   bind:this={wrapper}
   contenteditable
   spellcheck={false}
