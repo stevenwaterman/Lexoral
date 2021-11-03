@@ -4,15 +4,15 @@
   import { playingStore } from "../audio/audioStatus";
   import { patchInterface } from "../state/patch/patchInterface";
   import { focusSectionIdxStore, isTextSelectedStore } from "./selectionState";
-  import { sectionStores } from "../state/section/sectionStore";
   import type { SectionStore } from "../state/section/sectionStore";
   import type { Readable } from "svelte/store";
+import { getSectionStore } from "../state/section/sectionStoreRegistry";
 
   let sectionIdx: number | undefined;
   $: sectionIdx = $focusSectionIdxStore;
 
   let section: SectionStore | undefined;
-  $: section = sectionIdx === undefined ? undefined : sectionStores[sectionIdx];
+  $: section = sectionIdx === undefined ? undefined : getSectionStore(sectionIdx);
 
   let completionsStore: Readable<[string, ...string[]]> | undefined;
   $: completionsStore = section === undefined ? undefined : section.completionsStore;

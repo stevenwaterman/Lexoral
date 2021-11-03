@@ -1,13 +1,11 @@
 <script lang="ts">
-  import { autoPlayStore, loopStore, playAudio, rateStore, stopAudio, volumeStore } from "../audio/audioPlayer";
-  import { audioStyleStore } from "../audio/audioTimings";
+  import { playAudio, stopAudio } from "../audio/audioPlayer";
   import { lastPlayingSectionIdxStore, playingStore } from "../audio/audioStatus";
   import { findSectionNode, selectEnd } from "../input/select";
   import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../state/patch/patchInterface";
   import { exportTranscript } from "../state/export";
-  import type { DisplayState } from "../state/displayStore";
-  import { displayStore } from "../state/displayStore";
-  import type { FirestoreWritableField } from "../utils/firestoreWritable";
+  import { displayStore } from "../state/settings/displayStore";
+  import { audioStore } from "../state/settings/audioStore";
 
   async function jumpTo() {
     const idx = $lastPlayingSectionIdxStore;
@@ -47,11 +45,14 @@
     }
   }
 
-  let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize">;
-  $: fontSizeStore = displayStore.getFontSizeStore();
+  $: fontSizeStore = displayStore.getField("fontSize");
+  $: pageWidthStore = displayStore.getField("pageWidth");
 
-  let pageWidthStore: FirestoreWritableField<DisplayState, "fontSize">;
-  $: pageWidthStore = displayStore.getPageWidthStore();
+  $: volumeStore = audioStore.getField("volume");
+  $: rateStore = audioStore.getField("rate");
+  $: audioStyleStore = audioStore.getField("mode");
+  $: autoPlayStore = audioStore.getField("autoPlay");
+  $: loopStore = audioStore.getField("loop");
 </script>
 
 <style>

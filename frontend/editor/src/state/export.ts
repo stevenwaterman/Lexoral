@@ -1,9 +1,10 @@
 import { saveAs } from "file-saver";
 import { get_store_value } from "svelte/internal";
-import { SectionStore, sectionStores } from "./section/sectionStore"
+import type { SectionStore } from "./section/sectionStore";
+import { getSectionStores } from "./section/sectionStoreRegistry";
 
 export function exportTranscript(type: "txt" | "srt") {
-  const entries = Object.entries(sectionStores).map(([key, val]) => [parseInt(key), val] as const);
+  const entries = Object.entries(getSectionStores()).map(([key, val]) => [parseInt(key), val] as const);
   entries.sort((a, b) => a[0] - b[0]);
 
   const sections = entries.map(entry => entry[1]);

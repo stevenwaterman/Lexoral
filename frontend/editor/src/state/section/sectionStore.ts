@@ -4,19 +4,17 @@ import type { TranscriptEntry } from "../initialiseState";
 import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../patch/patchInterface";
 import { getCompletionStore } from "./completions";
 import { paragraphLocationsStore } from "./paragraphLocationsStore";
-
-export const sectionStores: Record<number, SectionStore> = {};
-export let maxSectionIdx: number = -1;
+import { registerSectionStore } from "./sectionStoreRegistry";
 
 class SectionStoreBuilderOne {
   protected readonly transcriptEntry: TranscriptEntry;
 
   public readonly idx: number;
 
-  public startTime: number | undefined = undefined;
+  public startTime: number = -1;
   readonly startTimeStore: Readable<number>;
 
-  public endTime: number | undefined = undefined;
+  public endTime: number = -1;
   readonly endTimeStore: Readable<number>;
 
   protected readonly rawOptions: [string, ...string[]];
@@ -149,8 +147,7 @@ class SectionStoreBuilderThree extends SectionStoreBuilderTwo {
     this.completionsStore = getCompletionStore(this.userTextStore, this.rawOptions, this.placeholderCapitalisationStore, this.placeholderPunctuationStore);
     this.displayTextStore = derived(this.completionsStore, completions => completions[0]);
     
-    sectionStores[this.idx] = this;
-    maxSectionIdx = Math.max(maxSectionIdx, this.idx);
+    registerSectionStore(this);
   }
 
   public readonly startsParagraphStore: Readable<boolean>;

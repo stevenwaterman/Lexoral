@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { sectionStores } from "../state/section/sectionStore";
+import { getSectionStore } from "../state/section/sectionStoreRegistry";
+
   import { getAssertExistsRecord } from "../utils/list";
 
   export let idx: number;
   export let hidden: boolean;
-  $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore, endsParagraphStore} = getAssertExistsRecord(sectionStores, idx));
+  $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore, endsParagraphStore} = getSectionStore(idx));
 </script>
 
 <style>

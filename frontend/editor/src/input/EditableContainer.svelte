@@ -9,8 +9,8 @@
 
   import { onKeyPressed } from "./controls";
   import { patchInterface } from "../state/patch/patchInterface";
-  import { displayStore } from "../state/displayStore";
-  import type { DisplayState } from "../state/displayStore";
+  import { displayStore } from "../state/settings/displayStore";
+  import type { DisplayState } from "../state/settings/displayStore";
   import type { FirestoreWritableField } from "../utils/firestoreWritable";
 
   let wrapper: HTMLDivElement;
@@ -34,10 +34,10 @@
   }
 
   let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize">;
-  $: fontSizeStore = displayStore.getFontSizeStore();
+  $: fontSizeStore = displayStore.getField("fontSize");
 
   let pageWidthStore: FirestoreWritableField<DisplayState, "fontSize">;
-  $: pageWidthStore = displayStore.getPageWidthStore();
+  $: pageWidthStore = displayStore.getField("pageWidth");
 </script>
 
 <style>

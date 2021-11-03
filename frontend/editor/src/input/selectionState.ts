@@ -1,8 +1,7 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
 import { deriveConditionally, deriveWithPrevious } from "../utils/stores";
 import { clamp, forIn, getAssertExistsRecord } from "../utils/list";
-import { sectionStores } from "../state/section/sectionStore"
-import { paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
+import { getSectionStore } from "../state/section/sectionStoreRegistry";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -62,7 +61,7 @@ deriveWithPrevious(selectionRangeStore).subscribe(({ last, current }) => {
   }
 
   forIn(updates, (idx, selected) => {
-    getAssertExistsRecord(sectionStores, idx).selectedStore.set(selected);
+    getSectionStore(idx).selectedStore.set(selected);
   })
 })
 

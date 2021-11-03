@@ -1,7 +1,7 @@
-import { Writable, writable } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { ParagraphLocation, paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
-import { sectionStores } from "../state/section/sectionStore"
+import { getMaxSectionIdx, getSectionStore } from "../state/section/sectionStoreRegistry";
+import type { AudioStyle } from "../state/settings/audioStore";
 import { clamp } from "../utils/list";
 
 let earlySelectionIdx: number | undefined;
@@ -12,12 +12,7 @@ lateSectionIdxStore.subscribe(state => lateSelectionIdx = state);
 let paragraphLocations: ParagraphLocation[];
 paragraphLocationsStore.subscribe(state => paragraphLocations = state);
 
-export type AudioStyle = "context" | "onward"
-let audioStyle: AudioStyle = "context";
-export const audioStyleStore: Writable<AudioStyle> = writable(audioStyle);
-audioStyleStore.subscribe(state => audioStyle = state);
-
-export function getSelectionTimings(): { start: number, end: number } | null {
+export function getSelectionTimings(audioStyle: AudioStyle): { start: number, end: number } | null {
   if (earlySelectionIdx !== lateSelectionIdx) return getSelectionTimingsLiteral(earlySelectionIdx, lateSelectionIdx);
   if (audioStyle === "context") return getSelectionTimingsContext();
   else if (audioStyle === "onward") return getSelectionTimingsOnward();
@@ -32,23 +27,20 @@ function getSelectionTimingsContext(): { start: number, end: number } | null {
 
 function getSelectionTimingsOnward(): { start: number, end: number } | null {
   const startSectionIdx = earlySelectionIdx;
-  const endSectionIdx = Object.keys(sectionStores).length - 1;
+  const endSectionIdx = getMaxSectionIdx();
   return getSelectionTimingsLiteral(startSectionIdx, endSectionIdx);
 }
 
 
-function getSelectionTimingsLiteral(startSectionIdx: number | undefined, endSectionIdx: number | undefined): { start: number, end: number } | null {
+function getSelectionTimingsLiteral(
+  startSectionIdx: number | undefined, 
+  endSectionIdx: number | undefined
+): { start: number, end: number } | null {
   if (startSectionIdx === undefined) return null;
   if (endSectionIdx === undefined) return null;
   
-  const startSectionStore = sectionStores[startSectionIdx];
-  const endSectionStore = sectionStores[endSectionIdx];
-
-  if (startSectionStore === undefined) return null;
-  if (endSectionStore === undefined) return null;
-
-  const start = startSectionStore.startTime as number;
-  const end = endSectionStore.endTime as number;
+  const start = getSectionStore(startSectionIdx).startTime as number;
+  const end = getSectionStore(endSectionIdx).endTime as number;
 
   return {start, end};
 }

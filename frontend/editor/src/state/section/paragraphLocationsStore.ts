@@ -3,7 +3,7 @@ import { derived, Readable, writable, Writable } from "svelte/store";
 import { restoreSelection, saveSelection } from "../../input/select";
 import { getAssertExists } from "../../utils/list";
 import { deriveDebounced } from "../../utils/stores";
-import { maxSectionIdx } from "./sectionStore";
+import { getMaxSectionIdx } from "./sectionStoreRegistry";
 
 export type ParagraphLocation = { start: number, end: number };
 
@@ -13,6 +13,8 @@ const debouncedParagraphDataStore: Readable<Set<number> | undefined> = deriveDeb
 
 const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(debouncedParagraphDataStore, locations => {
   if (locations === undefined) return [];
+
+  const maxSectionIdx = getMaxSectionIdx();
 
   const sortedBoundaries = Array.from(locations);
   sortedBoundaries.sort((a,b) => a-b);

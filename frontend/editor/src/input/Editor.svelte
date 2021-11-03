@@ -8,10 +8,11 @@
   import EditableContainer from "./EditableContainer.svelte";
   import { exportTranscript } from "../state/export";
   import { lastPlayingSectionIdxStore, playingStore } from "../audio/audioStatus";
-  import { autoPlayStore, loopStore, playAudio, rateStore, stopAudio, volumeStore } from "../audio/audioPlayer";
-  import { audioStyleStore } from "../audio/audioTimings";
+  import { playAudio, stopAudio } from "../audio/audioPlayer";
   import { selectEnd, findSectionNode } from "./select";
   import Options from "../options/Options.svelte";
+import { audioStore } from "../state/settings/audioStore";
+import { clamp } from "../utils/list";
 
   let altReleaseShouldPlay = false;
 
@@ -63,40 +64,28 @@
         case "o": return onwardMode();
         case "l": return toggleLoop();
         case "a": return toggleAutoPlay();
-        case "ArrowLeft": return rateStore.decrease();
-        case "ArrowRight": return rateStore.increase();
-        case "ArrowUp": return volumeStore.increase();
-        case "ArrowDown": return volumeStore.decrease();
+        case "ArrowLeft": return audioStore.getField("rate").update(rate => Math.max(10, rate - 5));
+        case "ArrowRight": return audioStore.getField("rate").update(rate => rate + 5);
+        case "ArrowUp": return audioStore.getField("volume").update(volume => clamp(volume + 5, 0, 100));
+        case "ArrowDown": return audioStore.getField("volume").update(volume => clamp(volume - 5, 0, 100));
       }
     }
   }
 
   function contextMode() {
-    if ($audioStyleStore === "context") return;
-    audioStyleStore.set("context");
-    sendToast("Enabled audio mode: context");
+    audioStore.getField("mode").set("context");
   }
 
   function onwardMode() {
-    if ($audioStyleStore === "onward") return;
-    audioStyleStore.set("onward");
-    sendToast("Enabled audio mode: onward");
+    audioStore.getField("mode").set("onward");
   }
 
   function toggleAutoPlay() {
-    autoPlayStore.update(autoPlay => {
-      if (autoPlay) sendToast("Auto-play disabled")
-      else sendToast("Auto-play enabled")
-      return !autoPlay;
-    });
+    audioStore.getField("autoPlay").update(autoPlay => !autoPlay);
   }
 
   function toggleLoop() {
-    loopStore.update(loop => {
-      if (loop) sendToast("Looping disabled")
-      else sendToast("Looping enabled")
-      return !loop
-    });
+    audioStore.getField("loop").update(loop => !loop);
   }
 </script>
 
@@ -138,7 +127,6 @@
     </EditableContainer>
     <ToastController/>
   </div>
-  
 
   <Options/>
 </div>

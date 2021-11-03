@@ -1,5 +1,6 @@
 import { Readable, writable, Writable } from "svelte/store";
-import { SectionStore, sectionStores } from "../state/section/sectionStore"
+import type { SectionStore } from "../state/section/sectionStore"
+import { getSectionStore } from "../state/section/sectionStoreRegistry";
 import { getAssertExists, getAssertExistsRecord } from "../utils/list";
 import { makeReadonly } from "../utils/stores";
 
@@ -45,11 +46,11 @@ export function updateCurrentlyPlaying(time: number | null) {
   if (newPlayingSectionIdx === lastPlayingSectionIdx) return;
 
   if (lastPlayingSectionIdx !== null) {
-    getAssertExistsRecord(sectionStores, lastPlayingSectionIdx).playingStore.set(false);
+    getSectionStore(lastPlayingSectionIdx).playingStore.set(false);
   }
 
   if (newPlayingSectionIdx !== null) {
-    getAssertExistsRecord(sectionStores, newPlayingSectionIdx).playingStore.set(true);
+    getSectionStore(newPlayingSectionIdx).playingStore.set(true);
   }
 
   lastPlayingSectionIdx = newPlayingSectionIdx;
