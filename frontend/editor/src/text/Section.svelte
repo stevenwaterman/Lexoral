@@ -11,7 +11,7 @@ import { getSectionStore } from "../state/section/sectionStoreRegistry";
 <style>
   .section {
     display: inline;
-    white-space: pre-wrap;
+    white-space: pre;
     min-width: 1em;
   }
 

@@ -42,6 +42,8 @@ import { getSectionStore } from "../state/section/sectionStoreRegistry";
   let left: number;
   $: left = sectionOffsetLeft + (paragraphNode?.offsetLeft ?? 0);
 
+  $: console.log({ sectionNode, paragraphNode })
+
   let top: number;
   $: top = (sectionNode?.offsetTop ?? 0) + (paragraphNode?.offsetTop ?? 0) + (sectionNode?.offsetHeight ?? 0);
 
