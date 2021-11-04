@@ -166,7 +166,6 @@ export class DbListener {
     const q = query(patchCollection);
     return new Promise<boolean>(resolve => {
       onSnapshot(q, snapshot => {
-        console.log("Received DB Snapshot:", snapshot)
         this.processSnapshot(snapshot);
         resolve(this.patchHistory.length === 0);
       });
@@ -175,6 +174,7 @@ export class DbListener {
 
   private processSnapshot(snapshot: QuerySnapshot<DocumentData>) {
     const changes = snapshot.docChanges();
+    console.log("Received changes from db:", changes);
     if (changes.length === 0) return;
 
     const newCursor = changes.find(change => change.doc.id === "meta")?.doc?.get("cursor") ?? this.cursor;
