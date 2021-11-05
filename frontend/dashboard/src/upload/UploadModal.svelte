@@ -42,7 +42,6 @@
   $: affordable = remainingCredit >= 0;
 
 
-
   function fileChange(event: Event) {
     const input: HTMLInputElement = event.target as HTMLInputElement;
     file = input.files?.[0];
@@ -61,6 +60,9 @@
     uploading = false;
     close();
   }
+
+  let allowUpload: boolean;
+  $: allowUpload = (audioUrl !== undefined) && (duration !== undefined) && affordable;
 </script>
 
 <style>
@@ -144,10 +146,8 @@
 
   {#if !uploading}
     <div class="buttonContainer">
-      <button on:click|preventDefault={close}>Cancel</button>
-      {#if audioUrl && duration && affordable}
-        <button on:click|preventDefault={attemptUpload}>Confirm</button>
-      {/if}
+      <button class="danger" on:click|preventDefault={close}>Cancel</button>
+      <button class="success" on:click|preventDefault={attemptUpload} disabled={!allowUpload}>Upload</button>
     </div>
   {/if}
 

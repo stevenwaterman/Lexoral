@@ -1,7 +1,5 @@
 <script lang="ts">
-import { getSectionStore } from "../state/section/sectionStoreRegistry";
-
-  import { getAssertExistsRecord } from "../utils/list";
+  import { getSectionStore } from "../state/section/sectionStoreRegistry";
 
   export let idx: number;
   export let hidden: boolean;
