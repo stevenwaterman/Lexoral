@@ -9,18 +9,25 @@
 
   $: if (!user) navigate("/dashboard/auth/login");
   $: if (user?.emailVerified) navigate("/dashboard");
-  $: if (user && !user.emailVerified) {
+
+  let manuallySent: boolean = false;
+
+  function resend() {
+    if (user === null || user === undefined) throw new Error("User is not defined");
+
     sendEmailVerification(user, {
       url: "https://lexoral.com/dashboard"
     })
+
+    manuallySent = true;
   }
 </script>
-
-<style>
-
-</style>
 
 {#if user}
   <p>A verification email has been sent to {user.email}.</p>
   <p>Please click the link inside it to verify your email address and continue with Lexoral.</p>
+
+  {#if !user.emailVerified}
+    <button disabled={manuallySent} on:click={() => resend()}>Resend Email</button>
+  {/if}
 {/if}

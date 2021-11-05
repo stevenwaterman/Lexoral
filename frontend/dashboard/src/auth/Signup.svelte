@@ -2,7 +2,7 @@
   // TODO privacy + ToS
   // TODO handle already logged in user
 
-  import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+  import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
   import { navigate } from "svelte-navigator";
   
   let emailComponent: HTMLInputElement;
@@ -13,11 +13,13 @@
     const password = passwordComponent.value;
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
-      .then(({user}) => {
+      .then(async ({user}) => {
         if (user.emailVerified) {
-          navigate("/dashboard")
+          navigate("/dashboard");
         } else {
-          navigate("/dashboard/auth/verify")
+          console.log("Sending email verification");
+          await sendEmailVerification(user);
+          navigate("/dashboard/auth/verify");
         }
       })
       .catch(err => {
