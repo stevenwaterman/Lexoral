@@ -37,10 +37,13 @@
   let displayTextStore: Readable<string>;
   $: displayTextStore = section?.displayTextStore ?? writable("");
 
+  let startsParagraphStore: Readable<boolean>;
+  $: startsParagraphStore = section?.startsParagraphStore ?? writable(false);
+
   let endsParagraphStore: Readable<boolean>;
   $: endsParagraphStore = section?.endsParagraphStore ?? writable(false);
 
-  $: resize($displayTextStore, $endsParagraphStore)
+  $: resize($displayTextStore, $startsParagraphStore, $endsParagraphStore)
 
   let paragraphNode: HTMLElement | undefined;
   $: paragraphNode = sectionNode?.parentElement ?? undefined;
