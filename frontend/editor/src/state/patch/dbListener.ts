@@ -185,6 +185,9 @@ export class DbListener {
         .map(change => ([parseInt(change.doc.id), change]));
     idChanges.sort(([a], [b]) => a - b);
 
+    console.log("Updating local state based on received snapshot, changes are:", idChanges);
+    console.log();
+
     if (idChanges.length) this.processComplexSnapshot(idChanges, newCursor);
 
     // Move the cursor to its new location (or back to the old location)
