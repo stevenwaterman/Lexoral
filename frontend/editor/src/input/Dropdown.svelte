@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { getAssertExists, modulo } from "../utils/list";
+  import { clamp, getAssertExists, modulo } from "../utils/list";
   import { findSectionNode, selectNextSection } from "./select";
   import { playingStore } from "../audio/audioStatus";
   import { patchInterface } from "../state/patch/patchInterface";
   import { focusSectionIdxStore, isTextSelectedStore } from "./selectionState";
   import type { SectionStore } from "../state/section/sectionStore";
+  import { writable } from "svelte/store";
   import type { Readable } from "svelte/store";
-import { getSectionStore } from "../state/section/sectionStoreRegistry";
+  import { getSectionStore } from "../state/section/sectionStoreRegistry";
 
   let sectionIdx: number | undefined;
   $: sectionIdx = $focusSectionIdxStore;
@@ -26,9 +27,17 @@ import { getSectionStore } from "../state/section/sectionStoreRegistry";
   let sectionNode: HTMLSpanElement | undefined;
   $: sectionNode = findSectionNode(sectionIdx);
 
-  function resize() {
+  function resize(...deps: any[]) {
     sectionNode = sectionNode;
   }
+
+  let displayTextStore: Readable<string>;
+  $: displayTextStore = section?.displayTextStore ?? writable("");
+
+  let endsParagraphStore: Readable<boolean>;
+  $: endsParagraphStore = section?.endsParagraphStore ?? writable(false);
+
+  $: resize($displayTextStore, $endsParagraphStore)
 
   let paragraphNode: HTMLElement | undefined;
   $: paragraphNode = sectionNode?.parentElement ?? undefined;
@@ -39,10 +48,14 @@ import { getSectionStore } from "../state/section/sectionStoreRegistry";
   let sectionOffsetLeft: number;
   $: sectionOffsetLeft = sectionWraps ? 0 : sectionNode?.offsetLeft ?? 0;
 
-  let left: number;
-  $: left = sectionOffsetLeft + (paragraphNode?.offsetLeft ?? 0);
+  let maxLeft: number;
+  $: maxLeft = (paragraphNode?.offsetWidth ?? 0) - (sectionNode?.offsetWidth ?? 0);
 
-  $: console.log({ sectionNode, paragraphNode })
+  let desiredLeft: number;
+  $: desiredLeft = sectionOffsetLeft + (paragraphNode?.offsetLeft ?? 0);
+
+  let left: number;
+  $: left = clamp(desiredLeft, 0, maxLeft);
 
   let top: number;
   $: top = (sectionNode?.offsetTop ?? 0) + (paragraphNode?.offsetTop ?? 0) + (sectionNode?.offsetHeight ?? 0);
