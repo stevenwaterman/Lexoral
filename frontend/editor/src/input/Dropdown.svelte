@@ -21,8 +21,11 @@
   let completions: string[];
   $: completions = completionsStore === undefined ? [] : $completionsStore
 
+  let editedStore: Readable<boolean>;
+  $: editedStore = section?.editedStore ?? writable(true);
+
   let visible: boolean;
-  $: visible = !$isTextSelectedStore && section !== undefined && completions.length > 1;
+  $: visible = !$editedStore && !$isTextSelectedStore && section !== undefined && completions.length > 1;
 
   let sectionNode: HTMLSpanElement | undefined;
   $: sectionNode = findSectionNode(sectionIdx);
@@ -151,7 +154,7 @@
   }
 
   .option {
-    white-space: pre;
+    /* white-space: pre; */
     padding: 2px;
     cursor: pointer;
   }
