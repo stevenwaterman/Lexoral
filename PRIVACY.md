@@ -45,10 +45,10 @@ Lexoral collects your data so that we can:
 - Process your audio files and transcribe them
 - Allow you to edit your transcripts
 - Debug any issues you are having
-- Optimise the platform based on how all of our customres use Lexoral, in aggregate
+- Optimise the platform based on how all of our customers use Lexoral, in aggregate
 - Prevent malicious attacks on the platform, to ensure good service for everyone
 
-Your data is processed on servers provided by *Google Cloud Platform*. They do not access or log your data while it is being processed.
+Your data is processed on servers provided by *Google Cloud Platform*. They only access your data when requested by us, as needed to operate Lexoral.
 
 Lexoral **does not** use your data to:
 
@@ -66,7 +66,7 @@ In other words, we are contractually prevented from accessing your data for ille
 
 Your data is only accessible to users logged in to your account.
 
-Most processing is performed on servers in the United Kingdom, though this processing is orchestrated using servers in the Netherlands. Your audio and transcripts are processed only within the United Kindom.
+Most processing is performed on servers in the United Kingdom, though this processing is orchestrated using servers in the Netherlands. Your audio and transcripts are processed only within the United Kingdom.
 
 ## What are your Data Protection rights?
 
