@@ -2,16 +2,16 @@ import { tick } from "svelte";
 import { derived, Readable, writable, Writable } from "svelte/store";
 import { restoreSelection, saveSelection } from "../../input/select";
 import { getAssertExists } from "../../utils/list";
-import { deriveDebounced } from "../../utils/stores";
+import { deriveSyncedWithTick } from "../../utils/stores";
 import { getMaxSectionIdx } from "./sectionStoreRegistry";
 
 export type ParagraphLocation = { start: number, end: number };
 
 const paragraphData: Set<number> = new Set();
 const paragraphDataStore: Writable<Set<number>> = writable(paragraphData);
-const debouncedParagraphDataStore: Readable<Set<number> | undefined> = deriveDebounced(paragraphDataStore, 0.01);
+const syncedParagraphDataStore: Readable<Set<number> | undefined> = deriveSyncedWithTick(paragraphDataStore);
 
-const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(debouncedParagraphDataStore, locations => {
+const paragraphLocationsStoreInternal: Readable<ParagraphLocation[]> = derived(syncedParagraphDataStore, locations => {
   if (locations === undefined) return [];
 
   const maxSectionIdx = getMaxSectionIdx();

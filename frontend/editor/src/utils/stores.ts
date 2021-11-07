@@ -1,3 +1,4 @@
+import { tick } from "svelte";
 import { Readable, derived, Writable, Unsubscriber } from "svelte/store";
 
 export type StoreValues<T> = T extends Readable<infer U> ? U : {
@@ -68,6 +69,24 @@ export function deriveDebounced<T>(
     const timeout = setTimeout(() => set(state), delay * 1000);
     return () => clearTimeout(timeout);
   })
+}
+
+export function deriveSyncedWithTick<T>(baseStore: Readable<T>): Readable<T | undefined> {
+  let valueToSet: T | undefined = undefined;
+  let promise: Promise<any> | undefined = undefined;
+  
+  return derived(baseStore, (state, set) => {
+    valueToSet = state;
+
+    if (promise === undefined) {
+      promise = tick()
+        .then(() => {
+          set(valueToSet);
+          valueToSet = undefined;
+          promise = undefined;
+        })
+    }
+  });
 }
 
 /**

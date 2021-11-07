@@ -1,8 +1,7 @@
 import { derived, writable, Writable } from "svelte/store";
-import { sendToast } from "../display/toast/toasts";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { audioStore, AudioStyle } from "../state/settings/audioStore";
-import { deriveDebounced } from "../utils/stores";
+import { deriveSyncedWithTick } from "../utils/stores";
 import { playingStore, updateCurrentlyPlaying } from "./audioStatus";
 import { getSelectionTimings } from "./audioTimings";
 
@@ -79,9 +78,8 @@ function onTimeUpdate() {
   requestAnimationFrame(onTimeUpdate);
 }
 
-deriveDebounced(
+deriveSyncedWithTick(
   derived([earlySectionIdxStore, lateSectionIdxStore], values => values),
-  0.05
 ).subscribe(() => {
   if (autoPlay) playAudio();
   else stopAudio();
