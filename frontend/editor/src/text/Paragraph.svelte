@@ -54,9 +54,6 @@
 
 <p class="paragraph" bind:this={paragraphComponent} style={style} class:hidden={!visible}>
   {#each paragraphRange as idx (idx)}
-    <Section 
-      idx={idx}
-      hidden={!visible}
-    />
+    <Section {idx}/>
   {/each}
 </p>
