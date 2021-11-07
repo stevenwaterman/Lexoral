@@ -2,7 +2,6 @@
   import { getSectionStore } from "../state/section/sectionStoreRegistry";
 
   export let idx: number;
-  export let hidden: boolean;
   $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore, endsParagraphStore} = getSectionStore(idx));
 </script>
 
@@ -34,7 +33,7 @@
     background-color: var(--focus);
   }
 
-  .hidden {
+  :global(.hidden .section) {
     display: none;
   }
 
@@ -45,7 +44,6 @@
 
 <span
   class="section"
-  class:hidden
   class:highlight={$selectedStore}
   class:sectionPlaying={$playingStore}
   class:underline={$displayTextStore.length === 0}
