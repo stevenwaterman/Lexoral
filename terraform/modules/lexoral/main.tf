@@ -37,7 +37,7 @@ resource "google_storage_bucket" "envelope_audio" {
 }
 
 resource "google_storage_bucket" "transcription_audio" {
-  name = "${data.google_project.project.project_id}-envelope-audio"
+  name = "${data.google_project.project.project_id}-transcription-audio"
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
