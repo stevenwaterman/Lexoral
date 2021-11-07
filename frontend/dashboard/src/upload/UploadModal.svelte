@@ -121,7 +121,7 @@
 
   <div class="formSection">
     <label for="upload_file">Audio:</label>
-    <input id="upload_file" type="file" accept="audio/*" disabled={uploading} on:change={fileChange}>
+    <input id="upload_file" type="file" accept="audio/*,video/*" disabled={uploading} on:change={fileChange}>
   </div>
 
   <div class="formSection">

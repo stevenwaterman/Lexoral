@@ -36,6 +36,14 @@ resource "google_storage_bucket" "envelope_audio" {
   force_destroy = true # TODO remove this
 }
 
+resource "google_storage_bucket" "transcription_audio" {
+  name = "${data.google_project.project.project_id}-envelope-audio"
+  storage_class = "REGIONAL"
+  location = "europe-west2"
+  uniform_bucket_level_access = true
+  force_destroy = true # TODO remove this
+}
+
 resource "google_storage_bucket" "playback_audio" {
   name = "${data.google_project.project.project_id}-playback-audio"
   storage_class = "REGIONAL"
@@ -112,6 +120,15 @@ module "upload_watcher" {
 module "transcode_envelope" {
   source = "../httpFunction"
   name = "transcode_envelope"
+  bucket = google_storage_bucket.functions_code.name
+  project_id = data.google_project.project.project_id
+  memory = 1024
+  timeout = 540
+}
+
+module "transcode_transcription" {
+  source = "../httpFunction"
+  name = "transcode_transcription"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
   memory = 1024
