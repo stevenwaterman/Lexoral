@@ -6,8 +6,8 @@ import { Request, Response } from "express";
 async function handleRequest(req: Request, res: Response) {
   const { user, transcript } = await utils.userTranscript.getAll(req, res, store)
 
-  const inputUri: string = `gs://${process.env["PROJECT_ID"]}-raw-audio/${user.id}_${transcript.id}`;
-  const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-transcription/${user.id}_${transcript.id}`;
+  const inputUri: string = `gs://${process.env["PROJECT_ID"]}-transcription-audio/${user.id}_${transcript.id}`;
+  const outputUri: string = `gs://${process.env["PROJECT_ID"]}-transcripts-raw/${user.id}_${transcript.id}`;
 
   const sampleRateHertz = transcript.data.get("audio.sampleRate");
   const audioChannelCount = transcript.data.get("audio.channels");

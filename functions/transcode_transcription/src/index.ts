@@ -16,15 +16,15 @@ async function handleRequest(req: Request, res: Response) {
 }
 
 async function transcodePlayback(storage: Storage, name: string, sourceFile: File): Promise<void> {
-  const playbackBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
-  const playbackFile = playbackBucket.file(`${name}.wav`);
-  const playback = playbackFile.createWriteStream();
+  const transcriptionBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
+  const transcriptionFile = transcriptionBucket.file(name);
+  const transcriptionStream = transcriptionFile.createWriteStream();
 
   return new Promise(resolve => {
     ffmpeg(sourceFile.createReadStream())
       .noVideo()
       .format("wav")
-      .output(playback, {end: true})
+      .output(transcriptionStream, {end: true})
       .on("end", () => resolve())
       .run()
   });
