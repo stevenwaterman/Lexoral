@@ -10,6 +10,7 @@
     display: inline;
     white-space: pre;
     min-width: 1em;
+    outline: none;
   }
 
   .section::selection {
@@ -43,6 +44,7 @@
 </style>
 
 <span
+  contenteditable
   class="section"
   class:highlight={$selectedStore}
   class:sectionPlaying={$playingStore}

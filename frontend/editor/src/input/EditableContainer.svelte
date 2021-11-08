@@ -61,7 +61,6 @@
   class="scroller"
   style={`width: ${$pageWidthStore}em; font-size: ${$fontSizeStore}pt;`}
   bind:this={wrapper}
-  contenteditable
   spellcheck={false}
   tabindex={-1}
   on:keydown={onKeyPressed}
