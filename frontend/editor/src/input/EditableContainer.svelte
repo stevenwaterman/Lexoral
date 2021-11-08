@@ -26,11 +26,7 @@
     const textContent = findSectionNode(idx)?.textContent ?? undefined;
     if (textContent === undefined) return;
 
-    const trimmedContent = textContent.slice(1, textContent.length - 1);
-
-    saveSelection();
-    patchInterface.append(idx, { text: trimmedContent });
-    restoreSelection();
+    patchInterface.append(idx, { text: textContent });
   }
 
   let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize">;

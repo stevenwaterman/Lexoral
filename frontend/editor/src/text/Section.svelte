@@ -9,8 +9,8 @@
   .section {
     display: inline;
     white-space: pre;
-    min-width: 1em;
     outline: none;
+    margin-right: 0.25em;
   }
 
   .section::selection {
@@ -53,7 +53,5 @@
   class:questionable={$completionsStore.length > 1 && !$editedStore}
   data-sectionIdx={idx}
 >
-  {`\u200b${$displayTextStore}\u200b`}
-  <!-- {`/${$displayTextStore}/`} -->
+  {$displayTextStore}
 </span>
-{$endsParagraphStore ? "" : " "}

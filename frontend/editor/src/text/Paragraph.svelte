@@ -42,6 +42,7 @@
     margin-block-end: 0;
     padding-block-end: 1em;
     box-sizing: border-box;
+    overflow-wrap: break-word;
 
     position: relative;
     contain: paint layout;

@@ -10,7 +10,7 @@ export async function selectExactly(selection: SectionSelection | undefined) {
   const windowSelection = window.getSelection();
   if (!windowSelection) return;
 
-  windowSelection.setBaseAndExtent(anchor, selection.anchor.offset + 1, focus, selection.focus.offset + 1);
+  windowSelection.setBaseAndExtent(anchor, selection.anchor.offset, focus, selection.focus.offset);
   // await updateSelection();
 }
 
@@ -76,7 +76,7 @@ export async function selectParagraphEnd(idx: number | undefined) {
  * It should either be a section's `Span` element or its contained `TextNode`
  */
 export async function selectStart(node: Node | undefined) {
-  return selectPosition(node, 1);
+  return selectPosition(node, 0);
 }
 
 /** 
@@ -105,8 +105,8 @@ export async function selectPosition(node: Node | undefined, offset: number) {
  * It should either be a section's `Span` element or its contained `TextNode`
  */
 export async function selectEnd(node: Node | undefined) {
-  const textLength = node?.textContent?.length ?? 1;
-  return selectPosition(node, textLength - 1);
+  const textLength = node?.textContent?.length ?? 0;
+  return selectPosition(node, textLength);
 }
 
 

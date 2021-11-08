@@ -1,6 +1,6 @@
 import { Writable, writable, Readable, derived } from "svelte/store";
 import { deriveConditionally, deriveWithPrevious } from "../utils/stores";
-import { clamp, forIn, getAssertExistsRecord } from "../utils/list";
+import { forIn } from "../utils/list";
 import { getSectionStore } from "../state/section/sectionStoreRegistry";
 
 /** Represents the start or end of a selection */
@@ -88,10 +88,10 @@ export function updateSelection() {
   const selection = window.getSelection();
   if (selection === null) return;
 
-  const anchor = normaliseCursor(selection.anchorNode, selection.anchorOffset, "anchor");
-  const focus = normaliseCursor(selection.focusNode, selection.focusOffset, "focus");
-  if (anchor === undefined) return;
-  if (focus === undefined) return;
+  const anchor = getCursorPosition(selection.anchorNode, selection.anchorOffset);
+  const focus = getCursorPosition(selection.focusNode, selection.focusOffset);
+  if (anchor === null) return;
+  if (focus === null) return;
 
   const inverted = isSelectionInverted(anchor, focus);
 
@@ -101,61 +101,22 @@ export function updateSelection() {
   selectionStoreInternal.set({ anchor, focus, early, late, inverted });
 }
 
-function normaliseCursor(node: Node | null, offset: number, side: "anchor" | "focus"): CursorPosition | undefined {
-  let span: HTMLSpanElement;
-  let spanOffset: number;
+function getCursorPosition(node: Node | null, offset: number): CursorPosition | null {
+  if (node === null) return null;
 
-  let requiresSelectionUpdate: boolean = false;
+  const parent = node.parentElement;
+  if (parent === null) return null;
+  if (!parent.classList.contains("section")) return null;
 
-  if (node?.parentElement?.classList?.contains("section")) {
-    // Inside the span
-    span = node.parentElement;
-    const clampedOffset = clamp(offset, 1, (span.textContent?.length ?? 1) - 1);
-    spanOffset = clampedOffset - 1;
-    if (clampedOffset !== offset) requiresSelectionUpdate = true;
-  } else if (node?.parentElement?.classList?.contains("paragraph")) {
-    // Between spans
-    const nextSpan = (node as Text).nextElementSibling as HTMLSpanElement | null;
-    if (nextSpan === null) {
-      // Between paragraphs, select first span of next paragraph
-      span = node.parentElement.nextElementSibling?.firstElementChild as HTMLSpanElement;
-    } else {
-      // Between spans within paragraph
-      span = nextSpan;
-    }
-    spanOffset = 0;
-    requiresSelectionUpdate = true;
-  } else {
-    console.debug("Unrecognised selection position", {node, offset, side});
-    // debugger;
-    return;
-  }
-
-  const paragraph = span.parentElement;
-  if (paragraph === null) {
-    console.log("Unrecognised paragraph position");
-    debugger;
-    return;
-  };
-
-  if (requiresSelectionUpdate) {
-    const node = span.firstChild;
-    const selection = window.getSelection();
-    if (node !== null && selection !== null) {
-      if (side === "anchor") selection.setBaseAndExtent(node, spanOffset + 1, selection.focusNode ?? node , selection.focusOffset);
-      else selection.setBaseAndExtent(selection.anchorNode ?? node, selection.anchorOffset, node, spanOffset + 1);
-    }
-  }
-
-  const sectionIdx = span.getAttribute("data-sectionIdx");
-  if(sectionIdx === null) throw new Error("Null sectionIdx");
+  const section = parent as HTMLSpanElement;
+  const sectionIdx = section.getAttribute("data-sectionIdx");
+  if(sectionIdx === null) return null;
 
   return {
     section: parseInt(sectionIdx),
-    offset: spanOffset
+    offset
   }
 }
-
 
 /** Is the selection inverted, ie right-to-left, ie `anchor === late` */
 function isSelectionInverted(anchor: CursorPosition, focus: CursorPosition): boolean {

@@ -33,7 +33,7 @@ async function onKeyPressedInner(event: KeyboardEvent) {
   if (event.key === "Enter" && !event.ctrlKey) {
     event.preventDefault();
     if (focusSectionIdx !== undefined) {
-      const patchIdx = selection?.focusOffset === 1 ? focusSectionIdx - 1 : focusSectionIdx;
+      const patchIdx = selection?.focusOffset === 0 ? focusSectionIdx - 1 : focusSectionIdx;
       patchInterface.append(patchIdx, { endParagraph: true })
       await tick();
       await selectSectionStart(patchIdx + 1);
@@ -132,11 +132,11 @@ function guardedCall(func: typeof leftArrow) {
 }
 
 function leftArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
-  if (focusOffset <= 1) {
+  if (focusOffset <= 0) {
     const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
     if (!node) return;
 
-    const offset = (node?.textContent?.length ?? 1) - 1;
+    const offset = node?.textContent?.length ?? 0;
     return { node, offset };
 
   }
@@ -145,10 +145,10 @@ function leftArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number
 
 function rightArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const nodeLength = focusNode?.textContent?.length ?? 0;
-  if (focusOffset >= nodeLength - 1) {
+  if (focusOffset >= nodeLength) {
     const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
     if (!node) return;
-    return { node, offset: 1 };
+    return { node, offset: 0 };
   }
   else return { node: focusNode, offset: focusOffset + 1 };
 }
@@ -157,36 +157,36 @@ function shiftTab(focusNode: Node, focusOffset: number, focusSectionIdx: number)
   const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
   if (!node) return;
 
-  const offset = (node?.textContent?.length ?? 1) - 1;
+  const offset = node?.textContent?.length ?? 0;
   return { node, offset };
 }
 
 function tab(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
   if (!node) return;
-  return { node, offset: 1 };
+  return { node, offset: 0 };
 }
 
 
 function ctrlLeftArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
-  if (focusOffset <= 1) {
+  if (focusOffset <= 0) {
     const node = findSectionNode(focusSectionIdx - 1)?.firstChild;
     if (!node) return;
-    return { node, offset: 1 };
+    return { node, offset: 0 };
   }
-  else return { node: focusNode, offset: 1 };
+  else return { node: focusNode, offset: 0 };
 }
 
 function ctrlRightArrow(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
   const nodeLength = focusNode?.textContent?.length ?? 0;
-  if (focusOffset >= nodeLength - 1) {
+  if (focusOffset >= nodeLength) {
     const node = findSectionNode(focusSectionIdx + 1)?.firstChild;
     if (!node) return;
 
-    const offset = (node?.textContent?.length ?? 1) - 1;
+    const offset = node?.textContent?.length ?? 0;
     return { node, offset };
   }
-  else return { node: focusNode, offset: (focusNode?.textContent?.length ?? 1) - 1 };
+  else return { node: focusNode, offset: focusNode?.textContent?.length ?? 0 };
 }
 
 function home(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
@@ -195,7 +195,7 @@ function home(focusNode: Node, focusOffset: number, focusSectionIdx: number): { 
   const focusFirstSpan = focusParagraph?.firstElementChild;
   const node = focusFirstSpan?.firstChild;
   if (!node) return;
-  return { node, offset: 1 };
+  return { node, offset: 0 };
 }
 
 function end(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
@@ -205,7 +205,7 @@ function end(focusNode: Node, focusOffset: number, focusSectionIdx: number): { n
   const node = focusLastSpan?.firstChild;
   if (!node) return;
 
-  const offset = (node?.textContent?.length ?? 1) - 1;
+  const offset = node?.textContent?.length ?? 0;
   return { node, offset };
 }
 
@@ -217,7 +217,7 @@ function ctrlHome(focusNode: Node, focusOffset: number, focusSectionIdx: number)
   const focusFirstSpan = focusFirstParagraph?.firstElementChild;
   const node = focusFirstSpan?.firstChild;
   if (!node) return;
-  return { node, offset: 1 };
+  return { node, offset: 0 };
 }
 
 function ctrlEnd(focusNode: Node, focusOffset: number, focusSectionIdx: number): { node: Node; offset: number } | undefined {
@@ -229,7 +229,7 @@ function ctrlEnd(focusNode: Node, focusOffset: number, focusSectionIdx: number):
   const node = focusLastSpan?.firstChild;
   if (!node) return;
 
-  const offset = (node?.textContent?.length ?? 1) - 1;
+  const offset = node?.textContent?.length ?? 0;
   return { node, offset };
 }
 
@@ -241,8 +241,8 @@ async function backspace(event: KeyboardEvent) {
   if (selection === null) return;
 
   if (!selection.isCollapsed) return backspaceSelectedText(event, selection);
-  if (event.ctrlKey && selection.focusOffset <= 1) return backspaceDeletingPrevious(event, selection);
-  if (selection.focusOffset <= 1) return backspaceAtStart(event, selection);
+  if (event.ctrlKey && selection.focusOffset <= 0) return backspaceDeletingPrevious(event, selection);
+  if (selection.focusOffset <= 0) return backspaceAtStart(event, selection);
 
   return defaultBehaviour();
 }
@@ -307,7 +307,7 @@ async function deleteKey(event: KeyboardEvent) {
   if (!selection.isCollapsed) return deleteSelectedText(event, selection);
 
   const length = selection.focusNode?.textContent?.length ?? 0;
-  const atEnd = selection.focusOffset >= length - 1;
+  const atEnd = selection.focusOffset >= length;
   if (event.ctrlKey && atEnd) return deleteDeletingNext(event, selection);
   if (atEnd) return deleteAtEnd(event, selection);
 
