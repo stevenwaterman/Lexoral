@@ -26,7 +26,7 @@
     display: inline;
     white-space: pre;
     outline: none;
-    margin-right: 0.25em;
+    /* margin-right: 0.25em; */
   }
 
   .section::selection {
@@ -73,3 +73,4 @@
 >
   {$displayTextStore}
 </span>
+{" "}

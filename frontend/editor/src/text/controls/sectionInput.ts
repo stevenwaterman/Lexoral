@@ -40,10 +40,39 @@ handlers["ArrowUp"] = async (event, section) => {
   if (!alt && !ctrl && !shift) return cursorControls.prevLine(event, section);
 }
 
+handlers["Home"] = async (event, section) => {
+  const alt = event.altKey;
+  const ctrl = event.ctrlKey;
+  const shift = event.shiftKey;
 
+  if (!alt && !ctrl && !shift) return cursorControls.lineStart(event, section);
+  if (!alt && ctrl && !shift) return cursorControls.documentStart(event, section);
+}
 
+handlers["End"] = async (event, section) => {
+  const alt = event.altKey;
+  const ctrl = event.ctrlKey;
+  const shift = event.shiftKey;
 
+  if (!alt && !ctrl && !shift) return cursorControls.lineEnd(event, section);
+  if (!alt && ctrl && !shift) return cursorControls.documentEnd(event, section);
+}
 
+handlers["PageUp"] = async (event, section) => {
+  const alt = event.altKey;
+  const ctrl = event.ctrlKey;
+  const shift = event.shiftKey;
+
+  if (!alt && !ctrl && !shift) return cursorControls.prevParagraph(event, section);
+}
+
+handlers["PageDown"] = async (event, section) => {
+  const alt = event.altKey;
+  const ctrl = event.ctrlKey;
+  const shift = event.shiftKey;
+
+  if (!alt && !ctrl && !shift) return cursorControls.nextParagraph(event, section);
+}
 
 export function handleSectionKeydown(event: SectionKeyboardEvent, section: SectionStore) {
   const key = event.key;

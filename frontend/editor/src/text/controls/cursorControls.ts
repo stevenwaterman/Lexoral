@@ -1,6 +1,7 @@
 import { selectEnd, selectNextSection, selectPosition, selectPrevSection, selectSectionEnd, selectSectionPosition, selectSectionStart, selectStart } from "../../input/select";
 import { selectionState } from "../../input/selectionState";
 import type { SectionStore } from "../../state/section/sectionStore";
+import { getMaxSectionIdx } from "../../state/section/sectionStoreRegistry";
 import type { SectionKeyboardEvent } from "./sectionInput";
 
 export async function prevCharacter(event: SectionKeyboardEvent, section: SectionStore) {
@@ -139,4 +140,65 @@ export async function prevLine(event: SectionKeyboardEvent, section: SectionStor
     }
     inspectSection = prevSpan;
   }
+}
+
+export async function lineStart(event: SectionKeyboardEvent, section: SectionStore) {
+  event.preventDefault();
+
+  const span = event.currentTarget;
+  const spanTop = span.offsetTop;
+
+  let inspectSection: HTMLSpanElement = span;
+  while (true) {
+    const prev = inspectSection.previousElementSibling as HTMLSpanElement | null;
+    if (prev?.offsetTop !== spanTop) {
+      await selectStart(inspectSection);
+      return;
+    }
+    inspectSection = prev;
+  }
+}
+
+export async function lineEnd(event: SectionKeyboardEvent, section: SectionStore) {
+  event.preventDefault();
+
+  const span = event.currentTarget;
+  const spanTop = span.offsetTop;
+
+  let inspectSection: HTMLSpanElement = span;
+  while (true) {
+    const next = inspectSection.nextElementSibling as HTMLSpanElement | null;
+    if (next?.offsetTop !== spanTop) {
+      await selectEnd(inspectSection);
+      return;
+    }
+    inspectSection = next;
+  }
+}
+
+export async function documentStart(event: SectionKeyboardEvent, section: SectionStore) {
+  event.preventDefault();
+  await selectSectionStart(0);
+}
+
+export async function documentEnd(event: SectionKeyboardEvent, section: SectionStore) {
+  event.preventDefault();
+  await selectSectionEnd(getMaxSectionIdx());
+}
+
+export async function prevParagraph(event: SectionKeyboardEvent, section: SectionStore) {
+  event.preventDefault();
+
+  const span = event.currentTarget.parentElement?.previousElementSibling?.lastElementChild ?? undefined;
+  if (span) return selectEnd(span);
+
+  await selectStart(event.currentTarget.parentElement?.firstElementChild ?? undefined)
+}
+
+export async function nextParagraph(event: SectionKeyboardEvent, section: SectionStore) {
+  event.preventDefault();
+  const span = event.currentTarget.parentElement?.nextElementSibling?.firstElementChild ?? undefined;
+  if (span) return selectStart(span);
+
+  await selectEnd(event.currentTarget.parentElement?.lastElementChild ?? undefined)
 }
