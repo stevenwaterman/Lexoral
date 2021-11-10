@@ -2,7 +2,7 @@
 import { afterUpdate, beforeUpdate } from "svelte";
 import { get_store_value } from "svelte/internal";
 import { selectSectionPosition, selectSectionStart } from "../input/select";
-import { anchorSectionIdxStore, focusSectionIdxStore, selectionStore } from "../input/selectionState";
+import { selectionStore } from "../input/selectionState";
 
   import { paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
   import Paragraph from "./Paragraph.svelte";

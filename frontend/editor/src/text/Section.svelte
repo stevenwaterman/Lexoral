@@ -1,8 +1,13 @@
 <script lang="ts">
+  import { beforeUpdate } from "svelte";
+  import { repositionDropdown } from "../input/dropdown/repositionDropdown";
+
   import { getSectionStore } from "../state/section/sectionStoreRegistry";
 
   export let idx: number;
   $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore, endsParagraphStore} = getSectionStore(idx));
+
+  beforeUpdate(repositionDropdown);
 </script>
 
 <style>

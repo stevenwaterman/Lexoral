@@ -31,7 +31,6 @@ function getSelectionTimingsOnward(): { start: number, end: number } | null {
   return getSelectionTimingsLiteral(startSectionIdx, endSectionIdx);
 }
 
-
 function getSelectionTimingsLiteral(
   startSectionIdx: number | undefined, 
   endSectionIdx: number | undefined

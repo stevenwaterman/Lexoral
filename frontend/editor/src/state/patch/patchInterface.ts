@@ -200,10 +200,10 @@ function createPatch(newValues: Pending | undefined): Patch | undefined {
 }
 
 export const patchInterface = { 
-  init, 
-  getPatchStore, 
-  undo, 
-  redo, 
+  init,
+  getPatchStore,
+  undo,
+  redo,
   append
 };
 

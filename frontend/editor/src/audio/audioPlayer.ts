@@ -1,12 +1,11 @@
-import { derived, writable, Writable } from "svelte/store";
+import { derived } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { audioStore, AudioStyle } from "../state/settings/audioStore";
 import { deriveSyncedWithTick } from "../utils/stores";
 import { playingStore, updateCurrentlyPlaying } from "./audioStatus";
 import { getSelectionTimings } from "./audioTimings";
 
-
-let initiated = false;
+let initialised = false;
 let player: HTMLAudioElement;
 
 let startTime: number;
@@ -25,15 +24,16 @@ export function initAudio(src: string) {
 
   audioStore.getField("volume").subscribe(volume => player.volume = volume / 100);
   audioStore.getField("rate").subscribe(rate => player.playbackRate = rate / 100);
+
   audioStore.getField("loop").subscribe(state => loop = state);
   audioStore.getField("autoPlay").subscribe(state => autoPlay = state);
   audioStore.getField("mode").subscribe(state => audioStyle = state);
 
-  initiated = true;
+  initialised = true;
 }
 
 export async function playAudio() {
-  if (!initiated) return;
+  if (!initialised) throw new Error("Trying to play the audio before it has been initialised");
 
   player.pause();
 
@@ -52,8 +52,7 @@ export async function playAudio() {
 }
 
 export function stopAudio() {
-  if (!initiated) return;
-
+  if (!initialised) throw new Error("Trying to play the audio before it has been initialised");
   player.pause();
 }
 
@@ -81,6 +80,7 @@ function onTimeUpdate() {
 deriveSyncedWithTick(
   derived([earlySectionIdxStore, lateSectionIdxStore], values => values),
 ).subscribe(() => {
+  if (!initialised) return;
   if (autoPlay) playAudio();
   else stopAudio();
 });

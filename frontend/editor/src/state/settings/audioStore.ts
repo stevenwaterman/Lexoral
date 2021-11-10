@@ -1,6 +1,6 @@
 import { doc, DocumentReference } from "firebase/firestore";
 import { assertUser } from "../../api";
-import { firestoreWritable, initableFirestoreWritable } from "../../utils/firestoreWritable";
+import { initableFirestoreWritable } from "../../utils/firestoreWritable";
 import { getDb } from "../patch/db";
 
 export type AudioStyle = "context" | "onward"

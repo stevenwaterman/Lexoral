@@ -2,8 +2,6 @@
   import { focusSectionIdxStore } from "./selectionState";
 
   import {
-    restoreSelection,
-    saveSelection,
     findSectionNode
   } from "./select";
 

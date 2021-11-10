@@ -1,18 +1,17 @@
 <script lang="ts">
   import ToastController from "../display/toast/ToastController.svelte";
-  import { sendToast } from "../display/toast/toasts";
   import Header from "../display/Header.svelte";
 
   import Document from "../text/Document.svelte";
-  import Dropdown from "./Dropdown.svelte";
-  import EditableContainer from "./EditableContainer.svelte";
+  import Dropdown from "./dropdown/DropdownFilter.svelte";
+  import Scroller from "./Scroller.svelte";
   import { exportTranscript } from "../state/export";
   import { lastPlayingSectionIdxStore, playingStore } from "../audio/audioStatus";
   import { playAudio, stopAudio } from "../audio/audioPlayer";
   import { selectEnd, findSectionNode } from "./select";
   import Options from "../options/Options.svelte";
-import { audioStore } from "../state/settings/audioStore";
-import { clamp } from "../utils/list";
+  import { audioStore } from "../state/settings/audioStore";
+  import { clamp } from "../utils/list";
 
   let altReleaseShouldPlay = false;
 
@@ -121,10 +120,10 @@ import { clamp } from "../utils/list";
   <Header/>
 
   <div class="mainSection">
-    <EditableContainer let:wrapper>
+    <Scroller let:wrapper>
       <Dropdown/>
       <Document wrapper={wrapper}/>
-    </EditableContainer>
+    </Scroller>
     <ToastController/>
   </div>
 

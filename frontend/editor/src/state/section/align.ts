@@ -11,6 +11,7 @@ export function getOptions(text: string, options: [string, ...string[]]): [strin
   const newOptions = options.map(option => alignOption(text, option));
   newOptions.sort((a, b) => b.score - a.score);
   const justText = newOptions.map(option => option.text);
+  console.log(justText);
 
   const deduped: string[] = [text];
   justText.filter(str => {
