@@ -1,5 +1,6 @@
 import { doc, DocumentReference, writeBatch } from "firebase/firestore";
 import { assertUser, getTranscriptId } from "../../api";
+import { sendToast } from "../../display/toast/toasts";
 import { getDb } from "./db";
 import type { Patch } from "./dbListener";
 
@@ -32,4 +33,6 @@ export async function writePatchToFirestore(lastCommonAncestor: number, lastDbAn
   }
 
   await batch.commit();
+
+  sendToast("Saved");
 }

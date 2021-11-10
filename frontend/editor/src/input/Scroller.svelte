@@ -1,31 +1,9 @@
 <script lang="ts">
-  import { focusSectionIdxStore } from "./selectionState";
-
-  import {
-    findSectionNode
-  } from "./select";
-
-  import { onKeyPressed } from "./controls";
-  import { patchInterface } from "../state/patch/patchInterface";
   import { displayStore } from "../state/settings/displayStore";
   import type { DisplayState } from "../state/settings/displayStore";
   import type { FirestoreWritableField } from "../utils/firestoreWritable";
 
   let wrapper: HTMLDivElement;
-
-  async function input(event: Event) {
-    await updateText();
-  }
-
-  async function updateText() {
-    const idx = $focusSectionIdxStore;
-    if (idx === undefined) return;
-
-    const textContent = findSectionNode(idx)?.textContent ?? undefined;
-    if (textContent === undefined) return;
-
-    patchInterface.append(idx, { text: textContent });
-  }
 
   let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize">;
   $: fontSizeStore = displayStore.getField("fontSize");
@@ -57,8 +35,6 @@
   bind:this={wrapper}
   spellcheck={false}
   tabindex={-1}
-  on:keydown={onKeyPressed}
-  on:input={input}
   on:dragover|preventDefault
   on:drop|preventDefault
   on:drag|preventDefault

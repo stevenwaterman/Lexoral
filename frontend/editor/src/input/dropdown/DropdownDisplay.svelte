@@ -9,19 +9,6 @@ import { selectNextSection } from "../select";
 
   let selectedIdx: number | undefined = undefined;
 
-  function keyDown(event: KeyboardEvent) {
-    if (event.key === "ArrowUp" && event.ctrlKey && !event.altKey) {
-      event.preventDefault();
-      selectPrev();
-    } else if (event.key === "ArrowDown" && event.ctrlKey && !event.altKey) {
-      event.preventDefault();
-      selectNext();
-    } else if (event.key === "Enter" && event.ctrlKey) {
-      event.preventDefault();
-      acceptOption(selectedIdx);
-    }
-  }
-
   function selectPrev() {
     if ($completionsStore.length === 0) return;
 
@@ -75,8 +62,6 @@ import { selectNextSection } from "../select";
     border-top: 1px solid var(--form-border);
   }
 </style>
-
-<svelte:body on:keydown={keyDown}/>
 
 <div class="popup">
   {#each $completionsStore as option, idx}

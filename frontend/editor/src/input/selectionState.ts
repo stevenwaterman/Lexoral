@@ -26,9 +26,12 @@ export type SectionSelection = {
   inverted: boolean;
 };
 
+export let selectionState: SectionSelection | undefined = undefined;
+
 /** Store containing the current selection */
 const selectionStoreInternal: Writable<SectionSelection | undefined> = writable(undefined);
 export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(selectionStoreInternal, undefined);
+selectionStore.subscribe(state => selectionState = state);
 
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
 const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);

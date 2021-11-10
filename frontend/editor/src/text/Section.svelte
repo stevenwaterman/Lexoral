@@ -1,13 +1,24 @@
 <script lang="ts">
   import { beforeUpdate } from "svelte";
   import { repositionDropdown } from "../input/dropdown/repositionDropdown";
-
+  import type { SectionStore } from "../state/section/sectionStore";
   import { getSectionStore } from "../state/section/sectionStoreRegistry";
+  import { handleSectionKeydown } from "./controls/sectionInput";
 
   export let idx: number;
-  $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore, endsParagraphStore} = getSectionStore(idx));
-
   beforeUpdate(repositionDropdown);
+
+  let sectionStore: SectionStore;
+  $: sectionStore = getSectionStore(idx);
+
+  $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore} = sectionStore);
+
+  type EventType = Event & { currentTarget: EventTarget & HTMLSpanElement };
+  function onInput(event: EventType) {
+    const target = event.currentTarget;
+    const text = target.textContent;
+    sectionStore.setText(text);
+  }
 </script>
 
 <style>
@@ -57,6 +68,8 @@
   class:placeholder={!$editedStore}
   class:questionable={$completionsStore.length > 1 && !$editedStore}
   data-sectionIdx={idx}
+  on:input={onInput}
+  on:keydown={event => handleSectionKeydown(event, sectionStore)}
 >
   {$displayTextStore}
 </span>
