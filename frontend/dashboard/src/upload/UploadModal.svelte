@@ -41,6 +41,8 @@
   let affordable: boolean;
   $: affordable = remainingCredit >= 0;
 
+  let underFourHours: boolean;
+  $: underFourHours = roundedDuration <= (4 * 3600 - 1);
 
   function fileChange(event: Event) {
     const input: HTMLInputElement = event.target as HTMLInputElement;
@@ -62,7 +64,7 @@
   }
 
   let allowUpload: boolean;
-  $: allowUpload = (audioUrl !== undefined) && (duration !== undefined) && affordable;
+  $: allowUpload = (audioUrl !== undefined) && (duration !== undefined) && affordable && underFourHours;
 </script>
 
 <style>
@@ -136,7 +138,9 @@
     {#if duration === undefined}
       <p>Unsupported file type</p>
     {:else}
-      {#if !affordable}
+      {#if !underFourHours}
+        <p class="error">Too long: Each transcript must be under 4 hours in duration</p>
+      {:else if !affordable}
         <p class="error">Insufficient credit: Add {toCreditString(-remainingCredit)} to proceed</p>
       {:else}
         <p>Your remaining credit will be: {toCreditString(remainingCredit)}</p>
