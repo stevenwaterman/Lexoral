@@ -14,8 +14,6 @@
   let sectionIdx: number | undefined;
   $: sectionIdx = $focusSectionIdxStore;
   
-  $: console.log(sectionIdx);
-
   let section: SectionStore | undefined;
   $: section = !sectionIdx ? undefined : getSectionStore(sectionIdx);
 
