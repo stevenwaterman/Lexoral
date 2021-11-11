@@ -1,13 +1,28 @@
 <script lang="ts">
   import type { Readable } from "svelte/store";
-import { patchInterface } from "../../state/patch/patchInterface";
-import { getAssertExists } from "../../utils/list";
-import { selectNextSection } from "../select";
+  import { patchInterface } from "../../state/patch/patchInterface";
+  import { getAssertExists } from "../../utils/list";
+  import { selectNextSection } from "../select";
 
   export let sectionIdx: number;
   export let completionsStore: Readable<string[]>;
 
   let selectedIdx: number | undefined = undefined;
+
+  function onKeyDown(event: KeyboardEvent) {
+    if (event.key === "ArrowUp" && event.ctrlKey) {
+      event.preventDefault();
+      selectPrev();
+    }
+    else if (event.key === "ArrowDown" && event.ctrlKey) {
+      event.preventDefault();
+      selectNext();
+    }
+    else if (event.key === "Enter" && event.ctrlKey) {
+      event.preventDefault();
+      acceptOption(selectedIdx);
+    }
+  }
 
   function selectPrev() {
     if ($completionsStore.length === 0) return;
@@ -56,12 +71,15 @@ import { selectNextSection } from "../select";
   .option {
     padding: 2px;
     cursor: pointer;
+    white-space: pre;
   }
 
   .topBorder {
     border-top: 1px solid var(--form-border);
   }
 </style>
+
+<svelte:body on:keydown={onKeyDown}/>
 
 <div class="popup">
   {#each $completionsStore as option, idx}
