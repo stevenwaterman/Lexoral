@@ -16,6 +16,7 @@ export type SectionPatch = PatchText | PatchEndParagraph;
 type PatchCommaSilence = PatchProperty<"commaSilence", number | null>;
 type PatchPeriodSilence = PatchProperty<"periodSilence", number | null>;
 type PatchParagraphSilence = PatchProperty<"paragraphSilence", number | null>;
+
 export type MetaPatch = PatchCommaSilence | PatchPeriodSilence | PatchParagraphSilence;
 
 export type Patch = Record<number, SectionPatch> & { meta?: MetaPatch };

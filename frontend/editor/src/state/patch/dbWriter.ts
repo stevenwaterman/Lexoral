@@ -1,4 +1,4 @@
-import { doc, DocumentReference, writeBatch } from "firebase/firestore";
+import { doc, DocumentReference, serverTimestamp, writeBatch } from "firebase/firestore";
 import { assertUser, getTranscriptId } from "../../api";
 import { sendToast } from "../../display/toast/toasts";
 import { getDb } from "./db";
@@ -6,6 +6,10 @@ import type { Patch } from "./dbListener";
 
 function getMetaDoc(): DocumentReference {
   return doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches", "meta");
+}
+
+function getTranscriptDoc(): DocumentReference {
+  return doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId());
 }
 
 export async function writePatchToFirestore(lastCommonAncestor: number, lastDbAncestor: number, newPatch: Patch | undefined): Promise<void> {
@@ -16,6 +20,9 @@ export async function writePatchToFirestore(lastCommonAncestor: number, lastDbAn
   const metaRef = getMetaDoc();
   batch.set(metaRef, { cursor: newCursor });
   console.log("Setting firebase cursor", newCursor);
+
+  const transcriptRef = getTranscriptDoc();
+  batch.set(transcriptRef, { updated: serverTimestamp() }, { merge: true });
 
   if (newPatch) {
     const patchId = newCursor;

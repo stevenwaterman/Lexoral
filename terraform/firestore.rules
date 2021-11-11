@@ -14,7 +14,7 @@ service cloud.firestore {
         allow delete: if request.auth != null && request.auth.uid == userId;
         allow update: if (request.auth != null && request.auth.uid == userId) && 
           (request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['name', 'patchCursor']));
+            .hasOnly(['name', 'updated']));
         
         match /patches/{patchId} {
           allow read: if request.auth != null && request.auth.uid == userId;
