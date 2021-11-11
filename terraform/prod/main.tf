@@ -14,4 +14,5 @@ terraform {
 
 module "lexoral" {
   source = "../modules/lexoral"
+  force_destroy = false
 }

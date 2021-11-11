@@ -25,7 +25,7 @@ resource "google_storage_bucket" "audio" {
     response_header = ["*"]
     max_age_seconds = 3600
   }
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 resource "google_storage_bucket" "envelope_audio" {
@@ -33,7 +33,7 @@ resource "google_storage_bucket" "envelope_audio" {
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 resource "google_storage_bucket" "transcription_audio" {
@@ -41,7 +41,7 @@ resource "google_storage_bucket" "transcription_audio" {
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 resource "google_storage_bucket" "playback_audio" {
@@ -55,7 +55,7 @@ resource "google_storage_bucket" "playback_audio" {
     response_header = ["*"]
     max_age_seconds = 3600
   }
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 resource "google_storage_bucket" "raw_transcripts" {
@@ -63,7 +63,7 @@ resource "google_storage_bucket" "raw_transcripts" {
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 resource "google_storage_bucket" "aligned_transcripts" {
@@ -71,7 +71,7 @@ resource "google_storage_bucket" "aligned_transcripts" {
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 resource "google_storage_bucket" "transcripts" {
@@ -79,7 +79,7 @@ resource "google_storage_bucket" "transcripts" {
   storage_class = "REGIONAL"
   location = "europe-west2"
   uniform_bucket_level_access = true
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 
@@ -88,7 +88,7 @@ resource "google_storage_bucket" "functions_code" {
   name = "${data.google_project.project.project_id}-functions-code"
   storage_class = "REGIONAL"
   location = "europe-west2"
-  force_destroy = true # TODO remove this
+  force_destroy = var.force_destroy
 }
 
 
