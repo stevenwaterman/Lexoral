@@ -43,6 +43,9 @@ function timeWithin(time: number, sectionTime: { startTime: number; endTime: num
 let lastPlayingSectionIdx: number | null = null;
 const lastPlayingSectionIdxStoreInternal: Writable<number | null> = writable(lastPlayingSectionIdx);
 export const lastPlayingSectionIdxStore: Readable<number | null> = makeReadonly(lastPlayingSectionIdxStoreInternal);
+export function getLastPlayingSectionIdx(): number | null {
+  return lastPlayingSectionIdx;
+}
 
 export function updateCurrentlyPlaying(time: number | null) {
   const newPlayingSectionIdx = getSectionIdxForTime(time);

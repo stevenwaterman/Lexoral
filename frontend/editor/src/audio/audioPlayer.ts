@@ -56,6 +56,12 @@ export function stopAudio() {
   player.pause();
 }
 
+export async function toggleAudio() {
+  if (!initialised) throw new Error("Trying to play the audio before it has been initialised");
+  if (player.paused) return playAudio();
+  else return stopAudio();
+}
+
 
 function onTimeUpdate() {
   if (player.paused) {

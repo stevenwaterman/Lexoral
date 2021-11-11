@@ -3,7 +3,7 @@
   import { repositionDropdown } from "../input/dropdown/repositionDropdown";
   import type { SectionStore } from "../state/section/sectionStore";
   import { getSectionStore } from "../state/section/sectionStoreRegistry";
-  import { handleSectionKeydown } from "./controls/sectionInput";
+  import { handleSectionKeydown, handleSectionKeyUp } from "./controls/sectionInput";
 
   export let idx: number;
   beforeUpdate(repositionDropdown);
@@ -66,6 +66,7 @@
   data-sectionIdx={idx}
   on:input={onInput}
   on:keydown={event => handleSectionKeydown(event, sectionStore)}
+  on:keyup={event => handleSectionKeyUp(event, sectionStore)}
 >
   {$displayTextStore}
 </span>
