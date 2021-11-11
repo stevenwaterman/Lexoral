@@ -26,12 +26,9 @@ export type SectionSelection = {
   inverted: boolean;
 };
 
-export let selectionState: SectionSelection | undefined = undefined;
-
 /** Store containing the current selection */
 const selectionStoreInternal: Writable<SectionSelection | undefined> = writable(undefined);
 export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(selectionStoreInternal, undefined);
-selectionStore.subscribe(state => selectionState = state);
 
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
 const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);
@@ -109,9 +106,20 @@ function getCursorPosition(node: Node | null, offset: number): CursorPosition | 
 
   const parent = node.parentElement;
   if (parent === null) return null;
-  if (!parent.classList.contains("section")) return null;
 
-  const section = parent as HTMLSpanElement;
+  let section: HTMLSpanElement;
+
+  if (parent.classList.contains("section")) {
+    // Text node is selected
+    section = parent as HTMLSpanElement;
+  } else if (parent.classList.contains("paragraph")) {
+    // Span node is selected
+    section = node as HTMLSpanElement;
+  } else {
+    // Who knows what is selected
+    return null;
+  }
+
   const sectionIdx = section.getAttribute("data-sectionIdx");
   if(sectionIdx === null) return null;
 

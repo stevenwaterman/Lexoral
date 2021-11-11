@@ -46,6 +46,21 @@
   let dropdownLeft: number;
   $: dropdownLeft = clamp(desiredDropdownLeft, 0, maxDropdownLeft);
 
+  $: console.log({
+    sectionTop,
+    sectionLeft,
+    sectionWidth,
+    sectionHeight,
+    paragraphTop,
+    paragraphLeft,
+    paragraphWidth,
+    sectionWraps,
+    sectionLeftUnwrapped,
+    maxDropdownLeft,
+    dropdownLeft,
+    dropdownTop
+  })
+
 
   let dropdownTop: number;
   $: dropdownTop = sectionTop + sectionHeight + paragraphTop;

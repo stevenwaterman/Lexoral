@@ -10,7 +10,7 @@ type PatchProperty<KEY extends string, VALUE> = {
   to: Record<KEY, VALUE>;
 }
 type PatchText = PatchProperty<"text", string | null>;
-type PatchEndParagraph = PatchProperty<"endParagraph", boolean>;
+type PatchEndParagraph = PatchProperty<"endParagraph", boolean | null>;
 export type SectionPatch = PatchText | PatchEndParagraph;
 
 type PatchCommaSilence = PatchProperty<"commaSilence", number | null>;

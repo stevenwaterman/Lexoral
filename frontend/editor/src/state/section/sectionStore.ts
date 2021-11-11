@@ -1,5 +1,5 @@
 import { derived, Readable, writable, Writable } from "svelte/store"
-import { makeReadonly } from "../../utils/stores";
+import { fakeWritable, makeReadonly, makeWritable } from "../../utils/stores";
 import type { TranscriptEntry } from "../initialiseState";
 import { commaSilenceStore, paragraphSilenceStore, patchInterface, periodSilenceStore } from "../patch/patchInterface";
 import { getCompletionStore } from "./completions";
@@ -33,9 +33,10 @@ class SectionStoreBuilderOne {
     this.endTimeStore.subscribe(state => this.endTime = state);
 
     const sectionPatchStore = patchInterface.getPatchStore(idx);
-    this.userTextStore = derived(sectionPatchStore, sectionPatch => sectionPatch.text);
 
+    this.userTextStore = derived(sectionPatchStore, sectionPatch => sectionPatch.text);
     this.userEndParagraphStore = derived(sectionPatchStore, sectionPatch => sectionPatch.endParagraph);
+
     this.editedStore = derived(this.userTextStore, text => text !== null);
   }
 
@@ -44,14 +45,7 @@ class SectionStoreBuilderOne {
   public readonly editedStore: Readable<boolean>;
 
   protected readonly userTextStore: Readable<string | null>;
-  setText(text: string | null) {
-    patchInterface.append(this.idx, { text });
-  }
-
   protected readonly userEndParagraphStore: Readable<boolean | null>;
-  setEndParagraph(endParagraph: boolean) {
-    patchInterface.append(this.idx, { endParagraph });
-  }
 
   public build(prev: SectionStoreBuilderOne | null, next: SectionStoreBuilderOne | null): SectionStoreBuilderTwo {
     return new SectionStoreBuilderTwo(this.transcriptEntry, prev, next);
@@ -83,7 +77,7 @@ class SectionStoreBuilderTwo extends SectionStoreBuilderOne {
       return silenceEnd - silenceStart;
     });
 
-    this.endsParagraphStore = derived(
+    const endParagraphReadable = derived(
       [this.userEndParagraphStore, this.silenceAfterStore, paragraphSilenceStore],
       ([manualEndParagraph, silenceAfter, requiredSilence]) => {
         if (silenceAfter === null) return true;
@@ -91,9 +85,11 @@ class SectionStoreBuilderTwo extends SectionStoreBuilderOne {
         return silenceAfter >= requiredSilence / 1000
       }
     );
+    const endParagraphSetter = (endParagraph: boolean) => patchInterface.append(this.idx, { endParagraph });
+    this.endParagraphStore = makeWritable(endParagraphReadable, endParagraphSetter);
 
     this.placeholderPunctuationStore = derived(
-      [this.endsParagraphStore, this.silenceAfterStore, commaSilenceStore, periodSilenceStore],
+      [this.endParagraphStore, this.silenceAfterStore, commaSilenceStore, periodSilenceStore],
       ([endsParagraph, silenceAfter, commaRequiredSilence, periodRequiredSilence]) => {
         if (endsParagraph) return ".";
         if (silenceAfter === null) return ".";
@@ -104,7 +100,7 @@ class SectionStoreBuilderTwo extends SectionStoreBuilderOne {
     );
 
     this.endsSentenceStore = derived(
-      [this.endsParagraphStore, this.placeholderPunctuationStore, this.userTextStore], 
+      [this.endParagraphStore, this.placeholderPunctuationStore, this.userTextStore], 
       ([endsParagraph, placeholderPunctuation, text]) => {
         if (endsParagraph) return true;
 
@@ -123,7 +119,7 @@ class SectionStoreBuilderTwo extends SectionStoreBuilderOne {
 
   public readonly silenceBeforeStore: Readable<number | null>;
   public readonly silenceAfterStore: Readable<number | null>;
-  public readonly endsParagraphStore: Readable<boolean>;
+  public readonly endParagraphStore: Writable<boolean>;
   public readonly placeholderPunctuationStore: Readable<"," | "." | "">;
   public readonly endsSentenceStore: Readable<boolean>;
 
@@ -142,18 +138,21 @@ class SectionStoreBuilderThree extends SectionStoreBuilderTwo {
   ) {
     super(transcriptEntry, prevOne, nextOne);
 
-    this.startsParagraphStore = prev?.endsParagraphStore ?? writable(true);
+    this.startParagraphStore = prev?.endParagraphStore ?? fakeWritable(true);
     this.placeholderCapitalisationStore = prev?.endsSentenceStore ?? writable(true);
     this.completionsStore = getCompletionStore(this.userTextStore, this.rawOptions, this.placeholderCapitalisationStore, this.placeholderPunctuationStore);
-    this.displayTextStore = derived(this.completionsStore, completions => completions[0]);
+
+    const displayTextReadable = derived(this.completionsStore, completions => completions[0]);
+    const displayTextSetter = (text: string) => patchInterface.append(this.idx, { text });
+    this.displayTextStore = makeWritable(displayTextReadable, displayTextSetter);
     
     registerSectionStore(this);
   }
 
-  public readonly startsParagraphStore: Readable<boolean>;
+  public readonly startParagraphStore: Writable<boolean>;
   public readonly placeholderCapitalisationStore: Readable<boolean>;
   public readonly completionsStore: Readable<[string, ...string[]]>;
-  public readonly displayTextStore: Readable<string>;
+  public readonly displayTextStore: Writable<string>;
 }
 
 export function initSectionStores(transcript: Omit<TranscriptEntry, "idx">[]) {
@@ -172,7 +171,7 @@ export function initSectionStores(transcript: Omit<TranscriptEntry, "idx">[]) {
   })
 
   stageThree.forEach(store => {
-    store.endsParagraphStore.subscribe(endsParagraph => 
+    store.endParagraphStore.subscribe(endsParagraph => 
       paragraphLocationsStore.setEndParagraph(store.idx, endsParagraph));
   });
 

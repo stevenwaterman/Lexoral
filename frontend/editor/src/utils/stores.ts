@@ -1,5 +1,5 @@
 import { tick } from "svelte";
-import { Readable, derived, Writable, Unsubscriber } from "svelte/store";
+import { Readable, derived, Writable, Unsubscriber, Updater, writable } from "svelte/store";
 
 export type StoreValues<T> = T extends Readable<infer U> ? U : {
   [K in keyof T]: T[K] extends Readable<infer U> ? U : never;
@@ -186,14 +186,39 @@ export function deriveUnwrapRecord<K extends string | number | symbol, V, INNER 
   }, {});
 }
 
-export function makeWritable<T>(baseStore: Writable<T>, derivedStore: Readable<T>): Writable<T> {
-  return {
-    subscribe: (func: (value: T) => void) => derivedStore.subscribe(func),
-    set: (value: T) => baseStore.set(value),
-    update: (updater: (value: T) => T) => baseStore.update(updater)
-  }
-}
+// export function makeWritable<T>(baseStore: Writable<T>, derivedStore: Readable<T>): Writable<T> {
+//   return {
+//     subscribe: (func: (value: T) => void) => derivedStore.subscribe(func),
+//     set: (value: T) => baseStore.set(value),
+//     update: (updater: (value: T) => T) => baseStore.update(updater)
+//   }
+// }
 
 export function makeReadonly<T>(baseStore: Writable<T>): Readable<T> {
   return { subscribe: baseStore.subscribe };
+}
+
+export function makeWritable<T>({ subscribe }: Readable<T>, setter: (newValue: T) => void): Writable<T> {
+  let value: T;
+  subscribe(state => value = state);
+
+  const set = (newValue: T) => {
+    if (value === newValue) return;
+    else setter(newValue);
+  }
+
+  const update = (updater: Updater<T>) => {
+    const newValue = updater(value);
+    setter(newValue);
+  }
+
+  return { subscribe, set, update };
+}
+
+export function fakeWritable<T>(value: T): Writable<T> {
+  return {
+    subscribe: writable(value).subscribe,
+    set: () => {},
+    update: () => {}
+  }
 }

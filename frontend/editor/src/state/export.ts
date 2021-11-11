@@ -17,9 +17,9 @@ export function exportTranscriptPlainText(sections: SectionStore[]): string {
   return sections.map(sectionToPlainText).reduce((acc, elem) => acc + elem, "");
 }
 
-function sectionToPlainText({ displayTextStore, endsParagraphStore }: SectionStore): string {
+function sectionToPlainText({ displayTextStore, endParagraphStore }: SectionStore): string {
   const displayText = get_store_value(displayTextStore);
-  const endsParagraph = get_store_value(endsParagraphStore);
+  const endsParagraph = get_store_value(endParagraphStore);
   return `${displayText}${endsParagraph ? "\n" : " "}`;
 }
 
@@ -35,7 +35,7 @@ export function exportTranscriptSubtitles(sections: SectionStore[]): string {
 
   const subtitles: Subtitle[] = [];
 
-  for (const { startTimeStore, endTimeStore, displayTextStore, endsParagraphStore } of sections) {
+  for (const { startTimeStore, endTimeStore, displayTextStore, endParagraphStore } of sections) {
     if (startTime === undefined) {
       startTime = get_store_value(startTimeStore);
     }
@@ -43,7 +43,7 @@ export function exportTranscriptSubtitles(sections: SectionStore[]): string {
     text += " "
     text += get_store_value(displayTextStore);
 
-    if (get_store_value(endsParagraphStore)) {
+    if (get_store_value(endParagraphStore)) {
       subtitles.push({
         startTime: startTime as number,
         endTime: get_store_value(endTimeStore) as number,

@@ -1,5 +1,6 @@
 import type { SectionStore } from "../../state/section/sectionStore";
 import * as cursorControls from "./cursorControls";
+import * as textControls from "./textControls";
 
 export type SectionKeyboardEvent = KeyboardEvent & { currentTarget: EventTarget & HTMLSpanElement };
 
@@ -72,6 +73,34 @@ handlers["PageDown"] = async (event, section) => {
   const shift = event.shiftKey;
 
   if (!alt && !ctrl && !shift) return cursorControls.nextParagraph(event, section);
+}
+
+handlers["Backspace"] = async (event, section) => {
+  const alt = event.altKey;
+  const ctrl = event.ctrlKey;
+  const shift = event.shiftKey;
+
+  if (!alt && ctrl && !shift) return textControls.deletePrevWord(event, section);
+  if (!alt && !ctrl && !shift) return textControls.deletePrevCharacter(event, section);
+}
+
+handlers["Delete"] = async (event, section) => {
+  const alt = event.altKey;
+  const ctrl = event.ctrlKey;
+  const shift = event.shiftKey;
+
+  if (!alt && ctrl && !shift) return textControls.deleteNextWord(event, section);
+  if (!alt && !ctrl && !shift) return textControls.deleteNextCharacter(event, section);
+}
+
+handlers["Enter"] = async (event, section) => {
+  const alt = event.altKey;
+  const ctrl = event.ctrlKey;
+  const shift = event.shiftKey;
+
+  event.preventDefault();
+
+  if (!alt && !ctrl && !shift) return textControls.newLine(event, section);
 }
 
 export function handleSectionKeydown(event: SectionKeyboardEvent, section: SectionStore) {

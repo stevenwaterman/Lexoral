@@ -48,9 +48,6 @@
     contain: paint layout;
   }
 
-  .paragraph::selection {
-    background: none;
-  }
 </style>
 
 <p class="paragraph" bind:this={paragraphComponent} style={style} class:hidden={!visible}>

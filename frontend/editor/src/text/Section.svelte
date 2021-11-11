@@ -16,8 +16,8 @@
   type EventType = Event & { currentTarget: EventTarget & HTMLSpanElement };
   function onInput(event: EventType) {
     const target = event.currentTarget;
-    const text = target.textContent;
-    sectionStore.setText(text);
+    const text = target.textContent ?? "";
+    sectionStore.displayTextStore.set(text);
   }
 </script>
 
@@ -26,16 +26,12 @@
     display: inline;
     white-space: pre;
     outline: none;
-    /* margin-right: 0.25em; */
-  }
-
-  .section::selection {
-    background: none;
+    min-width: 0.5em;
   }
 
   .underline {
-    padding-right: 0.5em;
-    box-shadow: inset 0px -1px 0px var(--form-border)
+    display: inline-block;
+    box-shadow: inset 0px -1px 0px var(--form-border);
   }
 
   .highlight {

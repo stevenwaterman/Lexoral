@@ -1,11 +1,10 @@
 import { selectEnd, selectNextSection, selectPosition, selectPrevSection, selectSectionEnd, selectSectionPosition, selectSectionStart, selectStart } from "../../input/select";
-import { selectionState } from "../../input/selectionState";
 import type { SectionStore } from "../../state/section/sectionStore";
 import { getMaxSectionIdx } from "../../state/section/sectionStoreRegistry";
 import type { SectionKeyboardEvent } from "./sectionInput";
 
 export async function prevCharacter(event: SectionKeyboardEvent, section: SectionStore) {
-  const currentOffset = selectionState?.focus?.offset;
+  const currentOffset = window.getSelection()?.focusOffset;
   if (currentOffset === undefined) return; // Don't know what to do with this, leave it default
   if (currentOffset > 0) return; // Move one character left as normal
 
@@ -15,11 +14,11 @@ export async function prevCharacter(event: SectionKeyboardEvent, section: Sectio
 }
 
 export async function prevWord(event: SectionKeyboardEvent, section: SectionStore) {
-  const currentOffset = selectionState?.focus?.offset;
+  const currentOffset = window.getSelection()?.focusOffset;
   if (currentOffset === undefined) return; // Don't know what to do with this, leave it default
 
   if (currentOffset <= 0) {
-    // At start of section, more to start of prev section
+    // At start of section, move to start of prev section
     event.preventDefault();
     await selectSectionStart(section.idx - 1);
   } else {
@@ -30,7 +29,7 @@ export async function prevWord(event: SectionKeyboardEvent, section: SectionStor
 }
 
 export async function nextCharacter(event: SectionKeyboardEvent, section: SectionStore) {
-  const currentOffset = selectionState?.focus?.offset;
+  const currentOffset = window.getSelection()?.focusOffset;
   if (currentOffset === undefined) return; // Don't know what to do with this, leave it default
 
   const textLength = event.currentTarget.textContent?.length;
@@ -42,13 +41,13 @@ export async function nextCharacter(event: SectionKeyboardEvent, section: Sectio
 }
 
 export async function nextWord(event: SectionKeyboardEvent, section: SectionStore) {
-  const currentOffset = selectionState?.focus?.offset;
+  const currentOffset = window.getSelection()?.focusOffset;
   if (currentOffset === undefined) return; // Don't know what to do with this, leave it default
 
   const textLength = event.currentTarget.textContent?.length;
 
   if (textLength === undefined || currentOffset >= textLength) {
-    // At end of section, more to end of next section
+    // At end of section, move to end of next section
     event.preventDefault();
     await selectSectionEnd(section.idx + 1);
   } else {

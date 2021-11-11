@@ -13,6 +13,8 @@
 
   let sectionIdx: number | undefined;
   $: sectionIdx = $focusSectionIdxStore;
+  
+  $: console.log(sectionIdx);
 
   let section: SectionStore | undefined;
   $: section = !sectionIdx ? undefined : getSectionStore(sectionIdx);
@@ -31,7 +33,11 @@
   $: paragraphNode = sectionNode?.parentElement ?? undefined;
 
   subscribeToDropdownReposition(() => {
-    sectionNode = sectionNode;
+    if (sectionNode?.isConnected) {
+      sectionNode = sectionNode;
+    } else {
+      sectionNode = findSectionNode(sectionIdx);
+    }
   })
 </script>
 
