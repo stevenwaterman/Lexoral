@@ -2,7 +2,7 @@
   import Section from "./Section.svelte";
   import { onDestroy, onMount } from "svelte";
 
-  export let observer: IntersectionObserver | undefined;
+  export let observer: IntersectionObserver;
   export let start: number;
   export let end: number;
 
@@ -17,8 +17,8 @@
     visible = (event as CustomEvent<boolean>).detail;
   }
 
-  onMount(() => observer?.observe(paragraphComponent));
-  onDestroy(() => observer?.unobserve(paragraphComponent));
+  onMount(() => observer.observe(paragraphComponent));
+  onDestroy(() => observer.unobserve(paragraphComponent));
 
   function range(start: number, end: number): number[] {
     const output: number[] = [];

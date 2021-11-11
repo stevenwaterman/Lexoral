@@ -30,6 +30,13 @@ export type SectionSelection = {
 const selectionStoreInternal: Writable<SectionSelection | undefined> = writable(undefined);
 export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(selectionStoreInternal, undefined);
 
+let selectionState: SectionSelection | undefined;
+selectionStore.subscribe(state => selectionState = state);
+export function getSelectionState() {
+  return selectionState;
+}
+
+
 const anchorCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.anchor);
 const focusCursorPositionStore: Readable<CursorPosition | undefined> = derived(selectionStore, selection => selection?.focus);
 
