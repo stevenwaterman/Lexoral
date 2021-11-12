@@ -8,7 +8,6 @@
   import { userStore } from "./auth/user";
   import Header from "./header/Header.svelte";
   import Transcripts from "./transcripts/Transcripts.svelte";
-  import AuthPath from "./auth/AuthPath.svelte";
   import { browserLocalPersistence, getAuth, initializeAuth, onAuthStateChanged } from "firebase/auth";
 
   const app = initializeApp({
@@ -43,9 +42,9 @@
     <div class="container">
       <Header/>
       <Router basepath="/dashboard">
-        <AuthPath path="/">
-            <Transcripts/>
-        </AuthPath>
+        <Route path="/">
+          <Transcripts/>
+        </Route>
         <Route path="/auth/login">
           <Login/>
         </Route>

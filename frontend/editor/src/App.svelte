@@ -15,8 +15,8 @@ import { userStore } from "./api";
   });
 
   auth.onAuthStateChanged(user => {
-    if (user?.emailVerified === false) location.pathname = "/dashboard/auth/verify/";
-    else if (user === null) location.pathname = "/dashboard/auth/login/";
+    if (user === null) location.pathname = "/dashboard/auth/login/";
+    else if (user.emailVerified === false) location.pathname = "/dashboard/auth/verify/";
     else userStore.set(user);
   });
 </script>

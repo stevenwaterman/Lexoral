@@ -2,8 +2,8 @@ import type { User } from "firebase/auth";
 import { Writable, writable } from "svelte/store";
 import type { TranscriptEntry } from "./state/initialiseState";
 
-let user: User | null | undefined = undefined;
-export const userStore: Writable<User | null | undefined> = writable(user);
+let user: User | undefined = undefined;
+export const userStore: Writable<User | undefined> = writable(user);
 userStore.subscribe(state => user = state);
 
 type FetchTranscriptResult = {
@@ -12,8 +12,7 @@ type FetchTranscriptResult = {
 }
 
 export function assertUser(): User {
-  if (user === undefined) throw new Error("User is undefined when calling authenticated api");
-  if (user === null) throw new Error("User is not authenticated when calling authenticated api");
+  if (user === undefined) throw new Error("Authenticated API is called before the auth state has updated");
   return user;
 }
 

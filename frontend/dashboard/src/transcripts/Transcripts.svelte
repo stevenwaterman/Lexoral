@@ -6,6 +6,11 @@
   import { userStore } from "../auth/user";
   import type { User } from "firebase/auth";
   import Loading from "../Loading.svelte";
+  import { navigate } from "svelte-navigator";
+
+  $: if ($userStore === undefined) throw new Error("Page has been loaded before auth state has updated");
+  $: if ($userStore === null) navigate("/dashboard/auth/login");
+  $: if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify");
 
   const pageSize = 10;
 

@@ -60,7 +60,7 @@ Lexoral **does not** use your data to:
 
 Lexoral securely stores your data in the cloud using services provided by *Google Cloud Platform*. When not being processed, your data is encrypted and stored on servers in the United Kingdom.
 
-This means that even if someone stole the hard drives with your data on them, they would not be able to read your data. However, your data is not encrypted in transit, nor is it end-to-end encrypted. This means that there are no technical measures to prevent Lexoral from accessing your data, including your transcripts.
+This means that even if someone stole the hard drives with your data on them, they would not be able to read your data. However, your data is not encrypted during processing, nor is it end-to-end encrypted. This means that there are no technical measures to prevent Lexoral from accessing your data, including your transcripts.
 
 In other words, we are contractually prevented from accessing your data for illegitimate purposes by this privacy policy, rather than being physically unable to read your data.
 
