@@ -1,22 +1,24 @@
 <script lang="ts">
   import { initializeApp } from "firebase/app";
-  import { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged } from "firebase/auth";
-  import type { User } from "firebase/auth";
+  import { browserLocalPersistence, initializeAuth } from "firebase/auth";
   import DataWrapper from "./DataWrapper.svelte";
+import { userStore } from "./api";
 
-  initializeApp({
+  const app = initializeApp({
     apiKey: process.env["FIREBASE_API_KEY"],
     authDomain: `${process.env["PROJECT_ID"]}.firebaseapp.com`,
     projectId: process.env["PROJECT_ID"]
   });
 
-  let user: User | null | undefined = undefined;
-  $: if (user?.emailVerified === false) location.pathname = "/dashboard/auth/verify/";
-  $: if (user === null) location.pathname = "/dashboard/auth/login/";
+  const auth = initializeAuth(app, {
+    persistence: browserLocalPersistence
+  });
 
-  const auth = getAuth();
-  setPersistence(auth, browserLocalPersistence);
-  onAuthStateChanged(auth, state => user = state);
+  auth.onAuthStateChanged(user => {
+    if (user?.emailVerified === false) location.pathname = "/dashboard/auth/verify/";
+    else if (user === null) location.pathname = "/dashboard/auth/login/";
+    else userStore.set(user);
+  });
 </script>
 
 <style>
@@ -30,14 +32,14 @@
 
 <svelte:body tabindex={-1}/>
 
-{#if user === undefined}
+{#if $userStore === undefined}
   <span class="loading">
     Logging in...
   </span>
-{:else if user === null}
+{:else if $userStore === null}
   <span class="loading">
     Login failed...
   </span>
 {:else}
-  <DataWrapper user={user}/>
+  <DataWrapper/>
 {/if}

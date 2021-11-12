@@ -5,17 +5,26 @@
   import Signup from "./auth/Signup.svelte";
   import Verify from "./auth/Verify.svelte";
   import Modal from "svelte-simple-modal"
-  import { initUserStore, userStore } from "./auth/user";
+  import { userStore } from "./auth/user";
   import Header from "./header/Header.svelte";
   import Transcripts from "./transcripts/Transcripts.svelte";
   import AuthPath from "./auth/AuthPath.svelte";
+  import { browserLocalPersistence, getAuth, initializeAuth, onAuthStateChanged } from "firebase/auth";
 
-  initializeApp({
+  const app = initializeApp({
     apiKey: process.env["FIREBASE_API_KEY"],
     authDomain: `${process.env["PROJECT_ID"]}.firebaseapp.com`,
     projectId: process.env["PROJECT_ID"]
-  })
-  initUserStore();
+  });
+
+  const auth = initializeAuth(app, {
+    persistence: browserLocalPersistence
+  });
+
+  auth.onAuthStateChanged(user => {
+    console.log("User state changed", user, auth)
+    userStore.set(user)
+  });
 </script>
 
 <style>

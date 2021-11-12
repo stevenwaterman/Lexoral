@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { navigate } from "svelte-navigator";
+  import { browserLocalPersistence, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+  import { navigate } from "svelte-navigator";
 
   // TODO handle already logged in user
 
