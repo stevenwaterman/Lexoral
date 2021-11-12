@@ -13,7 +13,6 @@ import { userStore } from "../auth/user";
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2em;
     width: 100%;
   }
 
@@ -31,7 +30,10 @@ import { userStore } from "../auth/user";
 </style>
 
 <nav>
-  <img class="logo" src="/assets/smallBrand.svg" alt="logo"/>
+  <a href="/" class="logo">
+    <img class="logo" src="/assets/smallBrand.svg" alt="logo"/>
+  </a>
+  
   {#if $userStore}
     <Credit/>
     <div class="buttons">

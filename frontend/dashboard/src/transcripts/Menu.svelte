@@ -56,6 +56,8 @@
     height: 100%;
     padding-left: 0.75em;
     padding-right: 0.75em;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   ul {

@@ -1,8 +1,10 @@
 <script lang="ts">
   import { initializeApp } from "firebase/app";
   import { browserLocalPersistence, initializeAuth } from "firebase/auth";
-  import DataWrapper from "./DataWrapper.svelte";
-import { userStore } from "./api";
+  import Editor from "./input/Editor.svelte";
+  import Loading from "./Loading.svelte";
+  import { userStore } from "./api";
+  import { initAll } from "./state/initialiseState";
 
   const app = initializeApp({
     apiKey: process.env["FIREBASE_API_KEY"],
@@ -33,13 +35,19 @@ import { userStore } from "./api";
 <svelte:body tabindex={-1}/>
 
 {#if $userStore === undefined}
-  <span class="loading">
-    Logging in...
-  </span>
+  <Loading text="Logging in..."/>
 {:else if $userStore === null}
   <span class="loading">
     Login failed...
   </span>
 {:else}
-  <DataWrapper/>
+  {#await initAll()}
+    <Loading text="Loading Transcript..."/>
+  {:then}
+    <Editor/>
+  {:catch err}
+    <span class="loading">
+      Error: {err}
+    </span>
+  {/await}
 {/if}

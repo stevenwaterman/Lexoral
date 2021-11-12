@@ -104,8 +104,11 @@
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 1em;
+
     display: grid;
     grid-template-columns: repeat(5, 1fr) auto;
+    gap: 0.5em 0;
+    align-items: center;
 
     overflow-y: auto;
     width: 100%;
@@ -120,7 +123,6 @@
     font-weight: bold;
     border-bottom: 1px solid black;
     user-select: none;
-    margin-bottom: 0.5em;
   }
 
   .header.sortable {
@@ -144,6 +146,8 @@
     height: 4em;
   }
 </style>
+
+<h1>Your Transcripts</h1>
 
 <ol class="table">
   <li>
@@ -195,11 +199,13 @@
       Status
     </span>
 
-    <span class="header"/>
+    <span class="header" style="text-align: center;">
+      Edit
+    </span>
   </li>
 
   {#each transcripts as transcript, idx (transcript.id)}
-<Transcript transcript={transcript}/>
+    <Transcript transcript={transcript}/>
   {:else}
     <li>
       <span class="empty">

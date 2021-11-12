@@ -50,49 +50,56 @@
 
 <style>
   form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: auto auto;
     align-items: center;
+    justify-items: center;
+    gap: 1em;
+    margin-bottom: 2em;
   }
 
-  .errors {
-    border: 1px solid var(--error);
-    padding: 1em;
+  button {
+    grid-column: span 2;
+  }
+
+  .error {
+    margin-top: -0.5em;
+    grid-column: span 2;
+    color: var(--error);
+    font-weight: bold;
   }
 </style>
 
+<h1>Log in to Lexoral</h1>
+
 <form on:submit|preventDefault={submit}>
-  <div class="formElement">
-    <label for="email">Email Address</label>
-    <input id="email" type="text" bind:value={email} />
-  </div>
+  <label for="email">Email Address</label>
+  <input id="email" type="text" bind:value={email} />
 
-  <div class="formElement">
-    <label for="password">Password</label>
-    <input id="password" type="password" bind:value={password} />
-  </div>
+  {#if showErrors && noEmailError}
+    <p class="error">You must enter an email address</p>
+  {/if}
 
-  <input type="submit" value="Log In" />
+  {#if showErrors && noAtSignError}
+    <p class="error">That email address is invalid</p>
+  {/if}
+
+
+
+  <label for="password">Password</label>
+  <input id="password" type="password" bind:value={password} />
+
+  {#if showErrors && noPasswordError}
+    <p class="error">You must enter a password</p>
+  {/if}
+
+  {#if showErrors && shortPasswordError}
+    <p class="error">Your password must be at least 8 characters long</p>
+  {/if}
+
+
+
+  <button type="submit" disabled={showErrors && hasErrors}>Log In</button>
 </form>
 
 <p>Don't have an account yet? <a href="/dashboard/auth/signup">Sign up</a> instead</p>
-
-{#if showErrors && hasErrors}
-  <div class="errors">
-    {#if noEmailError}
-      <p>You must enter an email address</p>
-    {/if}
-
-    {#if noAtSignError}
-      <p>That email address is invalid</p>
-    {/if}
-
-    {#if noPasswordError}
-      <p>You must enter a password</p>
-    {/if}
-
-    {#if shortPasswordError}
-      <p>Your password must be at least 8 characters long</p>
-    {/if}
-  </div>
-{/if}

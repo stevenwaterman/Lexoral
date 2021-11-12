@@ -21,6 +21,9 @@
   }
 </script>
 
+<h1>Verify your Email Address to continue</h1>
+
 <p>A verification email has been sent to {$userStore?.email}.</p>
-<p>Please click the link inside it to verify your email address and continue with Lexoral.</p>
+<p>Please click the link inside to continue with Lexoral.</p>
+<p>Can't see it? Click below to send another verification email.</p>
 <button disabled={manuallySent} on:click={() => resend($userStore)}>Resend Email</button>

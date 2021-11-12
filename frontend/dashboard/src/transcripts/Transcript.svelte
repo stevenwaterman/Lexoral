@@ -77,6 +77,10 @@
     background-color: var(--blue-3);
   }
 
+  .menuContainer {
+    height: 100%;
+  }
+
   li:hover .menuContainer {
     background-color: var(--blue-3);
     color: var(--light-text);

@@ -4,6 +4,8 @@
 
 <style>
   .header {
+    height: 60px;
+
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -21,16 +23,19 @@
   }
 
   .logo {
-    max-width:100%;
-    max-height:40px;
+    
+  }
+
+  img {
     width: auto;
-    height: auto;
-    margin: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
   }
 </style>
 
 <div class="header" class:playing={$playingStore}>
-  <img class="logo" src="/assets/smallBrand.svg" alt="logo"/>
+  <a class="logo" href="/dashboard">
+    <img src="/assets/smallBrand.svg" alt="logo"/>
+  </a>
 </div>
