@@ -1,3 +1,4 @@
+import { tick } from "svelte";
 import { selectEnd, selectNextSection, selectPrevSection, selectSectionEnd, selectSectionStart, selectStart } from "../../input/select";
 import type { SectionStore } from "../../state/section/sectionStore";
 import { getMaxSectionIdx, getSectionStore } from "../../state/section/sectionStoreRegistry";
@@ -11,7 +12,7 @@ export async function deletePrevCharacter(event: SectionKeyboardEvent, section: 
   // Need to move one section left
   event.preventDefault();
   section.startParagraphStore.set(false);
-  await selectPrevSection(section.idx);
+  setTimeout(() => selectPrevSection(section.idx));
 }
 
 export async function deletePrevWord(event: SectionKeyboardEvent, section: SectionStore) {
@@ -26,7 +27,7 @@ export async function deletePrevWord(event: SectionKeyboardEvent, section: Secti
     const prevSection = getSectionStore(section.idx - 1);
     section.startParagraphStore.set(false);
     prevSection.displayTextStore.set("");
-    await selectSectionStart(section.idx - 1);
+    setTimeout(() => selectSectionStart(section.idx - 1));
   } else {
     // Not at start of section, delete to there
     event.preventDefault();
@@ -45,7 +46,7 @@ export async function deleteNextCharacter(event: SectionKeyboardEvent, section: 
   // Need to move one section right
   event.preventDefault();
   section.endParagraphStore.set(false);
-  await selectNextSection(section.idx);
+  setTimeout(() => selectNextSection(section.idx));
 }
 
 export async function deleteNextWord(event: SectionKeyboardEvent, section: SectionStore) {
@@ -62,7 +63,7 @@ export async function deleteNextWord(event: SectionKeyboardEvent, section: Secti
     const nextSection = getSectionStore(section.idx + 1);
     nextSection.displayTextStore.set("");
     section.endParagraphStore.set(false);
-    await selectSectionEnd(section.idx + 1);
+    setTimeout(() => selectSectionEnd(section.idx + 1));
   } else {
     // Not at end of section, delete from there
     event.preventDefault();
@@ -77,7 +78,9 @@ export async function newLine(event: SectionKeyboardEvent, section: SectionStore
 
   if (currentOffset <= 0) {
     section.startParagraphStore.set(true);
-  } else {
+    setTimeout(() => selectSectionStart(section.idx));
+  } else if (section.idx < getMaxSectionIdx()) {
     section.endParagraphStore.set(true);
+    setTimeout(() => selectSectionStart(section.idx + 1));
   }
 }

@@ -77,8 +77,7 @@ export class DbListener {
   }
 
   private setCursor(newCursor: number) {
-    if (isNaN(newCursor)) throw new Error();
-    console.log("Setting cursor to ", newCursor);
+    if (isNaN(newCursor)) throw new Error("New cursor is NaN");
     if (newCursor === this.cursor) return;
     if (newCursor > this.cursor) this.applyPatches(this.cursor + 1, newCursor);
     else this.removePatches(this.cursor, newCursor + 1);

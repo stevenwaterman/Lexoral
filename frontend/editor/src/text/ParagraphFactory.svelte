@@ -5,7 +5,7 @@
   export let observer: IntersectionObserver;
 </script>
 
-{#each $paragraphLocationsStore as item (item.start + (1 / item.end))}
+{#each $paragraphLocationsStore as item (item.start)}
   <Paragraph
     observer={observer} 
     start={item.start} 
