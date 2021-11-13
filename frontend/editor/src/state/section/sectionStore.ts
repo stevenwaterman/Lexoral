@@ -37,6 +37,10 @@ class SectionStoreBuilderOne {
     this.userTextStore = derived(sectionPatchStore, sectionPatch => sectionPatch.text);
     this.userEndParagraphStore = derived(sectionPatchStore, sectionPatch => sectionPatch.endParagraph);
 
+    const confirmedReadable = derived(sectionPatchStore, section => section.confirmed ?? false);
+    const setConfirmed = (confirmed: boolean) => patchInterface.append(idx, { confirmed });
+    this.confirmedStore = makeWritable(confirmedReadable, setConfirmed);
+
     this.editedStore = derived(this.userTextStore, text => text !== null);
   }
 
@@ -46,6 +50,7 @@ class SectionStoreBuilderOne {
 
   protected readonly userTextStore: Readable<string | null>;
   protected readonly userEndParagraphStore: Readable<boolean | null>;
+  public readonly confirmedStore: Writable<boolean>;
 
   public build(prev: SectionStoreBuilderOne | null, next: SectionStoreBuilderOne | null): SectionStoreBuilderTwo {
     return new SectionStoreBuilderTwo(this.transcriptEntry, prev, next);

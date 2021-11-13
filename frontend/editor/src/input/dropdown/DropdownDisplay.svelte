@@ -48,8 +48,13 @@
     if (optionIdx === undefined) return;
 
     const selectedOption = getAssertExists($completionsStore, optionIdx);
-    patchInterface.append(sectionIdx, { text: selectedOption });
+    patchInterface.append(sectionIdx, { text: selectedOption, confirmed: true });
     await selectNextSection(sectionIdx);
+  }
+
+  function mouseDown(event: MouseEvent, idx: number) {
+    event.preventDefault();
+    acceptOption(idx);
   }
 </script>
 
@@ -88,7 +93,7 @@
       class:highlight={idx === selectedIdx}
       class:topBorder={idx !== 0}
       on:mouseenter="{() => {selectedIdx = idx}}"
-      on:mousedown="{() => {acceptOption(idx)}}"
+      on:mousedown="{event => mouseDown(event, idx)}"
     >
       {option.padEnd(1, " ")}
     </span>

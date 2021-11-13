@@ -89,7 +89,7 @@ function getPatchStore(idx: number): Readable<SectionCollapsedPatch> {
     ...dbData,
     ...pendingData
   }));
-  return deriveConditionally(store, { text: null, endParagraph: null, edited: null });
+  return deriveConditionally(store, { text: null, endParagraph: null, confirmed: null });
 }
 
 function undo() {
@@ -133,9 +133,6 @@ async function commit() {
 
   await writePatchToFirestore(lastCommonAncestor, lastDbAncestor, newPatch);
   pendingPatch.clear();
-
-  console.log("Commit complete, pending changes cleared, new patch was:", newPatch);
-  console.log();
 }
 
 function createPatch(newValues: Pending | undefined): Patch | undefined {

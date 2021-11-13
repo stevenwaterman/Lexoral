@@ -20,8 +20,8 @@
   let completionsStore: Readable<string[]>;
   $: completionsStore = section?.completionsStore ?? writable([]);
 
-  let editedStore: Readable<boolean>;
-  $: editedStore = section?.editedStore ?? writable(true);
+  let confirmedStore: Readable<boolean>;
+  $: confirmedStore = section?.confirmedStore ?? writable(true);
 
 
   let sectionNode: HTMLElement | undefined;
@@ -31,15 +31,13 @@
   $: paragraphNode = sectionNode?.parentElement ?? undefined;
 
   subscribeToDropdownReposition(() => {
-    if (sectionNode?.isConnected) {
-      sectionNode = sectionNode;
-    } else {
-      sectionNode = findSectionNode(sectionIdx);
-    }
+    if (sectionNode?.isConnected) sectionNode = sectionNode;
+    else sectionNode = findSectionNode(sectionIdx);
   })
 </script>
 
 {#if
+  !$confirmedStore &&
   !$isTextSelectedStore &&
   $completionsStore.length > 1 &&
   section !== undefined &&

@@ -74,7 +74,6 @@ export class PendingPatchState {
 
   append(idx: number, sectionPatch: SectionPatch["to"]) {
     if (this.patchState === "pending") {
-      console.log("Adding to pending patch:", idx, sectionPatch)
       const data = {
         ...this.sectionPatchData[idx],
         ...sectionPatch
@@ -82,7 +81,6 @@ export class PendingPatchState {
       this.sectionPatchData[idx] = data;
       this.getSectionPatchStoreInternal(idx).set(data)
     } else {
-      console.log("Starting pending patch:", idx, sectionPatch)
       this.patchState = "pending";
       this.sectionPatchData[idx] = sectionPatch;
       this.getSectionPatchStoreInternal(idx).set(sectionPatch);
@@ -108,7 +106,6 @@ export class PendingPatchState {
   }
 
   clear() {
-    console.log("Clearing pending patch");
     this.patchState = "none";
     this.clearStores();
     this.sectionPatchData = {};
@@ -118,8 +115,6 @@ export class PendingPatchState {
   }
 
   private clearStores() {
-    console.log("Clearing pending patch section stores");
-
     for(let idx in this.sectionPatchData) {
       this.getSectionPatchStoreInternal(idx as any as number).set({});
     }
@@ -130,8 +125,6 @@ export class PendingPatchState {
   }
 
   private applyStores() {
-    console.log("Applying pending patch section stores");
-
     forIn(this.sectionPatchData, (idx, data) => {
       this.getSectionPatchStoreInternal(idx).set(data);
     });

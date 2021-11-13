@@ -19,7 +19,6 @@ export async function writePatchToFirestore(lastCommonAncestor: number, lastDbAn
 
   const metaRef = getMetaDoc();
   batch.set(metaRef, { cursor: newCursor });
-  console.log("Setting firebase cursor", newCursor);
 
   const transcriptRef = getTranscriptDoc();
   batch.set(transcriptRef, { updated: serverTimestamp() }, { merge: true });
@@ -29,13 +28,11 @@ export async function writePatchToFirestore(lastCommonAncestor: number, lastDbAn
     const patchIdStr = patchId.toString().padStart(10, "0");
     const patchRef = doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches", patchIdStr);
     batch.set(patchRef, newPatch);
-    console.log("Setting firebase patch", patchId, newPatch);
 
     for (let i = newCursor + 1; i <= lastDbAncestor; i++) {
       const patchIdStr = i.toString().padStart(10, "0");
       const patchRef = doc(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches", patchIdStr);
       batch.delete(patchRef);
-      console.log("Deleting firebase patch", i);
     }
   }
 

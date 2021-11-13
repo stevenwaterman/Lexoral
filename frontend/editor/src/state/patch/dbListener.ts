@@ -11,7 +11,8 @@ type PatchProperty<KEY extends string, VALUE> = {
 }
 type PatchText = PatchProperty<"text", string | null>;
 type PatchEndParagraph = PatchProperty<"endParagraph", boolean | null>;
-export type SectionPatch = PatchText | PatchEndParagraph;
+type PatchConfirmed = PatchProperty<"confirmed", boolean | null>;
+export type SectionPatch = PatchText | PatchEndParagraph | PatchConfirmed;
 
 type PatchCommaSilence = PatchProperty<"commaSilence", number | null>;
 type PatchPeriodSilence = PatchProperty<"periodSilence", number | null>;
@@ -26,7 +27,7 @@ type PatchHistory = Patch[];
 export type SectionCollapsedPatch = {
   text: string | null;
   endParagraph: boolean | null;
-  edited: boolean | null;
+  confirmed: boolean | null;
 }
 export type SectionCollapsedPatches = Record<number, Partial<SectionCollapsedPatch>>;
 
@@ -63,7 +64,7 @@ export class DbListener {
   private getSectionPatchStoreInternal(idx: number): Writable<SectionCollapsedPatch> {
     let current = this.sectionPatchStores[idx];
     if (!current) {
-      current = writable({ text: null, endParagraph: null, edited: null });
+      current = writable({ text: null, endParagraph: null, confirmed: null });
       this.sectionPatchStores[idx] = current;
     }
     return current;
@@ -77,7 +78,7 @@ export class DbListener {
 
   private setCursor(newCursor: number) {
     if (isNaN(newCursor)) throw new Error();
-    // console.log("Setting cursor to ", newCursor);
+    console.log("Setting cursor to ", newCursor);
     if (newCursor === this.cursor) return;
     if (newCursor > this.cursor) this.applyPatches(this.cursor + 1, newCursor);
     else this.removePatches(this.cursor, newCursor + 1);
@@ -175,19 +176,15 @@ export class DbListener {
 
   private processSnapshot(snapshot: QuerySnapshot<DocumentData>) {
     const changes = snapshot.docChanges();
-    console.log("Received changes from db:", changes);
     if (changes.length === 0) return;
 
-    const newCursor = changes.find(change => change.doc.id === "meta")?.doc?.get("cursor") ?? this.cursor;
+    const newCursor = changes.find(change => change.doc.id === "meta")?.doc?.get("cursor") ?? this.firebaseCursor;
 
     const idChanges: Array<[number, DocumentChange<DocumentData>]> = 
       changes
         .filter(change => change.doc.id !== "meta")
         .map(change => ([parseInt(change.doc.id), change]));
     idChanges.sort(([a], [b]) => a - b);
-
-    console.log("Updating local state based on received snapshot, changes are:", idChanges);
-    console.log();
 
     if (idChanges.length) this.processComplexSnapshot(idChanges, newCursor);
 
