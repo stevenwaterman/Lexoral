@@ -63,6 +63,7 @@ export class PendingPatchState {
    * Return value indicates whether anything was changed
    */
   redo(): boolean {
+    console.log("Pending Redo")
     if (this.patchState === "undone") {
       this.patchState = "pending";
       this.applyStores();

@@ -11,7 +11,7 @@
   let sectionStore: SectionStore;
   $: sectionStore = getSectionStore(idx);
 
-  $: ({selectedStore, playingStore, displayTextStore, editedStore, completionsStore} = sectionStore);
+  $: ({selectedStore, playingStore, displayTextStore, completionsStore, editedStore, confirmedStore} = sectionStore);
 
   type EventType = Event & { currentTarget: EventTarget & HTMLSpanElement };
   function onInput(event: EventType) {
@@ -62,7 +62,7 @@
   class:sectionPlaying={$playingStore}
   class:underline={$displayTextStore.length === 0}
   class:placeholder={!$editedStore}
-  class:questionable={$completionsStore.length > 1 && !$editedStore}
+  class:questionable={$completionsStore.length > 1 && !$confirmedStore}
   data-sectionIdx={idx}
   on:input={onInput}
   on:keydown={event => handleSectionKeydown(event, sectionStore)}

@@ -41,7 +41,7 @@ class SectionStoreBuilderOne {
     const setConfirmed = (confirmed: boolean) => patchInterface.append(idx, { confirmed });
     this.confirmedStore = makeWritable(confirmedReadable, setConfirmed);
 
-    this.editedStore = derived(this.userTextStore, text => text !== null);
+    this.editedStore = derived([this.userTextStore, this.confirmedStore], ([text, confirmed]) => confirmed || text !== null);
   }
 
   public readonly selectedStore: Writable<boolean> = writable(false);
