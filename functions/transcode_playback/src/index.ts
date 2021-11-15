@@ -4,29 +4,36 @@ import { Request, Response } from "express";
 import admin from "firebase-admin";
 import utils from "lexoral-utils";
 
+const bitrate = 128;
+
 async function handleRequest(req: Request, res: Response) {
   const { user, transcript } = await utils.userTranscript.getAll(req, res, store);
   const filename = `${user.id}_${transcript.id}`
 
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
-  await transcodePlayback(storage, filename, sourceFile);
+
+  const destBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
+  const destFile = destBucket.file(`${filename}.mp3`);
+
+  await transcodePlayback(sourceFile, destFile);
+
+  const [metadata] = await destFile.getMetadata();
+  const size: number = metadata.size;
+  const duration: number = size / bitrate;
+  await transcript.doc.update({ audio: { duration }});
 
   res.sendStatus(201);  
 }
 
-async function transcodePlayback(storage: Storage, name: string, sourceFile: File): Promise<void> {
-  const playbackBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
-  const playbackFile = playbackBucket.file(`${name}.mp3`);
-  const playback = playbackFile.createWriteStream();
-
+async function transcodePlayback(sourceFile: File, destFile: File): Promise<void> {
   return new Promise(resolve => {
     ffmpeg(sourceFile.createReadStream())
       .noVideo()
       .audioFilter("aresample=44100")
-      .audioBitrate(128) // CBR to allow for seeking
+      .audioBitrate(bitrate) // CBR to allow for seeking
       .format("mp3")
-      .output(playback, {end: true})
+      .output(destFile.createWriteStream(), {end: true})
       .on("end", () => resolve())
       .run()
   });

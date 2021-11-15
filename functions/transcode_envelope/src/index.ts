@@ -10,20 +10,17 @@ async function handleRequest(req: Request, res: Response) {
 
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
-  const durationPromise = transcodeEnvelope(storage, filename, sourceFile);
-  const metadataPromise = getMetadata(sourceFile);
+  const transcodePromise = transcodeEnvelope(storage, filename, sourceFile);
 
-  const [duration, metadata] = await Promise.all([durationPromise, metadataPromise]);
-  const audio = {
-    duration,
-    ...metadata
-  };
-  await transcript.doc.update({ audio });
+  const metadata = await getMetadata(sourceFile);
+  await transcript.doc.update({ audio: metadata });
+
+  await transcodePromise;
 
   res.sendStatus(201);  
 }
 
-async function transcodeEnvelope(storage: Storage, name: string, sourceFile: File): Promise<number> {
+async function transcodeEnvelope(storage: Storage, name: string, sourceFile: File): Promise<void> {
   const envelopeBucket = storage.bucket(`${process.env["PROJECT_ID"]}-envelope-audio`);
   const envelopeFile = envelopeBucket.file(`${name}.pcm`);
   const envelope = envelopeFile.createWriteStream();
@@ -36,38 +33,9 @@ async function transcodeEnvelope(storage: Storage, name: string, sourceFile: Fil
       .audioFilter("aresample=1000")
       .format("s16le")
       .output(envelope, {end: true})
-      .on("end", (_, stderr: string) => {
-        try {
-          const duration = getDuration(stderr.split("\n"))
-          resolve(duration);
-        } catch (err) {
-          reject(err);
-        }
-      })
+      .on("end", () => resolve())
       .run()
   });
-}
-
-function getDuration(lines: string[]): number {
-  const sizeLines = lines.filter(line => line.trimStart().startsWith("size="));
-  const sizeLine = sizeLines[sizeLines.length - 1];
-  if (sizeLine === undefined) throw new Error("No size lines in ffmpeg output: " + JSON.stringify(lines));
-
-  const regexResult = /time=[^ ]+/.exec(sizeLine)
-  if (regexResult === null) throw new Error("No time found in ffmpeg size line: " + sizeLine);
-  const matchString = regexResult[0] as string;
-  const timeString = matchString.substring(5);
-  const [hourStr, minuteStr, secondStr] = timeString.split(":");
-  if (!hourStr || !minuteStr || !secondStr) throw new Error("Missing colon in time string: " + timeString);
-  const hour = parseInt(hourStr);
-  const minute = parseInt(minuteStr);
-  const second = parseFloat(secondStr);
-
-  const totalSeconds = hour * 3600 + minute * 60 + second;
-  const rounded = Math.ceil(totalSeconds);
-
-  if (rounded === 0) throw new Error("Duration was zero: " + JSON.stringify(lines));
-  return rounded;
 }
 
 function getMetadata(sourceFile: File): Promise<{
