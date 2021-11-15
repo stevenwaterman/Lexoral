@@ -10,10 +10,10 @@ const tryCatchStep: TryCatchStep = {
       { checkStage: callSub.assertTranscriptStage("uploading") },
       { setStage: setTranscriptStage("processing") },
       { logWorkflow: logWorkflow("pre_transcribe") },
+      { transcode_transcription: callSub.cloudFunction("transcode_transcription") },
       { playback: callSub.cloudFunction("transcode_playback") },
       { charge: callSub.cloudFunction("charge_credit") },
       { envelope: callSub.cloudFunction("transcode_envelope") },
-      { transcode_transcription: callSub.cloudFunction("transcode_transcription") },
       { transcribe: callSub.cloudFunction("transcribe") },
       { success: {
           return: 'SUCCESS'

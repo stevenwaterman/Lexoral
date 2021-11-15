@@ -10,7 +10,7 @@ async function handleRequest(req: Request, res: Response) {
   const { user, transcript } = await utils.userTranscript.getAll(req, res, store);
   const filename = `${user.id}_${transcript.id}`
 
-  const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
+  const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
   const sourceFile = sourceBucket.file(filename);
 
   const destBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
