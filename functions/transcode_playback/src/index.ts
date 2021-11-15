@@ -18,11 +18,6 @@ async function handleRequest(req: Request, res: Response) {
 
   await transcodePlayback(sourceFile, destFile);
 
-  const [metadata] = await destFile.getMetadata();
-  const size: number = metadata.size;
-  const duration: number = size / bitrate;
-  await transcript.doc.update({ audio: { duration }});
-
   res.sendStatus(201);  
 }
 
