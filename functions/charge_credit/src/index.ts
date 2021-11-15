@@ -14,7 +14,8 @@ async function handleRequest(req: Request, res: Response) {
   const [metadata] = await file.getMetadata();
   const size = metadata.size;
   const duration = size / bitrate;
-  await transcript.doc.update({ audio: { duration }});
+  console.log(size)
+  await transcript.doc.set({ audio: { duration }}, { merge: true });
 
   const credit = user.data.get("secondsCredit");
 

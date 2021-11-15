@@ -13,7 +13,7 @@ async function handleRequest(req: Request, res: Response) {
   const transcodePromise = transcodeEnvelope(storage, filename, sourceFile);
 
   const metadata = await getMetadata(sourceFile);
-  await transcript.doc.update({ audio: metadata });
+  await transcript.doc.set({ audio: metadata }, { merge: true });
 
   await transcodePromise;
 
