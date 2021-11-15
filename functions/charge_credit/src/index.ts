@@ -3,8 +3,8 @@ import utils from "lexoral-utils";
 import { Request, Response } from "express";
 import { Storage } from "@google-cloud/storage";
 
-const bitrate = 128;
-const bytesPerSecond = 128 / 8 * 1024;
+const bitrateKbps = 128;
+const bytesPerSecond = bitrateKbps / 8 * 1024;
 
 async function handleRequest(req: Request, res: Response) {
   const { user, transcript } = await utils.userTranscript.getAll(req, res, store);

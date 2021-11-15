@@ -24,6 +24,7 @@ async function transcodePlayback(storage: Storage, name: string, sourceFile: Fil
     ffmpeg(sourceFile.createReadStream())
       .noVideo()
       .format("wav")
+      .audioCodec('pcm-mulaw')
       .output(transcriptionStream, {end: true})
       .on("end", () => resolve())
       .run()
