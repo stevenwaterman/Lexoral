@@ -81,9 +81,7 @@ function getMetadata(sourceFile: File): Promise<{
         const format = data.format.format_name;
         if (format === undefined) return reject("Format not found: " + JSON.stringify(data));
 
-        // Commented out so that this continue to break and I can test the logging
-        // const stream = data.streams.find(stream => stream.codec_type === "audio");
-        const stream = data.streams[0];
+        const stream = data.streams.find(stream => stream.codec_type === "audio");
         if (stream === undefined) return reject("Stream not found: " + JSON.stringify(data));
 
         const sampleRate = stream.sample_rate;
