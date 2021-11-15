@@ -28,7 +28,7 @@ async function transcodeEnvelope(storage: Storage, name: string, sourceFile: Fil
   const envelopeFile = envelopeBucket.file(`${name}.pcm`);
   const envelope = envelopeFile.createWriteStream();
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     ffmpeg(sourceFile.createReadStream())
       .noVideo()
       .audioFilter("aeval=abs(val(0))")
@@ -36,7 +36,14 @@ async function transcodeEnvelope(storage: Storage, name: string, sourceFile: Fil
       .audioFilter("aresample=1000")
       .format("s16le")
       .output(envelope, {end: true})
-      .on("end", (_, stderr: string) => resolve(getDuration(stderr.split("\n"))))
+      .on("end", (_, stderr: string) => {
+        try {
+          const duration = getDuration(stderr.split("\n"))
+          resolve(duration);
+        } catch (err) {
+          reject(err);
+        }
+      })
       .run()
   });
 }
@@ -66,22 +73,24 @@ function getMetadata(sourceFile: File): Promise<{
   sampleRate: number,
   channels: number
 }> {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     ffmpeg(sourceFile.createReadStream())
       .ffprobe((err, data) => {
-        if (err) throw new Error("FFProbe error: " + err);
+        if (err) return reject("FFProbe error: " + err);
 
         const format = data.format.format_name;
-        if (format === undefined) throw new Error("Format not found: " + JSON.stringify(data));
+        if (format === undefined) return reject("Format not found: " + JSON.stringify(data));
 
+        // Commented out so that this continue to break and I can test the logging
+        // const stream = data.streams.find(stream => stream.codec_type === "audio");
         const stream = data.streams[0];
-        if (stream === undefined) throw new Error("Stream not found: " + JSON.stringify(data));
+        if (stream === undefined) return reject("Stream not found: " + JSON.stringify(data));
 
         const sampleRate = stream.sample_rate;
-        if (sampleRate === undefined) throw new Error("Sample Rate not found: " + JSON.stringify(data));
+        if (sampleRate === undefined) return reject("Sample Rate not found: " + JSON.stringify(data));
 
         const channels = stream.channels;
-        if (channels === undefined) throw new Error("Channels not found: " + JSON.stringify(data));
+        if (channels === undefined) return reject("Channels not found: " + JSON.stringify(data));
 
         resolve({ format, sampleRate, channels });
       });

@@ -17,7 +17,7 @@ function handleError(res: Response, err: any) {
 function wrap(handler: Handler): Handler {
   return async (req, res) => {
     try {
-      handler(req, res).catch(err => handleError(res, err));
+      await handler(req, res)
     } catch (err: any) {
       handleError(res, err);
     }
