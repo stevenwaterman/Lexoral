@@ -4,18 +4,23 @@ import express, { json, Request, Response } from "express";
 
 type Handler = (req: Request, res: Response) => Promise<void>;
 
+function handleError(res: Response, err: any) {
+  if (res.writableEnded) {
+    console.info("Handled error: " + JSON.stringify(err));
+  } else {
+    console.error("Unhandled error: " + JSON.stringify(err));
+    console.error(err.stack);
+    res.sendStatus(500);
+  }
+}
+
 function wrap(handler: Handler): Handler {
   return async (req, res) => {
-    handler(req, res)
-      .catch(err => {
-        if (res.writableEnded) {
-          console.info("Handled error: " + JSON.stringify(err));
-        } else {
-          console.error("Unhandled error: " + JSON.stringify(err));
-          console.error(err.stack);
-          res.sendStatus(500);
-        }
-      })
+    try {
+      handler(req, res).catch(err => handleError(res, err));
+    } catch (err: any) {
+      handleError(res, err);
+    }
   };
 }
 

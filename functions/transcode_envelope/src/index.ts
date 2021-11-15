@@ -10,8 +10,8 @@ async function handleRequest(req: Request, res: Response) {
 
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
-  const durationPromise = transcodeEnvelope(storage, filename, sourceFile);
-  const metadataPromise = getMetadata(sourceFile);
+  const durationPromise = transcodeEnvelope(storage, filename, sourceFile).catch(reason => console.error("Error transcoding envelope:", reason));
+  const metadataPromise = getMetadata(sourceFile).catch(reason => console.error("Error getting metadata:", reason));
 
   const [duration, metadata] = await Promise.all([durationPromise, metadataPromise]);
   const audio = {
