@@ -115,11 +115,19 @@
   .buttonContainer {
     align-self: center;
   }
+
+  .subtitle {
+    font-style: italic;
+    margin-top: 0.5em;
+    color: var(--grey-1);
+  }
 </style>
 
 
 <div class="container">
   <h1>New Transcript</h1>
+
+  <p class="subtitle">If you upload a video, we will try and extract the audio, but it's not always possible. Try using <a href="https://www.audacityteam.org/">Audacity</a> to extract the audio if you are having issues. <a href="https://github.com/stevenwaterman/Lexoral/issues/66">Read More</a></p>
 
   <div class="formSection">
     <label for="upload_file">Audio:</label>
