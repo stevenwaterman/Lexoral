@@ -12,18 +12,28 @@ async function handleRequest(req: Request, res: Response) {
 
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
   const sourceFile = sourceBucket.file(filename);
+  const sourceFileUrl = await sourceFile.getSignedUrl({
+    action: "read",
+    version: "v4",
+    expires: Date.now() + 60 * 60 * 1000, // 1 hour
+  }).then(([url]) => url)
+  .catch(err => {
+    console.error(err);
+    return null;
+  });
+  if (!sourceFileUrl) return;
 
   const destBucket = storage.bucket(`${process.env["PROJECT_ID"]}-playback-audio`);
   const destFile = destBucket.file(`${filename}.mp3`);
 
-  await transcodePlayback(sourceFile, destFile);
+  await transcodePlayback(sourceFileUrl, destFile);
 
   res.sendStatus(201);  
 }
 
-async function transcodePlayback(sourceFile: File, destFile: File): Promise<void> {
+async function transcodePlayback(sourceFileUrl: string, destFile: File): Promise<void> {
   return new Promise(resolve => {
-    ffmpeg(sourceFile.createReadStream())
+    ffmpeg(sourceFileUrl)
       .noVideo()
       .audioFilter("aresample=44100")
       .audioBitrate(bitrate) // CBR to allow for seeking

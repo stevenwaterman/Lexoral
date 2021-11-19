@@ -10,7 +10,18 @@ async function handleRequest(req: Request, res: Response) {
 
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
-  const transcodePromise = transcodeEnvelope(storage, filename, sourceFile);
+  const sourceFileUrl = await sourceFile.getSignedUrl({
+    action: "read",
+    version: "v4",
+    expires: Date.now() + 60 * 60 * 1000, // 1 hour
+  }).then(([url]) => url)
+  .catch(err => {
+    console.error(err);
+    return null;
+  });
+  if (!sourceFileUrl) return;
+
+  const transcodePromise = transcodeEnvelope(storage, filename, sourceFileUrl);
 
   const metadata = await getMetadata(sourceFile);
   await transcript.doc.set({ audio: metadata }, { merge: true });
@@ -20,13 +31,13 @@ async function handleRequest(req: Request, res: Response) {
   res.sendStatus(201);  
 }
 
-async function transcodeEnvelope(storage: Storage, name: string, sourceFile: File): Promise<void> {
+async function transcodeEnvelope(storage: Storage, name: string, sourceFileUrl: string): Promise<void> {
   const envelopeBucket = storage.bucket(`${process.env["PROJECT_ID"]}-envelope-audio`);
   const envelopeFile = envelopeBucket.file(`${name}.pcm`);
   const envelope = envelopeFile.createWriteStream();
 
   return new Promise((resolve, reject) => {
-    ffmpeg(sourceFile.createReadStream())
+    ffmpeg(sourceFileUrl)
       .noVideo()
       .audioFilter("aeval=abs(val(0))")
       .audioFilter("firequalizer=gain='if(lt(f,30), 0, -INF)'")

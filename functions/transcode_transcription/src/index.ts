@@ -16,12 +16,22 @@ async function handleRequest(req: Request, res: Response) {
 async function transcodePlayback(storage: Storage, filename: string): Promise<void> {
   const sourceBucket = storage.bucket(`${process.env["PROJECT_ID"]}-raw-audio`);
   const sourceFile = sourceBucket.file(filename);
+  const sourceFileUrl = await sourceFile.getSignedUrl({
+    action: "read",
+    version: "v4",
+    expires: Date.now() + 60 * 60 * 1000, // 1 hour
+  }).then(([url]) => url)
+  .catch(err => {
+    console.error(err);
+    return null;
+  });
+  if (!sourceFileUrl) return;
 
   const destBucket = storage.bucket(`${process.env["PROJECT_ID"]}-transcription-audio`);
   const destFile = destBucket.file(filename);
 
   return new Promise((resolve, reject) => {
-    ffmpeg(sourceFile.createReadStream())
+    ffmpeg(sourceFileUrl)
       .noVideo()
       .format("wav")
       .output(destFile.createWriteStream(), {end: true})
