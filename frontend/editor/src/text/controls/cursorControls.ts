@@ -83,7 +83,7 @@ export async function nextLine(event: SectionKeyboardEvent, section: SectionStor
   }
 
   while (true) {
-    if (inspectSection.offsetLeft >= spanLeft) {
+    if (inspectSection.offsetLeft + inspectSection.offsetWidth >= spanLeft) {
       await selectStart(inspectSection);
       return;
     }
@@ -100,10 +100,11 @@ export async function nextLine(event: SectionKeyboardEvent, section: SectionStor
 }
 
 export async function prevLine(event: SectionKeyboardEvent, section: SectionStore) {
+  debugger
   event.preventDefault();
 
   const span = event.currentTarget;
-  const spanLeft = span.offsetLeft;
+  const spanRight = span.offsetLeft + span.offsetWidth;
   const spanTop = span.offsetTop;
 
   let inspectSection: HTMLSpanElement = span;
@@ -125,7 +126,7 @@ export async function prevLine(event: SectionKeyboardEvent, section: SectionStor
   }
 
   while (true) {
-    if (inspectSection.offsetLeft < spanLeft) {
+    if (inspectSection.offsetLeft < spanRight) {
       await selectStart(inspectSection);
       return;
     }

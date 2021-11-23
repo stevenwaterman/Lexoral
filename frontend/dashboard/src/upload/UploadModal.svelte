@@ -115,12 +115,6 @@
   .buttonContainer {
     align-self: center;
   }
-
-  .subtitle {
-    font-style: italic;
-    margin-top: 0.5em;
-    color: var(--grey-1);
-  }
 </style>
 
 

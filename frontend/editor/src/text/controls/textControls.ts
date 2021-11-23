@@ -8,17 +8,11 @@ export async function deletePrevCharacter(event: SectionKeyboardEvent, section: 
   const currentOffset = window.getSelection()?.focusOffset;
   if (currentOffset === undefined) return; // Don't know what to do with this, leave it default
 
-  const textLength = event.currentTarget.textContent?.length ?? 0;
-
   if (currentOffset <= 0) {
     // Need to move one section left
     event.preventDefault();
     section.startParagraphStore.set(false);
     setTimeout(() => selectPrevSection(section.idx));
-  } if (currentOffset === 1 && textLength === 1) {
-    // Default behaviour deletes the text node and breaks things
-    event.preventDefault();
-    section.displayTextStore.set("");
   } else {
     // Use default behaviour
     return;
@@ -57,10 +51,6 @@ export async function deleteNextCharacter(event: SectionKeyboardEvent, section: 
     event.preventDefault();
     section.endParagraphStore.set(false);
     setTimeout(() => selectNextSection(section.idx));
-  } if (currentOffset === 0 && textLength === 1) {
-    // Default behaviour deletes the text node and breaks things
-    event.preventDefault();
-    section.displayTextStore.set("");
   } else {
     // Use default behaviour
     return;

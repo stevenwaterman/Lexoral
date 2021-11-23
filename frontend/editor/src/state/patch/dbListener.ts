@@ -225,7 +225,7 @@ export class DbListener {
   }
 
   redo(): boolean {
-    console.log("Db Redo")
+    // console.log("Db Redo")
     if (this.cursor < this.maxRedoPoint) {
       this.setCursor(this.cursor + 1);
       return true;

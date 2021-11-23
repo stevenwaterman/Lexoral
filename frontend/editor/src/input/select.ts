@@ -1,3 +1,4 @@
+import { clamp } from "../utils/list";
 import type { SectionSelection } from "./selectionState";
 
 export async function selectExactly(selection: SectionSelection | undefined) {
@@ -89,9 +90,11 @@ export async function selectPosition(node: Node | undefined, offset: number) {
   const textNode = node.hasChildNodes() ? node.firstChild : node;
   if (textNode === null) return;
 
+  const clampedOffset = clamp(offset, 0, textNode.textContent?.length ?? 0);
+
   const range = document.createRange();
-  range.setStart(textNode, offset);
-  range.setEnd(textNode, offset);
+  range.setStart(textNode, clampedOffset);
+  range.setEnd(textNode, clampedOffset);
 
   const sel = window.getSelection();
   if (sel === null) return;

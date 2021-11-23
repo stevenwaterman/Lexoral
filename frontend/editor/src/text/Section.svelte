@@ -15,6 +15,7 @@
 
   type EventType = Event & { currentTarget: EventTarget & HTMLSpanElement };
   function onInput(event: EventType) {
+    return;
     const target = event.currentTarget;
     const text = target.textContent ?? "";
     sectionStore.displayTextStore.set(text);
@@ -57,6 +58,8 @@
 
 <span
   contenteditable
+  bind:textContent={$displayTextStore}
+
   class="section"
   class:highlight={$selectedStore}
   class:sectionPlaying={$playingStore}
@@ -68,6 +71,5 @@
   on:keydown={event => handleSectionKeydown(event, sectionStore)}
   on:keyup={event => handleSectionKeyUp(event, sectionStore)}
 >
-  {$displayTextStore}
 </span>
 {" "}
