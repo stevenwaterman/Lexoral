@@ -5,6 +5,7 @@
   import Loading from "./Loading.svelte";
   import { userStore } from "./api";
   import { initAll } from "./state/initialiseState";
+  import { dragStore } from "./text/controls/dragStore";
 
   const app = initializeApp({
     apiKey: process.env["FIREBASE_API_KEY"],
@@ -32,7 +33,7 @@
   }
 </style>
 
-<svelte:body tabindex={-1}/>
+<svelte:body tabindex={-1} on:mouseup={() => dragStore.clear()}/>
 
 {#if $userStore === undefined}
   <Loading text="Logging in..."/>

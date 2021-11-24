@@ -1,9 +1,10 @@
 <script lang="ts">
   import { beforeUpdate } from "svelte";
   import { repositionDropdown } from "../input/dropdown/repositionDropdown";
-  import { selectToSection } from "../input/select";
+  import { selectionStore } from "../input/selectionState";
   import type { SectionStore } from "../state/section/sectionStore";
   import { getSectionStore } from "../state/section/sectionStoreRegistry";
+  import { dragStore } from "./controls/dragStore";
   import { handleSectionKeydown, handleSectionKeyUp } from "./controls/sectionInput";
 
   export let idx: number;
@@ -15,7 +16,9 @@
   $: ({selectedStore, playingStore, displayTextStore, completionsStore, editedStore, confirmedStore} = sectionStore);
 
   function select(event: MouseEvent) {
-    if (event.buttons === 1) selectToSection(idx);
+    if (event.buttons === 1) {
+      dragStore.setFocus(idx);
+    }
   }
 </script>
 
@@ -25,6 +28,9 @@
     white-space: pre;
     outline: none;
     min-width: 0.5em;
+
+    padding-left: 0.12em;
+    padding-right: 0.12em;
   }
 
   .underline {
@@ -48,6 +54,10 @@
     display: none;
   }
 
+  :global(.mutiSelect .section::selection) {
+    background: none;
+  }
+
   .questionable {
     box-shadow: inset 0px -1px 0px var(--error)
   }
@@ -65,7 +75,6 @@
   data-sectionIdx={idx}
   on:keydown={event => handleSectionKeydown(event, sectionStore)}
   on:keyup={event => handleSectionKeyUp(event, sectionStore)}
-  on:mouseenter={select}
+  on:mousemove={select}
   on:mouseup={select}
 />
-{" "}

@@ -1,7 +1,8 @@
 <script lang="ts">
   import Section from "./Section.svelte";
   import { onDestroy, onMount } from "svelte";
-import { selectToSection } from "../input/select";
+  import { selectionStore } from "../input/selectionState";
+  import { dragStore } from "./controls/dragStore";
 
   export let observer: IntersectionObserver;
   export let start: number;
@@ -36,7 +37,10 @@ import { selectToSection } from "../input/select";
   $: style = visible ? "" : `min-height: ${minHeight}px`;
 
   function select(event: MouseEvent) {
-    if (event.buttons === 1) selectToSection(end);
+    const idx = end;
+    if (event.buttons === 1) {
+      dragStore.setFocus(idx);
+    }
   }
 </script>
 
@@ -59,7 +63,7 @@ import { selectToSection } from "../input/select";
   bind:this={paragraphComponent}
   style={style}
   class:hidden={!visible}
-  on:mouseenter|self={select}
+  on:mousemove|self={select}
   on:mouseup|self={select}
 >
   {#each paragraphRange as idx (idx)}
