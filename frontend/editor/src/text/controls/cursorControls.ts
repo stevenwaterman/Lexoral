@@ -100,7 +100,6 @@ export async function nextLine(event: SectionKeyboardEvent, section: SectionStor
 }
 
 export async function prevLine(event: SectionKeyboardEvent, section: SectionStore) {
-  debugger
   event.preventDefault();
 
   const span = event.currentTarget;

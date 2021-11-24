@@ -2,6 +2,7 @@ import { Writable, writable, Readable, derived } from "svelte/store";
 import { deriveConditionally, deriveWithPrevious } from "../utils/stores";
 import { forIn } from "../utils/list";
 import { getSectionStore } from "../state/section/sectionStoreRegistry";
+import { findSectionNode } from "./select";
 
 /** Represents the start or end of a selection */
 export type CursorPosition = {
@@ -27,8 +28,16 @@ export type SectionSelection = {
 };
 
 /** Store containing the current selection */
-const selectionStoreInternal: Writable<SectionSelection | undefined> = writable(undefined);
-export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(selectionStoreInternal, undefined);
+const selectionStoreInternal: Writable<Pick<SectionSelection, "anchor" | "focus"> | undefined> = writable(undefined);
+const fullSelectionStoreInternal: Readable<SectionSelection | undefined> = derived(selectionStoreInternal, state => {
+  if (state === undefined) return undefined;
+  const { anchor, focus } = state;
+  const inverted = isSelectionInverted(anchor, focus);
+  const early = inverted ? focus : anchor;
+  const late = inverted ? anchor : focus;
+  return { anchor, focus, early, late, inverted };
+})
+export const selectionStore: Readable<SectionSelection | undefined> = deriveConditionally(fullSelectionStoreInternal, undefined);
 
 let selectionState: SectionSelection | undefined;
 selectionStore.subscribe(state => selectionState = state);
@@ -100,12 +109,7 @@ export function updateSelection() {
   if (anchor === null) return;
   if (focus === null) return;
 
-  const inverted = isSelectionInverted(anchor, focus);
-
-  const early = inverted ? focus : anchor;
-  const late = inverted ? anchor : focus;
-
-  selectionStoreInternal.set({ anchor, focus, early, late, inverted });
+  selectionStoreInternal.set({ anchor, focus });
 }
 
 function getCursorPosition(node: Node | null, offset: number): CursorPosition | null {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { beforeUpdate } from "svelte";
   import { repositionDropdown } from "../input/dropdown/repositionDropdown";
+  import { selectToSection } from "../input/select";
   import type { SectionStore } from "../state/section/sectionStore";
   import { getSectionStore } from "../state/section/sectionStoreRegistry";
   import { handleSectionKeydown, handleSectionKeyUp } from "./controls/sectionInput";
@@ -13,12 +14,8 @@
 
   $: ({selectedStore, playingStore, displayTextStore, completionsStore, editedStore, confirmedStore} = sectionStore);
 
-  type EventType = Event & { currentTarget: EventTarget & HTMLSpanElement };
-  function onInput(event: EventType) {
-    return;
-    const target = event.currentTarget;
-    const text = target.textContent ?? "";
-    sectionStore.displayTextStore.set(text);
+  function select(event: MouseEvent) {
+    if (event.buttons === 1) selectToSection(idx);
   }
 </script>
 
@@ -59,7 +56,6 @@
 <span
   contenteditable
   bind:textContent={$displayTextStore}
-
   class="section"
   class:highlight={$selectedStore}
   class:sectionPlaying={$playingStore}
@@ -67,9 +63,9 @@
   class:placeholder={!$editedStore}
   class:questionable={$completionsStore.length > 1 && !$confirmedStore}
   data-sectionIdx={idx}
-  on:input={onInput}
   on:keydown={event => handleSectionKeydown(event, sectionStore)}
   on:keyup={event => handleSectionKeyUp(event, sectionStore)}
->
-</span>
+  on:mouseenter={select}
+  on:mouseup={select}
+/>
 {" "}

@@ -1,6 +1,7 @@
 <script lang="ts">
   import Section from "./Section.svelte";
   import { onDestroy, onMount } from "svelte";
+import { selectToSection } from "../input/select";
 
   export let observer: IntersectionObserver;
   export let start: number;
@@ -31,9 +32,12 @@
   let paragraphRange: number[];
   $: paragraphRange = range(start, end);
 
-
   let style: string;
   $: style = visible ? "" : `min-height: ${minHeight}px`;
+
+  function select(event: MouseEvent) {
+    if (event.buttons === 1) selectToSection(end);
+  }
 </script>
 
 <style>
@@ -50,7 +54,14 @@
 
 </style>
 
-<p class="paragraph" bind:this={paragraphComponent} style={style} class:hidden={!visible}>
+<p
+  class="paragraph" 
+  bind:this={paragraphComponent}
+  style={style}
+  class:hidden={!visible}
+  on:mouseenter|self={select}
+  on:mouseup|self={select}
+>
   {#each paragraphRange as idx (idx)}
     <Section {idx}/>
   {/each}

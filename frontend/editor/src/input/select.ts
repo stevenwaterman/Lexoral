@@ -147,3 +147,13 @@ export function findSectionNode(idx: number | undefined): HTMLSpanElement | unde
   const queryResult = document.querySelector(`[data-sectionIdx="${idx}"]`) as HTMLSpanElement | null;
   return queryResult ?? undefined;
 }
+
+export function selectToSection(idx: number) {
+  const selection = window.getSelection();
+  if (selection === null) return;
+
+  const focusNode = findSectionNode(idx)?.firstChild ?? null;
+  if (focusNode === null) return;
+
+  selection.extend(focusNode);
+}
