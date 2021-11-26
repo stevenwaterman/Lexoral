@@ -10,43 +10,45 @@ type HandlerMap = Record<string, (alt: boolean, ctrl: boolean, shift: boolean, e
 const handlers: HandlerMap = {}
 
 handlers["ArrowLeft"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && ctrl && !shift) return cursorControls.prevWord(event, section);
-  if (!alt && !ctrl && !shift) return cursorControls.prevCharacter(event, section);
+  if (!alt && ctrl) return cursorControls.prevWord(event, section);
+  if (!alt && !ctrl) return cursorControls.prevCharacter(event, section);
+
   if (alt && !ctrl && !shift) return audioControls.rateDown(event, section);
 }
 
 handlers["ArrowRight"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && ctrl && !shift) return cursorControls.nextWord(event, section);
-  if (!alt && !ctrl && !shift) return cursorControls.nextCharacter(event, section);
+  if (!alt && ctrl) return cursorControls.nextWord(event, section);
+  if (!alt && !ctrl) return cursorControls.nextCharacter(event, section);
+  
   if (alt && !ctrl && !shift) return audioControls.rateUp(event, section);
 }
 
 handlers["ArrowDown"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && !ctrl && !shift) return cursorControls.nextLine(event, section);
+  if (!alt && !ctrl) return cursorControls.nextLine(event, section);
   if (alt && !ctrl && !shift) return audioControls.volumeDown(event, section);
 }
 
 handlers["ArrowUp"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && !ctrl && !shift) return cursorControls.prevLine(event, section);
+  if (!alt && !ctrl) return cursorControls.prevLine(event, section);
   if (alt && !ctrl && !shift) return audioControls.volumeUp(event, section);
 }
 
 handlers["Home"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && !ctrl && !shift) return cursorControls.lineStart(event, section);
+  if (!alt && !ctrl) return cursorControls.lineStart(event, section);
   if (!alt && ctrl && !shift) return cursorControls.documentStart(event, section);
 }
 
 handlers["End"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && !ctrl && !shift) return cursorControls.lineEnd(event, section);
+  if (!alt && !ctrl) return cursorControls.lineEnd(event, section);
   if (!alt && ctrl && !shift) return cursorControls.documentEnd(event, section);
 }
 
 handlers["PageUp"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && !ctrl && !shift) return cursorControls.prevParagraph(event, section);
+  if (!alt && !ctrl) return cursorControls.prevParagraph(event, section);
 }
 
 handlers["PageDown"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && !ctrl && !shift) return cursorControls.nextParagraph(event, section);
+  if (!alt && !ctrl) return cursorControls.nextParagraph(event, section);
 }
 
 handlers["Backspace"] = async (alt, ctrl, shift, event, section) => {

@@ -19,65 +19,65 @@ export async function selectExactly(selection: SectionSelection | undefined) {
  * Select the start of the section after the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectSectionStart(idx: number | undefined) {
+export async function selectSectionStart(idx: number | undefined, extend?: boolean) {
   const component = findSectionNode(idx);
-  await selectStart(component);
+  await selectStart(component, extend);
 }
 
 /** 
  * Select the end of the section before the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectSectionPosition(idx: number | undefined, offset: number) {
+export async function selectSectionPosition(idx: number | undefined, offset: number, extend?: boolean) {
   const component = findSectionNode(idx);
-  await selectPosition(component, offset);
+  await selectPosition(component, offset, extend);
 }
 
 /** 
  * Select the end of the section before the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectSectionEnd(idx: number | undefined) {
+export async function selectSectionEnd(idx: number | undefined, extend?: boolean) {
   const component = findSectionNode(idx);
-  await selectEnd(component);
+  await selectEnd(component, extend);
 }
 
-export async function selectNextSection(idx: number | undefined) {
+export async function selectNextSection(idx: number | undefined, extend?: boolean) {
   if (idx === undefined) return undefined;
-  return selectSectionStart(idx + 1);
+  return selectSectionStart(idx + 1, extend);
 }
 
-export async function selectPrevSection(idx: number | undefined) {
+export async function selectPrevSection(idx: number | undefined, extend?: boolean) {
   if (idx === undefined) return undefined;
-  return selectSectionEnd(idx - 1);
+  return selectSectionEnd(idx - 1, extend);
 }
 
 /** 
  * Select the start of the first section in the paragraph that contains the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectParagraphStart(idx: number | undefined) {
+export async function selectParagraphStart(idx: number | undefined, extend?: boolean) {
   const component = findSectionNode(idx);
   const node: ChildNode | undefined = component?.parentElement?.firstElementChild?.firstChild ?? undefined;
-  await selectStart(node);
+  await selectStart(node, extend);
 }
 
 /** 
  * Select the end of the last section in the paragraph that contains the provided component.
  * The provided component should be a section's `Span` element
  */
-export async function selectParagraphEnd(idx: number | undefined) {
+export async function selectParagraphEnd(idx: number | undefined, extend?: boolean) {
   const component = findSectionNode(idx);
   const node: ChildNode | undefined = component?.parentElement?.lastElementChild?.firstChild ?? undefined;
-  await selectEnd(node);
+  await selectEnd(node, extend);
 }
 
 /** 
  * Select the start of the provided component (after the initial space).
  * It should either be a section's `Span` element or its contained `TextNode`
  */
-export async function selectStart(node: Node | undefined) {
-  return selectPosition(node, 0);
+export async function selectStart(node: Node | undefined, extend?: boolean) {
+  return selectPosition(node, 0, extend);
 }
 
 /** 
@@ -85,31 +85,27 @@ export async function selectStart(node: Node | undefined) {
  * The offset is 0-indexed from the start of the actual text, ignoring the starting space, or 1-indexed if you include the starting space.
  * It should either be a section's `Span` element or its contained `TextNode`
  */
-export async function selectPosition(node: Node | undefined, offset: number) {
+export async function selectPosition(node: Node | undefined, offset: number, extend?: boolean) {
   if (node === undefined) return;
   const textNode = node.hasChildNodes() ? node.firstChild : node;
   if (textNode === null) return;
 
   const clampedOffset = clamp(offset, 0, textNode.textContent?.length ?? 0);
 
-  const range = document.createRange();
-  range.setStart(textNode, clampedOffset);
-  range.setEnd(textNode, clampedOffset);
-
-  const sel = window.getSelection();
-  if (sel === null) return;
-  sel.removeAllRanges();
-  sel.addRange(range);
-  // await updateSelection();
+  if (extend) {
+    window.getSelection()?.extend(textNode, clampedOffset);
+  } else {
+    window.getSelection()?.setBaseAndExtent(textNode, clampedOffset, textNode, clampedOffset);
+  }
 }
 
 /** 
  * Select the end of the provided component.
  * It should either be a section's `Span` element or its contained `TextNode`
  */
-export async function selectEnd(node: Node | undefined) {
+export async function selectEnd(node: Node | undefined, extend?: boolean) {
   const textLength = node?.textContent?.length ?? 0;
-  return selectPosition(node, textLength);
+  return selectPosition(node, textLength, extend);
 }
 
 

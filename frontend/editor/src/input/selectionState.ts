@@ -110,14 +110,16 @@ document.addEventListener("selectionchange", updateSelection);
 
 export function updateSelection() {
   const selection = window.getSelection();
-  if (selection === null) return;
+  if (selection !== null) {
+    const anchor = getCursorPosition(selection.anchorNode, selection.anchorOffset);
+    const focus = getCursorPosition(selection.focusNode, selection.focusOffset);
+    if (anchor && focus) {
+      selectionStoreInternal.set({ anchor, focus });
+      return;
+    }
+  }
 
-  const anchor = getCursorPosition(selection.anchorNode, selection.anchorOffset);
-  const focus = getCursorPosition(selection.focusNode, selection.focusOffset);
-  if (anchor === null) return;
-  if (focus === null) return;
-
-  selectionStoreInternal.set({ anchor, focus });
+  selectionStoreInternal.set(undefined);
 }
 
 function getCursorPosition(node: Node | null, offset: number): CursorPosition | null {
