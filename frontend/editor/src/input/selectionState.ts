@@ -78,7 +78,15 @@ deriveWithPrevious(selectionRangeStore).subscribe(({ last, current }) => {
 
   forIn(updates, (idx, selected) => {
     getSectionStore(idx).selectedStore.set(selected);
-  })
+  });
+
+  if (lastEarly !== undefined && lastEarly === lastLate) {
+    getSectionStore(lastEarly).soleSelectedStore.set(false);
+  }
+
+  if (currentEarly !== undefined && currentEarly === currentLate) {
+    getSectionStore(currentEarly).soleSelectedStore.set(true);
+  }
 })
 
 

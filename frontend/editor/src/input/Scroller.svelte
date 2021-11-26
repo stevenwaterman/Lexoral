@@ -2,9 +2,6 @@
   import { displayStore } from "../state/settings/displayStore";
   import type { DisplayState } from "../state/settings/displayStore";
   import type { FirestoreWritableField } from "../utils/firestoreWritable";
-  import type { SectionSelection } from "./selectionState";
-  import { selectionStore } from "./selectionState";
-import { dragStore } from "../text/controls/dragStore";
 
   let wrapper: HTMLDivElement;
 
@@ -13,12 +10,6 @@ import { dragStore } from "../text/controls/dragStore";
 
   let pageWidthStore: FirestoreWritableField<DisplayState, "fontSize">;
   $: pageWidthStore = displayStore.getField("pageWidth");
-
-  let selection: SectionSelection | undefined;
-  $: selection = $selectionStore;
-
-  let mutiSelect: boolean;
-  $: mutiSelect = selection?.anchor?.section !== selection?.focus?.section;
 </script>
 
 <style>
@@ -40,7 +31,6 @@ import { dragStore } from "../text/controls/dragStore";
 
 <div
   class="scroller"
-  class:mutiSelect
   style={`width: ${$pageWidthStore}em; font-size: ${$fontSizeStore}pt;`}
   bind:this={wrapper}
   spellcheck={false}

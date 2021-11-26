@@ -45,6 +45,7 @@ class SectionStoreBuilderOne {
   }
 
   public readonly selectedStore: Writable<boolean> = writable(false);
+  public readonly soleSelectedStore: Writable<boolean> = writable(false);
   public readonly playingStore: Writable<boolean> = writable(false);
   public readonly editedStore: Readable<boolean>;
 

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { beforeUpdate } from "svelte";
   import { repositionDropdown } from "../input/dropdown/repositionDropdown";
-  import { selectionStore } from "../input/selectionState";
   import type { SectionStore } from "../state/section/sectionStore";
   import { getSectionStore } from "../state/section/sectionStoreRegistry";
   import { dragStore } from "./controls/dragStore";
@@ -13,7 +12,7 @@
   let sectionStore: SectionStore;
   $: sectionStore = getSectionStore(idx);
 
-  $: ({selectedStore, playingStore, displayTextStore, completionsStore, editedStore, confirmedStore} = sectionStore);
+  $: ({selectedStore, soleSelectedStore, playingStore, displayTextStore, completionsStore, editedStore, confirmedStore} = sectionStore);
 
   function select(event: MouseEvent) {
     if (event.buttons === 1) {
@@ -54,8 +53,13 @@
     display: none;
   }
 
-  :global(.mutiSelect .section::selection) {
+  .section::selection {
     background: none;
+  }
+
+  .soleSelected.section::selection {
+    background-color: var(--blue-1);
+    color: var(--grey-4);
   }
 
   .questionable {
@@ -67,6 +71,7 @@
   contenteditable
   bind:textContent={$displayTextStore}
   class="section"
+  class:soleSelected={$soleSelectedStore}
   class:highlight={$selectedStore}
   class:sectionPlaying={$playingStore}
   class:underline={$displayTextStore.length === 0}
