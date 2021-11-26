@@ -143,3 +143,31 @@ export function findSectionNode(idx: number | undefined): HTMLSpanElement | unde
   const queryResult = document.querySelector(`[data-sectionIdx="${idx}"]`) as HTMLSpanElement | null;
   return queryResult ?? undefined;
 }
+
+export function getFocusSpan(selection: Selection | null): HTMLSpanElement | null {
+  const focusNode = selection?.focusNode;
+  const focusSpan = focusNode?.nodeType === Node.TEXT_NODE ? focusNode.parentElement : focusNode;
+  if (focusSpan) {
+    return focusSpan as HTMLSpanElement;
+  } else {
+    return null;
+  }
+}
+
+export function getAnchorSpan(selection: Selection | null): HTMLSpanElement | null {
+  const anchorNode = selection?.anchorNode;
+  const anchorSpan = anchorNode?.nodeType === Node.TEXT_NODE ? anchorNode.parentElement : anchorNode;
+  if (anchorSpan) {
+    return anchorSpan as HTMLSpanElement;
+  } else {
+    return null;
+  }
+}
+
+export function getSpanIdx(span: HTMLSpanElement | null): number | null {
+  if (span === null) return null;
+  const idxStr = span.getAttribute("data-sectionIdx");
+  if (idxStr === null) return null;
+  const idx = parseInt(idxStr);
+  return idx;
+}

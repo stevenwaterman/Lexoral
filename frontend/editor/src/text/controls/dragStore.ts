@@ -42,8 +42,11 @@ dragStore.subscribe(state => {
   if (state === undefined) return;
   if (state.anchor === state.focus) return;
 
-  const anchorNode = findSectionNode(state.anchor)?.firstChild ?? undefined;
-  const focusNode = findSectionNode(state.focus)?.firstChild ?? undefined;
+  const anchorSpan = findSectionNode(state.anchor);
+  const focusSpan = findSectionNode(state.focus);
+
+  const anchorNode = anchorSpan?.firstChild ?? anchorSpan;
+  const focusNode = focusSpan?.firstChild ?? focusSpan;
   if (anchorNode === undefined || focusNode === undefined) return;
 
   const inverted = state.anchor > state.focus;

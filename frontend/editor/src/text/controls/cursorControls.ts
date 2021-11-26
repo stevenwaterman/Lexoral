@@ -1,4 +1,4 @@
-import { selectEnd, selectNextSection, selectPosition, selectPrevSection, selectSectionEnd, selectSectionPosition, selectSectionStart, selectStart } from "../../input/select";
+import { getFocusSpan, selectEnd, selectNextSection, selectPosition, selectPrevSection, selectSectionEnd, selectSectionPosition, selectSectionStart, selectStart } from "../../input/select";
 import type { SectionStore } from "../../state/section/sectionStore";
 import { getMaxSectionIdx } from "../../state/section/sectionStoreRegistry";
 import type { SectionKeyboardEvent } from "./sectionInput";
@@ -7,13 +7,12 @@ export async function prevCharacter(event: SectionKeyboardEvent, section: Sectio
   const selection = window.getSelection();
   if (selection === null) return; // Don't know what to do with this, leave it default
 
-  const focusNode = selection.focusNode;
-  if (focusNode === null) return; // Don't know what to do with this, leave it default
+  const focusSpan = getFocusSpan(selection);
+  if (focusSpan === null) return; // Don't know what to do with this, leave it default
 
   const focusOffset = selection.focusOffset;
   if (focusOffset === undefined) return; // Don't know what to do with this, leave it default
 
-  const focusSpan = focusNode.parentElement as HTMLSpanElement;
   const focusIdxStr = focusSpan.getAttribute("data-sectionIdx");
   if (focusIdxStr === null) return; // Don't know what to do with this, leave it default
   const focusIdx = parseInt(focusIdxStr);
@@ -29,13 +28,12 @@ export async function prevWord(event: SectionKeyboardEvent, section: SectionStor
   const selection = window.getSelection();
   if (selection === null) return; // Don't know what to do with this, leave it default
 
-  const focusNode = selection.focusNode;
-  if (focusNode === null) return; // Don't know what to do with this, leave it default
+  const focusSpan = getFocusSpan(selection);
+  if (focusSpan === null) return;
 
   const focusOffset = selection.focusOffset;
   if (focusOffset === undefined) return; // Don't know what to do with this, leave it default
 
-  const focusSpan = focusNode.parentElement as HTMLSpanElement;
   const focusIdxStr = focusSpan.getAttribute("data-sectionIdx");
   if (focusIdxStr === null) return; // Don't know what to do with this, leave it default
   const focusIdx = parseInt(focusIdxStr);
@@ -55,18 +53,17 @@ export async function nextCharacter(event: SectionKeyboardEvent, section: Sectio
   const selection = window.getSelection();
   if (selection === null) return; // Don't know what to do with this, leave it default
 
-  const focusNode = selection.focusNode;
-  if (focusNode === null) return; // Don't know what to do with this, leave it default
+  const focusSpan = getFocusSpan(selection);
+  if (focusSpan === null) return;
 
   const focusOffset = selection.focusOffset;
   if (focusOffset === undefined) return; // Don't know what to do with this, leave it default
 
-  const focusSpan = focusNode.parentElement as HTMLSpanElement;
   const focusIdxStr = focusSpan.getAttribute("data-sectionIdx");
   if (focusIdxStr === null) return; // Don't know what to do with this, leave it default
   const focusIdx = parseInt(focusIdxStr);
 
-  const focusLength = focusNode.textContent?.length ?? 0;
+  const focusLength = focusSpan.textContent?.length ?? 0;
   if (focusOffset < focusLength && section.idx === focusIdx) return; // one character right as normal
 
   // Need to move one section right
@@ -78,19 +75,18 @@ export async function nextWord(event: SectionKeyboardEvent, section: SectionStor
   const selection = window.getSelection();
   if (selection === null) return; // Don't know what to do with this, leave it default
 
-  const focusNode = selection.focusNode;
-  if (focusNode === null) return; // Don't know what to do with this, leave it default
+  const focusSpan = getFocusSpan(selection);
+  if (focusSpan === null) return;
 
   const focusOffset = selection.focusOffset;
   if (focusOffset === undefined) return; // Don't know what to do with this, leave it default
 
-  const focusSpan = focusNode.parentElement as HTMLSpanElement;
   const focusIdxStr = focusSpan.getAttribute("data-sectionIdx");
   if (focusIdxStr === null) return; // Don't know what to do with this, leave it default
   const focusIdx = parseInt(focusIdxStr);
 
   event.preventDefault();
-  const focusLength = focusNode.textContent?.length ?? 0;
+  const focusLength = focusSpan.textContent?.length ?? 0;
   if (focusOffset < focusLength && section.idx === focusIdx) {
     // Not at end of section, move there
     await selectEnd(event.currentTarget, event.shiftKey);
@@ -104,8 +100,9 @@ export async function nextWord(event: SectionKeyboardEvent, section: SectionStor
 export async function prevLine(event: SectionKeyboardEvent, section: SectionStore) {
   event.preventDefault();
 
-  const span = window.getSelection()?.focusNode?.parentElement;
-  if (!span) return;
+  const selection = window.getSelection();
+  const span = getFocusSpan(selection);
+  if (span === null) return;
 
   const spanRight = span.offsetLeft + span.offsetWidth;
   const spanTop = span.offsetTop;
@@ -148,8 +145,9 @@ export async function prevLine(event: SectionKeyboardEvent, section: SectionStor
 export async function nextLine(event: SectionKeyboardEvent, section: SectionStore) {
   event.preventDefault();
 
-  const span = window.getSelection()?.focusNode?.parentElement;
-  if (!span) return;
+  const selection = window.getSelection();
+  const span = getFocusSpan(selection);
+  if (span === null) return;
 
   const spanLeft = span.offsetLeft;
   const spanTop = span.offsetTop;
@@ -192,8 +190,9 @@ export async function nextLine(event: SectionKeyboardEvent, section: SectionStor
 export async function lineStart(event: SectionKeyboardEvent, section: SectionStore) {
   event.preventDefault();
 
-  const span = window.getSelection()?.focusNode?.parentElement;
-  if (!span) return;
+  const selection = window.getSelection();
+  const span = getFocusSpan(selection);
+  if (span === null) return;
   
   const spanTop = span.offsetTop;
 
@@ -211,8 +210,9 @@ export async function lineStart(event: SectionKeyboardEvent, section: SectionSto
 export async function lineEnd(event: SectionKeyboardEvent, section: SectionStore) {
   event.preventDefault();
 
-  const span = window.getSelection()?.focusNode?.parentElement;
-  if (!span) return;
+  const selection = window.getSelection();
+  const span = getFocusSpan(selection);
+  if (span === null) return;
   
   const spanTop = span.offsetTop;
 
@@ -241,7 +241,8 @@ export async function prevParagraph(event: SectionKeyboardEvent, section: Sectio
   event.preventDefault();
 
   const focusNode = window.getSelection()?.focusNode;
-  const focusParagraph = focusNode?.parentElement?.parentElement;
+  const focusSpan = focusNode?.nodeType === Node.TEXT_NODE ? focusNode.parentElement : focusNode;
+  const focusParagraph = focusSpan?.parentElement;
   const prevParagraph = focusParagraph?.previousElementSibling;
   const lastSpan = prevParagraph?.lastElementChild;
 
@@ -255,7 +256,8 @@ export async function nextParagraph(event: SectionKeyboardEvent, section: Sectio
   event.preventDefault();
 
   const focusNode = window.getSelection()?.focusNode;
-  const focusParagraph = focusNode?.parentElement?.parentElement;
+  const focusSpan = focusNode?.nodeType === Node.TEXT_NODE ? focusNode.parentElement : focusNode;
+  const focusParagraph = focusSpan?.parentElement;
   const nextParagraph = focusParagraph?.nextElementSibling;
   const firstSpan = nextParagraph?.firstElementChild;
 

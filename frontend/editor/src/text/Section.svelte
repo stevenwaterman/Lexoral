@@ -26,16 +26,15 @@
     display: inline;
     white-space: pre;
     outline: none;
-    min-width: 0.5em;
 
     padding-left: 0.12em;
     padding-right: 0.12em;
   }
 
-  .section:empty {
-    box-shadow: inset 0px -1px 0px var(--form-border);
+  .section:empty::before {
+    content: "_";
+    font-weight: 300;
   }
-
 
   .highlight {
     background-color: var(--weak-focus);
@@ -63,7 +62,7 @@
   }
 
   .questionable {
-    box-shadow: inset 0px -1px 0px var(--error)
+    border-bottom: 1px solid var(--error);
   }
 </style>
 

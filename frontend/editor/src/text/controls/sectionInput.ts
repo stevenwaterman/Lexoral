@@ -52,13 +52,11 @@ handlers["PageDown"] = async (alt, ctrl, shift, event, section) => {
 }
 
 handlers["Backspace"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && ctrl && !shift) return textControls.deletePrevWord(event, section);
-  if (!alt && !ctrl && !shift) return textControls.deletePrevCharacter(event, section);
+  if (!alt) return textControls.deleteBackwards(event, section);
 }
 
 handlers["Delete"] = async (alt, ctrl, shift, event, section) => {
-  if (!alt && ctrl && !shift) return textControls.deleteNextWord(event, section);
-  if (!alt && !ctrl && !shift) return textControls.deleteNextCharacter(event, section);
+  if (!alt) return textControls.deleteForwards(event, section);
 }
 
 handlers["Enter"] = async (alt, ctrl, shift, event, section) => {
