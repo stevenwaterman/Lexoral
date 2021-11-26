@@ -54,6 +54,10 @@
 
     position: relative;
     contain: paint layout;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
 </style>

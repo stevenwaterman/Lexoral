@@ -32,10 +32,10 @@
     padding-right: 0.12em;
   }
 
-  .underline {
-    display: inline-block;
+  .section:empty {
     box-shadow: inset 0px -1px 0px var(--form-border);
   }
+
 
   .highlight {
     background-color: var(--weak-focus);
@@ -76,7 +76,7 @@
   class:sectionPlaying={$playingStore}
   class:underline={$displayTextStore.length === 0}
   class:placeholder={!$editedStore}
-  class:questionable={$completionsStore.length > 1 && !$confirmedStore}
+  class:questionable={$displayTextStore.length > 0 && $completionsStore.length > 1 && !$confirmedStore}
   data-sectionIdx={idx}
   on:keydown={event => handleSectionKeydown(event, sectionStore)}
   on:keyup={event => handleSectionKeyUp(event, sectionStore)}

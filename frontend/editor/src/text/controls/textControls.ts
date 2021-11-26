@@ -1,21 +1,44 @@
-import { tick } from "svelte";
 import { selectEnd, selectNextSection, selectPrevSection, selectSectionEnd, selectSectionStart, selectStart } from "../../input/select";
 import type { SectionStore } from "../../state/section/sectionStore";
 import { getMaxSectionIdx, getSectionStore } from "../../state/section/sectionStoreRegistry";
 import type { SectionKeyboardEvent } from "./sectionInput";
 
 export async function deletePrevCharacter(event: SectionKeyboardEvent, section: SectionStore) {
-  const currentOffset = window.getSelection()?.focusOffset;
-  if (currentOffset === undefined) return; // Don't know what to do with this, leave it default
+  const selection = window.getSelection();
+  if (selection === null) return;
 
-  if (currentOffset <= 0) {
-    // Need to move one section left
-    event.preventDefault();
-    section.startParagraphStore.set(false);
-    setTimeout(() => selectPrevSection(section.idx));
+  const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
+  if (!anchorNode || !focusNode) return;
+
+  if (anchorNode === focusNode) { // Selection is within one span
+    if (anchorOffset === 0 && focusOffset === 0) {
+      event.preventDefault();
+      section.startParagraphStore.set(false);
+      setTimeout(() => selectPrevSection(section.idx));
+    } else {
+      // Default behaviour, delete the text within a span
+      return;
+    }
   } else {
-    // Use default behaviour
-    return;
+    // Selected multiple sections
+    event.preventDefault();
+    const anchorIdxStr = anchorNode.parentElement?.getAttribute("data-sectionIdx");
+    const focusIdxStr = focusNode.parentElement?.getAttribute("data-sectionIdx");
+    if (!anchorIdxStr || !focusIdxStr) return;
+
+    const anchorIdx = parseInt(anchorIdxStr);
+    const focusIdx = parseInt(focusIdxStr);
+
+    const earlyIdx = Math.min(anchorIdx, focusIdx);
+    const lateIdx = Math.max(anchorIdx, focusIdx);
+    
+    for (let i = earlyIdx; i <= lateIdx; i++) {
+      const store = getSectionStore(i);
+      store.displayTextStore.set("");
+      store.startParagraphStore.set(false);
+    }
+
+    setTimeout(() => selectPrevSection(earlyIdx));
   }
 }
 
