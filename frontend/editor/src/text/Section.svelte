@@ -54,12 +54,12 @@
   }
 
   .section::selection {
-    background-color: var(--blue-1);
-    color: var(--grey-4);
+    background: none;
   }
 
   .soleSelected.section::selection {
-    
+    background-color: var(--blue-1);
+    color: var(--grey-4);
   }
 
   .questionable {
@@ -71,6 +71,7 @@
   contenteditable
   bind:textContent={$displayTextStore}
   class="section"
+  class:soleSelected={$soleSelectedStore}
   class:highlight={$selectedStore}
   class:sectionPlaying={$playingStore}
   class:underline={$displayTextStore.length === 0}
