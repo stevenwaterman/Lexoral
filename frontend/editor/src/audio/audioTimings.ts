@@ -26,9 +26,9 @@ function getSelectionTimingsContext(): { start: number, end: number } | null {
 }
 
 function getSelectionTimingsOnward(): { start: number, end: number } | null {
-  const startSectionIdx = earlySelectionIdx;
-  const endSectionIdx = getMaxSectionIdx();
-  return getSelectionTimingsLiteral(startSectionIdx, endSectionIdx);
+  if (earlySelectionIdx === undefined) return null;
+  const start = getSectionStore(earlySelectionIdx).startTime as number;
+  return { start, end: Number.MAX_SAFE_INTEGER };
 }
 
 function getSelectionTimingsLiteral(
