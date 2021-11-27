@@ -40,6 +40,7 @@
     display: inline;
     white-space: pre;
     outline: none;
+    cursor: text;
 
     padding-left: 0.12em;
     padding-right: 0.12em;
