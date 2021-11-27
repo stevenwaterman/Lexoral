@@ -43,6 +43,7 @@ function getMetadata(sourceFileUrl: string): Promise<{
 
         const duration = data.format.duration;
         if (duration === undefined) return reject("Duration not found: " + JSON.stringify(data));
+        const roundedDuration = Math.max(1, Math.floor(duration));
 
         const stream = data.streams.find(stream => stream.codec_type === "audio");
         if (stream === undefined) return reject("Stream not found: " + JSON.stringify(data));
@@ -54,7 +55,7 @@ function getMetadata(sourceFileUrl: string): Promise<{
         if (channels === undefined) return reject("Channels not found: " + JSON.stringify(data));
 
 
-        resolve({ format, sampleRate, channels, duration });
+        resolve({ format, sampleRate, channels, duration: roundedDuration });
       });
   });
 }
