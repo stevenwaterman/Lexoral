@@ -32,7 +32,7 @@ async function handleRequest(req: Request, res: Response) {
 }
 
 async function transcodePlayback(sourceFileUrl: string, destFile: File): Promise<void> {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     ffmpeg(sourceFileUrl)
       .noVideo()
       .audioFilter("aresample=44100")
@@ -40,6 +40,7 @@ async function transcodePlayback(sourceFileUrl: string, destFile: File): Promise
       .format("mp3")
       .output(destFile.createWriteStream(), {end: true})
       .on("end", () => resolve())
+      .on("error", err => reject(err))
       .run()
   });
 }

@@ -80,6 +80,7 @@ jobs:
           - charge_credit
           - delete_transcript_files
           - fetch
+          - get_metadata
           - signup
           - transcode_envelope
           - transcode_transcription

@@ -11,8 +11,9 @@ const tryCatchStep: TryCatchStep = {
       { setStage: setTranscriptStage("processing") },
       { logWorkflow: logWorkflow("pre_transcribe") },
       { transcode_transcription: callSub.cloudFunction("transcode_transcription") },
-      { playback: callSub.cloudFunction("transcode_playback") },
+      { get_metadata: callSub.cloudFunction("get_metadata") },
       { charge: callSub.cloudFunction("charge_credit") },
+      { playback: callSub.cloudFunction("transcode_playback") },
       { envelope: callSub.cloudFunction("transcode_envelope") },
       { transcribe: callSub.cloudFunction("transcribe") },
       { success: {

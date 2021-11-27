@@ -144,6 +144,15 @@ module "transcode_playback" {
   timeout = 540
 }
 
+module "get_metadata" {
+  source = "../httpFunction"
+  name = "get_metadata"
+  bucket = google_storage_bucket.functions_code.name
+  project_id = data.google_project.project.project_id
+  memory = 1024
+  timeout = 540
+}
+
 module "charge_credit" {
   source = "../httpFunction"
   name = "charge_credit"

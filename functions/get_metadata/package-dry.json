@@ -1,0 +1,14 @@
+{
+  "name": "lexoral-get-metadata",
+  "dry": {
+    "extends": "../package-dry-http.json"
+  },
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "managed"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "managed",
+    "firebase-admin": "managed",
+    "fluent-ffmpeg": "managed"
+  }
+}
