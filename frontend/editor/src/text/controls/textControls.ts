@@ -48,10 +48,11 @@ export async function deleteForwards(event: SectionKeyboardEvent, section: Secti
   if (!anchorNode || !focusNode) return;
 
   if (anchorNode === focusNode) { // Selection is within one span
-    if (anchorOffset === 0 && focusOffset === 0) {
+    const textLength = anchorNode.textContent?.length ?? 0;
+    if (anchorOffset >= textLength && focusOffset >= textLength) {
       event.preventDefault();
-      section.startParagraphStore.set(false);
-      setTimeout(() => selectPrevSection(section.idx));
+      section.endParagraphStore.set(false);
+      setTimeout(() => selectNextSection(section.idx));
     } else {
       // Default behaviour, delete the text within a span
       return;
