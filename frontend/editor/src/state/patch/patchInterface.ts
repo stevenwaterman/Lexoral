@@ -125,13 +125,16 @@ async function commit() {
   const newValues: Pending | undefined = pendingPatch.getPending();
   const newPatch = createPatch(newValues);
 
-  // if (newPatch === undefined && lastCommonAncestor === lastCursor) {
-    // console.log("No changes, not committing", { lastCommonAncestor });
-  // } else {
-    // console.log("Committing changes: ", {  dbCursor, lastCommonAncestor, lastDbAncestor, lastCursor, newValues, newPatch })
-  // };
-
-  await writePatchToFirestore(lastCommonAncestor, lastDbAncestor, newPatch);
+  if (
+    lastCommonAncestor === lastCursor - 1 &&
+    newPatch !== undefined &&
+    dbListener.isPatchEqual(lastCursor, newPatch)
+  ) {
+    // Writing is a no-op
+    dbListener.resetCursor();
+  } else {
+    await writePatchToFirestore(lastCommonAncestor, lastDbAncestor, newPatch);
+  }
   pendingPatch.clear();
 }
 

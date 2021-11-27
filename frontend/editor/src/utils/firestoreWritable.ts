@@ -17,7 +17,7 @@ export type FirestoreWritableField<T, KEY extends keyof T> = Readable<T[KEY]> & 
 export async function firestoreWritable<T extends Record<string, any>>(
   document: DocumentReference<T>,
   initial: T,
-  debounceDelay: number = 1
+  debounceDelayMs: number = 1000
 ): Promise<FirestoreWritable<T>> {
   const dbStore = writable<T>(initial);
 
@@ -53,7 +53,7 @@ export async function firestoreWritable<T extends Record<string, any>>(
     pendingStore.update(oldState => ({...oldState, ...value}));
 
     if (timer !== undefined) clearTimeout(timer);
-    timer = setTimeout(sync, debounceDelay);
+    timer = setTimeout(sync, debounceDelayMs);
   }
 
   let current: T;

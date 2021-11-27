@@ -12,12 +12,26 @@
   let sectionStore: SectionStore;
   $: sectionStore = getSectionStore(idx);
 
-  $: ({selectedStore, soleSelectedStore, playingStore, displayTextStore, completionsStore, editedStore, confirmedStore} = sectionStore);
+  $: ({selectedStore, soleSelectedStore, playingStore, displayTextStore, completionsStore, editedStore, confirmedStore, userTextStore} = sectionStore);
 
   function select(event: MouseEvent) {
     if (event.buttons === 1) {
       dragStore.setFocus(idx);
     }
+  }
+
+  function contextMenu(event: MouseEvent) {
+    event.preventDefault();
+    console.log({
+      selected: $selectedStore,
+      soleSelected: $soleSelectedStore,
+      playing: $playingStore,
+      displayText: $displayTextStore,
+      completions: $completionsStore,
+      edited: $editedStore,
+      confirmed: $confirmedStore,
+      userText: $userTextStore
+    });
   }
 </script>
 
@@ -79,6 +93,7 @@
   data-sectionIdx={idx}
   on:keydown={event => handleSectionKeydown(event, sectionStore)}
   on:keyup={event => handleSectionKeyUp(event, sectionStore)}
+  on:contextmenu={contextMenu}
   on:mousemove={select}
   on:mouseup={select}
 />

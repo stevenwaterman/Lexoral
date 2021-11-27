@@ -61,6 +61,14 @@ export class DbListener {
     };
   }
 
+  isPatchEqual(cursor: number, newPatch: Patch): boolean {
+    const currentPatch = this.patchHistory[cursor];
+    // TODO this is slow
+    const currentPatchStr = JSON.stringify(currentPatch);
+    const newPatchStr = JSON.stringify(newPatch);
+    return currentPatchStr === newPatchStr;
+  }
+
   private getSectionPatchStoreInternal(idx: number): Writable<SectionCollapsedPatch> {
     let current = this.sectionPatchStores[idx];
     if (!current) {
@@ -76,7 +84,12 @@ export class DbListener {
     }
   }
 
+  resetCursor() {
+    this.setCursor(this.firebaseCursor);
+  }
+
   private setCursor(newCursor: number) {
+    // console.log("Setting cursor to ", newCursor);
     if (isNaN(newCursor)) throw new Error("New cursor is NaN");
     if (newCursor === this.cursor) return;
     if (newCursor > this.cursor) this.applyPatches(this.cursor + 1, newCursor);

@@ -49,7 +49,7 @@ class SectionStoreBuilderOne {
   public readonly playingStore: Writable<boolean> = writable(false);
   public readonly editedStore: Readable<boolean>;
 
-  protected readonly userTextStore: Readable<string | null>;
+  public readonly userTextStore: Readable<string | null>;
   protected readonly userEndParagraphStore: Readable<boolean | null>;
   public readonly confirmedStore: Writable<boolean>;
 
