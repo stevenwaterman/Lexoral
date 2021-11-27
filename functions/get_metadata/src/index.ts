@@ -35,7 +35,7 @@ async function handleRequest(req: Request, res: Response) {
     sampleRate,
     channels
   }
-  await transcript.doc.set({ audio: metadata }, { merge: true });
+  await transcript.doc.set({ audio: transcriptAudio }, { merge: true });
 
   res.sendStatus(201);  
 }
