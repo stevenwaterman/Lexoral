@@ -1,5 +1,5 @@
 import ffmpeg from "fluent-ffmpeg";
-import { File, Storage } from "@google-cloud/storage";
+import { Storage } from "@google-cloud/storage";
 import { Request, Response } from "express";
 import admin from "firebase-admin";
 import utils from "lexoral-utils";
@@ -21,39 +21,28 @@ async function handleRequest(req: Request, res: Response) {
   });
   if (!sourceFileUrl) return;
 
-  const ffMetaPromise = getMetadata(sourceFileUrl);
-
-  const [ metadata ] = await sourceFile.getMetadata();
-  const size: number = metadata.size;
-  console.log(size);
-  // const samples = size / bytesPerSecond;
-  // const roundedDuration = Math.ceil(duration);
-
-  const { format, sampleRate, channels } = await ffMetaPromise;
-  const transcriptAudio = {
-    format,
-    sampleRate,
-    channels
-  }
-  await transcript.doc.set({ audio: transcriptAudio }, { merge: true });
+  const metadata = await getMetadata(sourceFileUrl);
+  await transcript.doc.set({ audio: metadata }, { merge: true });
 
   res.sendStatus(201);  
 }
 
 function getMetadata(sourceFileUrl: string): Promise<{
-  format: string,
-  sampleRate: number,
-  channels: number
+  format: string;
+  sampleRate: number;
+  channels: number;
+  duration: number;
 }> {
   return new Promise((resolve, reject) => {
     ffmpeg(sourceFileUrl)
       .ffprobe((err, data) => {
         if (err) return reject("FFProbe error: " + err);
 
-        console.log(data);
-
         const format = data.format.format_name;
         if (format === undefined) return reject("Format not found: " + JSON.stringify(data));
+
+        const duration = data.format.duration;
+        if (duration === undefined) return reject("Duration not found: " + JSON.stringify(data));
 
         const stream = data.streams.find(stream => stream.codec_type === "audio");
         if (stream === undefined) return reject("Stream not found: " + JSON.stringify(data));
@@ -64,7 +53,8 @@ function getMetadata(sourceFileUrl: string): Promise<{
         const channels = stream.channels;
         if (channels === undefined) return reject("Channels not found: " + JSON.stringify(data));
 
-        resolve({ format, sampleRate, channels });
+
+        resolve({ format, sampleRate, channels, duration });
       });
   });
 }

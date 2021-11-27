@@ -33,7 +33,7 @@
   $: normalisedDuration = isNaN(duration ?? 0) ? 0 : duration ?? 0;
 
   let roundedDuration: number;
-  $: roundedDuration = Math.round(normalisedDuration);
+  $: roundedDuration = Math.max(1, Math.floor(normalisedDuration));
 
   let remainingCredit: number;
   $: remainingCredit = (credit ?? 0) - roundedDuration;
