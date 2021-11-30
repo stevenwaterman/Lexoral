@@ -86,7 +86,8 @@ function align(alternatives: Alternative[]): Record<number, string> {
   }
 
   const defaultAligner = NWaligner({
-    similarityScoreFunction: (char1: string, char2: string) => (char1.toLowerCase() === char2.toLowerCase() ? 1 : -2)
+    similarityScoreFunction: (char1: string, char2: string) => (char1.toLowerCase() === char2.toLowerCase() ? 1 : -2),
+    gapSymbol: "☐"
   });
 
   let alignments: Array<{
@@ -217,7 +218,7 @@ function breakSequences(alignedSequences: Record<number, string>, alternatives: 
 function plusGaps(str: string, gaps: number[]): string {
   const output: string[] = str.split("")
   gaps.forEach(gapIdx => {
-    output.splice(gapIdx, 0, "-")
+    output.splice(gapIdx, 0, "☐")
   })
   return output.join("")
 }
