@@ -250,7 +250,7 @@ function breakSequence(str: string, breaks: number[]): string[] {
   }
   broken.push(str.slice(start))
 
-  return broken.map(str => str.replace(/-/g, "").trim()).filter(str => str.length);
+  return broken.map(str => str.replace(/☐/g, "").trim()).filter(str => str.length);
 }
 
 function timeSequences(allOptions: string[][], words: Word[]): TimedAlternative[] {
