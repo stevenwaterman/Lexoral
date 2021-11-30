@@ -10,7 +10,7 @@ export function exportTranscript(type: "txt" | "srt") {
   const sections = entries.map(entry => entry[1]);
   const output = type === "txt" ? exportTranscriptPlainText(sections) : exportTranscriptSubtitles(sections);
   const blob = new Blob([output], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, "lexoralExport.txt");
+  saveAs(blob, "lexoralExport." + type);
 }
 
 export function exportTranscriptPlainText(sections: SectionStore[]): string {
