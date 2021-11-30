@@ -14,13 +14,23 @@ export function exportTranscript(type: "txt" | "srt") {
 }
 
 export function exportTranscriptPlainText(sections: SectionStore[]): string {
-  return sections.map(sectionToPlainText).reduce((acc, elem) => acc + elem, "");
-}
+  let text = "";
 
-function sectionToPlainText({ displayTextStore, endParagraphStore }: SectionStore): string {
-  const displayText = get_store_value(displayTextStore);
-  const endsParagraph = get_store_value(endParagraphStore);
-  return `${displayText}${endsParagraph ? "\n" : " "}`;
+  for (const { displayTextStore, endParagraphStore } of sections) {
+    const displayText = get_store_value(displayTextStore);
+    if (displayText.trim().length === 0) continue;
+
+    text += displayText;
+
+    const endsParagraph = get_store_value(endParagraphStore);
+    if (endsParagraph) {
+      text += "\n";
+    } else {
+      text += " ";
+    }
+  }
+
+  return text;
 }
 
 type Subtitle = {
@@ -36,12 +46,15 @@ export function exportTranscriptSubtitles(sections: SectionStore[]): string {
   const subtitles: Subtitle[] = [];
 
   for (const { startTimeStore, endTimeStore, displayTextStore, endParagraphStore } of sections) {
+    const displayText = get_store_value(displayTextStore);
+    if (displayText.trim().length === 0) continue;
+
     if (startTime === undefined) {
       startTime = get_store_value(startTimeStore);
     }
 
     text += " "
-    text += get_store_value(displayTextStore);
+    text += displayText;
 
     if (get_store_value(endParagraphStore)) {
       subtitles.push({
