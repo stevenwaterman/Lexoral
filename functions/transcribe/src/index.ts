@@ -25,7 +25,11 @@ async function handleRequest(req: Request, res: Response) {
     enableAutomaticPunctuation: true,
     enableWordTimeOffsets: true,
     useEnhanced: true,
-    model: "video"
+    model: "video",
+
+    speechContexts: [
+      {phrases: ["lexoral"]}
+    ]
   };
 
   await speechClient.longRunningRecognize({ 
