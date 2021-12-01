@@ -1,6 +1,6 @@
 ![Lexoral Logo](/frontend/public/assets/card.png)
 
-# The world's best transcription tool, now in closed beta!
+# Join the closed beta!
 
 - Are you a student or academic with data to transcribe?
 - We are making Lexoral - a faster, safer, better transcription tool
