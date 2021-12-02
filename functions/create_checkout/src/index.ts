@@ -5,8 +5,19 @@ import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
 
 import { Request, Response } from "express";
 
-const stdPriceId = "price_1K2HEIHSxtW9M3UjENFj0EQZ";
-const bulkPriceId = "price_1K2HEIHSxtW9M3UjY3hJW7CW";
+const stage_stdPriceId = "price_1K2HEIHSxtW9M3UjENFj0EQZ";
+const stage_bulkPriceId = "price_1K2HEIHSxtW9M3UjY3hJW7CW";
+
+const prod_stdPriceId = "price_1K2HF8HSxtW9M3Uj8knLtt6N";
+const prod_bulkPriceId = "price_1K2HF8HSxtW9M3UjwjiPZZmA";
+
+const prod = process.env["PROJECT_ID"] === "lexoral-prod";
+
+const stdPriceId = prod ? prod_stdPriceId : stage_stdPriceId;
+const bulkPriceId = prod ? prod_bulkPriceId : stage_bulkPriceId;
+
+const postCheckoutUrl: string = prod ? "https://lexoral.com/dashboard" : "http://localhost:5000/dashboard";
+
 const bulkMins = 60 * 10;
 
 async function handleRequest(req: Request, res: Response): Promise<void> {
@@ -31,8 +42,8 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
     mode: "payment",
     client_reference_id: user.uid,
     customer_email: user.email,
-    cancel_url: "https://lexoral.com/dashboard",
-    success_url: "https://lexoral.com/dashboard"
+    cancel_url: postCheckoutUrl,
+    success_url: postCheckoutUrl
   });
 
   const redirectUrl = session.url;

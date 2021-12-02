@@ -68,4 +68,4 @@ if (!webhookSecret) throw new Error("Could not access secret named `stripe_webho
 
 
 const stripeClient = new StripeClient(apiSecret, { apiVersion: "2020-08-27" });
-export const run = utils.http.unparsedPost(handleRequest);
+export const run = utils.http.webhook(handleRequest);
