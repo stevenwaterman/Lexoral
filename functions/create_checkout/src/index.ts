@@ -14,13 +14,13 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
 
   const minsStr = req.body["mins"];
   if (!minsStr) {
-    res.status(401).send("POST request is missing required body parameter `mins`");
+    res.status(400).send("POST request is missing required body parameter `mins`");
     return;
   }
 
   const mins = parseInt(minsStr);
   if (mins <= 5) {
-    res.status(401).send("Minimum amount is 5 minutes");
+    res.status(400).send("Minimum amount is 5 minutes");
     return;
   }
 
