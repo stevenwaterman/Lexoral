@@ -45,11 +45,9 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
 }
 
 
-const secretClient = new SecretManagerServiceClient({
-  projectId: process.env["PROJECT_ID"]
-});
+const secretClient = new SecretManagerServiceClient();
 const [accessResponse] = await secretClient.accessSecretVersion({
-  name: "stripe"
+  name: `projects/${process.env["PROJECT_ID"]}/secrets/stripe/versions/latest`
 });
 const apiSecret = accessResponse.payload?.data?.toString();
 if (!apiSecret) throw new Error("Could not access secret named `stripe`");
