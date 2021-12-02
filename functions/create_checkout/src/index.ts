@@ -1,3 +1,4 @@
+import admin from "firebase-admin";
 import StripeClient from "stripe";
 import utils from "lexoral-utils";
 import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
@@ -44,6 +45,7 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
   res.status(200).send(redirectUrl);
 }
 
+const app = admin.initializeApp();
 
 const secretClient = new SecretManagerServiceClient();
 const [accessResponse] = await secretClient.accessSecretVersion({

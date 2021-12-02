@@ -42,7 +42,7 @@ export async function uploadFile(file: File, name: string) {
 export async function addCredit(mins: number) {
   return assertUser().getIdToken()
     .then(idToken =>
-      fetch(`https://europe-west2-${process.env["PROJECT_ID"]}.cloudfunctions.net/create-checkout`, {
+      fetch(`https://europe-west2-${process.env["PROJECT_ID"]}.cloudfunctions.net/create_checkout`, {
         method: "post",
         headers: {
           "Authorization": `Bearer ${idToken}`,

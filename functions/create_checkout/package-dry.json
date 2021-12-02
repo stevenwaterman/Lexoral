@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "stripe": "managed",
-    "@google-cloud/secret-manager": "managed"
+    "@google-cloud/secret-manager": "managed",
+    "firebase-admin": "managed"
   }
 }
