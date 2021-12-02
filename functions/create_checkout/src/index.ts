@@ -41,11 +41,13 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  res.redirect(303, redirectUrl);
+  res.status(200).send(redirectUrl);
 }
 
 
-const secretClient = new SecretManagerServiceClient();
+const secretClient = new SecretManagerServiceClient({
+  projectId: process.env["PROJECT_ID"]
+});
 const [accessResponse] = await secretClient.accessSecretVersion({
   name: "stripe"
 });

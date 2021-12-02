@@ -22,7 +22,8 @@ export async function uploadFile(file: File, name: string) {
           name: name
         })
       })
-    ).then(async res => {
+    )
+    .then(async res => {
       if (res.ok) return res;
       const text = await res.text();
       throw new Error("Request was rejected: " + text);
@@ -34,5 +35,26 @@ export async function uploadFile(file: File, name: string) {
         "Content-Type": "application/octet-stream"
       },
       body: file
-    }))
+    }));
+}
+
+
+export async function addCredit(mins: number) {
+  return assertUser().getIdToken()
+    .then(idToken =>
+      fetch(`https://europe-west2-${process.env["PROJECT_ID"]}.cloudfunctions.net/create-checkout`, {
+        method: "post",
+        headers: {
+          "Authorization": `Bearer ${idToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ mins })
+      }))
+      .then(async res => {
+        if (res.ok) return res;
+        const text = await res.text();
+        throw new Error("Request was rejected: " + text);
+      })
+      .then(res => res.text())
+      .then(url => {window.location.href = url});
 }
