@@ -6,7 +6,7 @@ import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
 import { Request, Response } from "express";
 
 async function handleRequest(req: Request, res: Response): Promise<void> {
-  const payload = req.body;
+  const payload = (req as any).rawBody;
   
   const signature = req.header("stripe-signature");
   if (!signature) {
@@ -68,4 +68,4 @@ if (!webhookSecret) throw new Error("Could not access secret named `stripe_webho
 
 
 const stripeClient = new StripeClient(apiSecret, { apiVersion: "2020-08-27" });
-export const run = utils.http.webhook(handleRequest);
+export const run = utils.http.post(handleRequest);

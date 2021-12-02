@@ -1,7 +1,6 @@
 import { Express } from "express";
 import corsFactory from "cors";
 import express, { json, Request, Response } from "express";
-import bodyParser from "body-parser";
 
 type Handler = (req: Request, res: Response) => Promise<void>;
 
@@ -35,15 +34,6 @@ export function get(handler: Handler): Express {
 export function post(handler: Handler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
-  app.options("*", cors);
-  app.post("*", wrap(handler));
-  return app;
-}
-
-export function webhook(handler: Handler): Express {
-  const cors = corsFactory({ origin: true });
-  const rawParser = bodyParser.raw({ type: "application/json" });
-  const app = express().use(cors).use(rawParser);
   app.options("*", cors);
   app.post("*", wrap(handler));
   return app;
