@@ -229,6 +229,7 @@ module "create_checkout" {
   name = "create_checkout"
   bucket = google_storage_bucket.functions_code.name
   project_id = data.google_project.project.project_id
+  public = true
 }
 
 

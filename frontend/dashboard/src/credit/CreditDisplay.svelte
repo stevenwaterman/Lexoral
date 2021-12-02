@@ -1,9 +1,8 @@
 <script lang="ts">
+  import { addCredit } from "../api";
   import { creditStore, toCreditString } from "./credit";
-
-  function startCheckout() {
-    
-  }
 </script>
 
-Credit: {toCreditString($creditStore)} <button on:click={startCheckout}>+</button>
+<span>
+  Credit: {toCreditString($creditStore)} <button on:click={() => addCredit(10)}>+</button>
+</span>
