@@ -1,0 +1,10 @@
+{
+  "name": "lexoral-create-checkout",
+  "dry": {
+    "extends": "../package-dry-http.json"
+  },
+  "dependencies": {
+    "stripe": "managed",
+    "@google-cloud/secret-manager": "managed"
+  }
+}

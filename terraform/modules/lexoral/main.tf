@@ -14,6 +14,11 @@ resource "google_project_iam_member" "app-engine-sa-signblobs" {
   member  = "serviceAccount:${data.google_app_engine_default_service_account.default.email}"
 }
 
+resource "google_project_iam_member" "app-engine-sa-secretAccessor" {
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${data.google_app_engine_default_service_account.default.email}"
+}
+
 resource "google_storage_bucket" "audio" {
   name = "${data.google_project.project.project_id}-raw-audio"
   storage_class = "REGIONAL"
@@ -217,6 +222,13 @@ module "delete_transcript_files" {
   project_id = data.google_project.project.project_id
   watch = "users/{userId}/transcripts/{transcriptId}"
   event_type = "delete"
+}
+
+module "create_checkout" {
+  source = "../httpFunction"
+  name = "create_checkout"
+  bucket = google_storage_bucket.functions_code.name
+  project_id = data.google_project.project.project_id
 }
 
 

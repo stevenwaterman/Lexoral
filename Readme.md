@@ -1,8 +1,9 @@
 ![Lexoral Logo](/frontend/public/assets/card.png)
 
+# Now in closed beta
+
 ## The Transcription Tool You Wish Existed.
 
-### Take the pain out of research by working with AI.
 
 [Read more](https://lexoral.com)
 

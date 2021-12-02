@@ -78,6 +78,7 @@ jobs:
           - align
           - align_worker
           - charge_credit
+          - create_checkout
           - delete_transcript_files
           - fetch
           - get_metadata

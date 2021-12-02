@@ -40,6 +40,10 @@ resource "google_project_service" "iamcredentials_api" {
   service            = "iamcredentials.googleapis.com"
 }
 
+resource "google_project_service" "secretmanager_api" {
+  service            = "secretmanager.googleapis.com"
+}
+
 resource "google_storage_bucket" "remote_state" {
   name = "${data.google_project.project.project_id}-tf-state"
   storage_class = "REGIONAL"
