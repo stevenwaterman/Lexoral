@@ -39,6 +39,14 @@ export function post(handler: Handler): Express {
   return app;
 }
 
+export function unparsedPost(handler: Handler): Express {
+  const cors = corsFactory({ origin: true });
+  const app = express().use(cors);
+  app.options("*", cors);
+  app.post("*", wrap(handler));
+  return app;
+}
+
 export function put(handler: Handler): Express {
   const cors = corsFactory({ origin: true });
   const app = express().use(cors).use(json());
