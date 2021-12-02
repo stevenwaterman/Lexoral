@@ -82,6 +82,7 @@ jobs:
           - delete_transcript_files
           - fetch
           - get_metadata
+          - payment
           - signup
           - transcode_envelope
           - transcode_transcription

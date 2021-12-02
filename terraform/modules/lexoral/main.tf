@@ -232,6 +232,13 @@ module "create_checkout" {
   public = true
 }
 
+module "payment" {
+  source = "../httpFunction"
+  name = "payment"
+  bucket = google_storage_bucket.functions_code.name
+  project_id = data.google_project.project.project_id
+  public = true
+}
 
 
 resource "google_workflows_workflow" "pre_transcribe_workflow" {
