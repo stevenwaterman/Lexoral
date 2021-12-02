@@ -23,7 +23,7 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
   }
 
   const session = event.data.object as StripeClient.Checkout.Session;
-  const customer = session.customer;
+  const customer = session.client_reference_id;
   if (customer === null) {
     res.status(400).send("Customer is null");
     return;
