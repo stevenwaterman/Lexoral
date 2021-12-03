@@ -43,8 +43,8 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
     mode: "payment",
     client_reference_id: user.uid,
     customer_email: user.email,
-    cancel_url: successUrl,
-    success_url: failedUrl
+    cancel_url: failedUrl,
+    success_url: successUrl
   });
 
   const redirectUrl = session.url;

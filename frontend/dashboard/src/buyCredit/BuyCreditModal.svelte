@@ -106,7 +106,7 @@
   }
 
   input {
-    width: 3em;
+    width: 4em;
   }
 </style>
 

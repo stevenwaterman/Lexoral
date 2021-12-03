@@ -22,10 +22,7 @@
     persistence: browserLocalPersistence
   });
 
-  auth.onAuthStateChanged(user => {
-    console.log("User state changed", user, auth)
-    userStore.set(user)
-  });
+  auth.onAuthStateChanged(user => userStore.set(user));
 </script>
 
 <style>

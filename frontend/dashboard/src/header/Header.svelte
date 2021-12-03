@@ -30,7 +30,7 @@ import { userStore } from "../auth/user";
 </style>
 
 <nav>
-  <a href="/" class="logo">
+  <a href="/dashboard" class="logo">
     <img class="logo" src="/assets/smallBrand.svg" alt="logo"/>
   </a>
   
