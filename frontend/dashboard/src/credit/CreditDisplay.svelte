@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { addCredit } from "../api";
+  import BuyCreditButton from "../buyCredit/BuyCreditButton.svelte";
   import { creditStore, toCreditString } from "./credit";
 </script>
 
 <span>
-  Credit: {toCreditString($creditStore)} <button on:click={() => addCredit(10)}>+</button>
+  Credit: {toCreditString($creditStore)} <BuyCreditButton/>
 </span>
