@@ -4,6 +4,8 @@
   import Login from "./auth/Login.svelte";
   import Signup from "./auth/Signup.svelte";
   import Verify from "./auth/Verify.svelte";
+  import PaymentSuccess from "./buyCredit/PaymentSuccess.svelte";
+  import PaymentFailed from "./buyCredit/PaymentFailed.svelte";
   import Modal from "svelte-simple-modal"
   import { userStore } from "./auth/user";
   import Header from "./header/Header.svelte";
@@ -53,6 +55,12 @@
         </Route>
         <Route path="/auth/verify">
           <Verify/>
+        </Route>
+        <Route path="/payment/success">
+          <PaymentSuccess/>
+        </Route>
+        <Route path="/payment/failed">
+          <PaymentFailed/>
         </Route>
       </Router>
     </div>

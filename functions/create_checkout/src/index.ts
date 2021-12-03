@@ -16,7 +16,8 @@ const prod = process.env["PROJECT_ID"] === "lexoral-prod";
 const stdPriceId = prod ? prod_stdPriceId : stage_stdPriceId;
 const bulkPriceId = prod ? prod_bulkPriceId : stage_bulkPriceId;
 
-const postCheckoutUrl: string = prod ? "https://lexoral.com/dashboard" : "http://localhost:5000/dashboard";
+const successUrl: string = prod ? "https://lexoral.com/dashboard/payment/success" : "http://localhost:5000/dashboard/payment/success";
+const failedUrl: string = prod ? "https://lexoral.com/dashboard/payment/failed" : "http://localhost:5000/dashboard/payment/failed";
 
 const bulkMins = 60 * 10;
 
@@ -42,8 +43,8 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
     mode: "payment",
     client_reference_id: user.uid,
     customer_email: user.email,
-    cancel_url: postCheckoutUrl,
-    success_url: postCheckoutUrl
+    cancel_url: successUrl,
+    success_url: failedUrl
   });
 
   const redirectUrl = session.url;

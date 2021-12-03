@@ -35,15 +35,11 @@
   let totalMinutes: number;
   $: totalMinutes = shouldBuyBulk ? bulkQuantity : subtotalMinutes;
 
-  let illegalQuantity: boolean;
-  $: illegalQuantity = totalMinutes < 5 || totalMinutes >= 100 * 60;
-
   async function submit() {
     if (processing) return;
 
     processing = true;
     await addCredit(totalMinutes);
-    processing = false;
   }
 </script>
 
