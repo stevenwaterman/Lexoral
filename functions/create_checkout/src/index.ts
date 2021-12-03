@@ -31,7 +31,7 @@ async function handleRequest(req: Request, res: Response): Promise<void> {
   }
 
   const mins = parseInt(minsStr);
-  if (mins <= 5) {
+  if (mins < 5) {
     res.status(400).send("Minimum amount is 5 minutes");
     return;
   }
