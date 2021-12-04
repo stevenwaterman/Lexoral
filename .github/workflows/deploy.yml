@@ -172,6 +172,10 @@ jobs:
         path: editor
     - uses: actions/download-artifact@v2
       with:
+        name: demo-stage
+        path: demo
+    - uses: actions/download-artifact@v2
+      with:
         name: dashboard-stage
         path: dashboard
     - run: |
@@ -276,6 +280,10 @@ jobs:
       with:
         name: editor-prod
         path: editor
+    - uses: actions/download-artifact@v2
+      with:
+        name: demo-prod
+        path: demo
     - uses: actions/download-artifact@v2
       with:
         name: dashboard-prod

@@ -4,6 +4,7 @@ export function isDemo(): boolean {
 
 let isEmbedded: boolean | undefined = undefined;
 export function isEmbeddedDemo(): boolean {
+  debugger;
   if (isEmbedded !== undefined) return isEmbedded;
 
   if (!isDemo) {
