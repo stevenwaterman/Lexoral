@@ -2,10 +2,9 @@
   import ToastController from "../display/toast/ToastController.svelte";
   import Header from "../display/Header.svelte";
 
-  import Document from "../text/Document.svelte";
-  import Dropdown from "./dropdown/DropdownFilter.svelte";
   import Scroller from "./Scroller.svelte";
   import Options from "../options/Options.svelte";
+  import { isEmbeddedDemo } from "../demo";
 </script>
 
 <style>
@@ -34,16 +33,18 @@
   }
 </style>
 
-<div class="grid">
-  <Header/>
+{#if isEmbeddedDemo()}
+  <Scroller/>
+{:else}
+  <div class="grid">
+    <Header/>
 
-  <div class="mainSection">
-    <Scroller let:wrapper>
-      <Dropdown/>
-      <Document wrapper={wrapper}/>
-    </Scroller>
-    <ToastController/>
+    <div class="mainSection">
+      <Scroller/>
+      <ToastController/>
+    </div>
+
+    <Options/>
   </div>
+{/if}
 
-  <Options/>
-</div>

@@ -1,10 +1,7 @@
 import type { User } from "firebase/auth";
 import { Writable, writable } from "svelte/store";
+import { isDemo } from "./demo";
 import type { TranscriptEntry } from "./state/initialiseState";
-
-export function isDemo(): boolean {
-  return process.env["DEMO"] === "true";
-}
 
 let user: User | undefined = undefined;
 export const userStore: Writable<User | undefined> = writable(user);

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { initializeApp } from "firebase/app";
   import { browserLocalPersistence, initializeAuth } from "firebase/auth";
-  import { isDemo } from "./api";
+  import { isDemo } from "./demo";
   import Editor from "./input/Editor.svelte";
   import Loading from "./Loading.svelte";
   import { userStore } from "./api";

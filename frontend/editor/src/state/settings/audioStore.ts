@@ -17,7 +17,7 @@ const initial: AudioState = {
   loop: false,
   volume: 100,
   rate: 100,
-  mode: "context",
+  mode: "onward",
   autoPlay: true
 }
 

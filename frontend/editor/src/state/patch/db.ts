@@ -1,5 +1,5 @@
 import { getFirestore, Firestore, disableNetwork } from "firebase/firestore";
-import { isDemo } from "../../api";
+import { isDemo } from "../../demo";
 
 let db: Firestore | undefined = undefined;
 

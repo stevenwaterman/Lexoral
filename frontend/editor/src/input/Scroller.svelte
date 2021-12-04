@@ -3,6 +3,9 @@
   import type { DisplayState } from "../state/settings/displayStore";
   import type { FirestoreWritableField } from "../utils/firestoreWritable";
 
+  import Document from "../text/Document.svelte";
+  import Dropdown from "./dropdown/DropdownFilter.svelte";
+
   let wrapper: HTMLDivElement;
 
   let fontSizeStore: FirestoreWritableField<DisplayState, "fontSize">;
@@ -41,5 +44,8 @@
   on:dragstart|preventDefault
   on:cut|preventDefault
   on:paste|preventDefault>
-  <slot wrapper={wrapper} />
+
+  <Dropdown/>
+  <Document wrapper={wrapper}/>
+
 </div>
