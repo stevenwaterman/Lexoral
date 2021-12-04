@@ -1,3 +1,4 @@
+import type { transcode } from "buffer";
 import { fetchTranscript } from "../api";
 import { initAudio } from "../audio/audioPlayer";
 import { initAudioCurrentlyPlaying } from "../audio/audioStatus";
@@ -30,7 +31,9 @@ export async function initAll() {
         .then(([{ audioUrl }]) => initAudio(audioUrl))
     );
 
-    const sections = register(fetch.then(({ transcript }) => initSectionStores(transcript)));
+    const sectionPreReqs = Promise.all([fetch, words]).then(([{ transcript }]) => transcript);
+    const sections = register(sectionPreReqs.then(transcript => initSectionStores(transcript)));
+    
     const currentlyPlaying = register(sections.then(sectionStores => initAudioCurrentlyPlaying(sectionStores)));
   })
 }

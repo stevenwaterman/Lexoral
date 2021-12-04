@@ -1,6 +1,7 @@
 <script lang="ts">
   import { initializeApp } from "firebase/app";
   import { browserLocalPersistence, initializeAuth } from "firebase/auth";
+  import { isDemo } from "./api";
   import Editor from "./input/Editor.svelte";
   import Loading from "./Loading.svelte";
   import { userStore } from "./api";
@@ -13,15 +14,17 @@
     projectId: process.env["PROJECT_ID"]
   });
 
-  const auth = initializeAuth(app, {
-    persistence: browserLocalPersistence
-  });
+  if (!isDemo()) {
+    const auth = initializeAuth(app, {
+      persistence: browserLocalPersistence
+    });
 
-  auth.onAuthStateChanged(user => {
-    if (user === null) location.pathname = "/dashboard/auth/login/";
-    else if (user.emailVerified === false) location.pathname = "/dashboard/auth/verify/";
-    else userStore.set(user);
-  });
+    auth.onAuthStateChanged(user => {
+      if (user === null) location.pathname = "/dashboard/auth/login/";
+      else if (user.emailVerified === false) location.pathname = "/dashboard/auth/verify/";
+      else userStore.set(user);
+    });
+  }
 </script>
 
 <style>
@@ -35,13 +38,7 @@
 
 <svelte:body tabindex={-1} on:mouseup={() => dragStore.clear()}/>
 
-{#if $userStore === undefined}
-  <Loading text="Logging in..."/>
-{:else if $userStore === null}
-  <span class="loading">
-    Login failed...
-  </span>
-{:else}
+{#if isDemo() || $userStore}
   {#await initAll()}
     <Loading text="Loading Transcript..."/>
   {:then}
@@ -51,4 +48,8 @@
       Error: {err}
     </span>
   {/await}
+{:else if $userStore === undefined}
+  <Loading text="Logging in..."/>
+{:else if $userStore === null}
+  <span class="loading">Login failed...</span>
 {/if}

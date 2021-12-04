@@ -15,13 +15,16 @@ const firebaseApiKeys = {
 const branch = process.env.BRANCH;
 const production = branch === "prod";
 
+const demo = process.env.DEMO === "true";
+const output = demo ? '../public/demo/build/bundle.js' : '../public/editor/build/bundle.js';
+
 export default {
 	input: 'src/main.ts',
 	output: {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: '../public/editor/build/bundle.js'
+		file: output
 	},
 	plugins: [
 		svelte({
@@ -53,6 +56,7 @@ export default {
     injectProcessEnv({
       PROJECT_ID: `lexoral-${branch ?? "stage"}`,
       FIREBASE_API_KEY: firebaseApiKeys[branch ?? "stage"],
+      DEMO: demo ? "true" : "false"
     }),
 
 		// If we're building for production (npm run build

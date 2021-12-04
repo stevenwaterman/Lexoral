@@ -1,5 +1,5 @@
 import { doc, DocumentReference } from "firebase/firestore";
-import { assertUser } from "../../api";
+import { getUserUid } from "../../api";
 import { initableFirestoreWritable } from "../../utils/firestoreWritable";
 import { getDb } from "../patch/db";
 
@@ -12,7 +12,7 @@ export type AudioState = {
   autoPlay: boolean;
 }
 
-const documentSupplier: () => DocumentReference<AudioState> = () => doc(getDb(), "users", assertUser().uid, "settings", "editorAudio") as DocumentReference<AudioState>;
+const documentSupplier: () => DocumentReference<AudioState> = () => doc(getDb(), "users", getUserUid(), "settings", "editorAudio") as DocumentReference<AudioState>;
 const initial: AudioState = {
   loop: false,
   volume: 100,

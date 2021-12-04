@@ -8,5 +8,8 @@ export async function resolveAllPromises(runner: Runner) {
     return promise;
   }
   await runner(register);
-  await Promise.all(promises);
+  await Promise.all(promises).catch(err => {
+    console.error(err);
+    return Promise.reject("Error during initialisation");
+  });
 }

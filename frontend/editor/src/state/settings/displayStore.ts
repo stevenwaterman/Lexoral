@@ -1,5 +1,5 @@
 import { doc, DocumentReference } from "firebase/firestore";
-import { assertUser } from "../../api";
+import { getUserUid } from "../../api";
 import { initableFirestoreWritable } from "../../utils/firestoreWritable";
 import { getDb } from "../patch/db";
 
@@ -8,7 +8,7 @@ export type DisplayState = {
   pageWidth: number;
 }
 
-const documentSupplier = () => doc(getDb(), "users", assertUser().uid, "settings", "editorDisplay") as DocumentReference<DisplayState>;
+const documentSupplier = () => doc(getDb(), "users", getUserUid(), "settings", "editorDisplay") as DocumentReference<DisplayState>;
 const initial: DisplayState = {
   fontSize: 12,
   pageWidth: 80

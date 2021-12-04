@@ -1,5 +1,5 @@
 import { Readable, writable, Writable } from "svelte/store";
-import { assertUser, getTranscriptId } from "../../api";
+import { getTranscriptId, getUserUid } from "../../api";
 import { getDb } from "./db";
 import { collection, query, onSnapshot, DocumentData, QuerySnapshot, DocumentChange } from "firebase/firestore";
 import { forIn, getAssertExists } from "../../utils/list";
@@ -176,7 +176,7 @@ export class DbListener {
    * Returns true if the transcript has no patches
    */
   init(): Promise<boolean> {
-    const patchCollection = collection(getDb(), "users", assertUser().uid, "transcripts", getTranscriptId(), "patches");
+    const patchCollection = collection(getDb(), "users", getUserUid(), "transcripts", getTranscriptId(), "patches");
     const q = query(patchCollection);
     return new Promise<boolean>(resolve => {
       onSnapshot(q, snapshot => {

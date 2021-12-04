@@ -5,8 +5,11 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "build-prod": "rollup -c --environment BRANCH:prod",
+    "build-prod-demo": "rollup -c --environment BRANCH:prod --environment DEMO:true",
     "build-stage": "rollup -c --environment BRANCH:stage",
+    "build-stage-demo": "rollup -c --environment BRANCH:stage --environment DEMO:true",
     "dev": "rollup -c -w --environment BRANCH:stage",
+    "dev-demo": "rollup -c -w --environment BRANCH:stage --environment DEMO:true",
     "validate": "svelte-check"
   },
   "devDependencies": {
