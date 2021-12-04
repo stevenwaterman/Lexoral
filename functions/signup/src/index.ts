@@ -31,7 +31,7 @@ export async function run(event: SignupEvent) {
       email: email,
       created: createdAt
     },
-    secondsCredit: 0
+    secondsCredit: 15 * 60
   }
 
   const path = `users/${event.uid}`;
