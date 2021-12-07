@@ -1,8 +1,10 @@
 {
-  "name": "landing",
-  "version": "0.0.1",
+  "name": "lexoral-frontend-landing",
+  "version": "1.0.0",
+  "author": "Steven Waterman",
+  "license": "GPL-3.0-only",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "svelte-kit dev -p 5000",
     "build": "svelte-kit build",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
@@ -14,7 +16,6 @@
   "devDependencies": {
     "@sveltejs/adapter-static": "next",
     "@sveltejs/kit": "next",
-    "@types/cookie": "^0.4.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
@@ -29,9 +30,5 @@
     "typescript": "^4.4.3"
   },
   "type": "module",
-  "dependencies": {
-    "@fontsource/fira-mono": "^4.5.0",
-    "@lukeed/uuid": "^2.0.0",
-    "cookie": "^0.4.1"
-  }
+  "dependencies": {}
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AnimatedGradient from "$lib/landing/AnimatedGradient.svelte";
 </script>
 
 <style>
@@ -8,9 +9,7 @@
 </style>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Lexoral</title>
 </svelte:head>
 
-<h1>
-  Welcome to your new<br />SvelteKit app
-</h1>
+<AnimatedGradient/>
