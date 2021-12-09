@@ -3,37 +3,36 @@
 </script>
 
 <style>
-  .outer {
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    height: 600px;
-    max-height: 80vh;
-    filter: blur(4px);
-    
-    contain: strict;
-  }
-
-  .gradient-container {
+  .contain {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+
+    height: calc(30vh + 20em);
+
+    contain: strict;
+
+    z-index: -1;
+  }
+
+  .clip {
+    width: 100%;
+    height: 100%;
 
     contain: strict;
 
     clip-path: polygon(
       -0.5px -0.5px,
       calc(100% + 0.5px) -0.5px,
-      calc(100% + 0.5px) calc(65% + 0.5px),
-      -0.5px calc(100% + 0.5px)
+      calc(100% + 0.5px) calc(100% + 0.5px),
+      65% 50%,
+      -0.5px calc(30% + 0.5px)
     );
   }
 
   .panX {
-    animation-duration: 60s;
+    animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-name: pan-x;
     animation-timing-function: ease-in-out;
@@ -45,7 +44,7 @@
   }
 
   .panY {
-    animation-duration: 60s;
+    animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-name: pan-y;
     animation-timing-function: ease-in-out;
@@ -128,14 +127,13 @@
   }
 </style>
 
-<div class="outer">
-
-  <div class="gradient-container">
+<div class="contain">
+  <div class="clip">
     <div class="panX">
       <div class="panY">
         <div class="gradient"/>
       </div>
     </div>
   </div>
-
 </div>
+
