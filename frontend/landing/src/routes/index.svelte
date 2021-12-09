@@ -2,13 +2,10 @@
   import AnimatedGradient from "$lib/landing/AnimatedGradient.svelte";
   import Hero from "$lib/landing/Title.svelte";
   import Demo from "$lib/landing/Demo.svelte";
+  import LinkButton from "$lib/LinkButton.svelte";
 </script>
 
 <style>
-	h1 {
-		width: 100%;
-	}
-
   .grid {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -29,6 +26,10 @@
 
     display: grid;
     grid-template-columns: auto 1fr auto;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--page-background);
   }
 
   .logo {
@@ -39,16 +40,16 @@
   .navList {
     list-style: none;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: center;
     align-items: center;
 
-    height: 100%;
-    margin: 0;
+    margin: auto;
+    gap: 3em;
+
     padding: 0;
 
-    color: var(--page-background);
     font-size: 1.2em;
     font-weight: 500;
   }
@@ -59,10 +60,11 @@
 </svelte:head>
 
 <AnimatedGradient/>
+
 <div class="grid">
   <nav>
     <a href="/">
-      <img class="logo" src="assets/smallBrand_white.svg"/>
+      <img class="logo" src="assets/smallBrand_white.svg" alt="The Lexoral logo"/>
     </a>
     <ul class="navList">
       <li>How it Works</li>
@@ -70,7 +72,7 @@
       <li>Company</li>
       <li>Pricing</li>
     </ul>
-    <a class="button" href="/">Sign in</a>
+    <LinkButton link="/dashboard">Sign in</LinkButton>
   </nav>
   <Hero/>
   <Demo/>
