@@ -1,0 +1,78 @@
+<script lang="ts">
+  export let label: string;
+  export let link: string;
+</script>
+
+<style>
+  .label {
+    position: relative;
+  }
+
+  .label:hover a {
+    color: white;
+  }
+
+  .label a {
+    color: var(--page-background);
+    text-decoration: none;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 2;
+
+    color: var(--text);
+
+    transform-origin: 50% 0;
+    transform: translateX(-50%) scale(0);
+
+    transition-property: transform;
+    transition-duration: 0.2s;
+
+    filter: drop-shadow(-0.1em 0.1em 0 var(--form-border));
+  }
+
+  .label:hover .menu {
+    transform: translateX(-50%) scale(100%);
+  }
+
+  .menu-arrow {
+    background-color: var(--page-background);
+    height: 2em;
+    width: 1.5em;
+    clip-path: polygon(
+      0% 50%,
+      0% 100%,
+      100% 100%,
+      100% 50%,
+      50% 0%
+    );
+  }
+
+  .menu-content {
+    margin-top: -1em;
+    padding: 1em;
+    padding-top: 0.75em;
+    border-radius: 1em;
+    background-color: var(--page-background);
+  }
+</style>
+
+<span class="label">
+  <a href={link}>{label}</a>
+  {#if $$slots.default}
+    <div class="menu">
+      <div class="menu-arrow"/>
+      <div class="menu-content">
+        <slot/>
+      </div>
+    </div>
+  {/if}
+</span>

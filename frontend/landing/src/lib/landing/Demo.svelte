@@ -64,7 +64,7 @@ import LinkButton from "$lib/LinkButton.svelte";
     color: var(--yellow-1);
     margin-top: -2em;
     padding: 1em;
-    background: radial-gradient(ellipse at center, var(--page-background) 20%, transparent 100%)
+    background: radial-gradient(ellipse at center, var(--page-background) 20%, transparent 70%)
   }
 
   @keyframes cursorPosition {

@@ -3,6 +3,7 @@
   import Hero from "$lib/landing/Title.svelte";
   import Demo from "$lib/landing/Demo.svelte";
   import LinkButton from "$lib/LinkButton.svelte";
+  import DropdownLabel from "$lib/DropdownLabel.svelte";
 </script>
 
 <style>
@@ -36,7 +37,7 @@
     height: 100%;
     max-height: 3em;
   }
-
+  
   .navList {
     list-style: none;
 
@@ -67,10 +68,41 @@
       <img class="logo" src="assets/smallBrand_white.svg" alt="The Lexoral logo"/>
     </a>
     <ul class="navList">
-      <li>How it Works</li>
-      <li>Use Cases</li>
-      <li>Company</li>
-      <li>Pricing</li>
+      <li>
+        <DropdownLabel label="How it Works" link="#how-it-works">
+          <li>
+            <ul>Get Started</ul>
+            <ul>Technical Overview</ul>
+            <ul>Why Lexoral</ul>
+          </li>
+        </DropdownLabel>
+      </li>
+
+      <li>
+        <DropdownLabel label="Use Cases" link="#use-cases">
+          <li>
+            <ul>Subtitles &amp; Captioning</ul>
+            <ul>Academics</ul>
+            <ul>User Research</ul>
+            <ul>Journalism</ul>
+          </li>
+        </DropdownLabel>
+      </li>
+
+      <li>
+        <DropdownLabel label="Community" link="#community">
+          <li>
+            <ul>About Us</ul>
+            <ul>Contact</ul>
+            <ul>Slack</ul>
+            <ul>Blog</ul>
+          </li>
+        </DropdownLabel>
+      </li>
+
+      <li>
+        <DropdownLabel label="Pricing" link="#pricing"/>
+      </li>
     </ul>
     <LinkButton link="/dashboard">Sign in</LinkButton>
   </nav>
