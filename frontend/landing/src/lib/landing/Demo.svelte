@@ -143,7 +143,7 @@ import LinkButton from "$lib/LinkButton.svelte";
 
 <div class="container">
   <div class="border">
-    <iframe class="demo" src="https://lexoral.com/demo" title="A live demo of the Lexoral editor"/>
+    <iframe class="demo" src="https://lexoral.com/demo" title="A live demo of the Lexoral editor" tabindex="-1" />
     <div class="cursor">
       <img aria-hidden src="/assets/cursor.svg" alt="Example Cursor">
       <span>Try&nbsp;me!</span>
