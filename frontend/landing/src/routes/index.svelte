@@ -68,44 +68,43 @@
       <img class="logo" src="assets/smallBrand_white.svg" alt="The Lexoral logo"/>
     </a>
     <ul class="navList">
-      <li>
-        <DropdownLabel label="How it Works" link="#how-it-works">
-          <li>
-            <ul>Get Started</ul>
-            <ul>Technical Overview</ul>
-            <ul>Why Lexoral</ul>
-          </li>
-        </DropdownLabel>
-      </li>
+      <li><DropdownLabel
+        label="How it Works"
+        topLink="#how-it-works"
+      /></li>
+      
+      <li><DropdownLabel
+        label="Use Cases"
+        topLink="#use-cases"
+      /></li>
 
-      <li>
-        <DropdownLabel label="Use Cases" link="#use-cases">
-          <li>
-            <ul>Subtitles &amp; Captioning</ul>
-            <ul>Academics</ul>
-            <ul>User Research</ul>
-            <ul>Journalism</ul>
-          </li>
-        </DropdownLabel>
-      </li>
+      <li><DropdownLabel
+        label="Community"
+        topLink="#community"
+        menuItems={{
+          Slack: "https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw"
+        }}
+      /></li>
 
-      <li>
-        <DropdownLabel label="Community" link="#community">
-          <li>
-            <ul>About Us</ul>
-            <ul>Contact</ul>
-            <ul>Slack</ul>
-            <ul>Blog</ul>
-          </li>
-        </DropdownLabel>
-      </li>
-
-      <li>
-        <DropdownLabel label="Pricing" link="#pricing"/>
-      </li>
+      <li><DropdownLabel
+        label="Pricing"
+        topLink="#pricing"
+      /></li>
     </ul>
     <LinkButton link="/dashboard">Sign in</LinkButton>
   </nav>
   <Hero/>
   <Demo/>
 </div>
+
+<h2></h2>
+
+<h2></h2>
+
+<h2></h2>
+
+<h2></h2>
+
+<h2></h2>
+
+<h2></h2>

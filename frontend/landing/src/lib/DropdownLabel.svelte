@@ -1,6 +1,13 @@
 <script lang="ts">
   export let label: string;
-  export let link: string;
+  export let topLink: string;
+  export let menuItems: Record<string, string> = {}
+
+  let menuEntries: Array<[string, string]>;
+  $: menuEntries = Object.entries(menuItems);
+
+  let showMenu: boolean;
+  $: showMenu = menuEntries.length > 0;
 </script>
 
 <style>
@@ -9,6 +16,10 @@
   }
 
   .label:hover a {
+    color: white;
+  }
+
+  .label:focus-within a {
     color: white;
   }
 
@@ -43,6 +54,10 @@
     transform: translateX(-50%) scale(100%);
   }
 
+  .label:focus-within .menu {
+    transform: translateX(-50%) scale(100%);
+  }
+
   .menu-arrow {
     background-color: var(--page-background);
     height: 2em;
@@ -63,15 +78,38 @@
     border-radius: 1em;
     background-color: var(--page-background);
   }
+
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    white-space: nowrap;
+  }
+
+  li a {
+    color: var(--blue-1) !important;
+  }
+
+  li:hover a {
+    color: var(--blue-2) !important;
+  }
 </style>
 
 <span class="label">
-  <a href={link}>{label}</a>
-  {#if $$slots.default}
+  <a href={topLink}>{label}</a>
+  {#if showMenu}
     <div class="menu">
       <div class="menu-arrow"/>
       <div class="menu-content">
-        <slot/>
+        <ul>
+          {#each menuEntries as [menuLabel, menuLink] (menuLink)}
+            <li>
+              <a href={menuLink}>{menuLabel}</a>
+            </li>
+          {/each}
+        </ul>
       </div>
     </div>
   {/if}
