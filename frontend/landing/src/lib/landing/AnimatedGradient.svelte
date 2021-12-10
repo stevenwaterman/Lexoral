@@ -9,7 +9,7 @@
     left: 0;
     right: 0;
 
-    height: calc(30vh + 20em);
+    height: max(20em, 30vh);
 
     contain: strict;
 
@@ -26,8 +26,7 @@
       -0.5px -0.5px,
       calc(100% + 0.5px) -0.5px,
       calc(100% + 0.5px) calc(100% + 0.5px),
-      65% 50%,
-      -0.5px calc(30% + 0.5px)
+      -0.5px calc(35% + 0.5px)
     );
   }
 

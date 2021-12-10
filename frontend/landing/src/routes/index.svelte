@@ -10,7 +10,7 @@
   .grid {
     display: grid;
     grid-template-columns: auto 1fr;
-    grid-template-rows: calc(4.5vh + 5em) auto;
+    grid-template-rows: max(5em, calc(8vh)) auto;
     
     width: 100em;
     max-width: calc(100vw - 4em);
@@ -21,7 +21,7 @@
   nav {
     grid-column: span 2;
     width: 100%;
-    max-height: 3em;
+    height: 4em;
 
     padding-top: 0.5em;
 
