@@ -1,29 +1,31 @@
 html {
-  --text: #242230;
-  --secondary-text: #525666;
+  --text: var(--grey-1);
+  --secondary-text: var(--grey-2);
   --light-text: var(--grey-4);
   
-  --weak-focus: #9CAFD3;
-  --focus: #8BA861;
-  --strong-focus: #E47A77;
+  --weak-focus: var(--blue-3);
+  --focus: var(--green-3);
+  --strong-focus: var(--red-3);
 
   --info: var(--blue-1);
   --warn: var(--yellow-1);
   --error: var(--red-1);
   --success: var(--green-1);
 
-  --primary: #8BA861;
-  --secondary: #9CAFD3;
+  --primary: var(--green-3);
+  --secondary: var(--blue-3);
 
-  --page-background: #E9EBED;
-  --border: #D2D4DB;
-  --form-border: #525666;
+  --page-background: var(--grey-4);
+  --border: var(--grey-3);
+  --form-border: var(--grey-2);
 
   --grey-1: #242230;
   --grey-2: #525666;
   --grey-3: #D2D4DB;
   --grey-4: #E9EBED;
+  --grey-5: #F4F5F6;
 
+  --red-0: #661815
   --red-1: #BB2A25;
   --red-2: #DA4944;
   --red-3: #E47A77;
@@ -32,10 +34,12 @@ html {
   --yellow-2: #F6AE2D;
   --yellow-3: #F8C462;
   
+  --green-0: #33512A;
   --green-1: #607641;
-  --green-2: #769150;
-  --green-3: #8BA861;
+  --green-2: #7CB36B;
+  --green-3: #9FC893;
   
+  --blue-0: #2C3F63;
   --blue-1: #4C6CA9;
   --blue-2: #728DC0;
   --blue-3: #9CAFD3;
@@ -59,9 +63,10 @@ body {
   height: 100%;
 }
 
-h1 {
-  outline: none;
+p {
+  margin: 0;
 }
+
 
 button {
   font-size: 1em;

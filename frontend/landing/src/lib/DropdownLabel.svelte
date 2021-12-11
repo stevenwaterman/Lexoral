@@ -16,11 +16,11 @@
   }
 
   .label:hover a {
-    color: white;
+    color: var(--grey-5);
   }
 
   .label:focus-within a {
-    color: white;
+    color: var(--grey-5);
   }
 
   .label a {

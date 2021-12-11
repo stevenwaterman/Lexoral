@@ -69,34 +69,22 @@ import LinkButton from "$lib/LinkButton.svelte";
 
   @keyframes cursorPosition {
     0% {
-      left: 100%;
+      left: -100%;
       top: 100%;
     }
 
     30% {
-      left: 60%;
+      left: 30%;
       top: 60%;
     }
 
-    40% {
-      width: 5em;
-    }
-
-    45% {
-      width: 4em;
-    }
-
-    50% {
-      width: 5em;
-    }
-
     70% {
-      left: 60%;
+      left: 30%;
       top: 60%;
     }
 
     100% {
-      left: 100%;
+      left: -100%;
       top: 50%;
     }
   }
@@ -136,8 +124,6 @@ import LinkButton from "$lib/LinkButton.svelte";
     bottom: -1.75em;
     right: -1em;
     transform: rotate(-5deg);
-    /* top: calc(100% - 2em); */
-    /* left: calc(100% - 5em); */
   }
 </style>
 
