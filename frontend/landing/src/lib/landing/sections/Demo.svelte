@@ -121,9 +121,13 @@ import LinkButton from "$lib/LinkButton.svelte";
 
   .linkAnchor {
     position: absolute;
-    bottom: -1.75em;
+    bottom: -1.5em;
     right: -1em;
-    transform: rotate(-5deg);
+    transform: rotate(-6deg);
+  }
+
+  .linkAnchor :global(.LinkButton) {
+    font-size: 1.2em;
   }
 </style>
 
@@ -136,6 +140,6 @@ import LinkButton from "$lib/LinkButton.svelte";
     </div>
   </div>
   <div class="linkAnchor">
-    <LinkButton link="/demo" bgColor="var(--blue-1)">Try&nbsp;the&nbsp;full&nbsp;demo</LinkButton>
+    <LinkButton link="/demo">Try&nbsp;the&nbsp;full&nbsp;demo</LinkButton>
   </div>
 </div>

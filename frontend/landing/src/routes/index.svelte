@@ -8,14 +8,21 @@ import Pricing from "$lib/landing/sections/Pricing.svelte";
 </script>
 
 <style>
+  :global(body) {
+    overflow-x: hidden;
+  }
+
+  .column {
+    margin: auto;
+    width: 100em;
+    max-width: calc(100vw - 4em);
+  }
+  
   .grid {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: max(5em, calc(8vh)) auto;
     
-    width: 100em;
-    max-width: calc(100vw - 4em);
-
     margin: auto;
   }
 
@@ -28,7 +35,7 @@ import Pricing from "$lib/landing/sections/Pricing.svelte";
 
     display: grid;
     grid-template-columns: auto 1fr auto;
-    justify-content: center;
+    justify-items: center;
     align-items: center;
 
     color: var(--page-background);
@@ -44,7 +51,7 @@ import Pricing from "$lib/landing/sections/Pricing.svelte";
 
     display: grid;
     grid-template-columns: repeat(4, auto);
-    justify-content: center;
+    justify-items: center;
     align-items: center;
 
     margin: auto;
@@ -54,6 +61,11 @@ import Pricing from "$lib/landing/sections/Pricing.svelte";
 
     font-size: 1.2em;
     font-weight: 500;
+  }
+
+  nav :global(.LinkButton) {
+    --bgColor: rgba(0, 0, 0, 0.15);
+    font-size: 1.3em;
   }
 </style>
 

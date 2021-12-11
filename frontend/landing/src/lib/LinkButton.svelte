@@ -1,18 +1,16 @@
 <script lang="ts">
   export let link: string;
-  export let bgColor: string = "rgba(0, 0, 0, 0.15)";
   export let newTab: boolean = false;
 </script>
 
 <style>
-  .button {
+  .LinkButton {
     position: relative;
 
     background-size: 250%;
     background-position-x: 100%;
-    background-image: linear-gradient(to right, var(--green-1) 40%, var(--bgColor) 50%);
+    background-image: linear-gradient(to right, var(--green-1) 40%, var(--bgColor, var(--blue-1)) 50%);
 
-    font-size: 1.3em;
     color: var(--page-background);
     padding: 0.5em 1.5em;
     border-radius: 0.5em;
@@ -24,7 +22,7 @@
     text-decoration: none;
   }
 
-  .button:hover {
+  .LinkButton:hover {
     background-position-x: 0%;
     padding-left: 1em;
     padding-right: 2em;
@@ -40,7 +38,7 @@
     transition-property: opacity;
   }
 
-  .button:hover .arrow {
+  .LinkButton:hover .arrow {
     opacity: 100%;
     transition-delay: 0.2s;
     transition-duration: 0.3s;
@@ -48,10 +46,9 @@
 </style>
 
 <a
-  class="button"
+  class="LinkButton"
   rel="external"
   href={link}
-  style={`--bgColor: ${bgColor}`}
   target={newTab ? "_blank" : "_self"}
 >
   <slot/>&nbsp;<span class="arrow">&gt;</span>
