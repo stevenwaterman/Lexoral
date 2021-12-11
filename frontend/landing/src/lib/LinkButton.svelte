@@ -49,6 +49,7 @@
 
 <a
   class="button"
+  rel="external"
   href={link}
   style={`--bgColor: ${bgColor}`}
   target={newTab ? "_blank" : "_self"}
