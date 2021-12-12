@@ -73,7 +73,13 @@
     background-color: var(--yellow-3);
     color: var(--text);
 
-    clip-path: circle(60%);
+    clip-path: polygon(
+      0 0,
+      calc(100% - 1.5em) 0,
+      100% 50%,
+      calc(100% - 1.5em) 100%,
+      0 100%
+    );
 
     grid-column: 1;
   }
@@ -81,6 +87,7 @@
   .circle h3 {
     margin: 0;
     padding: 1em;
+    padding-right: 2em;
   }
 
   .line {
