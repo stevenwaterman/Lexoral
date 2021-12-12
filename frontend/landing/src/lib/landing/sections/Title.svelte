@@ -9,12 +9,15 @@
     justify-content: center;
 
     width: 38em;
+    margin-bottom: 4em;
   }
 
   h1 {
+    display: inline-block;
+
     font-weight: 800;
     font-size: 5em;
-    display: inline-block;
+
     transform: scaleX(0.95);
     transform-origin: 0% 0%;
     margin: 0;
@@ -23,12 +26,15 @@
   }
 
   h2 {
-    color: var(--grey-2);
+    width: 80%;
+
     font-weight: 400;
     font-size: 1.35em;
+    color: var(--grey-2);
+
     margin-top: 1em;
     margin-left: 0.5em;
-    width: 80%;
+    margin-bottom: 0;
   }
 </style>
 

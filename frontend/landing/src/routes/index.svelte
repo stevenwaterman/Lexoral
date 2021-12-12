@@ -2,9 +2,8 @@
   import AnimatedGradient from "$lib/landing/AnimatedGradient.svelte";
   import Hero from "$lib/landing/sections/Title.svelte";
   import Demo from "$lib/landing/sections/Demo.svelte";
-  import LinkButton from "$lib/LinkButton.svelte";
-  import DropdownLabel from "$lib/DropdownLabel.svelte";
-import Pricing from "$lib/landing/sections/Pricing.svelte";
+  import Pricing from "$lib/landing/sections/Pricing.svelte";
+  import Nav from "$lib/landing/Nav.svelte";
 </script>
 
 <style>
@@ -14,8 +13,9 @@ import Pricing from "$lib/landing/sections/Pricing.svelte";
 
   .column {
     margin: auto;
-    width: 100em;
-    max-width: calc(100vw - 4em);
+    --col-width: min(1200pt, calc(100vw - 4em));
+    --col-margin: calc(50vw - var(--col-width) / 2);
+    width: var(--col-width);
   }
   
   .grid {
@@ -24,48 +24,11 @@ import Pricing from "$lib/landing/sections/Pricing.svelte";
     grid-template-rows: max(5em, calc(8vh)) auto;
     
     margin: auto;
-  }
-
-  nav {
-    grid-column: span 2;
-    width: 100%;
-    height: 4em;
-
-    padding-top: 0.5em;
-
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    justify-items: center;
-    align-items: center;
-
-    color: var(--page-background);
-  }
-
-  .logo {
-    height: 100%;
-    max-height: 3em;
+    margin-bottom: -2em;
   }
   
-  .navList {
-    list-style: none;
-
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    justify-items: center;
-    align-items: center;
-
-    margin: auto;
-    gap: 3em;
-
-    padding: 0;
-
-    font-size: 1.2em;
-    font-weight: 500;
-  }
-
-  nav :global(.LinkButton) {
-    --bgColor: rgba(0, 0, 0, 0.15);
-    font-size: 1.3em;
+  .grid :global(nav) {
+    grid-column: span 2;
   }
 </style>
 
@@ -77,36 +40,7 @@ import Pricing from "$lib/landing/sections/Pricing.svelte";
 
 <div class="column">
   <div class="grid">
-    <nav>
-      <a href="/">
-        <img class="logo" src="assets/smallBrand_white.svg" alt="The Lexoral logo"/>
-      </a>
-      <ul class="navList">
-        <li><DropdownLabel
-          label="How it Works"
-          topLink="#how-it-works"
-        /></li>
-  
-        <li><DropdownLabel
-          label="Use Cases"
-          topLink="#use-cases"
-        /></li>
-  
-        <li><DropdownLabel
-          label="Community"
-          topLink="#community"
-          menuItems={{
-            Slack: "https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw"
-          }}
-        /></li>
-  
-        <li><DropdownLabel
-          label="Pricing"
-          topLink="#pricing"
-        /></li>
-      </ul>
-      <LinkButton link="/dashboard">Sign in</LinkButton>
-    </nav>
+    <Nav/>
     <Hero/>
     <Demo/>
   </div>

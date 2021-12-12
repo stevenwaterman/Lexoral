@@ -1,5 +1,6 @@
 <script lang="ts">
 import LinkButton from "$lib/LinkButton.svelte";
+import MarginVisual from "../MarginVisual.svelte";
 
 
 </script>
@@ -12,51 +13,57 @@ import LinkButton from "$lib/LinkButton.svelte";
     flex-direction: column;
     align-items: center;
 
-    margin-top: 2em;
+    margin-top: 0em;
     padding-top: 1em;
-    padding-bottom: 11em;
+
+    --background-angle-horiz-start: calc(var(--col-margin) + 20em);
+    --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
+    --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
+    padding-bottom: calc(var(--background-angle-vert-delta) - 1em);
   }
 
   .background {
     position: absolute;
-    width: 100vw;
-    height: 100%;
-
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
     z-index: -1;
 
+    width: 100vw;
+    height: 100%;
+    overflow: hidden;
+
     background-color: var(--grey-5);
+
     clip-path: polygon(
       0 0,
-      calc(25vw + 10em) 0,
-      100% 10em,
+      var(--background-angle-horiz-start) 0,
+      100% var(--background-angle-vert-delta),
       100% 100%,
-      calc(25vw + 10em) calc(100% - 10em),
-      0 calc(100% - 10em)
+      var(--background-angle-horiz-start) calc(100% - var(--background-angle-vert-delta)),
+      0 calc(100% - var(--background-angle-vert-delta))
     );
   }
 
   .bgLogo {
     position: absolute;
-    right: -10%;
-    bottom: 20%;
-    width: 70em;
-    transform: rotate(20deg) translate(50%, 50%);
-    filter: brightness(0);
+    left: calc(110% - var(--col-margin));
+    top: 70%;
+    height: 200%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    filter: brightness(60%) blur(0.1em);
     opacity: 20%;
   }
 
   .textContainer {
     font-size: 1.25em;
+    max-width: 65em;
+    align-self: flex-start;
   }
 
   .grid {
     display: grid;
-    width: 80%;
-    grid-template-columns: 1fr 0.5fr 0.5fr;
+    grid-template-columns: 1fr auto auto;
     gap: 1em 2em;
+    
     margin-top: 1em;
 
     justify-items: center;
@@ -82,8 +89,6 @@ import LinkButton from "$lib/LinkButton.svelte";
     font-size: 1.75em;
     margin: 0;
     color: var(--text);
-
-    /* filter: drop-shadow(1px 1px 0px var(--text)); */
   }
 
   .headlinePrice {
@@ -94,7 +99,6 @@ import LinkButton from "$lib/LinkButton.svelte";
   }
 
   .headlinePriceDetail {
-    margin-left: 1em;
     font-weight: 600;
   }
 
@@ -115,6 +119,7 @@ import LinkButton from "$lib/LinkButton.svelte";
     font-size: 1.2em;
     color: var(--blue-1);
     font-weight: 600;
+    white-space: nowrap;
   }
 
   .list li {
@@ -130,7 +135,7 @@ import LinkButton from "$lib/LinkButton.svelte";
 
 <div class="section">
   <div class="background">
-    <img class="bgLogo" src="/assets/logo.svg"/>
+    <img class="bgLogo" src="/assets/logo.svg" alt="The Lexoral logo" aria-hidden/>
   </div>
 
   <div class="textContainer">
