@@ -1,4 +1,6 @@
 <script lang="ts">
+import Animation from "../animations/uploading/Animation.svelte";
+
 
 </script>
 
@@ -24,7 +26,6 @@
 
   .textContainer {
     font-size: 1.25em;
-    max-width: 65em;
     align-self: flex-start;
     margin-top: 4em;
 
@@ -113,6 +114,14 @@
     50% { background-position-x: -50%; }
     100% { background-position-x: -50%; }
   }
+
+  .animationWrapper {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row: 2;
+
+    width: 100%;
+  }
 </style>
 
 <div class="section">
@@ -131,22 +140,12 @@
           We accept almost any file type you can think of.
           They'll be encrypted and stored securely in the cloud.
         </p>
-        <p>
-          Upload your audio or video files on the Lexoral dashboard.
-          We accept almost any file type you can think of.
-          They'll be encrypted and stored securely in the cloud.
-        </p>
       </li>
 
       <li>
         <div class="circle" style="grid-column: 2; grid-row: 1;">
           <h3>Process</h3>
         </div>
-        <p>
-          We use Google's state-of-the-art speech recognition AI to transcribe your audio automatically.
-          If it's not sure about a word, we'll store all the options and let you pick.
-          Our fully-automated process means your confidential data stays confidential.
-        </p>
         <p>
           We use Google's state-of-the-art speech recognition AI to transcribe your audio automatically.
           If it's not sure about a word, we'll store all the options and let you pick.
@@ -164,15 +163,13 @@
           Click that word and choose from the options in the dropdown, or type something else.
           Export the finished transcript for use elsewhere, or just close the window - it autosaves!
         </p>
-        <p>
-          Open your transcript and have a click around - we'll play the audio in sync.
-          See a red underline?
-          Click that word and choose from the options in the dropdown, or type something else.
-          Export the finished transcript for use elsewhere, or just close the window - it autosaves!
-        </p>
       </li>
 
       <div class="line" aria-hidden></div>
+
+      <div class="animationWrapper">
+        <Animation/>
+      </div>
     </ol>
   </div>
 </div>
