@@ -4,6 +4,7 @@
   import Demo from "$lib/landing/sections/Demo.svelte";
   import Pricing from "$lib/landing/sections/Pricing.svelte";
   import Nav from "$lib/landing/Nav.svelte";
+import HowItWorks from "$lib/landing/sections/HowItWorks.svelte";
 </script>
 
 <style>
@@ -24,7 +25,7 @@
     grid-template-rows: max(5em, calc(8vh)) auto;
     
     margin: auto;
-    margin-bottom: -2em;
+    margin-bottom: 2em;
   }
   
   .grid :global(nav) {
@@ -46,32 +47,9 @@
   </div>
   
   <Pricing/>
+  <HowItWorks/>
   
-  <h2>How does it work?</h2>
-  
-  Your perfect transcript is just 3 steps away
-  
-  <h3>Step 1: Upload</h3>
-  
-  Upload your audio or video files on the Lexoral dashboard.
-  We accept almost any file type you can think of.
-  They'll be encrypted and stored securely in the cloud.
-  
-  <h3>Step 2: Process</h3>
-  
-  We use Google's state-of-the-art speech recognition AI to transcribe your audio automatically.
-  If it's not sure about a word, we'll store all the options and let you pick.
-  Our fully-automated process means your confidential data stays confidential.
-  
-  <h3>Step 3: Refine</h3>
-  
-  Open your transcript and have a click around - we'll play the audio in sync.
-  See a red underline?
-  Click that word and choose from the options in the dropdown, or type something else.
-  Export the finished transcript for use elsewhere, or just close the window - it autosaves!
-  
-  <hr/>
-  
+   
   <h2>Use Cases</h2>
   
   Here's some examples of how we can help

@@ -26,7 +26,7 @@
       -0.5px -0.5px,
       calc(100% + 0.5px) -0.5px,
       calc(100% + 0.5px) calc(100% + 0.5px),
-      -0.5px calc(35% + 0.5px)
+      -0.5px calc(30% + 0.5px)
     );
   }
 

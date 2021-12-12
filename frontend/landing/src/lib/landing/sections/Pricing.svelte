@@ -20,6 +20,10 @@ import MarginVisual from "../MarginVisual.svelte";
     --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
     --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
     padding-bottom: calc(var(--background-angle-vert-delta) - 1em);
+    margin-bottom: calc(-1em - var(--background-angle-vert-delta));
+
+    filter: drop-shadow(0em 0.5em 0.5em var(--blue-2));
+    z-index: 1;
   }
 
   .background {
@@ -79,8 +83,6 @@ import MarginVisual from "../MarginVisual.svelte";
     margin: 0;
 
     color: var(--yellow-1);
-
-    /* filter: drop-shadow(0.05em 0.05em 0px var(--page-background)); */
     font-style: italic;
   }
 
