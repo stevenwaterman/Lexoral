@@ -3,6 +3,7 @@ import Cloud from "./components/Cloud.svelte";
 import TranscriptDocument from "./components/TranscriptDocument.svelte";
 import VideoDocument from "./components/VideoDocument.svelte";
 import Arrow from "./components/Arrow.svelte";
+import Wave from "./components/Wave.svelte";
 import Processor from "./components/Processor.svelte";
 </script>
 <style>
@@ -19,6 +20,7 @@ import Processor from "./components/Processor.svelte";
 </style>
 
 <svg viewBox="0 0 900 100">
+  <Wave/>
   <TranscriptDocument/>
   <VideoDocument/>
   <Cloud/>

@@ -1,8 +1,14 @@
 <style>
   g {
+    transform: translate(10px, 0px) scale(1) rotate(0);
+    animation-name: g;
   }
 
-
+  @keyframes g {
+    0%, 20% { transform: translate(10px, 0px) scale(1) rotate(0); }
+    30%, 65% { transform: translate(180px, 10px) scale(0.5) rotate(-20deg); }
+    70%, 100% { transform: translate(-200px, -200px) scale(1) rotate(-20deg); }
+  }
 
   .page {
     fill: transparent;
@@ -121,10 +127,10 @@
       65 15,
       65 100,
       0 100"
-    vector-effect="non-scaling-stroke"
+   
   />
 
-  <circle class="circle" cx="32.5" cy="50" r="25" vector-effect="non-scaling-stroke"/>
+  <circle class="circle" cx="32.5" cy="50" r="25"/>
 
   <polygon
     class="triangle" 
@@ -132,7 +138,7 @@
       27.5 40,
       27.5 60,
       42.5 50"
-    vector-effect="non-scaling-stroke"
+   
   />
 
   <text
@@ -140,7 +146,7 @@
     x={4}
     y={95}
     text-anchor="start"
-    vector-effect="non-scaling-stroke"
+   
   >
    Your Video
   </text>

@@ -1,7 +1,15 @@
 <style>
   .outer {
-    transform: translate(500px, -30px);
+    animation-name: outer;
   }
+
+  @keyframes outer {
+    0%, 30% { transform: translate(385px, -105px) scale(0.7); }
+    35%, 65% { transform: translate(385px, -5px) scale(0.7); }
+    70%, 100% { transform: translate(200px, -200px) scale(1); }
+  }
+
+
 
   .inner {
     animation-name: inner;

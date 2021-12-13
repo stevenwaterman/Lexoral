@@ -1,6 +1,11 @@
 <style>
   g {
-    transform: translateX(200px) scale(1.8);
+    animation-name: g;
+  }
+
+  @keyframes g {
+    0%, 65% { transform: translate(190px, 0px) scale(1.2); }
+    70%, 100% { transform: translate(-200px, -200px) scale(2); }
   }
 
   .cloud {

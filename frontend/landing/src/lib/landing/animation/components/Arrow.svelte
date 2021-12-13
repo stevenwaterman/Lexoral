@@ -1,12 +1,12 @@
 <style>
   g {
-    transform: translate(350px, -30px) scale(0.8)
+    transform: translate(100px, -35px) scale(0.8) rotate(20deg)
   }
 
-  path {
+  .arrow {
     fill: transparent;
     stroke: var(--yellow-1);
-    stroke-width: 6;
+    stroke-width: 4;
 
     --perimiter: 200;
     stroke-dasharray: var(--perimiter);
@@ -18,9 +18,9 @@
   }
 
   @keyframes arrow {
-    0% { stroke-dashoffset: var(--perimiter); }
-    10% { stroke-dashoffset: 0; }
-    100% { stroke-dashoffset: 0; }
+    0%, 15% { stroke-dashoffset: var(--perimiter); }
+    22%, 25% { stroke-dashoffset: 0; }
+    28%, 100% { stroke-dashoffset: -200; }
   }
 </style>
 
