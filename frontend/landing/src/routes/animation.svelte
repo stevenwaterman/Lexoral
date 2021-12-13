@@ -1,5 +1,5 @@
 <script>
-import Uploading from "$lib/landing/animations/uploading/Animation.svelte";
+import Uploading from "$lib/landing/animation/Animation.svelte";
 
 </script>
 <Uploading/>

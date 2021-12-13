@@ -1,5 +1,5 @@
 <script lang="ts">
-import Animation from "../animations/uploading/Animation.svelte";
+import Animation from "../animation/Animation.svelte";
 
 
 </script>
