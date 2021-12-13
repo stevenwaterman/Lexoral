@@ -5,7 +5,7 @@
   }
 
   @keyframes g {
-    0%, 20% { transform: translate(10px, 0px) scale(1) rotate(0); }
+    0%, 20% { transform: translate(10px, 10px) scale(0.9) rotate(0); }
     30%, 65% { transform: translate(180px, 10px) scale(0.5) rotate(-20deg); }
     70%, 100% { transform: translate(-200px, -200px) scale(1) rotate(-20deg); }
   }

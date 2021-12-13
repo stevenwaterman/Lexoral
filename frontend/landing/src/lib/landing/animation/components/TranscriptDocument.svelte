@@ -7,8 +7,11 @@
     0%, 65% {
       transform: translate(600px, 0px) scale(0.9);
     }
-    70%, 100% {
-      transform: translate(450px, -60px) scale(3);
+    70%, 95% {
+      transform: translate(650px, -60px) scale(3);
+    }
+    100% {
+      transform: translate(1000px, -60px) scale(3);
     }
   }
 

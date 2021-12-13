@@ -104,14 +104,14 @@ import Animation from "../animation/Animation.svelte";
     background-size: 200%;
 
     animation-name: progress;
-    animation-duration: 6s;
+    animation-duration: 15s;
+    animation-delay: 2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
   }
 
   @keyframes progress {
     from { background-position-x: 110%; }
-    50% { background-position-x: -50%; }
     100% { background-position-x: -50%; }
   }
 
