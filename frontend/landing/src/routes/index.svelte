@@ -5,6 +5,7 @@
   import Pricing from "$lib/landing/sections/Pricing.svelte";
   import Nav from "$lib/landing/Nav.svelte";
 import HowItWorks from "$lib/landing/sections/HowItWorks.svelte";
+import UseCases from "$lib/landing/sections/UseCases.svelte";
 </script>
 
 <style>
@@ -48,34 +49,9 @@ import HowItWorks from "$lib/landing/sections/HowItWorks.svelte";
   
   <Pricing/>
   <HowItWorks/>
-  
+  <UseCases/>
+
    
-  <h2>Use Cases</h2>
-  
-  Here's some examples of how we can help
-  
-  <h3>Research</h3>
-  
-  <ul>
-    <li>Safety</li>
-    <li>Immersion benefits vs outsourcing / automated</li>
-    <li>Jargon</li>
-    <li>Quick to learn</li>
-    <li>Time saved</li>
-    <li>Simple pricing</li>
-  </ul>
-  
-  <h3>Content Creation</h3>
-  
-  <ul>
-    <li>Works with xyz platforms</li>
-    <li>Quality Improvement</li>
-    <li>Easy to use</li>
-    <li>Upload video</li>
-    <li>Export Subtitles</li>
-  </ul>
-  
-  <hr/>
   
   <h2>Community</h2>
   

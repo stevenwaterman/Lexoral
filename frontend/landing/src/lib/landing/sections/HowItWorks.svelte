@@ -12,6 +12,15 @@ import Animation from "../animation/Animation.svelte";
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    --background-angle-horiz-start: calc(var(--col-margin) + 20em);
+    --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
+    --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
+    padding-bottom: calc(var(--background-angle-vert-delta) - 1em);
+    margin-bottom: calc(-1em - var(--background-angle-vert-delta));
+
+    filter: drop-shadow(0em 0.5em 0.5em var(--blue-0));
+    z-index: 1;
   }
 
   .background {
@@ -21,7 +30,16 @@ import Animation from "../animation/Animation.svelte";
     width: 100vw;
     height: 100%;
 
-    background-color: var(--blue-0); 
+    background-color: var(--blue-0);
+
+    clip-path: polygon(
+      0 0,
+      var(--background-angle-horiz-start) 0,
+      100% var(--background-angle-vert-delta),
+      100% 100%,
+      var(--background-angle-horiz-start) calc(100% - var(--background-angle-vert-delta)),
+      0 calc(100% - var(--background-angle-vert-delta))
+    );
   }
 
   .textContainer {
@@ -53,18 +71,22 @@ import Animation from "../animation/Animation.svelte";
   .steps {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
     grid-auto-flow: column;
 
     padding: 0;
 
     align-items: center;
     justify-items: center;
-    gap: 1em;
+    gap: 0.5em 1em;
   }
 
   .steps li {
     display: contents;
+  }
+
+  .steps li p {
+    align-self: flex-start;
   }
 
   .circle {
@@ -82,7 +104,7 @@ import Animation from "../animation/Animation.svelte";
       0 100%
     );
 
-    grid-column: 1;
+    grid-row: 1;
   }
 
   .circle h3 {
@@ -122,6 +144,11 @@ import Animation from "../animation/Animation.svelte";
 
     width: 100%;
   }
+  
+  a {
+    color: var(--blue-3);
+
+  }
 </style>
 
 <div class="section">
@@ -132,36 +159,52 @@ import Animation from "../animation/Animation.svelte";
 
     <ol class="steps">
       <li>
-        <div class="circle" style="grid-row: 1">
+        <div class="circle" style="grid-column: 1;">
           <h3>Upload</h3>
         </div>
         <p>
           Upload your audio or video files on the Lexoral dashboard.
+          They're encrypted and stored securely in the cloud.
           We accept almost any file type you can think of.
-          They'll be encrypted and stored securely in the cloud.
+        </p>
+
+        <p>
+          With Lexoral, you always know your confidential data is safe.
+          Our fully-automated platform means the only human involved is you.
+          Read our <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/PRIVACY.md">Privacy&nbsp;Policy</a> - it's short and simple.
         </p>
       </li>
 
       <li>
-        <div class="circle" style="grid-column: 2; grid-row: 1;">
+        <div class="circle" style="grid-column: 2;">
           <h3>Process</h3>
         </div>
         <p>
-          We use Google's state-of-the-art speech recognition AI to transcribe your audio automatically.
-          If it's not sure about a word, we'll store all the options and let you pick.
-          Our fully-automated process means your confidential data stays confidential.
+          We transcribe your audio automatically using AI speech recognition.
+          If it's not sure about a word, we store all the options for you to decide.
+        </p>
+
+        <p>
+          By analysing the audio, we work out when each word was said.
+          That  you can automatically add punctuation when there is a pause.
+          It also aligns your subtitles with the video.
         </p>
       </li>
       
       <li>
-        <div class="circle" style="grid-column: 3; grid-row: 1;">
+        <div class="circle" style="grid-column: 3;">
           <h3>Refine</h3>
         </div>
         <p>
-          Open your transcript and have a click around - we'll play the audio in sync.
-          See a red underline?
-          Click that word and choose from the options in the dropdown, or type something else.
-          Export the finished transcript for use elsewhere, or just close the window - it autosaves!
+          It's easy to find and fix any mistakes that slipped through.
+          Click on a word, and we'll play the audio in sync.
+          Pick the right option from a dropdown, or type your own.
+        </p>
+
+        <p>
+          We save your changes to the dashboard automatically, so you can view a transcript from anywhere.
+          Alternatively, use your transcript with other programs by downloading it as plain-text or subtitles.
+          Congrats on your new perfect transcript! TODO make this longer
         </p>
       </li>
 

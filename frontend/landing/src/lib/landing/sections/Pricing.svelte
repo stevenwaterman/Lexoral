@@ -23,7 +23,7 @@ import MarginVisual from "../MarginVisual.svelte";
     margin-bottom: calc(-1em - var(--background-angle-vert-delta));
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-2));
-    z-index: 1;
+    z-index: 2;
   }
 
   .background {

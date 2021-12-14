@@ -94,7 +94,7 @@
 
 
   .correctionLine {
-    stroke: var(--red-1);
+    stroke: var(--needs-fix);
     stroke-width: 2px;
     stroke-linejoin: round;
     stroke-linecap: round;
@@ -102,6 +102,9 @@
     --perimiter: 30;
     stroke-dasharray: var(--perimiter);
     stroke-dashoffset: var(--perimiter);
+
+    --needs-fix: var(--red-1);
+    --fixed: var(--green-0);
   }
 
   .correction0 { animation-name: correction0; }
@@ -113,51 +116,51 @@
   @keyframes correction0 {
     72% { stroke-dashoffset: var(--perimiter); }
     77% { stroke-dashoffset: 0; }
-    80% { stroke: var(--red-1); }
-    82% { stroke: var(--green-1); }
+    80% { stroke: var(--needs-fix); }
+    82% { stroke: var(--fixed); }
     to {
       stroke-dashoffset: 0;
-      stroke: var(--green-1);
+      stroke: var(--fixed);
     }
   }
   @keyframes correction1 {
     72% { stroke-dashoffset: var(--perimiter); }
     77% { stroke-dashoffset: 0; }
-    83% { stroke: var(--red-1); }
-    85% { stroke: var(--green-1); }
+    83% { stroke: var(--needs-fix); }
+    85% { stroke: var(--fixed); }
     to {
       stroke-dashoffset: 0;
-      stroke: var(--green-1);
+      stroke: var(--fixed);
     }
   }
   @keyframes correction2 {
     72% { stroke-dashoffset: var(--perimiter); }
     77% { stroke-dashoffset: 0; }
-    86% { stroke: var(--red-1); }
-    88% { stroke: var(--green-1); }
+    86% { stroke: var(--needs-fix); }
+    88% { stroke: var(--fixed); }
     to {
       stroke-dashoffset: 0;
-      stroke: var(--green-1);
+      stroke: var(--fixed);
     }
   }
   @keyframes correction3 {
     72% { stroke-dashoffset: var(--perimiter); }
     77% { stroke-dashoffset: 0; }
-    89% { stroke: var(--red-1); }
-    91% { stroke: var(--green-1); }
+    89% { stroke: var(--needs-fix); }
+    91% { stroke: var(--fixed); }
     to {
       stroke-dashoffset: 0;
-      stroke: var(--green-1);
+      stroke: var(--fixed);
     }
   }
   @keyframes correction4 {
     72% { stroke-dashoffset: var(--perimiter); }
     77% { stroke-dashoffset: 0; }
-    92% { stroke: var(--red-1); }
-    94% { stroke: var(--green-1); }
+    92% { stroke: var(--needs-fix); }
+    94% { stroke: var(--fixed); }
     to {
       stroke-dashoffset: 0;
-      stroke: var(--green-1);
+      stroke: var(--fixed);
     }
   }
 

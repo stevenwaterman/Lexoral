@@ -19,8 +19,8 @@
 
   @keyframes arrow {
     0%, 15% { stroke-dashoffset: var(--perimiter); }
-    22%, 25% { stroke-dashoffset: 0; }
-    28%, 100% { stroke-dashoffset: -200; }
+    22%, 35% { stroke-dashoffset: 0; }
+    38%, 100% { stroke-dashoffset: -200; }
   }
 </style>
 

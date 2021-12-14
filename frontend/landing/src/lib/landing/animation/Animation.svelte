@@ -17,13 +17,29 @@ import Processor from "./components/Processor.svelte";
     animation-timing-function: ease-in-out;
     animation-duration: 15s;
   }
+
+  g {
+    animation-name: g;
+  }
+
+  @keyframes g {
+    1%, 99% {
+      opacity: 1;
+    }
+
+    0%, 100% {
+      opacity: 0;
+    }
+  }
 </style>
 
 <svg viewBox="0 0 900 100">
-  <Wave/>
-  <TranscriptDocument/>
-  <VideoDocument/>
-  <Cloud/>
-  <Arrow/>
-  <Processor/>
+  <g>
+    <Wave/>
+    <TranscriptDocument/>
+    <VideoDocument/>
+    <Cloud/>
+    <Arrow/>
+    <Processor/>
+  </g>
 </svg>

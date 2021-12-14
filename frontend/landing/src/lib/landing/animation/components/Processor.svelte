@@ -18,12 +18,12 @@
   }
 
   @keyframes inner {
-    0% {
+    30% {
       transform: rotate(0turn);
     }
     
-    100% {
-      transform: rotate(10turn);
+    70% {
+      transform: rotate(6turn);
     }
   }
 </style>
