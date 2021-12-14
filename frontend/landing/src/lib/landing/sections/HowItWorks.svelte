@@ -45,7 +45,7 @@ import Animation from "../animation/Animation.svelte";
   .textContainer {
     font-size: 1.25em;
     align-self: flex-start;
-    margin-top: 4em;
+    margin-top: 5em;
 
     color: var(--page-background);
   }
@@ -74,6 +74,7 @@ import Animation from "../animation/Animation.svelte";
     grid-template-rows: auto auto auto auto;
     grid-auto-flow: column;
 
+    margin-top: 2em;
     padding: 0;
 
     align-items: center;
@@ -168,7 +169,7 @@ import Animation from "../animation/Animation.svelte";
           We accept almost any file type you can think of.
         </p>
 
-        <p>
+        <p style="padding-bottom: 1em;">
           With Lexoral, you always know your confidential data is safe.
           Our fully-automated platform means the only human involved is you.
           Read our <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/PRIVACY.md">Privacy&nbsp;Policy</a> - it's short and simple.
@@ -202,9 +203,8 @@ import Animation from "../animation/Animation.svelte";
         </p>
 
         <p>
-          We save your changes to the dashboard automatically, so you can view a transcript from anywhere.
+          We save changes to your account automatically, so you can edit your transcripts from anywhere.
           Alternatively, use your transcript with other programs by downloading it as plain-text or subtitles.
-          Congrats on your new perfect transcript! TODO make this longer
         </p>
       </li>
 

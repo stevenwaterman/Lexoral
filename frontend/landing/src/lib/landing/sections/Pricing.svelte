@@ -19,7 +19,7 @@ import MarginVisual from "../MarginVisual.svelte";
     --background-angle-horiz-start: calc(var(--col-margin) + 20em);
     --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
     --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
-    padding-bottom: calc(var(--background-angle-vert-delta) - 1em);
+    padding-bottom: calc(var(--background-angle-vert-delta) + 1em);
     margin-bottom: calc(-1em - var(--background-angle-vert-delta));
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-2));

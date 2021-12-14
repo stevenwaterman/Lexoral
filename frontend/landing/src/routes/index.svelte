@@ -26,7 +26,7 @@ import UseCases from "$lib/landing/sections/UseCases.svelte";
     grid-template-rows: max(5em, calc(8vh)) auto;
     
     margin: auto;
-    margin-bottom: 2em;
+    margin-bottom: -1em;
   }
   
   .grid :global(nav) {
