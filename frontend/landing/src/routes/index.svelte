@@ -4,8 +4,9 @@
   import Demo from "$lib/landing/sections/Demo.svelte";
   import Pricing from "$lib/landing/sections/Pricing.svelte";
   import Nav from "$lib/landing/Nav.svelte";
-import HowItWorks from "$lib/landing/sections/HowItWorks.svelte";
-import UseCases from "$lib/landing/sections/UseCases.svelte";
+  import HowItWorks from "$lib/landing/sections/HowItWorks.svelte";
+  import UseCases from "$lib/landing/sections/UseCases.svelte";
+import Community from "$lib/landing/sections/Community.svelte";
 </script>
 
 <style>
@@ -50,29 +51,11 @@ import UseCases from "$lib/landing/sections/UseCases.svelte";
   <Pricing/>
   <HowItWorks/>
   <UseCases/>
+  <Community/>
 
    
   
   <h2>Community</h2>
-  
-  Made by real people you can talk to
-  
-  Picture of me
-  
-  Hi! I'm Steven, the founder of Lexoral.
-  When doing research for their PhD, my partner would often get frustrated at how slow and tedious it was to transcribe their interview recordings.
-  Automated transcription tools weren't accurate enough, and outsourcing wasn't an option for their confidential data.
-  Manual transcription was the only option, but did it have to be so painful?
-  To make their life easier, I built Lexoral - the fast way to create a high-quality transcript.
-  
-  I'm making Lexoral better every day, and would love to chat with you about how you think we can improve:
-  
-  - Contact us (email)
-  - Slack
-  - Twitch
-  - Github (We're open source)
-  
-  We also have a blog where I talk about the technical challenges of building Lexoral.
   
   <hr/>
   
