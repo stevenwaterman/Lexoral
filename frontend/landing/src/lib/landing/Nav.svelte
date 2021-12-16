@@ -17,6 +17,7 @@ import MarginVisual from "./MarginVisual.svelte";
     align-items: center;
 
     color: var(--page-background);
+    z-index: 100;
   }
 
   .logo {

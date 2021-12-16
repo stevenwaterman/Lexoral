@@ -23,7 +23,7 @@ import MarginVisual from "../MarginVisual.svelte";
     margin-bottom: calc(-1em - var(--background-angle-vert-delta));
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-2));
-    z-index: 2;
+    z-index: 10;
   }
 
   .background {
@@ -65,7 +65,7 @@ import MarginVisual from "../MarginVisual.svelte";
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: auto auto auto;
     gap: 1em 2em;
     
     margin-top: 1em;
@@ -133,6 +133,10 @@ import MarginVisual from "../MarginVisual.svelte";
     grid-column: 2;
     font-size: 1.2em;
   }
+
+  .proseText {
+    max-width: 26em;
+  }
 </style>
 
 <div class="section">
@@ -145,7 +149,7 @@ import MarginVisual from "../MarginVisual.svelte";
     <p class="subtitle">Our pricing is simple,<br>so let's start there</p>
 
     <div class="grid">
-      <div>
+      <div class="proseText">
         <p>Unlike other transcription services, we don't charge you for stuff you don't need. Buy as much credit as you need and use it whenever.</p>
         <p style="margin-top: 1em">Purchase as little as 5 minutes of credit, or save 20% on 10+ hours.</p>
         <p style="margin-top: 1em">New accounts get 15 minutes of free credit so you can try Lexoral with your own audio and decide if it's right for you.</p>

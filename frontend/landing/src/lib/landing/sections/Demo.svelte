@@ -23,6 +23,8 @@ import LinkButton from "$lib/LinkButton.svelte";
     animation-direction: alternate;
     animation-iteration-count: 10;
     animation-fill-mode: both;
+
+    z-index: 11;
   }
 
   @keyframes glow {
@@ -124,6 +126,7 @@ import LinkButton from "$lib/LinkButton.svelte";
     bottom: -1.5em;
     right: -1em;
     transform: rotate(-6deg);
+    z-index: 12;
   }
 
   .linkAnchor :global(.LinkButton) {
@@ -133,7 +136,8 @@ import LinkButton from "$lib/LinkButton.svelte";
 
 <div class="container">
   <div class="border">
-    <iframe class="demo" src="https://lexoral.com/demo" title="A live demo of the Lexoral editor" tabindex="-1" />
+    <!-- svelte-ignore a11y-missing-attribute -->
+    <iframe class="demo" src="https://lexoral.com/demo" tabindex="-1" />
     <div class="cursor">
       <img aria-hidden src="/assets/cursor.svg" alt="Example Cursor">
       <span>Try&nbsp;me!</span>

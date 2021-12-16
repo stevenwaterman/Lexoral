@@ -1,7 +1,8 @@
-<script lang="ts">
+<script>
+
+import Contact from "./Contact.svelte";
 
 </script>
-
 <style>
   .section {
     position: relative;
@@ -14,11 +15,10 @@
     --background-angle-horiz-start: calc(var(--col-margin) + 20em);
     --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
     --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
-    padding-bottom: calc(var(--background-angle-vert-delta) + 1em);
-    margin-bottom: calc(-1em - var(--background-angle-vert-delta));
+    padding-bottom: calc(14em);
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-0));
-    z-index: -1;
+    z-index: 7;
   }
 
   .background {
@@ -35,8 +35,9 @@
       var(--background-angle-horiz-start) 0,
       100% var(--background-angle-vert-delta),
       100% 100%,
-      var(--background-angle-horiz-start) calc(100% - var(--background-angle-vert-delta)),
-      0 calc(100% - var(--background-angle-vert-delta))
+      calc(100% - var(--col-margin)) calc(100% - 10em),
+      var(--col-margin) calc(100% - 10em),
+      0 100%
     );
   }
 
@@ -90,12 +91,14 @@
 
   .grid {
     display: grid;
-    grid-template-columns: 16em 1fr;
+    grid-template-columns: 16em 1fr auto;
     gap: 4em;
 
     justify-items: center;
     align-items: center;
     margin-top: 1em;
+
+    width: fit-content;
   }
 
   .stevenMessage {
@@ -121,10 +124,6 @@
   .quoteAttribution {
     text-align: right;
     font-style: italic;
-  }
-
-  .job {
-    
   }
 </style>
 
@@ -153,7 +152,7 @@
           So when I saw an opportunity to use tech to help solve a problem close to me, I went for it:
         </p>
 
-        <p class="messageSubhead">I started Lexoral to help with my partner's PhD research.</p>
+        <p class="messageSubhead">I started Lexoral to help with my partner's PhD research:</p>
 
         <div class="artieQuote">
           <p>
@@ -175,28 +174,8 @@
           Artie Waterman<br>PhD Student, Durham University
         </p>
       </div>
+
+      <Contact/>
     </div>
-    
-    
-    
   </div>
 </div>
-
-<!-- Made by real people you can talk to
-  
-  Picture of me
-  
-  Hi! I'm Steven, the founder of Lexoral.
-  When doing research for their PhD, my partner would often get frustrated at how slow and tedious it was to transcribe their interview recordings.
-  Automated transcription tools weren't accurate enough, and outsourcing wasn't an option for their confidential data.
-  Manual transcription was the only option, but did it have to be so painful?
-  To make their life easier, I built Lexoral - the fast way to create a high-quality transcript.
-  
-  I'm making Lexoral better every day, and would love to chat with you about how you think we can improve:
-  
-  - Contact us (email)
-  - Slack
-  - Twitch
-  - Github (We're open source)
-  
-  We also have a blog where I talk about the technical challenges of building Lexoral. -->

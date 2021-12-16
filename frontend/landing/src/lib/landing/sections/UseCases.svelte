@@ -12,7 +12,7 @@ import ResearchIcon from "../icons/ResearchIcon.svelte";
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 0;
+    z-index: 8;
 
     padding-top: 5em;
     margin-top: -4em;

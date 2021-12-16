@@ -20,7 +20,7 @@ import Animation from "../animation/Animation.svelte";
     margin-bottom: calc(-1em - var(--background-angle-vert-delta));
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-0));
-    z-index: 1;
+    z-index: 9;
   }
 
   .background {

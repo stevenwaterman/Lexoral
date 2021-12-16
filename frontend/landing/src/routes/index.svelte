@@ -7,6 +7,7 @@
   import HowItWorks from "$lib/landing/sections/HowItWorks.svelte";
   import UseCases from "$lib/landing/sections/UseCases.svelte";
 import Community from "$lib/landing/sections/Community.svelte";
+import FinalCta from "$lib/landing/sections/FinalCTA.svelte";
 </script>
 
 <style>
@@ -52,17 +53,7 @@ import Community from "$lib/landing/sections/Community.svelte";
   <HowItWorks/>
   <UseCases/>
   <Community/>
-
-   
-  
-  <h2>Community</h2>
-  
-  <hr/>
-  
-  Sign up for Lexoral today!
-  
-  You'll get 15 minutes of free credit so you can upload your own audio and try it out for free.
-  No payment needed, no card details needed, just sign up and go!
+  <FinalCta/>
 </div>
 
 
