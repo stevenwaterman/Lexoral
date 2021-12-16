@@ -8,6 +8,7 @@
   import UseCases from "$lib/landing/sections/UseCases.svelte";
 import Community from "$lib/landing/sections/Community.svelte";
 import FinalCta from "$lib/landing/sections/FinalCTA.svelte";
+import Footer from "$lib/Footer.svelte";
 </script>
 
 <style>
@@ -56,9 +57,4 @@ import FinalCta from "$lib/landing/sections/FinalCTA.svelte";
   <FinalCta/>
 </div>
 
-
-<footer>
-- Lexoral logo
-- Privacy Policy
-- Contact details
-</footer>
+<Footer/>

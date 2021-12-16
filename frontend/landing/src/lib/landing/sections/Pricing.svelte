@@ -1,8 +1,5 @@
 <script lang="ts">
-import LinkButton from "$lib/LinkButton.svelte";
-import MarginVisual from "../MarginVisual.svelte";
-
-
+  import LinkButton from "$lib/LinkButton.svelte";
 </script>
 
 <style>
@@ -13,7 +10,7 @@ import MarginVisual from "../MarginVisual.svelte";
     flex-direction: column;
     align-items: center;
 
-    margin-top: 0em;
+    margin-top: 4em;
     padding-top: 1em;
 
     --background-angle-horiz-start: calc(var(--col-margin) + 20em);

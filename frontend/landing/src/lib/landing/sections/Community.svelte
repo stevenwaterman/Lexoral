@@ -32,8 +32,7 @@ import Contact from "./Contact.svelte";
 
     clip-path: polygon(
       0 0,
-      var(--background-angle-horiz-start) 0,
-      100% var(--background-angle-vert-delta),
+      100% 0,
       100% 100%,
       calc(100% - var(--col-margin)) calc(100% - 10em),
       var(--col-margin) calc(100% - 10em),
@@ -44,7 +43,7 @@ import Contact from "./Contact.svelte";
   .textContainer {
     font-size: 1.25em;
     align-self: flex-start;
-    margin-top: 5em;
+    margin-top: 3em;
 
     color: var(--page-background);
   }
@@ -115,10 +114,11 @@ import Contact from "./Contact.svelte";
   }
 
   .artieQuote {
-    max-width: 25em;
+    max-width: 26em;
     margin-left: 1em;
     padding-left: 1em;
     border-left: 0.25em solid var(--blue-2);
+    text-align: justify;
   }
 
   .quoteAttribution {

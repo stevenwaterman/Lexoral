@@ -1,6 +1,5 @@
 <script lang="ts">
 import LinkButton from "$lib/LinkButton.svelte";
-import MarginVisual from "../MarginVisual.svelte";
 
 
 </script>
@@ -15,9 +14,8 @@ import MarginVisual from "../MarginVisual.svelte";
 
     margin-top: -10em;
     padding-top: 4em;
-    padding-bottom: 4em;
+    padding-bottom: 6em;
 
-    filter: drop-shadow(0em 0.5em 0.5em var(--blue-2));
     z-index: 6;
   }
 
@@ -35,7 +33,6 @@ import MarginVisual from "../MarginVisual.svelte";
 
   .textContainer {
     font-size: 1.25em;
-    max-width: 65em;
     align-self: center;
 
     display: flex;
@@ -47,12 +44,11 @@ import MarginVisual from "../MarginVisual.svelte";
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 2em;
+    grid-template-columns: 1fr 1fr;
+    gap: 4em 2em;
     
-    margin-top: 1em;
+    margin-top: 4em;
 
-    width: 100%;
     justify-items: center;
     align-items: center;
   }
@@ -63,7 +59,7 @@ import MarginVisual from "../MarginVisual.svelte";
     transform: scaleX(0.95);
     transform-origin: 0% 0%;
     margin: 0;
-    font-size: 2em;
+    font-size: 3em;
   }
 
   .list {
@@ -83,9 +79,40 @@ import MarginVisual from "../MarginVisual.svelte";
     width: fit-content;
   }
   
-  .grid :global(.LinkButton) {
-    grid-column: 2;
+  .buttonContainer {
     font-size: 1.5em;
+    grid-column: span 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buttonContainer p {
+    font-size: 0.6em;
+    font-style: italic;
+  }
+
+  .tagline {
+    font-weight: 600;
+    font-size: 1.2em;
+  }
+
+  .left {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: auto auto auto;
+    gap: 1em;
+
+    align-items: center;
+    justify-items: center;
+
+    max-width: 25em;
+    justify-self: flex-start;
+  }
+
+  .left p {
+    text-align: center;
   }
 </style>
 
@@ -95,23 +122,24 @@ import MarginVisual from "../MarginVisual.svelte";
     <h2>Try Lexoral for free</h2>
     
     <div class="grid">
-
-      <p>
-        Experience the future of transcription today.
-        All new accounts get 15 minutes of free credit, so you can try Lexoral with your own audio.
-        
-      </p>
-
-      <div> 
-        <LinkButton link="/dashboard/auth/signup">Sign up</LinkButton>
+      <div class="left">
+        <p>We're confident that you'll love Lexoral, but you can't trust everything you read on the internet.</p>
+        <p>That's why we're giving all new accounts 15 minutes of free credit, so you can try it with your own footage.</p>
+        <p class="tagline">Experience the future of transcription today.</p>
       </div>
 
       <ul class="list">
-        <li>100% accurate transcripts</li>
+        <li>100% Accuracy</li>
         <li>Safe for confidential data</li>
         <li>Accessible anywhere</li>
         <li>No Subscriptions</li>
       </ul>
+    
+      <div class="buttonContainer">
+        <LinkButton link="/dashboard/auth/signup">Sign up</LinkButton>
+        <p>Free forever, no card needed</p>
+      </div>
     </div>
+
   </div>
 </div>

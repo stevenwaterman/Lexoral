@@ -32,7 +32,7 @@
     font-size: 1.35em;
     color: var(--grey-2);
 
-    margin-top: 1em;
+    margin-top: 2em;
     margin-left: 0.5em;
     margin-bottom: 0;
   }

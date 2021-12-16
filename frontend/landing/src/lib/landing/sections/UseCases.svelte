@@ -20,8 +20,7 @@ import ResearchIcon from "../icons/ResearchIcon.svelte";
     --background-angle-horiz-start: calc(var(--col-margin) + 20em);
     --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
     --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
-    padding-bottom: calc(var(--background-angle-vert-delta) + 2em);
-    margin-bottom: calc(-1em - var(--background-angle-vert-delta));
+    padding-bottom: 2em;
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-2));
   }
@@ -40,8 +39,7 @@ import ResearchIcon from "../icons/ResearchIcon.svelte";
       var(--background-angle-horiz-start) 0,
       100% var(--background-angle-vert-delta),
       100% 100%,
-      var(--background-angle-horiz-start) calc(100% - var(--background-angle-vert-delta)),
-      0 calc(100% - var(--background-angle-vert-delta))
+      0 100%
     );
   }
 
