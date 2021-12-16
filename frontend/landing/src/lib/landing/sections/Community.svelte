@@ -1,6 +1,4 @@
 <script lang="ts">
-import Animation from "../animation/Animation.svelte";
-
 
 </script>
 
@@ -16,7 +14,7 @@ import Animation from "../animation/Animation.svelte";
     --background-angle-horiz-start: calc(var(--col-margin) + 20em);
     --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
     --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
-    padding-bottom: calc(var(--background-angle-vert-delta) - 1em);
+    padding-bottom: calc(var(--background-angle-vert-delta) + 1em);
     margin-bottom: calc(-1em - var(--background-angle-vert-delta));
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-0));
@@ -68,87 +66,65 @@ import Animation from "../animation/Animation.svelte";
     margin: 0;
   }
 
-  .steps {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto auto;
-    grid-auto-flow: column;
-
-    margin-top: 2em;
-    padding: 0;
-
-    align-items: center;
-    justify-items: center;
-    gap: 0.5em 1em;
+  .portrait {
+    border-radius: 50% 50% 10% 10%;
+    height: 10em;
+    max-height: 500px;
   }
 
-  .steps li {
-    display: contents;
-  }
-
-  .steps li p {
-    align-self: flex-start;
-  }
-
-  .circle {
+  .pictureContainer {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    background-color: var(--yellow-3);
-    color: var(--text);
-
-    clip-path: polygon(
-      0 0,
-      calc(100% - 1.5em) 0,
-      100% 50%,
-      calc(100% - 1.5em) 100%,
-      0 100%
-    );
-
-    grid-row: 1;
   }
 
-  .circle h3 {
-    margin: 0;
-    padding: 1em;
-    padding-right: 2em;
+  .personName {
+    white-space: nowrap;
+    font-weight: 700;
   }
 
-  .line {
-    grid-row: 1;
-    grid-column-start: 1;
-    grid-column-end: 4;
-    height: 0.5em;
-    width: 100%;
-    border-radius: 1em;
-    z-index: -1;
-
-    background-image: linear-gradient(to right, var(--blue-3) 30%, var(--grey-5) 50%, var(--blue-3) 51%);
-    background-size: 200%;
-
-    animation-name: progress;
-    animation-duration: 15s;
-    animation-delay: 2s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+  .job {
+    white-space: nowrap;
+    font-style: italic;
   }
 
-  @keyframes progress {
-    from { background-position-x: 110%; }
-    100% { background-position-x: -50%; }
+  .grid {
+    display: grid;
+    grid-template-columns: 16em 1fr;
+    gap: 4em;
+
+    justify-items: center;
+    align-items: center;
+    margin-top: 1em;
   }
 
-  .animationWrapper {
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row: 2;
-
-    width: 100%;
+  .stevenMessage {
+    max-width: 30em;
   }
-  
-  a {
-    color: var(--blue-3);
 
+  .stevenMessage p {
+    margin-top: 1em; 
+  }
+
+  .messageSubhead {
+    font-weight: 700;
+    color: var(--yellow-1);
+  }
+
+  .artieQuote {
+    max-width: 25em;
+    margin-left: 1em;
+    padding-left: 1em;
+    border-left: 0.25em solid var(--blue-2);
+  }
+
+  .quoteAttribution {
+    text-align: right;
+    font-style: italic;
+  }
+
+  .job {
+    
   }
 </style>
 
@@ -157,6 +133,51 @@ import Animation from "../animation/Animation.svelte";
   <div class="textContainer">
     <h2>Community</h2>
     <p class="subtitle">Made by real people<br>you can chat with</p>
+    
+    <div class="grid">
+      <div class="pictureContainer">
+        <img class="portrait" src="/assets/steven.jpg" alt="Me, Steven Waterman"/>
+        <p class="personName">Steven Waterman</p>
+        <p class="job" style="margin-bottom: 1em;">Founder</p>
+
+        <img class="portrait" src="/assets/goldie.jpg" alt="My cat Goldie" style="margin-top: 1em;"/>
+        <p class="personName">Goldie</p>
+        <p class="job">Background Noise</p>
+      </div>
+  
+      <div class="stevenMessage">
+        <p class="messageSubhead">Hi, I'm Steven - I like cats, robot wars, and forests.</p>
+
+        <p>
+          I've spent my career building software to make people's lives easier at a whole range of big companies.
+          So when I saw an opportunity to use tech to help solve a problem close to me, I went for it:
+        </p>
+
+        <p class="messageSubhead">I started Lexoral to help with my partner's PhD research.</p>
+
+        <div class="artieQuote">
+          <p>
+            I'm doing a longitudinal qualitative study, with 20+ hours of participant interviews.
+          </p>
+
+          <p>
+            Transcription was always my least favourite bit: it was slow to do manually but none of the alternatives worked for me.
+            They don't understand the terminology, wouldn't pass ethics, and locked you in to long-term subscriptions.
+          </p>
+
+          <p>
+            Lexoral meant transcripts took an afternoon instead of a week.
+            Only having to correct little mistakes meant I was immersed with my participants' stories from the start.
+          </p>
+        </div>
+
+        <p class="quoteAttribution">
+          Artie Waterman<br>PhD Student, Durham University
+        </p>
+      </div>
+    </div>
+    
+    
     
   </div>
 </div>
