@@ -13,8 +13,8 @@ import LinkButton from "$lib/LinkButton.svelte";
     align-items: center;
 
     margin-top: -10em;
-    padding-top: 4em;
-    padding-bottom: 6em;
+    padding-top: 6em;
+    padding-bottom: 3em;
 
     z-index: 6;
   }
@@ -29,6 +29,7 @@ import LinkButton from "$lib/LinkButton.svelte";
     overflow: hidden;
 
     background-color: var(--grey-5);
+    pointer-events: none;
   }
 
   .textContainer {
@@ -45,12 +46,15 @@ import LinkButton from "$lib/LinkButton.svelte";
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4em 2em;
+    gap: 3em 2em;
     
-    margin-top: 4em;
+    padding-top: 4em;
+    padding-bottom: 2em;
 
     justify-items: center;
     align-items: center;
+
+    border-bottom: 0.45em solid var(--yellow-1);
   }
 
   h2 {
@@ -60,6 +64,9 @@ import LinkButton from "$lib/LinkButton.svelte";
     transform-origin: 0% 0%;
     margin: 0;
     font-size: 3em;
+    border-bottom: 0.15em solid var(--yellow-1);
+    padding-left: 2em;
+    padding-right: 2em;
   }
 
   .list {

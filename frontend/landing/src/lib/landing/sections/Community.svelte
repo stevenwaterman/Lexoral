@@ -19,6 +19,8 @@ import Contact from "./Contact.svelte";
 
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-0));
     z-index: 7;
+
+    pointer-events: none;
   }
 
   .background {
@@ -46,6 +48,7 @@ import Contact from "./Contact.svelte";
     margin-top: 3em;
 
     color: var(--page-background);
+    pointer-events: initial;
   }
 
   h2 {

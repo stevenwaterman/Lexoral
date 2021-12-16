@@ -45,9 +45,11 @@ import ResearchIcon from "../icons/ResearchIcon.svelte";
 
   .divider {
     background-color: var(--blue-0);
-    height: 100%;
-    width: 0.7em;
+    height: calc(100% - 12em);
+    border-radius: 0.5em;
+    width: 0.5em;
     position: absolute;
+    bottom: 4em;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
