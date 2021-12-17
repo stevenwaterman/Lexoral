@@ -1,7 +1,6 @@
 <script lang="ts">
   import DropdownLabel from "$lib/DropdownLabel.svelte";
   import LinkButton from "$lib/LinkButton.svelte";
-import MarginVisual from "./MarginVisual.svelte";
 </script>
 
 <style>

@@ -3,33 +3,6 @@
 </script>
 
 <style>
-  .contain {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    height: max(20em, 30vh);
-
-    contain: strict;
-
-    z-index: -1;
-  }
-
-  .clip {
-    width: 100%;
-    height: 100%;
-
-    contain: strict;
-
-    clip-path: polygon(
-      -0.5px -0.5px,
-      calc(100% + 0.5px) -0.5px,
-      calc(100% + 0.5px) calc(100% + 0.5px),
-      -0.5px calc(30% + 0.5px)
-    );
-  }
-
   .panX {
     animation-duration: 30s;
     animation-iteration-count: infinite;
@@ -126,13 +99,8 @@
   }
 </style>
 
-<div class="contain">
-  <div class="clip">
-    <div class="panX">
-      <div class="panY">
-        <div class="gradient"/>
-      </div>
-    </div>
+<div class="panX">
+  <div class="panY">
+    <div class="gradient"/>
   </div>
 </div>
-

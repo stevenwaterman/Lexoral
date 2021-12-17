@@ -1,0 +1,118 @@
+<script lang="ts">
+  import Fa from "svelte-fa/src/fa.svelte";
+  import { faEnvelope, faRssSquare } from "@fortawesome/free-solid-svg-icons";
+  import { faTwitch, faTwitter, faSlack, faGithub } from "@fortawesome/free-brands-svg-icons";
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+
+    justify-items: center;
+    gap: 3em;
+
+    list-style: none;
+    width: fit-content;
+    padding: 0;
+  }
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--page-background);
+    text-decoration: none;
+
+    transition: color 0.1s;
+  }
+
+  a :nth-child(2) {
+    font-weight: 600;
+  }
+
+  a :last-child {
+    font-style: italic;
+  }
+
+  a:hover {
+    color: var(--yellow-1);
+  }
+
+  a:hover :global(.svelte-fa) {
+    filter: none;
+  }
+
+  .contact :global(.svelte-fa) {
+    font-size: 4em;
+    transition: color 0.1s, filter 0.1s;
+    filter: drop-shadow(0.03em 0.05em 0 var(--blue-2))
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  h3 {
+    font-size: 1.5em;
+  }
+</style>
+
+<div class="column">
+  <!-- <h3>Get in Touch</h3> -->
+
+  <ul class="contact">
+    <li>
+      <a class="contactMethod" href="mailto:chat@lexoral.com">
+        <Fa icon={faEnvelope} />
+        <p>Email Me</p>
+        <p>steven@lexoral.com</p>
+      </a>
+    </li>
+  
+    <li>
+      <a class="contactMethod" href="/blog">
+        <Fa icon={faRssSquare} />
+        <p>Read our Blog</p>
+        <p>Behind the Scenes</p>
+      </a>
+    </li>
+  
+    <li>
+      <a class="contactMethod" href="https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw">
+        <Fa icon={faSlack} />
+        <p>Join our Slack</p>
+        <p>Chat with other Users</p>
+      </a>
+    </li>
+  
+    <li>
+      <a class="contactMethod" href="https://www.twitch.tv/stewaterman">
+        <Fa icon={faTwitch} />
+        <p>Watch on Twitch</p>
+        <p>Streaming daily</p>
+      </a>
+    </li>
+  
+    <li>
+      <a class="contactMethod" href="https://twitter.com/lexoral/">
+        <Fa icon={faTwitter} />
+        <p>Follow us on Twitter</p>
+        <p>For updates</p>
+      </a>
+    </li>
+  
+    <li>
+      <a class="contactMethod" href="https://github.com/stevenwaterman/Lexoral/">
+        <Fa icon={faGithub} />
+        <p>We're on GitHub</p>
+        <p>Lexoral is Open-Source</p>
+      </a>
+    </li>
+  </ul>  
+</div>

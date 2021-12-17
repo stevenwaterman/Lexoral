@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <style>
   .wrapper {
     display: flex;
