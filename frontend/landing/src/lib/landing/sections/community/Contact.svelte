@@ -57,10 +57,6 @@
     justify-content: flex-start;
     align-items: center;
   }
-
-  h3 {
-    font-size: 1.5em;
-  }
 </style>
 
 <div class="column">

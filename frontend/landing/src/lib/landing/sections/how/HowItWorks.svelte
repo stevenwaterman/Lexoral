@@ -12,7 +12,9 @@
 
     align-items: center;
     justify-items: center;
-    gap: 0.5em 1em;
+    gap: 1em 1em;
+
+    margin: 0;
   }
 
   .steps li {
@@ -21,6 +23,7 @@
 
   .steps li p {
     align-self: flex-start;
+    max-width: 22em
   }
 
   .circle {
@@ -97,14 +100,14 @@
       </div>
       <p>
         Upload your audio or video files on the Lexoral dashboard.
-        They're encrypted and stored securely in the cloud.
+        They're encrypted and stored safely in the cloud.
         We accept almost any file type you can think of.
       </p>
 
-      <p style="padding-bottom: 1em;">
+      <p>
         With Lexoral, you always know your confidential data is safe.
         Our fully-automated platform means the only human involved is you.
-        Read our <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/PRIVACY.md">Privacy&nbsp;Policy</a> - it's short and simple.
+        Check our <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/PRIVACY.md">Privacy&nbsp;Policy</a> - it's short and simple.
       </p>
     </li>
 
@@ -136,7 +139,7 @@
 
       <p>
         We save changes to your account automatically, so you can edit your transcripts from anywhere.
-        Alternatively, use your transcript with other programs by downloading it as plain-text or subtitles.
+        Alternatively, use your transcript with other programs by exporting it as plain-text or subtitles.
       </p>
     </li>
 

@@ -3,14 +3,14 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
 
     width: 38em;
-    margin-bottom: 4em;
   }
 
   h1 {
     display: inline-block;
+    white-space: nowrap;
 
     font-weight: 800;
     font-size: 5em;
@@ -19,7 +19,7 @@
     transform-origin: 0% 0%;
     margin: 0;
 
-    filter: drop-shadow(1px 1px 1px var(--page-background))
+    filter: drop-shadow(1px 1px 1px var(--page-background));
   }
 
   h2 {
@@ -36,7 +36,7 @@
 </style>
 
 <div class="wrapper">
-  <h1>DIY&nbsp;Transcription<br>without&nbsp;the&nbsp;pain</h1>
+  <h1>DIY Transcription<br>without the pain</h1>
   <h2>
     Transcribing accurately needs context that only you know&nbsp;-&nbsp;but it's slow frustrating work.
     Our AI transcribes the easy bits&nbsp;-&nbsp;then asks for help where needed.

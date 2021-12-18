@@ -7,11 +7,6 @@ import Wave from "./components/Wave.svelte";
 import Processor from "./components/Processor.svelte";
 </script>
 <style>
-  svg {
-    width: 100%;
-    background-color: var(--blue-0);
-  }
-
   svg :global(*) {
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;

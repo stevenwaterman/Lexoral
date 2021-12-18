@@ -7,9 +7,8 @@
 <h3>Content Creation</h3>
 
 <p>
-  Adding subtitles to your videos is essential when making them accessible to everyone. The
-  automatic captions never work right, and they certainly don't understand all the weird
-  things you get up to. You'd love to make them better, but it all seems like magic.
+  Adding subtitles to your videos is an essential part of making them accessible to everyone.
+  The automatic captions never work right, and they certainly don't understand all the weird things you get up to. You'd love to make them better, but it all seems like magic.
 </p>
 
 <p>

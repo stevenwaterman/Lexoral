@@ -6,15 +6,18 @@
 
 <style>
 	.divider {
-		background-color: var(--blue-0);
-		height: calc(100% - 12em);
-		border-radius: 0.5em;
-		width: 0.5em;
+		height: calc(100% - 30em);
+		width: 0;
 		position: absolute;
-		bottom: 4em;
+    top: 50%;
 		left: 50%;
-		transform: translateX(-50%);
 		z-index: 10;
+
+    transform: translateY(-50%);
+
+    border-left-style: double;
+    border-width: 1em;
+    border-color: var(--blue-0);
 	}
 
 	.grid {
@@ -25,6 +28,8 @@
 
 		justify-items: center;
 		align-items: flex-start;
+
+    margin-bottom: -2em;
 	}
 
 	.grid :global(h3) {
@@ -41,16 +46,19 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: center;
+
+    max-width: 28em;
 	}
 
 	.grid :global(p) {
 		margin-top: 1em;
-		max-width: 30em;
+    font-size: 0.9em;
 	}
 
 	.grid :global(.conclusion) {
 		font-weight: 700;
 		text-align: center;
+    font-size: 1.1em;
 	}
 </style>
 
