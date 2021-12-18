@@ -1,5 +1,5 @@
 <script lang="ts">
-  import DropdownLabel from "$lib/DropdownLabel.svelte";
+  import DropdownLabel from "$lib/nav/DropdownLabel.svelte";
   import LinkButton from "$lib/LinkButton.svelte";
 </script>
 
@@ -32,18 +32,21 @@
     justify-items: center;
     align-items: center;
 
-    margin: auto;
-    gap: 3em;
-
     padding: 0;
 
-    font-size: 1.2em;
-    font-weight: 500;
+    font-size: 1.25em;
+    font-weight: 600;
+
+    height: 100%;
   }
 
   nav :global(.LinkButton) {
     --bgColor: rgba(0, 0, 0, 0.15);
     font-size: 1.3em;
+  }
+
+  li {
+    display: contents;
   }
 </style>
 
@@ -51,7 +54,49 @@
   <a href="/">
     <img class="logo" src="assets/smallBrand_white.svg" alt="The Lexoral logo"/>
   </a>
+  
   <ul class="navList">
+    <li>
+      <DropdownLabel
+        label="About"
+        topLink="#how-it-works"
+        menuItems={{
+          "How it Works": "#how-it-works",
+          "Use Cases": "#use-cases",
+          History: "#community",
+          "Try a Demo": "/demo"
+        }}
+      />
+    </li>
+
+    <li>
+      <DropdownLabel
+        label="Community"
+        topLink="#community"
+        menuItems={{
+          Slack: "https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw",
+          Twitter: "https://twitter.com/lexoral/",
+          GitHub: "https://github.com/stevenwaterman/Lexoral/",
+          Twitch: "https://www.twitch.tv/stewaterman/"
+        }}
+      />
+    </li>
+
+    <li>
+      <DropdownLabel
+        label="Blog"
+        topLink="/blog"
+      />
+    </li>
+
+    <li>
+      <DropdownLabel
+        label="Pricing"
+        topLink="#pricing"
+      />
+    </li>
+
+    <!--
     <li><DropdownLabel
       label="How it Works"
       topLink="#how-it-works"
@@ -73,7 +118,7 @@
     <li><DropdownLabel
       label="Pricing"
       topLink="#pricing"
-    /></li>
+    /></li> -->
   </ul>
   <LinkButton link="/dashboard">Sign in</LinkButton>
 </nav>

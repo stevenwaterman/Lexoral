@@ -9,6 +9,9 @@
     grid-template-columns: auto 1fr;
     margin: auto;
 
+    justify-content: center;
+    align-items: flex-end;
+
     padding-top: 4em;
     padding-bottom: 8em;
   }

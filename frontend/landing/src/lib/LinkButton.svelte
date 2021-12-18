@@ -20,6 +20,7 @@
     transition-timing-function: cubic-bezier(.05,.28,.25,.98);
 
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .LinkButton:hover {

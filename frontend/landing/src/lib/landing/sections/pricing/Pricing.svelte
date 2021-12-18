@@ -43,7 +43,7 @@
   }
 
   :global(#pricing) {
-    margin-top: -2em;
+    padding-top: 6em;
   }
 </style>
 

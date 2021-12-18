@@ -69,16 +69,16 @@
     <h3>Community</h3>
     <ul>
       <li><a href="/blog">Blog</a></li>
-      <li><a rel="external" href="/">Slack</a></li>
-      <li><a rel="external" href="/demo">Twitter</a></li>
-      <li><a rel="external" href="/demo">GitHub</a></li>
-      <li><a rel="external" href="/demo">Twitch</a></li>
+      <li><a rel="external" href="https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw">Slack</a></li>
+      <li><a rel="external" href="https://twitter.com/lexoral/">Twitter</a></li>
+      <li><a rel="external" href="https://github.com/stevenwaterman/Lexoral/">GitHub</a></li>
+      <li><a rel="external" href="https://www.twitch.tv/stewaterman">Twitch</a></li>
     </ul>
 
     <h3>Contact</h3>
     <div>
       <p>Email: <a href="mailto:steven@lexoral.com">steven@lexoral.com</a></p>
-      <p>Lexoral is Open-Source Software<br>under the <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/LICENSE">GPL License</a></p>
+      <p>Lexoral is Open-Source Software<br>published under the <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/LICENSE">GPL License</a></p>
       <p>© Lexoral 2021</p>
     </div>
   </div>

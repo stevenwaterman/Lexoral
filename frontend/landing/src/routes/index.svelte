@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Nav from "$lib/Nav.svelte";
+  import Nav from "$lib/nav/Nav.svelte";
   import AnimatedGradient from "$lib/AnimatedGradient.svelte";
   import Pricing from "$lib/landing/sections/pricing/Pricing.svelte";
   import HowItWorks from "$lib/landing/sections/how/HowItWorks.svelte";
@@ -28,7 +28,7 @@
     left: 0;
     right: 0;
 
-    --topHeight: 8em;
+    --topHeight: 6em;
     height: calc(var(--topHeight) + 12.5vw);
 
     contain: strict;

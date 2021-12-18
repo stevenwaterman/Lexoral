@@ -13,20 +13,23 @@
 <style>
   .label {
     position: relative;
+    padding: auto;
   }
 
-  .label:hover a {
-    color: var(--grey-5);
-  }
-
-  .label:focus-within a {
-    color: var(--grey-5);
-  }
-
-  .label a {
+  .topLink {
     color: var(--page-background);
     text-decoration: none;
+    padding: 1.5em;
   }
+
+  .label:hover .topLink {
+    color: var(--grey-5);
+  }
+
+  .label:focus-within .topLink {
+    color: var(--grey-5);
+  }
+
 
   .menu {
     display: flex;
@@ -37,17 +40,20 @@
     position: absolute;
     top: 100%;
     left: 50%;
-    z-index: 2;
-
-    color: var(--text);
+    z-index: 100;
+    margin-top: 0.3em;
 
     transform-origin: 50% 0;
     transform: translateX(-50%) scale(0);
 
     transition-property: transform;
     transition-duration: 0.2s;
+  }
 
-    filter: drop-shadow(-0.1em 0.1em 0 var(--form-border));
+  .menu-arrow-fill {
+    background-color: var(--grey-5);
+    height: 100%;
+    width: 100%;
   }
 
   .label:hover .menu {
@@ -59,54 +65,63 @@
   }
 
   .menu-arrow {
-    background-color: var(--page-background);
-    height: 2em;
+    height: 1.5em;
     width: 1.5em;
-    clip-path: polygon(
-      0% 50%,
-      0% 100%,
-      100% 100%,
-      100% 50%,
-      50% 0%
-    );
+    transform: rotate(45deg);
+
+    border-color: var(--form-border);
+    border-width: 0.15em;
+    border-style: solid none none solid;
+
+    box-sizing: border-box;
   }
 
   .menu-content {
-    margin-top: -1em;
     padding: 1em;
-    padding-top: 0.75em;
+
+    margin-top: -0.8em;
     border-radius: 1em;
-    background-color: var(--page-background);
+    background-color: var(--grey-5);
+
+    border: 0.15em solid var(--form-border);
   }
 
   ul {
     padding: 0;
     list-style: none;
+
+    display: flex;
+    flex-direction: column;
   }
 
-  li {
+  .menuEntry {
+    display: contents;
+  }
+
+  .menuLink {
+    color: var(--text) !important;
+    text-decoration: none;
     white-space: nowrap;
+    padding: 0.1em;
   }
 
-  li a {
+  .menuEntry:hover .menuLink {
     color: var(--blue-1) !important;
-  }
-
-  li:hover a {
-    color: var(--blue-2) !important;
   }
 </style>
 
 <span class="label">
-  <a href={topLink}>{label}</a>
+  <a class="topLink" href={topLink}>{label}</a>
   {#if showMenu}
     <div class="menu">
-      <div class="menu-arrow"/>
+      <div class="menu-arrow">
+        <div class="menu-arrow-fill"/>
+      </div>
       <div class="menu-content">
         <ul>
           {#each menuEntries as [menuLabel, menuLink] (menuLink)}
-            <li>
-              <a href={menuLink}>{menuLabel}</a>
+            <li class="menuEntry">
+              <a class="menuLink" href={menuLink}>{menuLabel}</a>
             </li>
           {/each}
         </ul>
