@@ -31,35 +31,6 @@
 
     margin-bottom: -2em;
 	}
-
-	.grid :global(h3) {
-		font-weight: 600;
-		font-size: 1.75em;
-		color: var(--blue-1);
-
-    margin-top: 0.5em;
-    margin-bottom: 0;
-	}
-
-	.grid :global(.panel) {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: center;
-
-    max-width: 28em;
-	}
-
-	.grid :global(p) {
-		margin-top: 1em;
-    font-size: 0.9em;
-	}
-
-	.grid :global(.conclusion) {
-		font-weight: 700;
-		text-align: center;
-    font-size: 1.1em;
-	}
 </style>
 
 <DiagonalSection
@@ -71,7 +42,7 @@
 	<div slot="bg" class="divider" />
 
 	<div class="grid">
-		<div class="panel"><Research/></div>
-		<div class="panel"><Creation/></div>
+		<Research/>
+		<Creation/>
 	</div>
 </DiagonalSection>
