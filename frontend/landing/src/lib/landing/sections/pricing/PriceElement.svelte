@@ -45,6 +45,26 @@
     align-self: flex-start;
     justify-self: center;
   }
+
+  @media (max-width: 1199px) {
+    .grid {
+      grid-template-columns: auto;
+      grid-template-rows: repeat(4, auto);
+      justify-items: center;
+      align-items: center;
+    }
+
+    .type {
+      grid-column: unset;
+    }
+
+    .perHour {
+      grid-row: unset;
+      margin: 0;
+      margin-top: -0.1em;
+      margin-bottom: -0.1em;
+    }
+  }
 </style>
 
 <div class="grid">

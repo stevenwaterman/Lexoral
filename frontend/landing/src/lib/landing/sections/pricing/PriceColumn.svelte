@@ -10,6 +10,15 @@
     color: var(--blue-1);
     height: fit-content;
   }
+
+  @media (max-width: 1199px) {
+    .priceCol {
+      margin-top: -2em;
+      margin-bottom: -2em;
+      align-self: center;
+      font-size: 0.9em;
+    }
+  }
 </style>
 
 <div class="priceCol">

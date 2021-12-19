@@ -1,6 +1,7 @@
 <style>
   .stevenMessage {
     max-width: 30em;
+    justify-self: flex-start;
   }
 
   .stevenMessage p {

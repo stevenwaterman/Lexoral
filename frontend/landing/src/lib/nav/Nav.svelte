@@ -43,10 +43,17 @@
   nav :global(.LinkButton) {
     --bgColor: rgba(0, 0, 0, 0.15);
     font-size: 1.3em;
+    justify-self: flex-end;
   }
 
   li {
     display: contents;
+  }
+
+  @media (max-width: 1199px) {
+    .navList {
+      display: none;
+    }
   }
 </style>
 
@@ -95,30 +102,7 @@
         topLink="#pricing"
       />
     </li>
-
-    <!--
-    <li><DropdownLabel
-      label="How it Works"
-      topLink="#how-it-works"
-    /></li>
-
-    <li><DropdownLabel
-      label="Use Cases"
-      topLink="#use-cases"
-    /></li>
-
-    <li><DropdownLabel
-      label="Community"
-      topLink="#community"
-      menuItems={{
-        Slack: "https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw"
-      }}
-    /></li>
-
-    <li><DropdownLabel
-      label="Pricing"
-      topLink="#pricing"
-    /></li> -->
   </ul>
+
   <LinkButton link="/dashboard">Sign in</LinkButton>
 </nav>

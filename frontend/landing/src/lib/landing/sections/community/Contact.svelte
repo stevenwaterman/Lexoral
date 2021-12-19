@@ -52,14 +52,25 @@
     filter: drop-shadow(0.03em 0.05em 0 var(--blue-2))
   }
 
-  @media (max-width: 1599px) {
+  @media (max-width: 1499px) {
     .contact {
-      grid-template-columns: 1fr;
+      grid-template-columns: auto;
       grid-template-rows: repeat(6, 1fr);
       gap: 2em;
       font-size: 0.75em;
       margin-top: -5em;
       margin-bottom: -5em;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .contact {
+      font-size: 1em;
+      margin-top: 0em;
+      margin-bottom: 0em;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 1fr 1fr;
+      grid-column: span 2;
     }
   }
 </style>

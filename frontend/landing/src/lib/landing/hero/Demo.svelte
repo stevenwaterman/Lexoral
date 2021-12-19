@@ -5,10 +5,15 @@ import LinkButton from "$lib/LinkButton.svelte";
 </script>
 
 <style>
+  .container {
+    position: relative;
+    grid-row: span 2;
+  }
+
   .border {
     position: relative;
 
-    height: 28em;
+    height: 20em;
     border: 0.2em solid var(--form-border);
     border-radius: 1em;
     transition: box-shadow 0.2s;
@@ -23,15 +28,8 @@ import LinkButton from "$lib/LinkButton.svelte";
     animation-fill-mode: both;
 
     z-index: 11;
-  }
 
-  @keyframes glow {
-    from {
-      box-shadow: 0em 0em 1em -0.2em var(--yellow-3);
-    }
-    to {
-      box-shadow: 0em 0em 1.5em -0.2em var(--yellow-3);
-    }
+    box-shadow: 0em 0em 1em -0.2em var(--yellow-3);
   }
 
   .border:hover .cursor {
@@ -113,11 +111,6 @@ import LinkButton from "$lib/LinkButton.svelte";
     width: calc(100% + 2.5em);
     height: calc(100% + 1.5em);
   }
-  
-  .container {
-    position: relative;
-    width: 100%;
-  }
 
   .linkAnchor {
     position: absolute;
@@ -129,6 +122,18 @@ import LinkButton from "$lib/LinkButton.svelte";
 
   .linkAnchor :global(.LinkButton) {
     font-size: 1.2em;
+  }
+
+  @media (max-width: 1599px) {
+    .border {
+      height: 15em;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .border {
+      height: 20em;
+    }
   }
 </style>
 
@@ -142,6 +147,6 @@ import LinkButton from "$lib/LinkButton.svelte";
     </div>
   </div>
   <div class="linkAnchor">
-    <LinkButton link="/demo">Try&nbsp;the&nbsp;full&nbsp;demo</LinkButton>
+    <LinkButton link="/demo">Try the full demo</LinkButton>
   </div>
 </div>

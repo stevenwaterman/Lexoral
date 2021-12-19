@@ -9,7 +9,7 @@
 <style>
   .grid {
     display: grid;
-    grid-template-columns: 10em 1fr auto;
+    grid-template-columns: 10em auto 1fr;
     gap: 4em;
 
     justify-items: center;
@@ -19,10 +19,9 @@
     width: 100%;
   }
 
-  @media (max-width: 1599px) {
+  @media (max-width: 1199px) {
     .grid {
-      grid-template-columns: 10em 1fr auto;
-      gap: 1em;
+      grid-template-columns: 10em 1fr;
     }
   }
 </style>

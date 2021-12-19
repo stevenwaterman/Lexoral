@@ -5,16 +5,6 @@
 </script>
 
 <style>
-  .bgLogo {
-    position: absolute;
-    left: calc(110% - var(--col-margin));
-    top: 90%;
-    height: 150%;
-    transform: translate(-50%, -50%) rotate(-10deg);
-    filter: brightness(60%) blur(0.1em);
-    opacity: 20%;
-  }
-
   .grid {
     display: grid;
     grid-template-columns: 3fr 2fr 2fr 1fr;
@@ -68,6 +58,22 @@
       grid-template-columns: 3fr 2fr 2fr;
     }
   }
+
+  @media (max-width: 1199px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto auto;
+    }
+
+    .textCol1 {
+      grid-column: span 2;
+    }
+
+    .grid :global(.LinkButton:first-of-type) {
+      grid-column: span 2;
+      margin-bottom: 4em;
+    }
+  }
 </style>
 
 <DiagonalSection
@@ -77,7 +83,6 @@
   subtitleBottom="and try it risk-free"
   flatBottom
 >
-  <img slot="bg" class="bgLogo" src="/assets/logo.svg" alt="The Lexoral logo" aria-hidden/>
   <div class="grid">
     <p class="textCol1">
       Get started instantly with 15 minutes of free transcription.

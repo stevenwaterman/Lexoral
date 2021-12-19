@@ -31,6 +31,17 @@
 
     margin-bottom: -2em;
 	}
+
+  @media (max-width: 1199px) {
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+    }
+
+    .divider {
+      display: none;
+    }
+  }
 </style>
 
 <DiagonalSection

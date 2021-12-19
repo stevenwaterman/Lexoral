@@ -52,6 +52,24 @@
   p {
     margin-bottom: 1em;
   }
+
+  @media (max-width: 1199px) {
+    .outerGrid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto auto;
+    }
+
+    .contactHeader {
+      margin-top: 2em;
+      grid-column: 1 / 3;
+      grid-row: 3;
+    }
+
+    .contactBody {
+      grid-column: 1 / 3;
+      grid-row: 4;
+    }
+  }
 </style>
 
 <footer>
@@ -75,8 +93,8 @@
       <li><a rel="external" href="https://www.twitch.tv/stewaterman">Twitch</a></li>
     </ul>
 
-    <h3>Contact</h3>
-    <div>
+    <h3 class="contactHeader">Contact</h3>
+    <div class="contactBody">
       <p>Email: <a href="mailto:steven@lexoral.com">steven@lexoral.com</a></p>
       <p>Lexoral is Open-Source Software<br>published under the <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/LICENSE">GPL License</a></p>
       <p>© Lexoral 2021</p>

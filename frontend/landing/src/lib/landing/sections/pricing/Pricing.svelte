@@ -21,7 +21,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     width: fit-content;
-    gap: 2em;
+    gap: 4em;
     
     justify-items: center;
     align-items: flex-start;
@@ -55,6 +55,12 @@
 
     .bgLogo {
       opacity: 0.1;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .bgLogo {
+      opacity: 0;
     }
   }
 </style>
