@@ -1,5 +1,6 @@
 <script lang="ts">
   import { playingStore } from "../audio/audioStatus";
+import { isDemo } from "../demo";
 </script>
 
 <style>
@@ -22,10 +23,6 @@
     background-color: var(--yellow-3);
   }
 
-  .logo {
-    
-  }
-
   img {
     width: auto;
     height: 100%;
@@ -35,7 +32,7 @@
 </style>
 
 <div class="header" class:playing={$playingStore}>
-  <a class="logo" href="/dashboard">
+  <a class="logo" href={isDemo() ? "/" : "/dashboard"}>
     <img src="/assets/smallBrand.svg" alt="logo"/>
   </a>
 </div>
