@@ -13,11 +13,13 @@
     transform: translate(-52%, -48%) rotate(-5deg);
     filter: brightness(60%) blur(0.1em);
     opacity: 20%;
+
+    transition: 1s opacity;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr auto;
     width: fit-content;
     gap: 2em;
     
@@ -44,6 +46,16 @@
 
   :global(#pricing) {
     padding-top: 6em;
+  }
+
+  @media (max-width: 1599px) {
+    .grid {
+      grid-template-columns: 1fr auto;
+    }
+
+    .bgLogo {
+      opacity: 0.1;
+    }
   }
 </style>
 

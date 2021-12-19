@@ -9,14 +9,21 @@
 <style>
   .grid {
     display: grid;
-    grid-template-columns: 16em 1fr auto;
+    grid-template-columns: 10em 1fr auto;
     gap: 4em;
 
     justify-items: center;
-    align-items: flex-start;
+    align-items: center;
     margin-top: 1em;
 
-    width: fit-content;
+    width: 100%;
+  }
+
+  @media (max-width: 1599px) {
+    .grid {
+      grid-template-columns: 10em 1fr auto;
+      gap: 1em;
+    }
   }
 </style>
 

@@ -8,7 +8,7 @@
     grid-template-rows: 1fr 1fr;
     gap: 2em;
     color: var(--blue-1);
-    height: fit-content
+    height: fit-content;
   }
 </style>
 

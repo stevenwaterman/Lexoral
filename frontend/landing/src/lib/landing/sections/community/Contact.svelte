@@ -16,6 +16,7 @@
     list-style: none;
     width: fit-content;
     padding: 0;
+    margin: 0;
   }
 
   a {
@@ -51,64 +52,64 @@
     filter: drop-shadow(0.03em 0.05em 0 var(--blue-2))
   }
 
-  .column {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+  @media (max-width: 1599px) {
+    .contact {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, 1fr);
+      gap: 2em;
+      font-size: 0.75em;
+      margin-top: -5em;
+      margin-bottom: -5em;
+    }
   }
 </style>
 
-<div class="column">
-  <!-- <h3>Get in Touch</h3> -->
+<ul class="contact">
+  <li>
+    <a class="contactMethod" href="mailto:chat@lexoral.com">
+      <Fa icon={faEnvelope} />
+      <p>Email Me</p>
+      <p>steven@lexoral.com</p>
+    </a>
+  </li>
 
-  <ul class="contact">
-    <li>
-      <a class="contactMethod" href="mailto:chat@lexoral.com">
-        <Fa icon={faEnvelope} />
-        <p>Email Me</p>
-        <p>steven@lexoral.com</p>
-      </a>
-    </li>
-  
-    <li>
-      <a class="contactMethod" href="/blog">
-        <Fa icon={faRssSquare} />
-        <p>Read our Blog</p>
-        <p>Behind the Scenes</p>
-      </a>
-    </li>
-  
-    <li>
-      <a class="contactMethod" href="https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw">
-        <Fa icon={faSlack} />
-        <p>Join our Slack</p>
-        <p>Chat with other Users</p>
-      </a>
-    </li>
-  
-    <li>
-      <a class="contactMethod" href="https://www.twitch.tv/stewaterman">
-        <Fa icon={faTwitch} />
-        <p>Watch on Twitch</p>
-        <p>Streaming daily</p>
-      </a>
-    </li>
-  
-    <li>
-      <a class="contactMethod" href="https://twitter.com/lexoral/">
-        <Fa icon={faTwitter} />
-        <p>Follow us on Twitter</p>
-        <p>For updates</p>
-      </a>
-    </li>
-  
-    <li>
-      <a class="contactMethod" href="https://github.com/stevenwaterman/Lexoral/">
-        <Fa icon={faGithub} />
-        <p>We're on GitHub</p>
-        <p>Lexoral is Open-Source</p>
-      </a>
-    </li>
-  </ul>  
-</div>
+  <li>
+    <a class="contactMethod" href="/blog">
+      <Fa icon={faRssSquare} />
+      <p>Read our Blog</p>
+      <p>Behind the Scenes</p>
+    </a>
+  </li>
+
+  <li>
+    <a class="contactMethod" href="https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw">
+      <Fa icon={faSlack} />
+      <p>Join our Slack</p>
+      <p>Chat with other Users</p>
+    </a>
+  </li>
+
+  <li>
+    <a class="contactMethod" href="https://www.twitch.tv/stewaterman">
+      <Fa icon={faTwitch} />
+      <p>Watch on Twitch</p>
+      <p>Streaming daily</p>
+    </a>
+  </li>
+
+  <li>
+    <a class="contactMethod" href="https://twitter.com/lexoral/">
+      <Fa icon={faTwitter} />
+      <p>Follow us on Twitter</p>
+      <p>For updates</p>
+    </a>
+  </li>
+
+  <li>
+    <a class="contactMethod" href="https://github.com/stevenwaterman/Lexoral/">
+      <Fa icon={faGithub} />
+      <p>We're on GitHub</p>
+      <p>Lexoral is Open-Source</p>
+    </a>
+  </li>
+</ul>

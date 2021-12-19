@@ -8,8 +8,6 @@ import LinkButton from "$lib/LinkButton.svelte";
   .border {
     position: relative;
 
-    width: 90%;
-    margin-left: 10%;
     height: 28em;
     border: 0.2em solid var(--form-border);
     border-radius: 1em;

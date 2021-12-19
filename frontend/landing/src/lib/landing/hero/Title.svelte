@@ -5,7 +5,8 @@
     align-items: flex-start;
     justify-content: flex-start;
 
-    width: 38em;
+    font-size: 1.35em;
+    width: 30em;
   }
 
   h1 {
@@ -13,7 +14,7 @@
     white-space: nowrap;
 
     font-weight: 800;
-    font-size: 5em;
+    font-size: 3.5em;
 
     transform: scaleX(0.95);
     transform-origin: 0% 0%;
@@ -22,24 +23,29 @@
     filter: drop-shadow(1px 1px 1px var(--page-background));
   }
 
-  h2 {
-    width: 80%;
-
+  p {
     font-weight: 400;
-    font-size: 1.35em;
     color: var(--grey-2);
+    margin-top: 1em;
+  }
 
-    margin-top: 2em;
-    margin-left: 0.5em;
-    margin-bottom: 0;
+  @media (max-width: 1599px) {
+    h1 {
+      font-size: 3em;
+    }
+
+    .wrapper {
+      width: 24.5em;
+    }
   }
 </style>
 
 <div class="wrapper">
   <h1>DIY Transcription<br>without the pain</h1>
-  <h2>
-    Transcribing accurately needs context that only you know&nbsp;-&nbsp;but it's slow frustrating work.
-    Our AI transcribes the easy bits&nbsp;-&nbsp;then asks for help where needed.
-    Lexoral&nbsp;makes&nbsp;perfect&nbsp;transcripts&nbsp;fast.
-  </h2>
+
+  <p>
+    Transcribing accurately needs context that only you know - but it's slow frustrating work.
+    Our AI transcribes the easy bits - then asks for help where needed.
+    Lexoral makes perfect transcripts fast.
+  </p>
 </div>
