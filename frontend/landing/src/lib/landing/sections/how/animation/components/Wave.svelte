@@ -1,17 +1,12 @@
 <style>
   g {
     transform: translate(290px, 40px) scale(0.9) rotate(5deg);
-    animation-name: g;
   }
-
-  @keyframes g {
-  }
-
-
 
   .audio {
     fill: transparent;
     stroke: var(--yellow-1);
+    stroke-width: 0;
 
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -46,6 +41,7 @@
   .word {
     fill: transparent;
     stroke: var(--yellow-1);
+    stroke-width: 0;
 
     stroke-linecap: round;
     stroke-linejoin: round;

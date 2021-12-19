@@ -1,6 +1,7 @@
 <style>
   .outer {
     animation-name: outer;
+    transform: translate(385px, -105px) scale(0.7);
   }
 
   @keyframes outer {
