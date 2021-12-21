@@ -73,6 +73,13 @@
       grid-column: span 2;
     }
   }
+
+  @media (max-width: 799px) {
+    .contact {
+      grid-column: unset;
+      grid-template-columns: auto;
+    }
+  }
 </style>
 
 <ul class="contact">

@@ -24,6 +24,13 @@
       grid-template-columns: 10em 1fr;
     }
   }
+
+  @media (max-width: 799px) {
+    .grid {
+      grid-template-columns: auto;
+      gap: 2em;
+    }
+  }
 </style>
 
 <DiagonalSection

@@ -63,6 +63,12 @@
       opacity: 0;
     }
   }
+
+  @media (max-width: 799px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 
 <DiagonalSection

@@ -13,7 +13,7 @@
 <style>
   :global(body) {
     overflow-x: hidden;
-    --col-width: min(1200pt, calc(100vw - 4em));
+    --col-width: min(1200pt, 90vw);
     --col-margin: calc(50vw - var(--col-width) / 2);
   }
 

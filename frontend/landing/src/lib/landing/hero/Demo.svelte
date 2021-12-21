@@ -135,6 +135,12 @@ import LinkButton from "$lib/LinkButton.svelte";
       height: 20em;
     }
   }
+
+  @media (max-width: 799px) {
+    .container {
+      display: none;
+    }
+  }
 </style>
 
 <div class="container">

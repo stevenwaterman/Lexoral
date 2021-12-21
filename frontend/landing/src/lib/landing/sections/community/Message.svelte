@@ -25,6 +25,17 @@
     text-align: right;
     font-style: italic;
   }
+
+  @media (max-width: 1199px) {
+    .stevenMessage {
+      max-width: unset;
+      margin-top: -1em;
+    }
+
+    .artieQuote {
+      max-width: unset;
+    }
+  }
 </style>
 
 <div class="stevenMessage">

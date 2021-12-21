@@ -33,6 +33,12 @@
       align-self: flex-start;
     }
   }
+
+  @media (max-width: 799px) {
+    h1 {
+      font-size: min(12vw, 3em);
+    }
+  }
 </style>
 
 <h1>DIY Transcription<br>without the pain</h1>

@@ -15,6 +15,7 @@
     gap: 1em 1em;
 
     margin: 0;
+    padding: 0;
   }
 
   .steps li {
@@ -49,6 +50,10 @@
     padding: 1em;
     padding-right: 2em;
   }
+
+  li:nth-of-type(1) .circle { grid-column: 1; }
+  li:nth-of-type(2) .circle { grid-column: 2; }
+  li:nth-of-type(3) .circle { grid-column: 3; }
 
   .line {
     grid-row: 1;
@@ -85,6 +90,28 @@
   a {
     color: var(--blue-3);
   }
+
+  @media (max-width: 799px) {
+    .steps {
+      grid-template-columns: 1fr;
+      grid-auto-flow: row;
+      justify-items: flex-start;
+    }
+
+    .animationWrapper {
+      display: none;
+    }
+
+    .line {
+      display: none;
+    }
+
+    .circle {
+      margin-top: 2em;
+      grid-column: unset !important;
+      grid-row: unset !important;
+    }
+  }
 </style>
 
 <DiagonalSection
@@ -95,7 +122,7 @@
 >
   <ol class="steps">
     <li>
-      <div class="circle" style="grid-column: 1;">
+      <div class="circle">
         <h3>Upload</h3>
       </div>
       <p>
@@ -112,7 +139,7 @@
     </li>
 
     <li>
-      <div class="circle" style="grid-column: 2;">
+      <div class="circle">
         <h3>Process</h3>
       </div>
       <p>
@@ -128,7 +155,7 @@
     </li>
     
     <li>
-      <div class="circle" style="grid-column: 3;">
+      <div class="circle">
         <h3>Refine</h3>
       </div>
       <p>

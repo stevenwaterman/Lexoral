@@ -5,7 +5,7 @@
 
 <style>
   svg {
-    height: 10em;
+    max-height: 10em;
   }
 </style>
 

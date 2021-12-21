@@ -74,6 +74,25 @@
       margin-bottom: 4em;
     }
   }
+
+  @media (max-width: 799px) {
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, auto);
+      justify-items: flex-start;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .textCol1 {
+      grid-column: unset;
+    }
+
+    .grid :global(.LinkButton) {
+      grid-column: unset;
+      margin-bottom: 4em;
+    }
+  }
 </style>
 
 <DiagonalSection

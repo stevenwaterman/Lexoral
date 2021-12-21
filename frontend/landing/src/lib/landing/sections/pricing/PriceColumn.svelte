@@ -19,6 +19,13 @@
       font-size: 0.9em;
     }
   }
+
+  @media (max-width: 799px) {
+    .priceCol {
+      grid-row: 1;
+      margin-top:1em;
+    }
+  }
 </style>
 
 <div class="priceCol">

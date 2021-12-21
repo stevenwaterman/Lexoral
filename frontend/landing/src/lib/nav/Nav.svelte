@@ -22,6 +22,7 @@
   .logo {
     height: 100%;
     max-height: 3em;
+    max-width: 100%;
   }
   
   .navList {
@@ -53,6 +54,16 @@
   @media (max-width: 1199px) {
     .navList {
       display: none;
+    }
+  }
+
+  @media (max-width: 799px) {
+    .navList {
+      display: none;
+    }
+
+    nav :global(.LinkButton) {
+      font-size: 1em;
     }
   }
 </style>

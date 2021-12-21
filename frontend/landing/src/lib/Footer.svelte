@@ -30,6 +30,7 @@
   .logo {
     margin-bottom: 1em;
     height: 5em;
+    max-width: 100%;
   }
 
   ul {
@@ -68,6 +69,27 @@
     .contactBody {
       grid-column: 1 / 3;
       grid-row: 4;
+    }
+  }
+
+  @media (max-width: 799px) {
+    .outerGrid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, auto);
+    }
+
+    h3 {
+      margin-top: 2em;
+    }
+
+    .contactHeader {
+      grid-column: unset;
+      grid-row: unset;
+    }
+
+    .contactBody {
+      grid-column: unset;
+      grid-row: unset;
     }
   }
 </style>

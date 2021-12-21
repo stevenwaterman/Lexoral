@@ -38,6 +38,13 @@
       padding-bottom: 4em;
     }
   }
+
+  @media (max-width: 799px) {
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+    }
+  }
 </style>
 
 <div class="grid">

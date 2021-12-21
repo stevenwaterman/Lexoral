@@ -131,6 +131,12 @@
       0 calc(100% - var(--background-angle-vert-delta))
     );
   }
+
+  @media (max-width: 799px) {
+    p {
+      font-size: min(8vw, 1.75em);
+    }
+  }
 </style>
 
 <section class:flatTop class:flatBottom>
