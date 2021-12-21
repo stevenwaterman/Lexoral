@@ -1,4 +1,4 @@
-<script lang="ts">
+"<script lang="ts">
   import LinkButton from "$lib/LinkButton.svelte";
   import DiagonalSection from "$lib/landing/sections/DiagonalSection.svelte";
   import PriceColumn from "./PriceColumn.svelte";
@@ -83,7 +83,7 @@
       <p>We don't make you pay for things you don't need. Fill your account with credit and start uploading. Pay for what you use, and keep your transcripts forever.</p>
       <p>There are no hidden fees, so you know exactly what it will cost. 1 minute of footage costs 1 minute of credit - because that just makes sense.</p>
       <p>New accounts get 15 minutes of free credit so you can try Lexoral with your own audio and decide if it's right for you.</p>
-      <LinkButton link="/dashboard/auth/signup">Try it for free</LinkButton>
+      <LinkButton link="/dashboard/auth/signup" external>Try it for free</LinkButton>
     </div>
 
     <PriceColumn/>

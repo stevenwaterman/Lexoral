@@ -1,10 +1,6 @@
 <script lang="ts">
-  export let label: string;
-  export let topLink: string;
-  export let menuItems: Record<string, string> = {}
-
-  let menuEntries: Array<[string, string]>;
-  $: menuEntries = Object.entries(menuItems);
+  export let topEntry: {label: string; link: string; external?: true};
+  export let menuEntries: Array<{label: string; link: string; external?: true}> = []
 
   let showMenu: boolean;
   $: showMenu = menuEntries.length > 0;
@@ -111,7 +107,7 @@
 </style>
 
 <span class="label">
-  <a class="topLink" href={topLink}>{label}</a>
+  <a class="topLink" href={topEntry.link} rel={topEntry.external ? "external" : undefined}>{topEntry.label}</a>
   {#if showMenu}
     <div class="menu">
       <div class="menu-arrow">
@@ -119,9 +115,9 @@
       </div>
       <div class="menu-content">
         <ul>
-          {#each menuEntries as [menuLabel, menuLink] (menuLink)}
+          {#each menuEntries as {label, link, external} (link)}
             <li class="menuEntry">
-              <a class="menuLink" href={menuLink}>{menuLabel}</a>
+              <a class="menuLink" href={link} rel={external ? "external" : undefined}>{label}</a>
             </li>
           {/each}
         </ul>

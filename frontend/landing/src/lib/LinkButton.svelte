@@ -1,6 +1,7 @@
 <script lang="ts">
   export let link: string;
   export let newTab: boolean = false;
+  export let external: boolean = false;
 </script>
 
 <style>
@@ -48,7 +49,7 @@
 
 <a
   class="LinkButton"
-  rel="external"
+  rel={external ? "external" : undefined}
   href={link}
   target={newTab ? "_blank" : "_self"}
 >

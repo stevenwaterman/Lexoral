@@ -153,6 +153,6 @@ import LinkButton from "$lib/LinkButton.svelte";
     </div>
   </div>
   <div class="linkAnchor">
-    <LinkButton link="/demo">Try the full demo</LinkButton>
+    <LinkButton link="/demo" external>Try the full demo</LinkButton>
   </div>
 </div>

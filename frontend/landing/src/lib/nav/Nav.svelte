@@ -76,44 +76,53 @@
   <ul class="navList">
     <li>
       <DropdownLabel
-        label="About"
-        topLink="#how-it-works"
-        menuItems={{
-          "How it Works": "#how-it-works",
-          "Use Cases": "#use-cases",
-          History: "#community",
-          "Try a Demo": "/demo"
-        }}
+        topEntry={{label: "About", link: "/#how-it-works"}}
+        menuEntries={[
+          {
+            label: "How it Works",
+            link: "/#how-it-works"
+          },
+          {
+            label: "Use Cases",
+            link: "/#use-cases",
+          },
+          {
+            label: "History",
+            link: "/#community"
+          },
+          {
+            label: "Try a Demo",
+            link: "/demo",
+            external: true
+          }
+        ]}
       />
     </li>
 
     <li>
       <DropdownLabel
-        label="Community"
-        topLink="#community"
-        menuItems={{
-          Slack: "https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw",
-          Twitter: "https://twitter.com/lexoral/",
-          GitHub: "https://github.com/stevenwaterman/Lexoral/",
-          Twitch: "https://www.twitch.tv/stewaterman/"
-        }}
+        topEntry={{label: "Community", link: "/#community"}}
+        menuEntries={[
+          {label: "Slack", link: "https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw", external: true},
+          {label: "Twitter", link: "https://twitter.com/lexoral/", external: true},
+          {label: "GitHub", link: "https://github.com/stevenwaterman/Lexoral/", external: true},
+          {label: "Twitch", link:"https://www.twitch.tv/stewaterman/", external: true}
+        ]}
       />
     </li>
 
     <li>
       <DropdownLabel
-        label="Blog"
-        topLink="/blog"
+        topEntry={{label: "Blog", link: "/blog"}}
       />
     </li>
 
     <li>
       <DropdownLabel
-        label="Pricing"
-        topLink="#pricing"
+        topEntry={{label: "Pricing", link: "/#pricing"}}
       />
     </li>
   </ul>
 
-  <LinkButton link="/dashboard">Sign in</LinkButton>
+  <LinkButton link="/dashboard" external>Sign in</LinkButton>
 </nav>

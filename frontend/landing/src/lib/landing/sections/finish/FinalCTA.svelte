@@ -107,13 +107,13 @@
       Get started instantly with 15 minutes of free transcription.
       No restrictions, no locked features, and no card needed - just sign up and go!
     </p>
-    <LinkButton link="/dashboard/auth/signup">Sign up</LinkButton>
+    <LinkButton link="/dashboard/auth/signup" external>Sign up</LinkButton>
 
     <p class="textCol2"><span class="heading">After the trial?</span><br>Our simple pricing means you only pay for what you use</p>
-    <LinkButton link="#pricing">Pricing</LinkButton>
+    <LinkButton link="/#pricing">Pricing</LinkButton>
   
     <p class="textCol3"><span class="heading">Still not convinced?</span><br>We're always looking to improve - let us know what's worrying you</p>
-    <LinkButton link="#community">Contact us</LinkButton>
+    <LinkButton link="/#community">Contact us</LinkButton>
 
     <Arrow/>
   </div>
