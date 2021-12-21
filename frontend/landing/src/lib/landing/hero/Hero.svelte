@@ -17,7 +17,6 @@
     justify-content: center;
     align-items: flex-end;
 
-    padding-top: 4em;
     padding-bottom: 8em;
   }
 

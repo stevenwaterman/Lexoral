@@ -1,18 +1,4 @@
 <style>
-  h1 {
-    display: inline-block;
-    white-space: nowrap;
-
-    font-weight: 800;
-    font-size: 3.5em;
-
-    transform: scaleX(0.95);
-    transform-origin: 0% 0%;
-    margin: 0;
-
-    filter: drop-shadow(1px 1px 1px var(--page-background));
-  }
-
   p {
     font-weight: 400;
     color: var(--grey-2);

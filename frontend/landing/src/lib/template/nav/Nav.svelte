@@ -1,5 +1,5 @@
 <script lang="ts">
-  import DropdownLabel from "$lib/nav/DropdownLabel.svelte";
+  import DropdownLabel from "$lib/template/nav/DropdownLabel.svelte";
   import LinkButton from "$lib/LinkButton.svelte";
 </script>
 
@@ -9,6 +9,7 @@
     height: 4em;
 
     padding-top: 0.5em;
+    margin-bottom: 4em;
 
     display: grid;
     grid-template-columns: auto 1fr auto;
