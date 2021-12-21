@@ -69,7 +69,7 @@
 
     animation-name: progress;
     animation-duration: 15s;
-    animation-delay: 2s;
+    animation-delay: 6s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
   }
