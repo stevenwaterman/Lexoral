@@ -1,4 +1,4 @@
-"<script lang="ts">
+<script lang="ts">
   import LinkButton from "$lib/LinkButton.svelte";
   import DiagonalSection from "$lib/landing/sections/DiagonalSection.svelte";
   import PriceColumn from "./PriceColumn.svelte";
