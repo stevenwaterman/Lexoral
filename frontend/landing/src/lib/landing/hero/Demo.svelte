@@ -138,7 +138,24 @@ import LinkButton from "$lib/LinkButton.svelte";
 
   @media (max-width: 799px) {
     .container {
-      display: none;
+      grid-row: 3;
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 1em;
+      justify-items: center;
+      align-items: center;
+    }
+
+    .border {
+      height: 50vh;
+    }
+
+    .linkAnchor {
+      position: static;
+      left: unset;
+      top: unset;
+      transform: unset;
+      z-index: 12;
     }
   }
 </style>
