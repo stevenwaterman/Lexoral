@@ -39,14 +39,14 @@
     margin-bottom: 0;
   }
 
-  section:nth-child(2n+1) .background { background-color: var(--grey-5); }
-  section:nth-child(2n+1) { filter: drop-shadow(0em 0.5em 0.5em var(--blue-2)); }
+  section:nth-child(2n) .background { background-color: var(--grey-5); }
+  section:nth-child(2n) { filter: drop-shadow(0em 0.5em 0.5em var(--blue-2)); }
 
-  section:nth-child(2n) { 
+  section:nth-child(2n+1) { 
     color: var(--page-background);
     filter: drop-shadow(0em 0.5em 0.5em var(--blue-0));
   }
-  section:nth-child(2n) .background { background-color: var(--blue-0); }
+  section:nth-child(2n+1) .background { background-color: var(--blue-0); }
 
   section:nth-of-type(0) { z-index: 10; }
   section:nth-of-type(1) { z-index: 9; }

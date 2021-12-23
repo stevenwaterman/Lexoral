@@ -9,13 +9,15 @@
 <style>
   .label {
     position: relative;
-    padding: auto;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
   }
 
   .topLink {
     color: var(--page-background);
     text-decoration: none;
-    padding: 1.5em;
   }
 
   .label:hover .topLink {
@@ -37,7 +39,7 @@
     top: 100%;
     left: 50%;
     z-index: 100;
-    margin-top: 0.3em;
+    margin-top: -0.2em;
 
     transform-origin: 50% 0;
     transform: translateX(-50%) scale(0);
@@ -95,14 +97,45 @@
   }
 
   .menuLink {
-    color: var(--text) !important;
     text-decoration: none;
     white-space: nowrap;
     padding: 0.1em;
+    color: var(--text);
   }
 
   .menuEntry:hover .menuLink {
     color: var(--blue-1) !important;
+  }
+
+  @media (max-width: 1199px) {
+    .menu {
+      display: contents;
+      position: static;
+      transform: none;
+      margin: 0;
+    }
+
+    .menu-arrow {
+      display: none;
+    }
+
+    .menuLink {
+      font-weight: 300;
+      font-size: 0.8em;
+      color: unset;
+    }
+
+    .menu-content {
+      background-color: none;
+      border: none;
+      display: contents;
+      padding: 0;
+      margin: 0;
+    }
+
+    .label {
+      display: contents;
+    }
   }
 </style>
 

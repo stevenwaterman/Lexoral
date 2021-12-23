@@ -1,7 +1,7 @@
 <script lang="ts">
   import AnimatedGradient from "./AnimatedGradient.svelte";
   import Footer from "./Footer.svelte";
-  import Nav from "./nav/Nav.svelte";
+  import Menu from "./nav/Menu.svelte";
 
   export let title: string = "Lexoral";
 </script>
@@ -35,6 +35,7 @@
     margin: auto;
     width: var(--col-width);
     flex-grow: 1;
+    z-index: 0;
   }
 
   .gradient {
@@ -67,8 +68,9 @@
   <AnimatedGradient/>
 </div>
 
+<Menu/>
+
 <div class="column">
-  <Nav/>
   <slot/>
 </div>
 
