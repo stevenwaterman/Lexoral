@@ -1,6 +1,6 @@
 <script lang="ts">
   import DropdownLabel from "$lib/template/nav/DropdownLabel.svelte";
-  import LinkButton from "$lib/LinkButton.svelte";
+  import LinkButton from "$lib/components/LinkButton.svelte";
 </script>
 
 <style>
