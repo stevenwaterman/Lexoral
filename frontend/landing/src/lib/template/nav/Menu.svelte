@@ -130,7 +130,7 @@
 
 <nav>
   <a class="logoLink" href="/">
-    <img class="logo" src="assets/smallBrand_white.svg" alt="The Lexoral logo"/>
+    <img class="logo" src="/assets/smallBrand_white.svg" alt="The Lexoral logo"/>
   </a>
 
   <div class="burgerMenuContainer">

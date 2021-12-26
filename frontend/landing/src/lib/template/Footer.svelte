@@ -95,7 +95,7 @@
 </style>
 
 <footer>
-  <img class="logo" src="assets/smallBrand.svg" alt="The Lexoral Logo"/>
+  <img class="logo" src="/assets/smallBrand.svg" alt="The Lexoral Logo"/>
   <div class="outerGrid">
     <h3>Product</h3>
     <ul>

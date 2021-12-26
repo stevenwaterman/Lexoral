@@ -122,7 +122,7 @@
 
 
   <div class="checkboxRow">
-    <label for="privacy">I have read and agree to the <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/PRIVACY.md">Privacy Policy</a></label>
+    <label for="privacy">I have read and agree to the <a href="https://lexoral.com/privacy">Privacy Policy</a></label>
     <input id="privacy" type="checkbox" bind:checked={privacy} style="margin-left: 1em"/>
   </div>
 
