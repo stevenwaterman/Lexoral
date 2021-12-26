@@ -1,4 +1,4 @@
-![Lexoral Logo](/frontend/public/assets/card.png)
+![Lexoral Logo](/frontend/static/assets/card.png)
 
 # Lexoral is the transcription tool you *wish* existed
 
