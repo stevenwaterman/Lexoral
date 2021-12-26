@@ -1,13 +1,5 @@
 ![Lexoral Logo](/frontend/public/assets/card.png)
 
-# Join the closed beta!
-
-- Are you a student or academic with data to transcribe?
-- We are making Lexoral - a faster, safer, better transcription tool
-- Your feedback helps us improve & you get unlimited free credit!
-
-More info:  [lexoral.com/beta](https://www.lexoral.com/beta)
-
 # Lexoral is the transcription tool you *wish* existed
 
 - Lexoral uses AI to transcribe your audio, but it doesn't end there
