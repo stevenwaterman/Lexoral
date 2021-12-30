@@ -1,27 +1,25 @@
 <script lang="ts">
   import Template from "$lib/template/Template.svelte";
-  import type { AuthorDetails, Authors } from "./authors";
-  import authors from "./authors";
+  import TextContainer from "$lib/template/TextContainer.svelte";
+  import { AuthorDetails, authors, BlogPost } from "./blogData";
 
-  export let title: string;
-  export let description: string;
-  export let date: Date;
-
-  export let author: Authors;
+  export let post: BlogPost;
 
   let dateString: string;
-  $: dateString = date.toLocaleDateString();
+  $: dateString = post.date.toLocaleDateString();
 
   let authorDetails: AuthorDetails;
-  $: authorDetails = authors[author];
+  $: authorDetails = authors[post.author];
 </script>
 
-<Template {title}>
-  <article>
-    <h1>{title}</h1>
-    <p>Published {dateString}</p>
-    <p>By {authorDetails.longName}</p>
-    <summary>{description}</summary>
-    <slot></slot>
-  </article>
+<Template title={post.title}>
+  <TextContainer>
+    <article>
+      <h1>{post.title}</h1>
+      <p>Published {dateString}</p>
+      <p>By {authorDetails.longName}</p>
+      <summary>{post.description}</summary>
+      <slot></slot>
+    </article>
+  </TextContainer>
 </Template>

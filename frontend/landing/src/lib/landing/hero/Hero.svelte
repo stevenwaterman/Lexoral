@@ -12,7 +12,7 @@
     font-size: 1.35em;
 
     gap: 1em 4em;
-    margin: auto;
+    width: 100%;
 
     justify-content: center;
     align-items: flex-end;

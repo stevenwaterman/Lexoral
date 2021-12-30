@@ -27,6 +27,7 @@
     margin-bottom: calc(0em - var(--background-angle-vert-delta));
 
     pointer-events: none;
+    width: 100%;
   }
 
   .flatTop {

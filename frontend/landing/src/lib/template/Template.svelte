@@ -11,23 +11,11 @@
     display: flex;
     flex-direction: column;
 
-    overflow-x: hidden;
-    min-height: 100vh;
     --col-width: min(1200pt, 90vw);
     --col-margin: calc(50vw - var(--col-width) / 2);
   }
 
   :global(h1) {
-    display: inline-block;
-    white-space: nowrap;
-
-    font-weight: 800;
-    font-size: 3.5em;
-
-    transform: scaleX(0.95);
-    transform-origin: 0% 0%;
-    margin: 0;
-
     filter: drop-shadow(1px 1px 1px var(--page-background));
   }
 
@@ -36,6 +24,11 @@
     width: var(--col-width);
     flex-grow: 1;
     z-index: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   .gradient {

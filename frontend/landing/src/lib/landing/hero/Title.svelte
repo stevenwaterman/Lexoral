@@ -1,4 +1,8 @@
 <style>
+  h1 {
+    white-space: nowrap;
+  }
+
   p {
     font-weight: 400;
     color: var(--grey-2);
