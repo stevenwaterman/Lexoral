@@ -12,6 +12,7 @@ import LinkButton from "$lib/components/LinkButton.svelte";
 
   .border {
     position: relative;
+    width: 100%;
 
     height: 20em;
     border: 0.2em solid var(--form-border);

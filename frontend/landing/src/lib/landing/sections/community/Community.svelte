@@ -19,8 +19,15 @@
     width: 100%;
   }
 
+  @media (max-width: 1499px) {
+    .grid {
+      gap: 2em;
+    }
+  }
+
   @media (max-width: 1199px) {
     .grid {
+      gap: 4em;
       grid-template-columns: 10em 1fr;
     }
   }
@@ -28,7 +35,6 @@
   @media (max-width: 799px) {
     .grid {
       grid-template-columns: auto;
-      gap: 2em;
     }
   }
 </style>

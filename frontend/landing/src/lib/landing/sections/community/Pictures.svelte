@@ -17,6 +17,7 @@
   .personName {
     white-space: nowrap;
     font-weight: 700;
+    margin-bottom: 0;
   }
 
   .job {

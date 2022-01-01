@@ -1,6 +1,6 @@
 <script>
   import LinkButton from "$lib/components/LinkButton.svelte";
-  import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+  import { faBars } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa/src/fa.svelte";
   import DropdownLabel from "./DropdownLabel.svelte";
 </script>
@@ -36,6 +36,11 @@
   .burgerMenuOpen {
     display: none;
     justify-self: flex-end;
+    /* background-color: red; */
+    line-height: 3em;
+    padding-left: 2em;
+    padding-right: 2em;
+    transform: translateX(2em);
   }
 
   .menu {

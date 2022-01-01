@@ -19,6 +19,10 @@
     margin: 0;
   }
 
+  p {
+    margin-bottom: 0;
+  }
+
   a {
     display: flex;
     flex-direction: column;
@@ -56,8 +60,8 @@
     .contact {
       grid-template-columns: auto;
       grid-template-rows: repeat(6, 1fr);
-      gap: 2em;
-      font-size: 0.75em;
+      gap: 1.5em;
+      font-size: 0.9em;
       margin-top: -5em;
       margin-bottom: -5em;
     }
@@ -78,6 +82,7 @@
     .contact {
       grid-column: unset;
       grid-template-columns: auto;
+      gap: 4em;
     }
   }
 </style>
