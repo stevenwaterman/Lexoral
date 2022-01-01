@@ -12,7 +12,7 @@ export const authors = {
     job: "Lexoral Founder",
     bio: "I founded Lexoral"
   }
-};
+} as const;
 authors as Record<string, AuthorDetails>;
 
 export type BlogPost = {
@@ -23,7 +23,7 @@ export type BlogPost = {
   featured: boolean;
 }
 
-export const blogPosts: Record<string, BlogPost> = {
+export const blogPosts = {
   "test-post": {
     author: "SteWaterman",
     title: "This is a test post",
@@ -31,4 +31,5 @@ export const blogPosts: Record<string, BlogPost> = {
     date: new Date("2021-12-30T12:10:00Z"),
     featured: true
   }
-}
+} as const;
+blogPosts as Record<string, BlogPost>;

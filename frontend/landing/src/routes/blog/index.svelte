@@ -1,27 +1,45 @@
 <script lang="ts">
   import { BlogPost, blogPosts } from "$lib/blog/blogData";
+  import MainFeature from "$lib/blog/postLinks/MainFeature.svelte";
   import Template from "$lib/template/Template.svelte";
 
   const posts: Array<[string, BlogPost]> = Object.entries(blogPosts);
   posts.sort((a,b) => a[1].date.valueOf() - b[1].date.valueOf());
 
   const featured: Array<[string, BlogPost]> = posts.filter(post => post[1].featured);
+  const mainFeature = featured[0][0] as keyof typeof blogPosts;
 
-  const [mainFeaturedUrl, mainFeatured] = featured[0];
   const subFeaturedPosts = featured.slice(1, 4);
 </script>
 
-<Template title="Lexoral Blog">
-  <h1>Tech Blog</h1>
-  <p>Here are some of our most recent posts:</p>
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1em;
+    width: 100%;
+  }
 
-  <a href={mainFeaturedUrl}>{mainFeatured.title}</a>
+  .title {
+  }
+</style>
+
+<Template title="Lexoral Blog">
+  <div class="grid">
+    <div class="title">
+      <h1>Tech Blog</h1>
+      <p>Here are some of our most recent posts:</p>
+    </div>
+
+    <MainFeature id={mainFeature}/>
+  </div>
   
   {#each subFeaturedPosts as [subFeaturedUrl, subFeatured] (subFeaturedUrl)}
-    <a href={subFeaturedUrl}>{subFeatured.title}</a>
+    <a href={`/blog/${subFeaturedUrl}`}>{subFeatured.title}</a>
   {/each}
 
   {#each posts as [postUrl, post] (postUrl)}
-    <a href={postUrl}>{post.title}</a>
+    <a href={`/blog/${postUrl}`}>{post.title}</a>
   {/each}
 </Template>
