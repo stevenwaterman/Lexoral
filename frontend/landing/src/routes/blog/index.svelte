@@ -40,7 +40,7 @@ import DiagonalSection from "$lib/landing/sections/DiagonalSection.svelte";
     <div class="title">
       <h1>Tech Blog</h1>
       <p>Our blog is full of posts about what we get up to when building (and using) Lexoral. From technical deep-dives to casual musings, there's a wide range of things to talk about.</p>
-      <p>You can also subscribe to our <a href="/rss.xml">RSS feed</a>.</p>
+      <p>You can also subscribe to our <a rel="external" href="/rss.xml">RSS feed</a>.</p>
     </div>
 
     <MainFeature id={mainFeature}/>
