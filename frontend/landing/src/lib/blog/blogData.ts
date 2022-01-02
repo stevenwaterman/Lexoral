@@ -15,10 +15,13 @@ export const authors = {
 } as const;
 authors as Record<string, AuthorDetails>;
 
+export type Author = keyof typeof authors;
+
 export type BlogPost = {
   author: keyof typeof authors;
   title: string;
-  description: string;
+  shortDescription: string;
+  longDescription: string;
   date: Date;
   featured: boolean;
 }
@@ -27,9 +30,12 @@ export const blogPosts = {
   "test-post": {
     author: "SteWaterman",
     title: "This is a test post",
-    description: "I needed to test the blog post system, so I did.",
+    shortDescription: "I needed to test the blog post system, so I did.",
+    longDescription: "I needed to test the blog post system, so I did.",
     date: new Date("2021-12-30T12:10:00Z"),
     featured: true
   }
 } as const;
 blogPosts as Record<string, BlogPost>;
+
+export type BlogId = keyof typeof blogPosts;

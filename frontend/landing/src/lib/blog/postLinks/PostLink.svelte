@@ -12,71 +12,55 @@
 
 <style>
   .container {
-    border-radius: 2em;
+    border-radius: 0.5em;
+    height: 4em;
     width: 100%;
 
     display: grid;
-    grid-template-rows: 20em 1fr;
-
-    grid-column: span 2;
+    grid-template-columns: 8em 1fr auto auto;
+    gap: 2em;
+    align-items: center;
+    justify-items: flex-start;
+    padding-right: 2em;
 
     background-color: var(--grey-5);
     overflow: hidden;
 
-    box-shadow: 0 0 0.5em 0 var(--blue-3);
+    box-shadow: 0 0 0.3em 0 var(--blue-3);
   }
 
   .headerImage {
     width: 100%;
-    height: 100%;
+    height: 4em;
 
     object-fit: cover;
     object-position: center;
-  }
-  
-  .padded {
-    padding: 1em;
-    padding-bottom: 2em;
-
-    display: flex;
-    flex-direction: column;
   }
 
   a {
     text-decoration: unset;
   }
 
-  summary {
-    height: 100%;
-    padding-bottom: 2em;
-  }
-
   h2 {
     margin-top: 0;
-    font-size: 2em;
-  }
-
-  .meta {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    font-style: italic;
-  }
-
-  .meta p {
     margin-bottom: 0;
+    font-size: 2em;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-style: italic;
   }
 </style>
 
 <a href={`/blog/${id}`} class="container">
   <img class="headerImage" src={`/assets/blog/${id}/header.jpg`}/>
-  <div class="padded">
-    <h2>{post.title}</h2>
-    <summary>{post.longDescription}</summary>
-    <div class="meta">
-      <p>{post.date.toLocaleDateString()}</p>
-      <p>{authorDetails.longName}</p>
-    </div>
-  </div>
+  <h2>{post.title}</h2>
+  <p>{post.date.toLocaleDateString()}</p>
+  <p>{authorDetails.longName}</p>
 </a>

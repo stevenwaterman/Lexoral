@@ -1,10 +1,10 @@
 <script lang="ts">
   import TextContainer from "$lib/template/TextContainer.svelte";
 
-  import type { AuthorDetails } from "./blogData";
+  import type { Author, AuthorDetails } from "./blogData";
   import { authors } from "./blogData";
   
-  export let author: keyof typeof authors;
+  export let author: Author;
   
   let authorDetails: AuthorDetails;
   $: authorDetails = authors[author];

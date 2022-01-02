@@ -2,9 +2,9 @@
   import Template from "$lib/template/Template.svelte";
   import TextContainer from "$lib/template/TextContainer.svelte";
   import AuthorColumn from "./AuthorColumn.svelte";
-  import { AuthorDetails, authors, BlogPost, blogPosts } from "./blogData";
+  import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "./blogData";
 
-  export let id: keyof typeof blogPosts;
+  export let id: BlogId;
 
   let post: BlogPost;
   $: post = blogPosts[id];
@@ -94,7 +94,7 @@
           </div>
 
           <h1>{post.title}</h1>
-          <summary>{post.description}</summary>
+          <summary>{post.longDescription}</summary>
 
           <hr/>
 

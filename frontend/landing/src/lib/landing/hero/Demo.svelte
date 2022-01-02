@@ -125,18 +125,6 @@ import LinkButton from "$lib/components/LinkButton.svelte";
     font-size: 1.2em;
   }
 
-  @media (max-width: 1599px) {
-    .border {
-      height: 15em;
-    }
-  }
-
-  @media (max-width: 1199px) {
-    .border {
-      height: 20em;
-    }
-  }
-
   @media (max-width: 799px) {
     .container {
       grid-row: 3;

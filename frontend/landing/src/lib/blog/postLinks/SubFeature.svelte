@@ -13,12 +13,9 @@
 <style>
   .container {
     border-radius: 2em;
-    width: 100%;
 
     display: grid;
-    grid-template-rows: 20em 1fr;
-
-    grid-column: span 2;
+    grid-template-rows: 12em 1fr;
 
     background-color: var(--grey-5);
     overflow: hidden;
@@ -36,6 +33,7 @@
   
   .padded {
     padding: 1em;
+    padding-top: 0.5em;
     padding-bottom: 2em;
 
     display: flex;
@@ -46,14 +44,9 @@
     text-decoration: unset;
   }
 
-  summary {
-    height: 100%;
-    padding-bottom: 2em;
-  }
-
   h2 {
     margin-top: 0;
-    font-size: 2em;
+    font-size: 1.5em;
   }
 
   .meta {
@@ -63,20 +56,17 @@
     width: 100%;
     font-style: italic;
   }
-
-  .meta p {
-    margin-bottom: 0;
-  }
 </style>
 
 <a href={`/blog/${id}`} class="container">
   <img class="headerImage" src={`/assets/blog/${id}/header.jpg`}/>
   <div class="padded">
-    <h2>{post.title}</h2>
-    <summary>{post.longDescription}</summary>
     <div class="meta">
       <p>{post.date.toLocaleDateString()}</p>
       <p>{authorDetails.longName}</p>
     </div>
+
+    <h2>{post.title}</h2>
+    <summary>{post.shortDescription}</summary>
   </div>
 </a>

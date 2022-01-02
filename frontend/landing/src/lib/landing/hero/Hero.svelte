@@ -24,7 +24,6 @@
     .grid {
       column-gap: 2em;
       grid-template-columns: 24.5em 1fr;
-      padding-top: 2em;
       padding-bottom: 6em;
     }
   }
