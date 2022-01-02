@@ -1,12 +1,11 @@
 <script lang="ts">
   import { BlogId, BlogPost, blogPosts } from "$lib/blog/blogData";
   import MainFeature from "$lib/blog/postLinks/MainFeature.svelte";
-import PostLink from "$lib/blog/postLinks/PostLink.svelte";
+  import PostLink from "$lib/blog/postLinks/PostLink.svelte";
   import SubFeature from "$lib/blog/postLinks/SubFeature.svelte";
-import DiagonalSection from "$lib/landing/sections/DiagonalSection.svelte";
   import Template from "$lib/template/Template.svelte";
 
-  const posts = Object.entries(blogPosts) as Array<[BlogId, BlogPost]>;
+  const posts = Object.entries(blogPosts).filter(post => post[1].published) as Array<[BlogId, BlogPost]>;
   posts.sort((a,b) => a[1].date.valueOf() - b[1].date.valueOf());
 
   const featured = posts.filter(post => post[1].featured);

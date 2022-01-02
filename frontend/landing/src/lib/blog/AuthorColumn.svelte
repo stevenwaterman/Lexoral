@@ -45,7 +45,7 @@
 
 <TextContainer defaultPadding={false}>
   <div class="authorCol">
-    <img src={`/assets/blog/authors/${author}.jpg`}/>
+    <img src={`/assets/blog/authors/${author}.jpg`} alt={authorDetails.longName}/>
     <p class="name">{authorDetails.longName}</p>
     <p class="job">{authorDetails.job}</p>
     <p class="bio">{authorDetails.bio}</p>

@@ -24,16 +24,18 @@ export type BlogPost = {
   longDescription: string;
   date: Date;
   featured: boolean;
+  published: boolean;
 }
 
 export const blogPosts = {
-  "test-post": {
+  "why-open-source": {
     author: "SteWaterman",
-    title: "This is a test post",
-    shortDescription: "I needed to test the blog post system, so I did.",
-    longDescription: "I needed to test the blog post system, so I did.",
+    title: "Why Lexoral is Open Source",
+    shortDescription: "You can read the code for Lexoral, and even suggest changes to it. Why would we do that?",
+    longDescription: "I work full-time writing code for Lexoral, and then release all of that code for free online. How does that work, and why would I give away all that work for free? This post explores what it means for software to be open-source, why Lexoral is open-source, and whether your initial concerns are a real issue.",
     date: new Date("2021-12-30T12:10:00Z"),
-    featured: true
+    featured: true,
+    published: true
   }
 } as const;
 blogPosts as Record<string, BlogPost>;
