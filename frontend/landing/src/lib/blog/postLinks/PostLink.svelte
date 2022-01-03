@@ -37,6 +37,10 @@
     object-position: center;
   }
 
+  .headerImage.contain {
+    object-fit: contain
+  }
+
   a {
     text-decoration: unset;
   }
@@ -59,7 +63,7 @@
 </style>
 
 <a href={`/blog/${id}`} class="container">
-  <img class="headerImage" src={`/assets/blog/${id}/header.jpg`}/>
+  <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
   <h2>{post.title}</h2>
   <p>{post.date.toLocaleDateString()}</p>
   <p>{authorDetails.longName}</p>

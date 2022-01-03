@@ -30,6 +30,10 @@
     object-fit: cover;
     object-position: center;
   }
+
+  .headerImage.contain {
+    object-fit: contain
+  }
   
   .padded {
     padding: 1em;
@@ -59,7 +63,7 @@
 </style>
 
 <a href={`/blog/${id}`} class="container">
-  <img class="headerImage" src={`/assets/blog/${id}/header.jpg`}/>
+  <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
   <div class="padded">
     <div class="meta">
       <p>{post.date.toLocaleDateString()}</p>

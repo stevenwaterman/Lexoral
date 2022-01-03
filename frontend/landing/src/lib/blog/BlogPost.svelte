@@ -44,8 +44,12 @@
   .headerImage {
     max-height: 20em;
     width: 100%;
-    object-fit: cover;
     object-position: center;
+    object-fit: cover;
+  }
+
+  .headerImage.contain {
+    object-fit: contain;
   }
 
   .padded {
@@ -69,14 +73,18 @@
     margin-top: 1em;
     /* margin-bottom: 2em; */
     
+    /* font-style: italic; */
     font-size: 1.2em;
-    font-style: italic;
+    font-weight: 300;
 
     color: var(--grey-1);
   }
 
   hr {
     margin-bottom: 2em;
+  }
+
+  article {
   }
 </style>
 
@@ -85,7 +93,7 @@
   <div class="grid">
     <TextContainer defaultPadding={false}>
       <article>
-        <img class="headerImage" src={`/assets/blog/${id}/header.jpg`}/>
+        <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
         <div class="padded">
 
           <div class="metadata">
