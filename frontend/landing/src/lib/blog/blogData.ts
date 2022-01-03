@@ -28,7 +28,7 @@ export type BlogPost = {
 }
 
 export const blogPosts = {
-  "why-open-source": {
+  "open-source-punish": {
     author: "SteWaterman",
     title: "We're open-source to let you punish us",
     shortDescription: "Anyone can read the code for Lexoral and use it in their own projects. That means you can punish us.",

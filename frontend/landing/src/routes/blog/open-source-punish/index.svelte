@@ -1,11 +1,8 @@
 <script lang="ts">
   import BlogPost from "$lib/blog/BlogPost.svelte";
-import Animation from "$lib/landing/sections/how/animation/Animation.svelte";
-import UseCases from "$lib/landing/sections/uses/UseCases.svelte";
-import AnimatedGradient from "$lib/template/AnimatedGradient.svelte";
 </script>
 
-<BlogPost id="why-open-source">
+<BlogPost id="open-source-punish">
   <p>
     The intro to this article probably seems like a non-sequitur.
     What does being open-source have to do with punishment?
@@ -61,7 +58,7 @@ import AnimatedGradient from "$lib/template/AnimatedGradient.svelte";
   <p>
     Our code is hosted on GitHub, and is publicly available <a rel="external" href="https://github.com/stevenwaterman/Lexoral/">here</a>.
     All our code is on there, updated multiple times a day, even the things we haven't released yet.
-    Even this blog post is open-source: you can see its code and make suggestions <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/landing/src/routes/blog/why-open-source/index.svelte">here</a>.
+    Even this blog post is open-source: you can see its code and make suggestions <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/landing/src/routes/blog/open-source-punish/index.svelte">here</a>.
     I try to keep the documentation up-to-date, but if you're confused, feel free to <a rel="external" href="https://github.com/stevenwaterman/Lexoral/issues/new">open an issue</a> and ask for help.
   </p>
   
