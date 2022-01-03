@@ -102,7 +102,7 @@
 
   <p>
     If you get stuck, you can contact me and ask for help.
-    Assuming that I've become evil, find a friend who works in <emph>DevOps</emph>, <emph>Cloud</emph>, <emph>Full-Stack Web</emph>, or something like that.
+    Assuming that I've become evil, find a friend who works in <em>DevOps</em>, <em>Cloud</em>, <em>Full-Stack Web</em>, or something like that.
     It should be pretty easy for anyone experienced to get Lexoral set up and running.
   </p>
 

@@ -68,7 +68,7 @@ import TextContainer from "$lib/template/TextContainer.svelte";
       <li>Prevent malicious attacks on the platform, to ensure good service for everyone</li>
     </ul>
   
-    <p>Your data is processed on servers provided by <emph>Google Cloud Platform</emph>. They only access your data when requested by us, as needed to operate Lexoral.</p>
+    <p>Your data is processed on servers provided by <em>Google Cloud Platform</em>. They only access your data when requested by us, as needed to operate Lexoral.</p>
     <p>Lexoral <strong>does not</strong>:</p>
   
     <ul>
