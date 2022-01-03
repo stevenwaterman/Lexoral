@@ -16,7 +16,7 @@
 
   .defaultPadding {
     padding: 3em 4em;
-    margin-top: -2em;
+    /* margin-top: -2em; */
     margin-bottom: 4em;
   }
 </style>

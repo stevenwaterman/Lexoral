@@ -11,7 +11,7 @@ import Processor from "./components/Processor.svelte";
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
     animation-duration: 15s;
-    animation-delay: 5s;
+    animation-delay: 2s;
   }
 
   g {

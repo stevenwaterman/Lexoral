@@ -1,6 +1,7 @@
 <script lang="ts">
   import Template from "$lib/template/Template.svelte";
   import TextContainer from "$lib/template/TextContainer.svelte";
+import Advert from "./Advert.svelte";
   import AuthorColumn from "./AuthorColumn.svelte";
   import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "./blogData";
 
@@ -37,7 +38,7 @@
     margin-bottom: 4em;
 
     width: 100%;
-    max-width: 60em;
+    max-width: 64em;
   }
   
   .headerImage {
@@ -52,7 +53,7 @@
   }
 
   .padded {
-    padding: 2em;
+    padding: 4em;
     padding-top: 1em;
   }
 
@@ -75,9 +76,6 @@
 
   hr {
     margin-bottom: 2em;
-  }
-
-  article {
   }
 </style>
 
@@ -105,5 +103,7 @@
     </TextContainer>
 
     <AuthorColumn author={post.author}/>
+
+    <Advert/>
   </div>
 </Template>
