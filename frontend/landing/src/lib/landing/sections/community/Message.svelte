@@ -35,7 +35,7 @@
 </style>
 
 <div class="stevenMessage">
-  <p class="messageSubhead">Hi, I'm Steven - I like cats, robot wars, and forests.</p>
+  <p class="messageSubhead">Hi, I'm Steven - I like cats, robot wars, and the sound of a calm river in the depths of a forest.</p>
 
   <p>
     I've spent my career building software to make people's lives easier at a whole range of big companies.

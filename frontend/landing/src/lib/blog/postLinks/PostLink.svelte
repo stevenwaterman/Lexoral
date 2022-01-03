@@ -17,7 +17,7 @@
     width: 100%;
 
     display: grid;
-    grid-template-columns: 8em 1fr auto auto;
+    grid-template-columns: 8em 1fr auto auto auto;
     gap: 2em;
     align-items: center;
     justify-items: flex-start;
@@ -26,7 +26,7 @@
     background-color: var(--grey-5);
     overflow: hidden;
 
-    box-shadow: 0 0 0.3em 0 var(--blue-3);
+    box-shadow: 0 0 0.25em 0 var(--blue-3);
   }
 
   .headerImage {
@@ -45,10 +45,9 @@
     text-decoration: unset;
   }
 
-  h2 {
+  h3 {
     margin-top: 0;
     margin-bottom: 0;
-    /* font-size: 2em; */
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -58,13 +57,22 @@
 
   p {
     margin-bottom: 0;
-    font-style: italic;
+    font-weight: 300;
+    font-size: 0.8em;
+  }
+
+  .type {
+    text-transform: uppercase;
   }
 </style>
 
-<a href={`/blog/${id}`} class="container">
+<a
+  href={`/blog/${id}`}
+  class="container"
+>
   <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
-  <h2>{post.title}</h2>
+  <h3>{post.title}</h3>
   <p>{post.date.toLocaleDateString()}</p>
+  <p class="type">{post.type}</p>
   <p>{authorDetails.longName}</p>
 </a>

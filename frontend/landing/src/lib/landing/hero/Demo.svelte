@@ -15,7 +15,6 @@
     height: 20em;
     border: 0.2em solid var(--form-border);
     border-radius: 1em;
-    transition: box-shadow 0.2s;
     box-sizing: border-box;
     overflow: hidden;
     background-color: var(--page-background);

@@ -61,12 +61,16 @@ import Advert from "./Advert.svelte";
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    font-style: italic;
     margin-bottom: 1em;
+    font-weight: 300;
   }
 
   .metadata p {
     margin-bottom: 0;
+  }
+
+  .type {
+    text-transform: uppercase;
   }
 
   summary {
@@ -86,8 +90,8 @@ import Advert from "./Advert.svelte";
       <article>
         <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
         <div class="padded">
-
           <div class="metadata">
+            <p class="type">{post.type}</p>
             <p class="date">Published <time>{dateString}</time></p>
             <p class="author">By {authorDetails.longName}</p>
           </div>

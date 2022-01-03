@@ -34,6 +34,7 @@ authors as Record<string, AuthorDetails>;
 export type Author = keyof typeof authors;
 
 export type BlogPost = {
+  type: "organisational" | "technical" | "instructional"
   author: keyof typeof authors;
   title: string;
   shortDescription: string;
@@ -46,6 +47,7 @@ export type BlogPost = {
 
 export const blogPosts = {
   "open-source-punish": {
+    type: "organisational",
     author: "SteWaterman",
     title: "Lexoral is open-source so you can punish us",
     shortDescription: "Anyone can read the code for Lexoral and use it in their own projects. That means you can punish us.",

@@ -36,7 +36,7 @@
 
     <div class="buttonRow">
       <LinkButton link="/">Learn more</LinkButton>
-      <LinkButton link="/dashboard/auth/signup">Sign up</LinkButton>
+      <LinkButton link="/dashboard/auth/signup" external>Sign up</LinkButton>
     </div>
   </TextContainer>
 </div>

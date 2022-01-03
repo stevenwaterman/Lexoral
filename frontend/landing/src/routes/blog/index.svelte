@@ -1,57 +1,88 @@
 <script lang="ts">
   import { BlogId, BlogPost, blogPosts } from "$lib/blog/blogData";
-  import MainFeature from "$lib/blog/postLinks/MainFeature.svelte";
   import PostLink from "$lib/blog/postLinks/PostLink.svelte";
-  import SubFeature from "$lib/blog/postLinks/SubFeature.svelte";
+  import FeaturedLink from "$lib/blog/postLinks/FeaturedLink.svelte";
   import Template from "$lib/template/Template.svelte";
+import Fa from "svelte-fa/src/fa.svelte";
+import { faRss } from "@fortawesome/free-solid-svg-icons";
 
   const posts = Object.entries(blogPosts).filter(post => post[1].published) as Array<[BlogId, BlogPost]>;
   posts.sort((a,b) => a[1].date.valueOf() - b[1].date.valueOf());
 
   const featured = posts.filter(post => post[1].featured);
-  const mainFeature = featured[0][0] as BlogId;
-
-  const subFeaturedPosts = featured.slice(1, 4).map(tup => tup[0]);
+  const featuredPosts = featured.slice(0, 3).map(tup => tup[0]);
 </script>
 
 <style>
-  .grid {
+  .title {
+    align-self: flex-start;
+  }
+
+  ol {
+    padding: 0;
+  }
+
+  h2 {
+    margin-top: 1em;
+    font-size: 2em;
+  }
+
+  .subtitle {
+    font-size: 1.5em;
+    font-weight: 500;
+    max-width: 15em;
+  }
+
+  .featured {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 4em;
+    list-style: none;
+    width: 100%;
+    padding-left: 4em;
+    padding-right: 4em;
+
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+
+  .recent {
+    display: grid;
+    gap: 1em;
+    list-style: none;
     width: 100%;
     margin-bottom: 4em;
   }
 
-  .title {
-    grid-column: span 2;
+  li {
+    display: contents;
   }
 
-  .linkList {
-    grid-column: span 4;
-    display: grid;
-    gap: 2em;
+  .rss {
+    margin-left: 0.25em;
+    color: var(--yellow-1)
   }
 </style>
 
 <Template title="Lexoral Blog">
-  <div class="grid">
-    <div class="title">
-      <h1>Tech Blog</h1>
-      <p>Our blog is full of posts about what we get up to when building (and using) Lexoral. From technical deep-dives to casual musings, there's a wide range of things to talk about.</p>
-      <p>You can also subscribe to our <a href="/rss.xml">RSS feed</a>.</p>
-    </div>
-
-    <MainFeature id={mainFeature}/>
-
-    {#each subFeaturedPosts as id (id)}
-      <SubFeature {id}/>
-    {/each}
-
-    <div class="linkList">
-      {#each posts as [id, _] (id)}
-        <PostLink {id}/>
-      {/each}
-    </div>
+  <div class="title">
+    <h1>Our Blog <a class="rss" href="/rss.xml" title="RSS feed"><Fa icon={faRss}/></a></h1>
+    <p class="subtitle">Thoughts on technology, transcription, and the world</p>
   </div>
+
+  <h2>Featured Posts</h2>
+
+  <ol class="featured">
+    {#each featuredPosts as id (id)}
+      <li><FeaturedLink {id}/></li>
+    {/each}
+  </ol>
+
+  <h2>All Posts</h2>
+
+  <ol class="recent">
+    {#each posts as [id, _] (id)}
+      <li><PostLink {id}/></li>
+    {/each}
+  </ol>
 </Template>

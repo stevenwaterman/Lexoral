@@ -4,7 +4,6 @@
   }
 
   p {
-    font-weight: 400;
     color: var(--grey-2);
   }
 
