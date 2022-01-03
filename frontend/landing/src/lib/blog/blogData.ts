@@ -30,9 +30,9 @@ export type BlogPost = {
 export const blogPosts = {
   "why-open-source": {
     author: "SteWaterman",
-    title: "Why Lexoral is Open Source",
-    shortDescription: "You can read the code for Lexoral, and even suggest changes to it. Why would we do that?",
-    longDescription: "I work full-time writing code for Lexoral, and then release all of that code for free online. How does that work, and why would I give away all that work for free? This post explores what it means for software to be open-source, why Lexoral is open-source, and whether your initial concerns are a real issue.",
+    title: "We're open-source to let you punish us",
+    shortDescription: "Anyone can read the code for Lexoral and use it in their own projects. That means you can punish us.",
+    longDescription: "Lexoral is Open-Source Software, which means that you can read the code and even use the code in your own projects. Open-Source has a lot of benefits, but there's one that you don't hear people talking about: it lets you punish us for not sticking to our promises.",
     date: new Date("2021-12-30T12:10:00Z"),
     featured: true,
     published: true

@@ -223,3 +223,14 @@ ol:not(:last-child) {
 ul:not(:last-child) {
   margin-bottom: 1em;
 }
+
+blockquote:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+blockquote {
+  margin-left: 1em;
+  padding-left: 1em;
+  border-left: 0.25em solid var(--blue-2);
+  text-align: justify;
+}

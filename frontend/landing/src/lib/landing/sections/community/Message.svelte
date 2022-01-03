@@ -15,10 +15,6 @@
 
   .artieQuote {
     max-width: 26em;
-    margin-left: 1em;
-    padding-left: 1em;
-    border-left: 0.25em solid var(--blue-2);
-    text-align: justify;
   }
 
   .quoteAttribution {
@@ -48,7 +44,7 @@
 
   <p class="messageSubhead">I started Lexoral to help with my partner's PhD research:</p>
 
-  <div class="artieQuote">
+  <blockquote class="artieQuote">
     <p>
       I'm doing a longitudinal qualitative study, with 20+ hours of participant interviews.
     </p>
@@ -62,7 +58,7 @@
       Lexoral meant transcripts took an afternoon instead of a week.
       Only having to correct little mistakes meant I was immersed with my participants' stories from the start.
     </p>
-  </div>
+  </blockquote>
 
   <p class="quoteAttribution">
     Artie Waterman<br>PhD Student, Durham University
