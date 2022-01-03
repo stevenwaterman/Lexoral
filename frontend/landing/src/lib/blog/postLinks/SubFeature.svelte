@@ -50,7 +50,7 @@
 
   h2 {
     margin-top: 0;
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
   }
 
   .meta {

@@ -9,8 +9,9 @@
 
     box-shadow: 0 0 0.5em 0 var(--blue-3);
 
-    max-width: 70em;
+    max-width: 60em;
     overflow: hidden;
+    font-size: 14pt;
   }
 
   .defaultPadding {

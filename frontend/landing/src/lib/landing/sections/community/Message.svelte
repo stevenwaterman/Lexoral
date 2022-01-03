@@ -1,6 +1,6 @@
 <style>
   .stevenMessage {
-    max-width: 30em;
+    max-width: 26em;
     justify-self: flex-start;
   }
 
@@ -14,7 +14,7 @@
   }
 
   .artieQuote {
-    max-width: 26em;
+    max-width: 24em;
   }
 
   .quoteAttribution {

@@ -24,7 +24,7 @@
     align-items: flex-start;
     gap: 0em 2em;
 
-    font-size: 1.2em;
+    /* font-size: 1.2em; */
   }
 
   .logo {

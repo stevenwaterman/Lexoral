@@ -16,7 +16,7 @@
       margin-top: -2em;
       margin-bottom: -2em;
       align-self: center;
-      font-size: 0.9em;
+      /* font-size: 0.9em; */
     }
   }
 

@@ -14,7 +14,7 @@
 
   h3 {
     font-weight: 600;
-		font-size: 1.75em;
+		/* font-size: 1.75em; */
 		color: var(--blue-1);
 
     margin-top: 0.5em;
@@ -23,13 +23,13 @@
   
   .panel :global(p) {
     margin-top: 1em;
-    font-size: 0.9em;
+    /* font-size: 0.9em; */
   }
 
   .panel :global(:last-child) {
     font-weight: 700;
 		text-align: center;
-    font-size: 1.1em;
+    /* font-size: 1.1em; */
   }
 </style>
 

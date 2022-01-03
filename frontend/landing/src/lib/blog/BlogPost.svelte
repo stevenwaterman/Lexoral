@@ -34,11 +34,10 @@
     gap: 2em;
     align-items: flex-start;
 
-    margin-top: -2em;
     margin-bottom: 4em;
 
     width: 100%;
-    max-width: 80em;
+    max-width: 60em;
   }
   
   .headerImage {
@@ -71,12 +70,6 @@
 
   summary {
     margin-top: 1em;
-    /* margin-bottom: 2em; */
-    
-    /* font-style: italic; */
-    font-size: 1.2em;
-    font-weight: 300;
-
     color: var(--grey-1);
   }
 

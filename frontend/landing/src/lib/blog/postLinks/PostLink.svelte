@@ -48,7 +48,7 @@
   h2 {
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 2em;
+    /* font-size: 2em; */
 
     overflow: hidden;
     text-overflow: ellipsis;

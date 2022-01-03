@@ -136,6 +136,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: 16pt;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   position: relative;
   width: 100%;
@@ -145,7 +146,6 @@ body {
 }
 
 button {
-  font-size: 1em;
   padding: 0.5em 1em 0.5em 1em;
   transition-property: background-color, color;
   transition-duration: 200ms;
@@ -233,4 +233,10 @@ blockquote {
   padding-left: 1em;
   border-left: 0.25em solid var(--blue-2);
   text-align: justify;
+}
+
+@media (max-width: 799px) {
+  body {
+    font-size: 14pt;
+  }
 }

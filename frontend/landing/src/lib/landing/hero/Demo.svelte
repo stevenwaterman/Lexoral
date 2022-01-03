@@ -1,7 +1,5 @@
 <script lang="ts">
-import LinkButton from "$lib/components/LinkButton.svelte";
-
-
+  import LinkButton from "$lib/components/LinkButton.svelte";
 </script>
 
 <style>
@@ -74,12 +72,12 @@ import LinkButton from "$lib/components/LinkButton.svelte";
 
     30% {
       left: 30%;
-      top: 60%;
+      top: 30%;
     }
 
     70% {
       left: 30%;
-      top: 60%;
+      top: 30%;
     }
 
     100% {
@@ -122,7 +120,7 @@ import LinkButton from "$lib/components/LinkButton.svelte";
   }
 
   .linkAnchor :global(.LinkButton) {
-    font-size: 1.2em;
+    font-size: 1.25em;
   }
 
   @media (max-width: 799px) {

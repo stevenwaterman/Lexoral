@@ -57,7 +57,7 @@
 
   h2 {
     margin-top: 0;
-    font-size: 2em;
+    /* font-size: 2em; */
   }
 
   .meta {

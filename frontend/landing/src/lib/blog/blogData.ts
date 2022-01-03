@@ -3,6 +3,14 @@ export type AuthorDetails = {
   longName: string;
   job: string;
   bio: string;
+  links: {
+    email?: string;
+    github?: string;
+    twitter?: string;
+    twitch?: string;
+    linkedin?: string;
+    website?: string;
+  }
 };
 
 export const authors = {
@@ -10,7 +18,15 @@ export const authors = {
     shortName: "Steven",
     longName: "Steven Waterman",
     job: "Lexoral Founder",
-    bio: "I've spent my career building software to make people's lives easier, including Lexoral. It's my full-time job, and I'm always happy to chat with you! Feel free to get in touch using any of the links below:"
+    bio: "I've spent my career building software to make people's lives easier, including Lexoral. It's my full-time job, and I'm always happy to chat with you! Feel free to get in touch using any of the links below:",
+    links: {
+      email: "steven@lexoral.com",
+      github: "StevenWaterman",
+      twitter: "SteWaterman",
+      twitch: "SteWaterman",
+      linkedin: "steven-waterman",
+      website: "www.stevenwaterman.uk"
+    }
   }
 } as const;
 authors as Record<string, AuthorDetails>;

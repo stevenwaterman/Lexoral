@@ -16,6 +16,7 @@
 
   @media (max-width: 1199px) {
     h1 {
+      font-size: 2.25em;
       align-self: flex-end;
     }
 

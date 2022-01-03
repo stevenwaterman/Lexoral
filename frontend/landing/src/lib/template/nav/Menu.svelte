@@ -22,7 +22,7 @@
 
     width: 100%;
 
-    font-size: 1.3em;
+    /* font-size: 1.3em; */
     font-weight: 500;
     color: var(--page-background);
 

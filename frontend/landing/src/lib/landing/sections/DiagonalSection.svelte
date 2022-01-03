@@ -11,7 +11,7 @@
 
 <style>
   :global(body) {
-    --background-angle-horiz-start: calc(var(--col-margin) + 20em);
+    --background-angle-horiz-start: min(100vw, calc(var(--col-margin) + 20em));
     --background-angle-horiz-delta: calc(100vw - var(--background-angle-horiz-start));
     --background-angle-vert-delta: calc(var(--background-angle-horiz-delta) / 8);
   }
@@ -58,7 +58,6 @@
   section:nth-of-type(6) { z-index: 4; }
 
   .textContainer {
-    font-size: 1.25em;
     align-self: flex-start;
 
     padding-top: 8em;
@@ -79,7 +78,7 @@
 
   h2 {
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 1.5em;
     display: inline-block;
     margin: 0;
 
@@ -133,11 +132,11 @@
     );
   }
 
-  @media (max-width: 799px) {
+  /* @media (max-width: 799px) {
     p {
       font-size: min(8vw, 1.75em);
     }
-  }
+  } */
 </style>
 
 <section class:flatTop class:flatBottom>
