@@ -52,7 +52,7 @@ export const blogPosts = {
     title: "Lexoral is open-source so you can punish us",
     shortDescription: "Anyone can read the code for Lexoral and use it in their own projects. That means you can punish us.",
     longDescription: "You can read the code for Lexoral, and even use it in your own projects. There's a lot of benefits to being open-source, but there's one that you don't hear people talking about: it lets you punish us for not sticking to our promises.",
-    date: new Date("2021-12-30T12:10:00Z"),
+    date: new Date("2022-01-04T12:10:00Z"),
     featured: true,
     published: true,
     containHeader: true
