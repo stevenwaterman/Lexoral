@@ -100,7 +100,7 @@ import Advert from "./Advert.svelte";
     .grid {
       grid-template-columns: auto;
       grid-template-rows: auto auto;
-      max-width: unset;
+      max-width: 40em;
     }
   }
 

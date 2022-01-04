@@ -51,7 +51,7 @@ export const blogPosts = {
     author: "SteWaterman",
     title: "Lexoral is open-source so you can punish us",
     shortDescription: "Anyone can read the code for Lexoral and use it in their own projects. That means you can punish us.",
-    longDescription: "Lexoral is Open-Source Software, which means that you can read the code and even use the code in your own projects. Open-Source has a lot of benefits, but there's one that you don't hear people talking about: it lets you punish us for not sticking to our promises.",
+    longDescription: "You can read the code for Lexoral, and even use it in your own projects. There's a lot of benefits to being open-source, but there's one that you don't hear people talking about: it lets you punish us for not sticking to our promises.",
     date: new Date("2021-12-30T12:10:00Z"),
     featured: true,
     published: true,

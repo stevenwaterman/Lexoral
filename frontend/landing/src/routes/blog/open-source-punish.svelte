@@ -4,7 +4,7 @@
 
 <BlogPost id="open-source-punish">
   <p>
-    The intro to this article probably seems like a non-sequitur.
+    The intro to this article probably gives you more questions than answers.
     What does being open-source have to do with punishment?
     Why would you want to punish us?
     Why would we encourage that?
@@ -84,26 +84,26 @@
     In this section, assume that I have died and been replaced by someone evil.
     They broke your trust, broke my promises, and it's time for that option of last resort.
     You want to take our code, and run it yourself.
-    To make punishing us as easy as possible, here's some instructions:
+    To make punishing us as easy as possible, here are some instructions:
   </p>
 
   <p>
     First of all, you'll want to <a rel="external" href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">fork Lexoral on GitHub</a>.
     This gives you a copy of our code that you can edit on your own, independent of our version.
-    The Lexoral repository is set up to auto-deploy to <a rel="exteranl" href="https://cloud.google.com/">Google Cloud</a> using <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/.github/workflows">GitHub Actions</a> and <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/terraform">Terraform</a>.
+    The Lexoral repository is set up to deploy to <a rel="exteranl" href="https://cloud.google.com/">Google Cloud</a> automatically using <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/.github/workflows">GitHub Actions</a> and <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/terraform">Terraform</a>.
   </p>
 
   <p>
     You'll need to set up a Google Cloud Platform account, and create a project on there.
     Then, replace any mentions of <code>lexoral-prod</code> with the name of your new project.
     There may be a few other things to change over, but you should be able to get it working with a little bit of effort.
-    Make sure you work through the list of <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/terraform/manual_setup_required.md">manual setup steps</a>, because there's some things that we haven't managed to automate yet.
+    You'll also need to work through the list of <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/terraform/manual_setup_required.md">manual setup steps</a>, because we haven't managed to automate everything yet.
   </p>
 
   <p>
     If you get stuck, you can contact me and ask for help.
-    Assuming that I've become evil, find a friend who works in <em>DevOps</em>, <em>Cloud</em>, <em>Full-Stack Web</em>, or something like that.
-    It should be pretty easy for anyone experienced to get Lexoral set up and running.
+    Given that we're assuming I've died, you can also ask a friend who works in <em>DevOps</em>, <em>Cloud</em>, <em>Full-Stack Web</em>, or something like that.
+    It'll be simple for anyone experienced in cloud deployment.
   </p>
 
 
@@ -112,24 +112,26 @@
   <p>
     Companies make promises all the time, and then they break them with no consequences.
     For really important things, they'll sign contracts, but that's not much use if the company goes bankrupt or the owner dies.
-    Sometimes companies will provide a money-back guarantee, but that guarantee's not worth much if the company is lying anyway.
+    Sometimes they'll have a money-back guarantee, but for all you know that could be a lie too!
   </p>
 
   <p>
     Being open-source lets you verify our promises.
-    It lets you see what we're doing behind the scenes.
-    It lets you punish us when we don't stick to our promises.
-    It means that, no matter how badly we treat you, or how evil I become, you don't have to deal with it.
+    It lets you see what we're doing behind the scenes, and it lets you punish us when we don't stick to our promises.
+    It means that, no matter how badly we treat you, or how evil my replacement is, you don't have to deal with it.
     You can leave, and still get value from Lexoral.
-    It might not be as convenient, but the main person to suffer is me.
+    It might not be <em>as</em> convenient, but it hurts me the most.
     Our incentives are properly aligned.
   </p>
 
   <p>
-    I've just written some really detailed instruction about how you can, if we are unethical, bankrupt Lexoral.
-    It doesn't concern me though.
-    When I said at the start that we're an ethical company, I meant it.
-    I don't see a future where you'll need to steal Lexoral, so I'm happy to give you the instructions.
+    I've just written some really detailed instructions about how you can bankrupt Lexoral.
+    I'm not worried about that though.
+    When I claimed we're an ethical company, I meant it:
+    I can't imagine a future in which you'll need those instructions.
+  </p>
+
+  <p>
     There's no better way to show that you can trust us.
   </p>
 </BlogPost>
