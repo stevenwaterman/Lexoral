@@ -20,10 +20,6 @@
 
     gap: 1em 2em;
   }
-  
-  .grid :global(.LinkButton) {
-    /* font-size: 1.2em; */
-  }
 
   .heading {
     color: var(--yellow-1);
@@ -39,10 +35,6 @@
 
   .grid :global(.LinkButton:first-of-type) {
     justify-self: flex-start;
-  }
-
-  .grid :global(.LinkButton) {
-    /* font-size: 1em; */
   }
 
   .textCol2 {

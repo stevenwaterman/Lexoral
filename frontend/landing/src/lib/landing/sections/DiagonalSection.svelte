@@ -139,7 +139,7 @@
   } */
 </style>
 
-<section class:flatTop class:flatBottom>
+<section class="DiagonalSection" class:flatTop class:flatBottom>
   <div class="background">
     <slot name="bg"/>
   </div>

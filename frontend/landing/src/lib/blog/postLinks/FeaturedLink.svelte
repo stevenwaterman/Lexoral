@@ -82,7 +82,7 @@
     text-transform: uppercase;
     font-weight: 600;
 
-    left: -2em;
+    left: -1em;
     top: -1em;
     transform: rotate(-10deg);
     background-color: var(--type-color);
@@ -96,16 +96,16 @@
     --type-color: var(--blue-3);
   }
 
-  .instruct {
+  .howto {
     --type-color: var(--green-3);
   }
 </style>
 
 <a
   href={`/blog/${id}`}
-  class:org={post.type === "organisational"}
-  class:tech={post.type === "technical"}
-  class:instruct={post.type === "instructional"}
+  class:org={post.type === "org"}
+  class:tech={post.type === "tech"}
+  class:howto={post.type === "how-to"}
 >
   <div class="type">
     {post.type}

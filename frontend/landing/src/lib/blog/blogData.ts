@@ -18,7 +18,7 @@ export const authors = {
     shortName: "Steven",
     longName: "Steven Waterman",
     job: "Lexoral Founder",
-    bio: "I've spent my career building software to make people's lives easier, including Lexoral. It's my full-time job, and I'm always happy to chat with you! Feel free to get in touch using any of the links below:",
+    bio: "I've spent my career building software to make people's lives easier, including Lexoral. It's my full-time job, and I'm always happy to chat with you - feel free to get in touch!",
     links: {
       email: "steven@lexoral.com",
       github: "StevenWaterman",
@@ -34,7 +34,7 @@ authors as Record<string, AuthorDetails>;
 export type Author = keyof typeof authors;
 
 export type BlogPost = {
-  type: "organisational" | "technical" | "instructional"
+  type: "org" | "tech" | "how-to"
   author: keyof typeof authors;
   title: string;
   shortDescription: string;
@@ -47,7 +47,7 @@ export type BlogPost = {
 
 export const blogPosts = {
   "open-source-punish": {
-    type: "organisational",
+    type: "org",
     author: "SteWaterman",
     title: "Lexoral is open-source so you can punish us",
     shortDescription: "Anyone can read the code for Lexoral and use it in their own projects. That means you can punish us.",

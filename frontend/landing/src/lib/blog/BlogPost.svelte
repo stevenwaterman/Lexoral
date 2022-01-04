@@ -1,4 +1,6 @@
 <script lang="ts">
+import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
+
   import Template from "$lib/template/Template.svelte";
   import TextContainer from "$lib/template/TextContainer.svelte";
 import Advert from "./Advert.svelte";
@@ -34,11 +36,13 @@ import Advert from "./Advert.svelte";
     grid-template-columns: 1fr 20em;
     gap: 2em;
     align-items: flex-start;
+    justify-items: center;
 
-    margin-bottom: 4em;
+    margin-bottom: -6em;
 
     width: 100%;
     max-width: 64em;
+    z-index: 20;
   }
   
   .headerImage {
@@ -81,6 +85,23 @@ import Advert from "./Advert.svelte";
   hr {
     margin-bottom: 2em;
   }
+
+  @media (max-width: 1599px) {
+    .grid {
+      grid-template-columns: auto;
+      grid-template-rows: auto auto;
+      max-width: unset;
+    }
+  }
+
+  @media (max-width: 799px) {
+    .grid {
+      width: 100vw;
+    }
+    .padded {
+      padding: 1em;
+    }
+  }
 </style>
 
 
@@ -107,7 +128,8 @@ import Advert from "./Advert.svelte";
     </TextContainer>
 
     <AuthorColumn author={post.author}/>
-
-    <Advert/>
   </div>
+
+  <div/>
+  <Advert/>
 </Template>

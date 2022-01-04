@@ -16,6 +16,7 @@ import { faRss } from "@fortawesome/free-solid-svg-icons";
 <style>
   .title {
     align-self: flex-start;
+    margin-bottom: 2em;
   }
 
   ol {
@@ -29,7 +30,7 @@ import { faRss } from "@fortawesome/free-solid-svg-icons";
 
   .subtitle {
     font-size: 1.5em;
-    font-weight: 500;
+    font-weight: 300;
     max-width: 15em;
   }
 

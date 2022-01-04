@@ -15,11 +15,21 @@
 
 <style>
   .authorCol {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    justify-items: center;
+    align-items: center;
+
+    row-gap: 2em;
+    column-gap: 4em;
+    padding: 2em 1em;
+  }
+
+  .details {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    padding: 2em 1em;
   }
 
   img {
@@ -38,15 +48,13 @@
     font-weight: 300;
   }
 
-  ul {
+  .links {
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 1em;
     row-gap: 1em;
+    padding: 0;
     align-items: center;
-    justify-items: flex-start;
-    /* padding-left: 0; */
-    align-self: flex-start;
   }
 
   li {
@@ -65,15 +73,42 @@
   li :global(.svelte-fa) {
     font-size: 2em;
   }
+
+  @media (max-width: 1599px) {
+    .authorCol {
+      grid-template-columns: 20em auto;
+      padding: 2em 4em;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .authorCol {
+      grid-template-columns: 16em auto;
+      padding: 2em;
+      column-gap: 2em;
+    }
+  }
+
+  @media (max-width: 799px) {
+    .authorCol {
+      grid-template-columns: 1fr;
+      padding: 1em;
+      max-width: 20em;
+      width: 100vw;
+    }
+  }
 </style>
 
 <TextContainer defaultPadding={false}>
   <div class="authorCol">
-    <img src={`/assets/blog/authors/${author}.jpg`} alt={authorDetails.longName}/>
-    <h2 class="name">{authorDetails.longName}</h2>
-    <p class="job">{authorDetails.job}</p>
-    <p class="bio">{authorDetails.bio}</p>
-    <ul>
+    <div class="details">
+      <img src={`/assets/blog/authors/${author}.jpg`} alt={authorDetails.longName}/>
+      <h2 class="name">{authorDetails.longName}</h2>
+      <p class="job">{authorDetails.job}</p>
+      <p class="bio">{authorDetails.bio}</p>
+    </div>
+    
+    <ul class="links">
       {#if authorDetails.links.email}
         <li>
           <a rel="external" href={`mailto:${authorDetails.links.email}`}>

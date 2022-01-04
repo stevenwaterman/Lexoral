@@ -9,6 +9,7 @@
 
     box-shadow: 0 0 0.5em 0 var(--blue-3);
 
+    width: fit-content;
     max-width: 60em;
     overflow: hidden;
     font-size: 14pt;
