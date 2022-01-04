@@ -59,7 +59,7 @@
   }
 
   h2 {
-    margin-top: 0;
+    margin-top: 0.5em;
   }
 
   .meta {
@@ -98,6 +98,20 @@
 
   .howto {
     --type-color: var(--green-3);
+  }
+
+  @media (max-width: 1199px) {
+    .container {
+      grid-template-columns: 20em 1fr;
+      grid-template-rows: auto;
+    }
+  }
+
+  @media (max-width: 799px) {
+    .container {
+      grid-template-columns: auto;
+      grid-template-rows: 12em 1fr;
+    }
   }
 </style>
 

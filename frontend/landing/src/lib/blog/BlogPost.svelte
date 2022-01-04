@@ -62,9 +62,11 @@ import Advert from "./Advert.svelte";
   }
 
   .metadata {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: stretch;
+    align-items: center;
+    
     margin-bottom: 1em;
     font-weight: 300;
   }
@@ -75,6 +77,14 @@ import Advert from "./Advert.svelte";
 
   .type {
     text-transform: uppercase;
+  }
+
+  .date {
+    text-align: center;
+  }
+
+  .author {
+    text-align: right;
   }
 
   summary {

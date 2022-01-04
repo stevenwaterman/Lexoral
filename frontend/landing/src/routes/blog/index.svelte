@@ -63,6 +63,23 @@ import { faRss } from "@fortawesome/free-solid-svg-icons";
     margin-left: 0.25em;
     color: var(--yellow-1)
   }
+
+  @media (max-width: 1599px) {
+    .featured {
+      gap: 2em;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .featured {
+      grid-template-columns: 1fr;
+      gap: 2em;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 </style>
 
 <Template title="Lexoral Blog">
@@ -79,11 +96,11 @@ import { faRss } from "@fortawesome/free-solid-svg-icons";
     {/each}
   </ol>
 
-  <h2>All Posts</h2>
+  <!-- <h2>All Posts</h2>
 
   <ol class="recent">
     {#each posts as [id, _] (id)}
       <li><PostLink {id}/></li>
     {/each}
-  </ol>
+  </ol> -->
 </Template>
