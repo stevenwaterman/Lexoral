@@ -9,7 +9,7 @@
 <style>
   .grid {
     display: grid;
-    grid-template-columns: 10em auto 1fr;
+    grid-template-columns: 10em 1fr auto;
     gap: 4em;
 
     justify-items: center;

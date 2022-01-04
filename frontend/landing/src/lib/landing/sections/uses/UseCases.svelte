@@ -5,26 +5,10 @@
 </script>
 
 <style>
-	.divider {
-		height: calc(100% - 30em);
-		width: 0;
-		position: absolute;
-    top: 50%;
-		left: 50%;
-		z-index: 10;
-
-    transform: translateY(-50%);
-
-    border-left-style: double;
-    border-width: 1em;
-    border-color: var(--blue-0);
-	}
-
 	.grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr auto 1fr;
 		width: 100%;
-		gap: 4em;
 
 		justify-items: center;
 		align-items: flex-start;
@@ -32,16 +16,29 @@
     margin-bottom: -2em;
 	}
 
+  .divider {
+    width: 1em;
+    height: 100%;
+    margin: 1em;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-color: var(--blue-0);
+    border-width: 0.3em;
+  }
+
   @media (max-width: 1199px) {
     .grid {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto;
+      gap: 6em;
     }
 
     .divider {
       display: none;
     }
   }
+
+  
 </style>
 
 <DiagonalSection
@@ -50,10 +47,9 @@
 	subtitleTop="Here's some examples"
 	subtitleBottom="of how we can help"
 >
-	<div slot="bg" class="divider" />
-
 	<div class="grid">
 		<Research/>
+    <div class="divider"/>
 		<Creation/>
 	</div>
 </DiagonalSection>

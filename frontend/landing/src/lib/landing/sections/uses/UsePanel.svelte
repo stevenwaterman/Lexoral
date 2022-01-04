@@ -10,11 +10,15 @@
 		align-items: center;
 
     max-width: 28em;
+
+    border-width: 0.3em;
+    border-color: var(--blue-0);
+
+    height: 100%;
   }
 
   h3 {
     font-weight: 600;
-		/* font-size: 1.75em; */
 		color: var(--blue-1);
 
     margin-top: 0.5em;
@@ -23,13 +27,11 @@
   
   .panel :global(p) {
     margin-top: 1em;
-    /* font-size: 0.9em; */
   }
 
   .panel :global(:last-child) {
     font-weight: 700;
 		text-align: center;
-    /* font-size: 1.1em; */
   }
 </style>
 
