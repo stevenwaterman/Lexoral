@@ -99,6 +99,10 @@
   }
 </style>
 
+<svelte:head>
+	<meta name="twitter:creator" content={`@${authorDetails.links.twitter ?? "Lexoral"}`}>
+</svelte:head>
+
 <TextContainer defaultPadding={false}>
   <div class="authorCol">
     <div class="details">

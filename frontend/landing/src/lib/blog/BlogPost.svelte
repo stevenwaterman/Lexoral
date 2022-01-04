@@ -3,7 +3,7 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
 
   import Template from "$lib/template/Template.svelte";
   import TextContainer from "$lib/template/TextContainer.svelte";
-import Advert from "./Advert.svelte";
+  import Advert from "./Advert.svelte";
   import AuthorColumn from "./AuthorColumn.svelte";
   import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "./blogData";
 
@@ -20,12 +20,8 @@ import Advert from "./Advert.svelte";
 
   /*
   TODO list
-
   - link to the main blog
   - recommended posts
-  - Styling on the data stuff
-  - Author picture + bio
-  - Header image
   - Head meta stuff for twitter etc
   */
 </script>
@@ -114,6 +110,20 @@ import Advert from "./Advert.svelte";
   }
 </style>
 
+<svelte:head>
+	<meta name="description" content={post.longDescription}>
+  <link rel="alternate" type="application/rss+xml" href="https://lexoral.com/rss.xml" title="Lexoral Blog">
+  <link rel="canonical" href={`https://lexoral.com/blog/${id}`}>
+	<meta property="og:title" content={post.title}>
+	<meta property="og:description" content={post.longDescription}>
+	<meta property="og:image" content={`https://lexoral.com/assets/blog/${id}/header.png`}>
+	<meta property="og:type" content="article">
+	<meta property="og:site_name" content="Lexoral">
+	<meta property="og:url" content={`https://lexoral.com/blog/${id}`}>
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@Lexoral">
+	<meta name="twitter:image" content={`https://lexoral.com/assets/blog/${id}/header.png`}>
+</svelte:head>
 
 <Template title={post.title}>
   <div class="grid">
