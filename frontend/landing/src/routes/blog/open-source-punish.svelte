@@ -17,7 +17,7 @@
   </p>
 
   <p>
-    Making Lexoral open-source gives all of our users that option of last restort - It's the equivalent of Disney coming out and saying:
+    Making Lexoral open-source gives all of our users that option of last resort - the equivalent of Disney coming out and saying:
   </p>
 
   <blockquote>
@@ -58,7 +58,7 @@
   <p>
     Our code is hosted on GitHub, and is publicly available <a rel="external" href="https://github.com/stevenwaterman/Lexoral/">here</a>.
     All our code is on there, updated multiple times a day, even the things we haven't released yet.
-    Even this blog post is open-source: you can see its code and make suggestions <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/landing/src/routes/blog/open-source-punish/index.svelte">here</a>.
+    Even this blog post is open-source: you can see its code and make suggestions <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/landing/src/routes/blog/open-source-punish.svelte">here</a>.
     I try to keep the documentation up-to-date, but if you're confused, feel free to <a rel="external" href="https://github.com/stevenwaterman/Lexoral/issues/new">open an issue</a> and ask for help.
   </p>
   
