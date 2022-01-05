@@ -126,7 +126,7 @@
   </div>
 
   <div class="container">
-    <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
+    <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader} alt="Header"/>
     <div class="padded">
       <div class="meta">
         <p>{post.date.toLocaleDateString()}</p>

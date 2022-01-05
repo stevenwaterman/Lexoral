@@ -70,7 +70,7 @@
   href={`/blog/${id}`}
   class="container"
 >
-  <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
+  <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader} alt="Header"/>
   <h3>{post.title}</h3>
   <p>{post.date.toLocaleDateString()}</p>
   <p class="type">{post.type}</p>
