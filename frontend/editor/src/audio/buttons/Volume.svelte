@@ -1,16 +1,28 @@
 <script lang="ts">
   import Fa from "svelte-fa/src/fa.svelte";
-  import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
+  import { faVolumeDown, faVolumeMute, faVolumeOff, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
+  import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
   import { audioStore } from "../../state/settings/audioStore";
 
   $: volumeStore = audioStore.getField("volume");
+
+  let volumeIcon: IconDefinition;
+  $: volumeIcon = getVolumeIcon($volumeStore);
+
+  function getVolumeIcon(volume: number): IconDefinition {
+    if (volume <= 0) return faVolumeMute;
+    if (volume <= 25) return faVolumeOff;
+    if (volume <= 60) return faVolumeDown;
+    return faVolumeUp;
+  }
 </script>
 
 <style>
   .container {
     display: grid;
     grid-template-columns: auto auto;
+    height: 100%;
 
     justify-items: center;
     align-items: center;
@@ -30,19 +42,23 @@
     width: 8em;
   }
 
-  .container:focus-within .inputContainer {
-    width: 8em;
-  }
-
   .inputContainer input {
     width: calc(100% - 1em);
     margin-left: 1em;
     box-sizing: border-box;
   }
+
+  .iconWrapper {
+    display: grid;
+    justify-items: flex-start;
+    width: 1.25em;
+  }
 </style>
 
 <div class="container">
-  <Fa icon={faVolumeUp}/>
+  <div class="iconWrapper">
+    <Fa icon={volumeIcon}/>
+  </div>
 
   <div class="inputContainer">
     <input type="range" min={0} max={100} step={1} bind:value={$volumeStore}/>

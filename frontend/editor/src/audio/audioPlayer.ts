@@ -1,9 +1,10 @@
+import { get_store_value } from "svelte/internal";
 import { derived } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { audioStore, AudioStyle } from "../state/settings/audioStore";
 import { deriveSyncedWithTick } from "../utils/stores";
 import { audioDurationStore, currentTimeStore, playingStore } from "./audioStatus";
-import { getSelectionTimings } from "./audioTimings";
+import { selectionTimingsStore } from "./audioTimings";
 
 let initialised = false;
 let player: HTMLAudioElement;
@@ -13,7 +14,6 @@ let endTime: number;
 
 let loop: boolean;
 let autoPlay: boolean;
-let audioStyle: AudioStyle;
 
 export function initAudio(src: string) {
   player = document.createElement("audio");
@@ -28,7 +28,6 @@ export function initAudio(src: string) {
 
   audioStore.getField("loop").subscribe(state => loop = state);
   audioStore.getField("autoPlay").subscribe(state => autoPlay = state);
-  audioStore.getField("mode").subscribe(state => audioStyle = state);
 
   initialised = true;
 }
@@ -38,7 +37,7 @@ export async function playAudio() {
 
   player.pause();
 
-  const timings = getSelectionTimings(audioStyle);
+  const timings = get_store_value(selectionTimingsStore);
   if (timings === null) return;
 
   player.currentTime = timings.start;

@@ -1,31 +1,36 @@
+import { derived, Readable } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { ParagraphLocation, paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
 import { getSectionStore } from "../state/section/sectionStoreRegistry";
-import type { AudioStyle } from "../state/settings/audioStore";
+import { audioStore } from "../state/settings/audioStore";
 import { clamp } from "../utils/list";
 
-let earlySelectionIdx: number | undefined;
-let lateSelectionIdx: number | undefined;
-earlySectionIdxStore.subscribe(state => earlySelectionIdx = state);
-lateSectionIdxStore.subscribe(state => lateSelectionIdx = state);
-
-let paragraphLocations: ParagraphLocation[];
-paragraphLocationsStore.subscribe(state => paragraphLocations = state);
-
-export function getSelectionTimings(audioStyle: AudioStyle): { start: number, end: number } | null {
+export const selectionTimingsStore: Readable<{start: number, end: number} | null> = derived([
+  audioStore.getField("mode"),
+  earlySectionIdxStore,
+  lateSectionIdxStore,
+  paragraphLocationsStore
+], ([audioStyle, earlySelectionIdx, lateSelectionIdx, paragraphLocations]) => {
   if (earlySelectionIdx !== lateSelectionIdx) return getSelectionTimingsLiteral(earlySelectionIdx, lateSelectionIdx);
-  if (audioStyle === "context") return getSelectionTimingsContext();
-  else if (audioStyle === "onward") return getSelectionTimingsOnward();
+  if (audioStyle === "context") return getSelectionTimingsContext(earlySelectionIdx, lateSelectionIdx, paragraphLocations);
+  else if (audioStyle === "onward") return getSelectionTimingsOnward(earlySelectionIdx, lateSelectionIdx);
   else throw new Error("Unrecognised audio style " + audioStyle)
-}
+});
 
-function getSelectionTimingsContext(): { start: number, end: number } | null {
-  const startSectionIdx = offsetInParagraph(earlySelectionIdx, -5);
-  const endSectionIdx = offsetInParagraph(lateSelectionIdx, 5);
+function getSelectionTimingsContext(
+  earlySelectionIdx: number | undefined, 
+  lateSelectionIdx: number | undefined,
+  paragraphLocations: ParagraphLocation[]
+): { start: number, end: number } | null {
+  const startSectionIdx = offsetInParagraph(earlySelectionIdx, -5, paragraphLocations);
+  const endSectionIdx = offsetInParagraph(lateSelectionIdx, 5, paragraphLocations);
   return getSelectionTimingsLiteral(startSectionIdx, endSectionIdx);
 }
 
-function getSelectionTimingsOnward(): { start: number, end: number } | null {
+function getSelectionTimingsOnward(
+  earlySelectionIdx: number | undefined, 
+  lateSelectionIdx: number | undefined
+): { start: number, end: number } | null {
   if (earlySelectionIdx === undefined) return null;
   const start = getSectionStore(earlySelectionIdx).startTime as number;
   return { start, end: Number.MAX_SAFE_INTEGER };
@@ -44,16 +49,20 @@ function getSelectionTimingsLiteral(
   return {start, end};
 }
 
-function offsetInParagraph(section: number | undefined, offset: number): number | undefined {
+function offsetInParagraph(
+  section: number | undefined,
+  offset: number,
+  paragraphLocations: ParagraphLocation[]
+): number | undefined {
   if (section === undefined) return;
 
-  const paragraph = getParagraph(section);
+  const paragraph = getParagraph(section, paragraphLocations);
   if (paragraph === undefined) return;
 
   return clamp(section + offset, paragraph.start, paragraph.end);
 }
 
-function getParagraph(section: number): ParagraphLocation | undefined {
+function getParagraph(section: number, paragraphLocations: ParagraphLocation[]): ParagraphLocation | undefined {
   return paragraphLocations.find(location => 
     location.start <= section &&
     location.end >= section

@@ -1,7 +1,7 @@
 import { doc, DocumentReference } from "firebase/firestore";
 import { getUserUid } from "../../api";
 import { isDemo, isEmbeddedDemo } from "../../demo";
-import { initableFirestoreWritable } from "../../utils/firestoreWritable";
+import { FirestoreWritable } from "../../utils/firestoreWritable";
 import { getDb } from "../patch/db";
 
 export type DisplayState = {
@@ -28,4 +28,4 @@ const embeddedInitial: DisplayState = {
 
 const initial = isEmbeddedDemo() ? embeddedInitial : isDemo() ? demoInitial : liveInitial;
 
-export const displayStore = initableFirestoreWritable("Display Settings", documentSupplier, initial);
+export const displayStore = new FirestoreWritable(documentSupplier, initial);

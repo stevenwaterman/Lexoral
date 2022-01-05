@@ -21,8 +21,8 @@ export async function initAll() {
   return resolveAllPromises(async register => {
     const fetch = register(fetchTranscript());
 
-    const audioSettings = register(audioStore.init());
-    const displaySettings = register(displayStore.init());
+    const audioSettings = register(audioStore.connect());
+    const displaySettings = register(displayStore.connect());
     const words = register(initWords());
     const patch = register(patchInterface.init());
 

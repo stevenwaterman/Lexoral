@@ -1,7 +1,7 @@
 import { doc, DocumentReference } from "firebase/firestore";
 import { getUserUid } from "../../api";
 import { isDemo, isEmbeddedDemo } from "../../demo";
-import { initableFirestoreWritable } from "../../utils/firestoreWritable";
+import { FirestoreWritable } from "../../utils/firestoreWritable";
 import { getDb } from "../patch/db";
 
 export type AudioStyle = "context" | "onward"
@@ -13,7 +13,8 @@ export type AudioState = {
   autoPlay: boolean;
 }
 
-const documentSupplier: () => DocumentReference<AudioState> = () => doc(getDb(), "users", getUserUid(), "settings", "editorAudio") as DocumentReference<AudioState>;
+const documentSupplier = () => doc(getDb(), "users", getUserUid(), "settings", "editorAudio") as DocumentReference<AudioState>;
+
 const liveInitial: AudioState = {
   loop: false,
   volume: 100,
@@ -40,4 +41,4 @@ const embeddedInitial: AudioState = {
 
 const initial = isEmbeddedDemo() ? embeddedInitial : isDemo() ? demoInitial : liveInitial;
 
-export const audioStore = initableFirestoreWritable("Audio Settings", documentSupplier, initial);
+export const audioStore = new FirestoreWritable(documentSupplier, initial);

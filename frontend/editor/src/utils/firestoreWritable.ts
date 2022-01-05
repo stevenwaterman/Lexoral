@@ -1,145 +1,103 @@
 import { DocumentReference, onSnapshot, setDoc } from "firebase/firestore";
-import { derived, Readable, writable } from "svelte/store";
+import { get_store_value, init } from "svelte/internal";
+import { derived, Readable, Subscriber, Unsubscriber, Writable, writable } from "svelte/store";
 
-export type FirestoreWritable<T> = Readable<T> & {
-  set: (value: Partial<T>) => void;
-  update: (updater: (value: T) => Partial<T>) => void;
-  sync: () => Promise<void>;
-  field: <KEY extends keyof T>(key: KEY) => FirestoreWritableField<T, KEY>;
-}
+export class FirestoreWritable<T extends Record<string, any>> implements Readable<T> {
+  private connection: "NONE" | "PENDING" | "READY" = "NONE";
 
-export type FirestoreWritableField<T, KEY extends keyof T> = Readable<T[KEY]> & {
-  set: (value: T[KEY]) => void;
-  update: (updater: (value: T[KEY]) => T[KEY]) => void;
-  sync: () => Promise<void>;
-}
+  private readonly dbStore: Writable<T>;
+  private readonly pendingStore: Writable<Partial<T>>;
+  private readonly exposedStore: Readable<T>;
 
-export async function firestoreWritable<T extends Record<string, any>>(
-  document: DocumentReference<T>,
-  initial: T,
-  debounceDelayMs: number = 1000
-): Promise<FirestoreWritable<T>> {
-  const dbStore = writable<T>(initial);
+  public current: T;
 
-  let pendingState: Partial<T> = {};
-  const pendingStore = writable<Partial<T>>(pendingState);
+  constructor(
+    private readonly documentSupplier: () => DocumentReference<T>,
+    private readonly initial: T,
+    private readonly debounceDelayMs: number = 1000
+  ) {
+    this.dbStore = writable(initial);
+    this.pendingStore = writable({});
+    this.exposedStore = derived(
+      [this.dbStore, this.pendingStore], 
+      ([dbState, pendingState]) => ({ ...dbState, ...pendingState })
+    );
 
-  const { subscribe } = derived(
-    [dbStore, pendingStore], 
-    ([dbState, pendingState]) => {
-    return {
-      ...dbState,
-      ...pendingState
-    };
-  });
-
-  onSnapshot(document, snapshot => {
-    const data = snapshot.data();
-    if (data !== undefined) dbStore.set({ ...initial, ...data });
-  });
-
-
-  async function sync(): Promise<void> {
-    await setDoc(document, pendingState as any, { merge: true });
-    pendingState = {};
-    pendingStore.set({});
+    this.current = initial;
+    this.exposedStore.subscribe(state => this.current = state);
   }
 
-
-  let timer: NodeJS.Timeout | undefined = undefined;
-
-  function setPending(value: Partial<T>) {
-    pendingState = value;
-    pendingStore.update(oldState => ({...oldState, ...value}));
-
-    if (timer !== undefined) clearTimeout(timer);
-    timer = setTimeout(sync, debounceDelayMs);
+  subscribe(run: Subscriber<T>, invalidate?: (value?: T) => void): Unsubscriber {
+    return this.exposedStore.subscribe(run, invalidate);
   }
 
-  let current: T;
-  subscribe(state => current = state);
+  async connect() {
+    if (this.connection !== "NONE") throw new Error("Already connected");
+    this.connection = "PENDING";
 
-  function update(updater: (value: T) => Partial<T>) {
-    setPending(updater(current));
+    return new Promise<void>(async (resolve) => {
+      onSnapshot(this.documentSupplier(), snapshot => {
+        const data = snapshot.data();
+        if (data !== undefined) this.dbStore.set({ ...this.initial, ...data });
+      });
+
+      await this.sync();
+      this.connection = "READY";
+      resolve();
+    });
+  }
+  
+  async sync(): Promise<void> {
+    const pendingState = get_store_value(this.pendingStore);
+    await setDoc(this.documentSupplier(), pendingState as any, { merge: true });
+    this.pendingStore.set({});
   }
 
-  window.onbeforeunload = () => {
-    if (timer !== undefined) clearTimeout(timer);
-    sync();
-    return null;
+  private timer: NodeJS.Timeout | undefined = undefined;
+
+  patch(value: Partial<T>) {
+    this.pendingStore.update(oldState => ({...oldState, ...value}));
+
+    if (this.timer !== undefined) clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.sync(), this.debounceDelayMs);
   }
 
-  function field<KEY extends keyof T>(key: KEY): FirestoreWritableField<T, KEY> {
-    type VALUE = T[KEY];
-    const derivedStore: Readable<VALUE> = derived({subscribe}, state => state[key]);
-    const derivedSet = (value: VALUE) => {
-      const patch: Partial<T> = {};
-      patch[key] = value;
-      setPending(patch);
-    };
+  update(updater: (value: T) => Partial<T>) {
+    const newValue = updater(this.current);
+    this.patch(newValue);
+  }
 
-    function derivedUpdate(updater: (value: VALUE) => VALUE) {
-      derivedSet(updater(current[key]));
-    }
-
-    return {
-      subscribe: derivedStore.subscribe,
-      set: derivedSet,
-      update: derivedUpdate,
-      sync
-    }
-  };
-
-  return {
-    subscribe,
-    set: setPending,
-    update,
-    sync,
-    field
+  getField<K extends keyof T>(key: K): FirestoreWritableField<T, K> {
+    return new FirestoreWritableField<T, K>(this, key);
   }
 }
 
-export type InitableFirebaseWritable<STATE> = {
-  init: () => Promise<void>;
-  get: () => FirestoreWritable<STATE>;
-  getField: <KEY extends keyof STATE>(name: KEY) => FirestoreWritableField<STATE, KEY>;
-}
+class FirestoreWritableField<T extends Record<string, any>, K extends keyof T> implements Writable<T[K]> {
+  private readonly derivedStore: Readable<T[K]>;
 
-export function initableFirestoreWritable<STATE extends Record<string, any>>(
-  storeName: string,
-  documentSupplier: () => DocumentReference<STATE>,
-  initial: STATE
-): InitableFirebaseWritable<STATE> {
-  let initialised: boolean = false;
+  constructor(
+    private readonly parent: FirestoreWritable<T>,
+    private readonly key: K
+  ) {
+    this.derivedStore = derived(this.parent, parentValue => parentValue[key]);
+  }
 
-  async function init() {
-    if (initialised) throw new Error(`${storeName} store is already initialised`);
-    initialised = true;
-  
-    const document = documentSupplier();
-    firestoreWritableInternal = await firestoreWritable<STATE>(document, initial);
+  subscribe(run: Subscriber<T[K]>, invalidate?: (value?: T[K]) => void): Unsubscriber {
+    return this.derivedStore.subscribe(run, invalidate);
   }
-  
-  let firestoreWritableInternal: FirestoreWritable<STATE> | undefined = undefined;
-  const fieldStores: Partial<Record<keyof STATE, any>> = {};
-  
-  function get() {
-    if (firestoreWritableInternal === undefined) throw new Error(`${storeName} store is not initialised`);
-    return firestoreWritableInternal;
+
+  set(value: T[K]) {
+    const patch: Partial<T> = {};
+    patch[this.key] = value;
+    this.parent.patch(patch);
   }
-  
-  function getField<KEY extends keyof STATE>(name: KEY): FirestoreWritableField<STATE, KEY> {
-    const existing = fieldStores[name];
-    if (existing !== undefined) return existing as FirestoreWritableField<STATE, KEY>;
-  
-    const store = get().field(name);
-    fieldStores[name] = store;
-    return store;
+
+  update(updater: (value: T[K]) => T[K]) {
+    const newValue = updater(this.parent.current[this.key]);
+    this.set(newValue);
   }
-  
-  return {
-    init,
-    get,
-    getField
+
+  async sync() {
+    return this.parent.sync();
   }
 }

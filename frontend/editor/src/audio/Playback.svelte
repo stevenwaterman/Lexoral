@@ -3,17 +3,12 @@
   import Jump from "./buttons/Jump.svelte";
   import Volume from "./buttons/Volume.svelte";
   import Time from "./buttons/Time.svelte";
+import Timeline from "./Timeline.svelte";
 </script>
 
 <style>
   .container {
     padding: 1em;
-  }
-
-  .timeline {
-    padding-top: 1em;
-    padding-bottom: 1em;
-    height: 0.5em;
   }
 
   .controls {
@@ -29,7 +24,7 @@
 </style>
 
 <div class="container">
-  <div class="timeline"/>
+  <Timeline/>
   <div class="controls">
     <PlayPause/>
     <Jump/>
