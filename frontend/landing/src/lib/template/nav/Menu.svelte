@@ -107,12 +107,13 @@
       border-bottom-style: solid;
       border-bottom-left-radius: 1em;
 
-      transform: translateX(100%);
+      transform-origin: 0% 0%;
+      transform: scaleY(0);
       transition: 200ms transform;
     }
 
     .burgerMenuContainer:focus-within .menu {
-      transform: translateX(0);
+      transform: scaleY(100%);
     }
 
     nav :global(.LinkButton) {
