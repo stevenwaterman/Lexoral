@@ -1,10 +1,12 @@
-import { Readable, writable, Writable } from "svelte/store";
+import { derived, Readable, writable, Writable } from "svelte/store";
 import type { SectionStore } from "../state/section/sectionStore"
 import { getSectionStore } from "../state/section/sectionStoreRegistry";
 import { getAssertExists } from "../utils/list";
-import { makeReadonly } from "../utils/stores";
+import { deriveWithPrevious } from "../utils/stores";
 
 export const playingStore: Writable<boolean> = writable(false);
+export const currentTimeStore: Writable<number> = writable(0);
+export const audioDurationStore: Writable<number> = writable(0);
 
 const audioTimings: Array<{ startTime: number; endTime: number }> = [];
 
@@ -40,24 +42,17 @@ function timeWithin(time: number, sectionTime: { startTime: number; endTime: num
   return true;
 }
 
-let lastPlayingSectionIdx: number | null = null;
-const lastPlayingSectionIdxStoreInternal: Writable<number | null> = writable(lastPlayingSectionIdx);
-export const lastPlayingSectionIdxStore: Readable<number | null> = makeReadonly(lastPlayingSectionIdxStoreInternal);
-export function getLastPlayingSectionIdx(): number | null {
-  return lastPlayingSectionIdx;
-}
+export const lastPlayingSectionIdxStore: Readable<number | null> = derived([playingStore, currentTimeStore], ([playing, time], set) => {
+  if (!playing) {
+    set(null);
+    return;
+  };
+  
+  const newValue = getSectionIdxForTime(time);
+  if (newValue !== null) set(newValue);
+});
 
-export function updateCurrentlyPlaying(time: number | null) {
-  const newPlayingSectionIdx = getSectionIdxForTime(time);
-  if (newPlayingSectionIdx === lastPlayingSectionIdx) return;
-
-  if (lastPlayingSectionIdx !== null) getSectionStore(lastPlayingSectionIdx).playingStore.set(false);
-  if (newPlayingSectionIdx !== null) getSectionStore(newPlayingSectionIdx).playingStore.set(true);
-
-  lastPlayingSectionIdx = newPlayingSectionIdx;
-  if (newPlayingSectionIdx !== null) lastPlayingSectionIdxStoreInternal.set(newPlayingSectionIdx);
-}
-
-playingStore.subscribe(playing => {
-  if (!playing) lastPlayingSectionIdxStoreInternal.set(null);
+deriveWithPrevious(lastPlayingSectionIdxStore).subscribe(({last, current}) => {
+  if (last !== null && last !== undefined) getSectionStore(last).playingStore.set(false);
+  if (current !== null) getSectionStore(current).playingStore.set(true);
 })

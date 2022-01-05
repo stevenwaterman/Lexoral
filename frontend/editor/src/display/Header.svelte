@@ -15,8 +15,6 @@ import { isDemo } from "../demo";
 
     background-color: var(--grey-3);
     z-index: 2;
-
-    grid-column: 1 / 3;
   }
 
   .playing {

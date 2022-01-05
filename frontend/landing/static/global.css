@@ -187,10 +187,14 @@ button:enabled:active {
 
 input {
   font-size: 0.75em;
-  padding: 0.5em 1em 0.5em 1em;
+  padding: 0.5em 1em;
   border: 1px solid var(--form-border);
   border-radius: 0.5em;
   text-decoration: none;
+}
+
+input[type=range] {
+  padding: 0.5em 0;
 }
 
 h1 {

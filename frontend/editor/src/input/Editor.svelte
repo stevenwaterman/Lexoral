@@ -5,14 +5,15 @@
   import Scroller from "./Scroller.svelte";
   import Options from "../options/Options.svelte";
   import { isEmbeddedDemo } from "../demo";
+import Playback from "../audio/Playback.svelte";
 </script>
 
 <style>
   .grid {
     display: grid;
 
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto 1fr;
+    grid-template-columns: auto;
+    grid-template-rows: auto 1fr auto;
 
     width: 100vw;
     height: 100vh;
@@ -44,7 +45,8 @@
       <ToastController/>
     </div>
 
-    <Options/>
+    <Playback/>
+    <!-- <Options/> -->
   </div>
 {/if}
 

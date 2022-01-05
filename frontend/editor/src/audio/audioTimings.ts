@@ -1,6 +1,6 @@
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { ParagraphLocation, paragraphLocationsStore } from "../state/section/paragraphLocationsStore";
-import { getMaxSectionIdx, getSectionStore } from "../state/section/sectionStoreRegistry";
+import { getSectionStore } from "../state/section/sectionStoreRegistry";
 import type { AudioStyle } from "../state/settings/audioStore";
 import { clamp } from "../utils/list";
 

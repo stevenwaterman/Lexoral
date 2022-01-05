@@ -1,6 +1,7 @@
+import { get_store_value } from "svelte/internal";
 import { stopAudio, toggleAudio } from "../../audio/audioPlayer";
-import { getLastPlayingSectionIdx } from "../../audio/audioStatus";
-import { findSectionNode, selectEnd, selectSectionEnd } from "../../input/select";
+import { lastPlayingSectionIdxStore } from "../../audio/audioStatus";
+import { findSectionNode, selectEnd } from "../../input/select";
 import type { SectionStore } from "../../state/section/sectionStore";
 import { audioStore } from "../../state/settings/audioStore";
 import { clamp } from "../../utils/list";
@@ -51,7 +52,7 @@ export async function togglePlay(event: SectionKeyboardEvent, section: SectionSt
 
 export async function jumpTo(event: SectionKeyboardEvent, section: SectionStore) {
   event.preventDefault();
-  const idx = getLastPlayingSectionIdx();
+  const idx = get_store_value(lastPlayingSectionIdxStore);
   if (idx !== null) {
     const component = findSectionNode(idx);
     if (component) {

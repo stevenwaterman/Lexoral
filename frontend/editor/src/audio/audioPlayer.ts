@@ -2,7 +2,7 @@ import { derived } from "svelte/store";
 import { earlySectionIdxStore, lateSectionIdxStore } from "../input/selectionState";
 import { audioStore, AudioStyle } from "../state/settings/audioStore";
 import { deriveSyncedWithTick } from "../utils/stores";
-import { playingStore, updateCurrentlyPlaying } from "./audioStatus";
+import { audioDurationStore, currentTimeStore, playingStore } from "./audioStatus";
 import { getSelectionTimings } from "./audioTimings";
 
 let initialised = false;
@@ -21,6 +21,7 @@ export function initAudio(src: string) {
 
   player.onplay = () => playingStore.set(true);
   player.onpause = () => playingStore.set(false);
+  player.ondurationchange = () => audioDurationStore.set(player.duration)
 
   audioStore.getField("volume").subscribe(volume => player.volume = volume / 100);
   audioStore.getField("rate").subscribe(rate => player.playbackRate = rate / 100);
@@ -65,17 +66,16 @@ export async function toggleAudio() {
 
 function onTimeUpdate() {
   if (player.paused) {
-    updateCurrentlyPlaying(null);
     return;
   }
 
   const time = player.currentTime;
 
   if (time < endTime) {
-    updateCurrentlyPlaying(time);
+    currentTimeStore.set(time);
   } else if (loop) {
     player.currentTime = startTime;
-    updateCurrentlyPlaying(startTime);
+    currentTimeStore.set(startTime);
   } else {
     player.pause();
   }
