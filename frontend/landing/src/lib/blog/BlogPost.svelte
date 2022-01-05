@@ -129,7 +129,7 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
   <div class="grid">
     <TextContainer defaultPadding={false}>
       <article>
-        <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader}/>
+        <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader} alt="Header"/>
         <div class="padded">
           <div class="metadata">
             <p class="type">{post.type}</p>
