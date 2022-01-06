@@ -11,7 +11,7 @@
   }
 </script>
 
-<button on:click={click}>
+<button on:click={click} title="Toggle playback (Alt)">
   {#if $playingStore}
     <Fa icon={faStop}/>
   {:else}

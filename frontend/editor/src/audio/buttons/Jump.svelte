@@ -1,6 +1,6 @@
 <script lang="ts">
   import Fa from "svelte-fa/src/fa.svelte";
-  import { faPause } from "@fortawesome/free-solid-svg-icons";
+  import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 
   import { lastPlayingSectionIdxStore, playingStore } from "../../audio/audioStatus";
   import { findSectionNode, selectEnd } from "../../input/select";
@@ -18,6 +18,6 @@
   }
 </script>
 
-<button on:click={click} disabled={!$playingStore}>
-  <Fa icon={faPause}/>
+<button on:click={click} disabled={!$playingStore} title="Jump to current time (Esc)">
+  <Fa icon={faThumbtack}/>
 </button>

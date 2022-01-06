@@ -1,6 +1,7 @@
 import { DocumentReference, onSnapshot, setDoc } from "firebase/firestore";
 import { get_store_value, init } from "svelte/internal";
 import { derived, Readable, Subscriber, Unsubscriber, Writable, writable } from "svelte/store";
+import { isDemo } from "../demo";
 
 export class FirestoreWritable<T extends Record<string, any>> implements Readable<T> {
   private connection: "NONE" | "PENDING" | "READY" = "NONE";
@@ -32,6 +33,11 @@ export class FirestoreWritable<T extends Record<string, any>> implements Readabl
   }
 
   async connect() {
+    if (isDemo()) {
+      this.connection = "READY";
+      return;
+    }
+
     if (this.connection !== "NONE") throw new Error("Already connected");
     this.connection = "PENDING";
 

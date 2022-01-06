@@ -20,7 +20,7 @@ export function initAudioCurrentlyPlaying(sectionStores: SectionStore[]) {
 }
 
 let lastSectionIdxLookupResult: { idx: number; startTime: number; endTime: number } | undefined = undefined;
-function getSectionIdxForTime(time: number | null): number | null {
+export function getSectionIdxForTime(time: number | null): number | null {
   if (time === null) return null;
 
   if (lastSectionIdxLookupResult !== undefined && timeWithin(time, lastSectionIdxLookupResult)) {
@@ -42,15 +42,18 @@ function timeWithin(time: number, sectionTime: { startTime: number; endTime: num
   return true;
 }
 
-export const lastPlayingSectionIdxStore: Readable<number | null> = derived([playingStore, currentTimeStore], ([playing, time], set) => {
-  if (!playing) {
-    set(null);
-    return;
-  };
-  
-  const newValue = getSectionIdxForTime(time);
-  if (newValue !== null) set(newValue);
-});
+export const lastPlayingSectionIdxStore: Readable<number | null> = derived(
+  [playingStore, currentTimeStore], 
+  ([playing, time], set) => {
+    if (!playing) {
+      set(null);
+      return;
+    };
+    
+    const newValue = getSectionIdxForTime(time);
+    if (newValue !== null) set(newValue);
+  }
+);
 
 deriveWithPrevious(lastPlayingSectionIdxStore).subscribe(({last, current}) => {
   if (last !== null && last !== undefined) getSectionStore(last).playingStore.set(false);

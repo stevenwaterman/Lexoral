@@ -3,7 +3,8 @@
   import Jump from "./buttons/Jump.svelte";
   import Volume from "./buttons/Volume.svelte";
   import Time from "./buttons/Time.svelte";
-import Timeline from "./Timeline.svelte";
+  import Timeline from "./Timeline.svelte";
+  import Rate from "./buttons/Rate.svelte";
 </script>
 
 <style>
@@ -29,11 +30,7 @@ import Timeline from "./Timeline.svelte";
     <PlayPause/>
     <Jump/>
     <Volume/>
-
     <Time/>
-
-    <div class="settings">
-      Settings
-    </div>
+    <Rate/>
   </div>
 </div>

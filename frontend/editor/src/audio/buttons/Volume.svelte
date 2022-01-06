@@ -16,6 +16,13 @@
     if (volume <= 60) return faVolumeDown;
     return faVolumeUp;
   }
+
+  function click() {
+    volumeStore.update(volume => {
+      if (volume <= 0) return 0.5;
+      else return 0;
+    })
+  }
 </script>
 
 <style>
@@ -56,7 +63,7 @@
 </style>
 
 <div class="container">
-  <div class="iconWrapper">
+  <div class="iconWrapper" on:click={click}>
     <Fa icon={volumeIcon}/>
   </div>
 
