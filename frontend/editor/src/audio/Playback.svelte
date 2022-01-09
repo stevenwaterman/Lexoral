@@ -10,6 +10,8 @@
 <style>
   .container {
     padding: 1em;
+    border-top: 1px solid var(--form-border);
+    background-color: var(--grey-3);
   }
 
   .controls {

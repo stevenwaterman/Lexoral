@@ -24,6 +24,7 @@ import { isDemo } from "../demo";
   img {
     width: auto;
     height: 100%;
+    margin: auto;
     padding: 5px;
     box-sizing: border-box;
   }
