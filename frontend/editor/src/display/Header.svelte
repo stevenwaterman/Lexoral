@@ -1,32 +1,39 @@
 <script lang="ts">
-  import { faCog, faDownload, faHome, faRedo, faSave, faUndo } from "@fortawesome/free-solid-svg-icons";
+  import { faCog, faHome, faRedo, faDownload, faUndo } from "@fortawesome/free-solid-svg-icons";
+  import { getContext } from "svelte";
   import Fa from "svelte-fa/src/fa.svelte";
   import { playingStore } from "../audio/audioStatus";
   import { isDemo } from "../demo";
+  import { exportTranscript } from "../state/export";
+  import { patchInterface } from "../state/patch/patchInterface";
+  import OptionsModal from "../options/OptionsModal.svelte";
 
   function save() {
-
+    exportTranscript("srt");
   }
 
   function undo() {
-
+    patchInterface.undo();
   }
 
   function redo() {
-
+    patchInterface.redo();
   }
 
+  const { open } = getContext("simple-modal");
+
   function settings() {
-    
+    open(OptionsModal, {}, {
+      closeButton: true
+    });
   }
 </script>
 
 <style>
   .header {
-    height: 60px;
-
     display: grid;
     grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 60px;
 
     border-bottom: 1px solid var(--form-border);
     transition: background 0.5s;
@@ -40,10 +47,6 @@
 
   .playing {
     background-color: var(--yellow-3);
-  }
-
-  .logo {
-    height: 100%;
   }
 
   img {
@@ -79,10 +82,6 @@
       </button>
     </a>
 
-    <button on:click={save}>
-      <Fa icon={faSave}/>
-    </button>
-
     <button on:click={undo}>
       <Fa icon={faUndo}/>
     </button>
@@ -92,11 +91,15 @@
     </button>
   </div>
 
-  <a class="logo" href={isDemo() ? "/" : "/dashboard"}>
+  <a href={isDemo() ? "/" : "/dashboard"}>
     <img src="/assets/smallBrand.svg" alt="logo"/>
   </a>
 
   <div class="buttons right">
+    <button on:click={save}>
+      <Fa icon={faDownload}/>
+    </button>
+
     <button on:click={settings}>
       <Fa icon={faCog}/>
     </button>

@@ -3,9 +3,9 @@
   import Header from "../display/Header.svelte";
 
   import Scroller from "./Scroller.svelte";
-  import Options from "../options/Options.svelte";
   import { isEmbeddedDemo } from "../demo";
-import Playback from "../audio/Playback.svelte";
+  import Modal from "svelte-simple-modal";
+  import Playback from "../audio/Playback.svelte";
 </script>
 
 <style>
@@ -37,16 +37,16 @@ import Playback from "../audio/Playback.svelte";
 {#if isEmbeddedDemo()}
   <Scroller/>
 {:else}
-  <div class="grid">
-    <Header/>
-
-    <div class="mainSection">
-      <Scroller/>
-      <ToastController/>
+  <Modal>
+    <div class="grid">
+      <Header/>
+  
+      <div class="mainSection">
+        <Scroller/>
+        <ToastController/>
+      </div>
+  
+      <Playback/>
     </div>
-
-    <Playback/>
-    <!-- <Options/> -->
-  </div>
+  </Modal>
 {/if}
-

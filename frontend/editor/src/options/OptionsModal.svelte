@@ -57,28 +57,8 @@
 
 <style>
   .container {
-    display: flex;
-    flex-direction: column;
-
-    justify-content: flex-start;
-    align-items: center;
-
-    padding-left: 0.5em;
-    padding-right: 1em;
     box-sizing: border-box;
 
-    height: 100%;
-    width: 300px;
-
-    border-left: 1px solid var(--form-border);
-    background-color: var(--grey-3);
-
-    z-index: 2;
-
-    overflow-y: auto;
-  }
-
-  .grid {
     display: grid;
     grid-template-columns: auto 1fr 1fr;
 
@@ -107,24 +87,6 @@
     height: 3em;
   }
 
-  .buttonRow3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column: span 3;
-    gap: 1em;
-
-    align-items: center;
-  }
-
-  .buttonRow2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column: span 3;
-    gap: 1em;
-
-    align-items: center;
-  }
-
   input[type="number"] {
     font-size: inherit;
     height: 100%;
@@ -134,9 +96,6 @@
 </style>
 
 <div class="container">
-  <h2>Options</h2>
-
-  <div class="grid">
     <label for="commaSpinner">Comma</label>
     <input id="commaSpinner" type="number" min={10} step={10} bind:value={$commaSilenceStore} on:change={commaChange}/>
     <span>ms</span>
@@ -148,16 +107,6 @@
     <label for="paragraphSpinner">Paragraph</label>
     <input id="paragraphSpinner" type="number" min={30} step={10} bind:value={$paragraphSilenceStore} on:change={paragraphChange}/>
     <span>ms</span>
-
-    <div class="spacer"></div>
-    
-    <label for="speedSlider" title="Alt+Right = Faster, Alt+Left = Slower">Speed</label>
-    <span>{$rateStore}%</span>
-    <input id="speedSlider" type="range" min={5} max={300} step={5} bind:value={$rateStore}/>
-
-    <label for="volumeSlider" title="Alt+Up = Louder, Alt+Down = Quieter">Volume</label>
-    <span>{$volumeStore}%</span>
-    <input id="volumeSlider" type="range" min={5} max={100} step={5} bind:value={$volumeStore}/>
 
     <div class="spacer"></div>
 
@@ -175,22 +124,6 @@
 
     <div class="spacer"></div>
 
-    <div class="buttonRow3">
-      <button title="Alt" on:click={playAudio} disabled={$playingStore}>Play</button>
-      <button title="Alt" on:click={stopAudio} disabled={!$playingStore}>Stop</button>
-      <button title="Escape" on:click={jumpTo} disabled={!$playingStore}>Jump</button>
-    </div>
-
-    <div class="buttonRow2">
-      <button title="Ctrl+Z" on:click={() => patchInterface.undo()}>Undo</button>
-      <button title="Ctrl+Y" on:click={() => patchInterface.redo()}>Redo</button>
-    </div>
-
-    <div class="buttonRow2">
-      <button title="Ctrl+E" on:click={() => exportTranscript("txt")}>Save .txt</button>
-      <button on:click={() => exportTranscript("srt")}>Save .srt</button>
-    </div>
-
     <label for="fontSize">Font Size</label>
     <input id="fontSize" type="number" min={8} step={1} bind:value={$fontSizeStore}/>
     <span>pt</span>
@@ -198,5 +131,4 @@
     <label for="pageWidth">Page Width</label>
     <input id="pageWidth" type="number" min={1} step={1} bind:value={$pageWidthStore}/>
     <span>em</span>
-  </div>
 </div>
