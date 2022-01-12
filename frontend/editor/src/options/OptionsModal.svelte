@@ -60,12 +60,18 @@
     box-sizing: border-box;
 
     display: grid;
-    grid-template-columns: auto 1fr 1fr;
+    grid-template-columns: auto 1fr auto;
 
-    gap: 0.5em 0.2em;
+    column-gap: 2em;
+    row-gap: 0.5em;
 
     justify-items: center;
     align-items: center;
+    max-width: 15em;
+
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
   }
 
   span {
@@ -84,51 +90,56 @@
 
   .spacer {
     grid-column: span 3;
-    height: 3em;
+    height: 1.5em;
   }
 
   input[type="number"] {
     font-size: inherit;
     height: 100%;
     text-align: center;
-    margin-left: 1em;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2em;
   }
 </style>
 
+<h1>Settings</h1>
 <div class="container">
-    <label for="commaSpinner">Comma</label>
-    <input id="commaSpinner" type="number" min={10} step={10} bind:value={$commaSilenceStore} on:change={commaChange}/>
-    <span>ms</span>
+  <label for="commaSpinner">Comma</label>
+  <input id="commaSpinner" type="number" min={10} step={10} bind:value={$commaSilenceStore} on:change={commaChange}/>
+  <span>ms</span>
 
-    <label for="periodSpinner">Period</label>
-    <input id="periodSpinner" type="number" min={20} step={10} bind:value={$periodSilenceStore} on:change={periodChange}/>
-    <span>ms</span>
+  <label for="periodSpinner">Period</label>
+  <input id="periodSpinner" type="number" min={20} step={10} bind:value={$periodSilenceStore} on:change={periodChange}/>
+  <span>ms</span>
 
-    <label for="paragraphSpinner">Paragraph</label>
-    <input id="paragraphSpinner" type="number" min={30} step={10} bind:value={$paragraphSilenceStore} on:change={paragraphChange}/>
-    <span>ms</span>
+  <label for="paragraphSpinner">Paragraph</label>
+  <input id="paragraphSpinner" type="number" min={30} step={10} bind:value={$paragraphSilenceStore} on:change={paragraphChange}/>
+  <span>ms</span>
 
-    <div class="spacer"></div>
+  <div class="spacer"></div>
 
-    <label for="autoPlayCheckbox" title="Alt+A">AutoPlay</label>
-    <input id="autoPlayCheckbox" class="twoCol" type="checkbox" bind:checked={$autoPlayStore}>
+  <label for="autoPlayCheckbox" title="Alt+A">AutoPlay</label>
+  <input id="autoPlayCheckbox" class="twoCol" type="checkbox" bind:checked={$autoPlayStore}>
 
-    <label for="loopCheckbox" title="Alt+L">Loop</label>
-    <input id="loopCheckbox" class="twoCol" type="checkbox" bind:checked={$loopStore}>
+  <label for="loopCheckbox" title="Alt+L">Loop</label>
+  <input id="loopCheckbox" class="twoCol" type="checkbox" bind:checked={$loopStore}>
 
-    <label for="playMode" title="Alt+C = Context, Alt+O = Onward">Mode</label>
-    <select class="twoCol" bind:value={$audioStyleStore}>
-      <option value="context">Context</option>
-      <option value="onward">Onward</option>
-    </select>
+  <label for="playMode" title="Alt+C = Context, Alt+O = Onward">Mode</label>
+  <select class="twoCol" bind:value={$audioStyleStore}>
+    <option value="context">Context</option>
+    <option value="onward">Onward</option>
+  </select>
 
-    <div class="spacer"></div>
+  <div class="spacer"></div>
 
-    <label for="fontSize">Font Size</label>
-    <input id="fontSize" type="number" min={8} step={1} bind:value={$fontSizeStore}/>
-    <span>pt</span>
+  <label for="fontSize">Font Size</label>
+  <input id="fontSize" type="number" min={8} step={1} bind:value={$fontSizeStore}/>
+  <span>pt</span>
 
-    <label for="pageWidth">Page Width</label>
-    <input id="pageWidth" type="number" min={1} step={1} bind:value={$pageWidthStore}/>
-    <span>em</span>
+  <label for="pageWidth">Page Width</label>
+  <input id="pageWidth" type="number" min={1} step={1} bind:value={$pageWidthStore}/>
+  <span>em</span>
 </div>

@@ -23,9 +23,7 @@
   const { open } = getContext("simple-modal");
 
   function settings() {
-    open(OptionsModal, {}, {
-      closeButton: true
-    });
+    open(OptionsModal);
   }
 </script>
 
@@ -38,7 +36,7 @@
     border-bottom: 1px solid var(--form-border);
     transition: background 0.5s;
 
-    /* background-color: var(--grey-3); */
+    background-color: var(--grey-3);
     z-index: 2;
 
     padding-left: 1em;

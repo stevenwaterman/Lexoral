@@ -37,7 +37,7 @@
 {#if isEmbeddedDemo()}
   <Scroller/>
 {:else}
-  <Modal>
+  <Modal closeButton styleWindow={{backgroundColor: "var(--grey-5)"}}>
     <div class="grid">
       <Header/>
   
