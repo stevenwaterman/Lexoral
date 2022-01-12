@@ -146,7 +146,7 @@
   }
 </style>
 
-<div class="container">
+<div class="container" data-nosnippet>
   <div class="border">
     <!-- svelte-ignore a11y-missing-attribute -->
     <iframe class="demo" src="https://lexoral.com/demo" tabindex="-1" />
