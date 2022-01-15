@@ -21,19 +21,17 @@ export async function initAll() {
   return resolveAllPromises(async register => {
     const fetch = register(fetchTranscript());
 
-    const audioSettings = register(audioStore.connect());
-    const displaySettings = register(displayStore.connect());
     const words = register(initWords());
     const patch = register(patchInterface.init());
 
-    const audio = register(
-      Promise.all([fetch, audioSettings])
-        .then(([{ audioUrl }]) => initAudio(audioUrl))
-    );
+    const audio = fetch.then(({ audioUrl }) => initAudio(audioUrl));
 
     const sectionPreReqs = Promise.all([fetch, words]).then(([{ transcript }]) => transcript);
     const sections = register(sectionPreReqs.then(transcript => initSectionStores(transcript)));
     
     const currentlyPlaying = register(sections.then(sectionStores => initAudioCurrentlyPlaying(sectionStores)));
+
+    audioStore.connect();
+    displayStore.connect();
   })
 }

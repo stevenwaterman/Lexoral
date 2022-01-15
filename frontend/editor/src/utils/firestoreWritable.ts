@@ -1,109 +1,140 @@
 import { DocumentReference, onSnapshot, setDoc } from "firebase/firestore";
-import { get_store_value, init } from "svelte/internal";
-import { derived, Readable, Subscriber, Unsubscriber, Writable, writable } from "svelte/store";
-import { isDemo } from "../demo";
+import { get_store_value } from "svelte/internal";
+import { derived, Readable, Writable, writable } from "svelte/store";
 
+/**
+ * Creates a two-way binding to a firestore document. Any changes are persisted after `debounceDelayMs` milliseconds of no further changes.
+ * This is done to reduce the number of writes to firestore, as otherwise when someone slides a volume slider we'd be doing 60 writes per second.
+ * 
+ * You must call connect() in order to bind to firestore - until you do that it's just a normal svelte store.
+ */
 export class FirestoreWritable<T extends Record<string, any>> implements Readable<T> {
-  private connection: "NONE" | "PENDING" | "READY" = "NONE";
-
-  private readonly dbStore: Writable<T>;
-  private readonly pendingStore: Writable<Partial<T>>;
-  private readonly exposedStore: Readable<T>;
-
-  public current: T;
-
   constructor(
     private readonly documentSupplier: () => DocumentReference<T>,
     private readonly initial: T,
     private readonly debounceDelayMs: number = 1000
-  ) {
-    this.dbStore = writable(initial);
-    this.pendingStore = writable({});
-    this.exposedStore = derived(
-      [this.dbStore, this.pendingStore], 
-      ([dbState, pendingState]) => ({ ...dbState, ...pendingState })
-    );
+  ) {}
 
-    this.current = initial;
-    this.exposedStore.subscribe(state => this.current = state);
-  }
+  /**
+   * Whether the store is currently being synchronised with the remote state (ie firebase)
+   * Call connect() to start synchronising
+   */
+  private connected = false;
 
-  subscribe(run: Subscriber<T>, invalidate?: (value?: T) => void): Unsubscriber {
-    return this.exposedStore.subscribe(run, invalidate);
-  }
+  /**
+   * Store representing the state that is currently in firestore
+   * For internal use - writing to this store does not update firestore
+   * Instead, update `patchStore` and then call `push` (or call `patch`)
+   */
+  private readonly remoteStore: Writable<T> = writable(this.initial);
 
-  async connect() {
-    if (isDemo()) {
-      this.connection = "READY";
-      return;
-    }
+  /**
+   * The changes that have been made locally and have not (yet) been pushed to firestore
+   */
+  private readonly stageStore: Writable<Partial<T>> = writable({});
 
-    if (this.connection !== "NONE") throw new Error("Already connected");
-    this.connection = "PENDING";
+  /**
+   * Store representing the state that is currently known to this pc
+   * Essentially, the remote state, overridden by any staged data
+   */
+  private readonly localStore: Readable<T> = derived([this.remoteStore, this.stageStore], ([remote, stage]) => ({...remote, ...stage}));
 
-    return new Promise<void>(async (resolve) => {
-      onSnapshot(this.documentSupplier(), snapshot => {
-        const data = snapshot.data();
-        if (data !== undefined) this.dbStore.set({ ...this.initial, ...data });
-      });
+  /**
+   * This class is a svelte store, so you can subscribe to it.
+   * It returns the combined data - ie `localStore`
+   */
+  public readonly subscribe: Readable<T>["subscribe"] = this.localStore.subscribe;
 
-      await this.sync();
-      this.connection = "READY";
-      resolve();
+  /**
+   * Connect the store to the remote state (firestore), sychronising in both directions
+   * You must have called `initializeApp` first
+   * 
+   * Calling multiple times results in an error
+   */
+  connect() {
+    if (this.connected) throw new Error("Already connected");
+    this.connected = true;
+
+    onSnapshot(this.documentSupplier(), snapshot => {
+      const data = snapshot.data();
+      if (data !== undefined) this.remoteStore.set({ ...this.initial, ...data });
     });
+
+    let timer: NodeJS.Timeout | undefined = undefined;
+    this.stageStore.subscribe(stageState => {
+      if (timer !== undefined) clearTimeout(timer);
+      if (stageState === {}) return;
+      timer = setTimeout(() => this.push(stageState), this.debounceDelayMs);
+    })
   }
   
-  async sync(): Promise<void> {
-    const pendingState = get_store_value(this.pendingStore);
-    await setDoc(this.documentSupplier(), pendingState as any, { merge: true });
-    this.pendingStore.set({});
+  /**
+   * Push any changes that are only stored locally to firestore
+   * This is usually called automatically, but can be called manually to force-save, for example if you are about to exit
+   * 
+   * Pass in the current value of stageStore, if you have access to it - it's faster.
+   * If not, we'll get it for you, but it's a bit slower so don't do that on hot code paths
+   */
+  async push(stageState?: Partial<T>): Promise<void> {
+    if (stageState === undefined) stageState = get_store_value(this.stageStore);
+    await setDoc(this.documentSupplier(), stageState as any, { merge: true });
+    this.stageStore.set({});
   }
 
-  private timer: NodeJS.Timeout | undefined = undefined;
-
-  patch(value: Partial<T>) {
-    this.pendingStore.update(oldState => ({...oldState, ...value}));
-
-    if (this.timer !== undefined) clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.sync(), this.debounceDelayMs);
+  /**
+   * Make changes to the store
+   * The provided patch is used keywise as overrides to the current local state
+   * After a certain period (specified by `debounceDelayMs` on creation) of no commits, your changes are pushed to the remote state
+   * 
+   * @param patch The changes to make to the store
+   */
+  commit(patch: Partial<T>) {
+    this.stageStore.update(state => ({...state, ...patch}));
   }
 
-  update(updater: (value: T) => Partial<T>) {
-    const newValue = updater(this.current);
-    this.patch(newValue);
-  }
+  /**
+   * Cache the created `FirestoreWritableField`s to return later if `getField` is called again
+   */
+  private readonly fields: Partial<Record<keyof T, FirestoreWritableField<T, keyof T>>> = {};
 
+  /**
+   * Return a `Writable` store for a given field on the document
+   * This is useful for `input` element two-way bindings, since the parent `FirestoreWritable` is always a json object
+   * 
+   * Essentially call this to get a two-way binding to a field on the firestore document
+   * 
+   * @param key The name of the field you want to bind to
+   * @returns A writable svelte store that automatically synchronises two-ways with firestore, including a debounce cache to minimise firestore writes
+   */
   getField<K extends keyof T>(key: K): FirestoreWritableField<T, K> {
-    return new FirestoreWritableField<T, K>(this, key);
+    if(!(key in this.fields)) this.fields[key] = new FirestoreWritableField(this, key);
+    return this.fields[key] as FirestoreWritableField<T, K>;
   }
 }
 
+/**
+ * Extracts one fields from the document managed by the parent, and creates a writable store that two-way binds to that field in firestore
+ * 
+ * Has the same debounce caching layer as the parent
+ */
 class FirestoreWritableField<T extends Record<string, any>, K extends keyof T> implements Writable<T[K]> {
-  private readonly derivedStore: Readable<T[K]>;
-
   constructor(
     private readonly parent: FirestoreWritable<T>,
     private readonly key: K
-  ) {
-    this.derivedStore = derived(this.parent, parentValue => parentValue[key]);
-  }
+  ) {}
 
-  subscribe(run: Subscriber<T[K]>, invalidate?: (value?: T[K]) => void): Unsubscriber {
-    return this.derivedStore.subscribe(run, invalidate);
-  }
+  private readonly derivedStore: Readable<T[K]> = derived(this.parent, parentValue => parentValue[this.key]);
+  public readonly subscribe = this.derivedStore.subscribe;
+  public readonly push = this.parent.push;
 
   set(value: T[K]) {
     const patch: Partial<T> = {};
     patch[this.key] = value;
-    this.parent.patch(patch);
+    this.parent.commit(patch);
   }
 
   update(updater: (value: T[K]) => T[K]) {
-    const newValue = updater(this.parent.current[this.key]);
-    this.set(newValue);
-  }
-
-  async sync() {
-    return this.parent.sync();
+    const oldValue = get_store_value(this.derivedStore);
+    this.set(updater(oldValue));
   }
 }
