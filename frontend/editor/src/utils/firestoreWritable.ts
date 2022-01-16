@@ -1,4 +1,4 @@
-import { DocumentReference, onSnapshot, setDoc } from "firebase/firestore";
+import { DocumentReference, onSnapshot, PartialWithFieldValue, setDoc } from "firebase/firestore";
 import { get_store_value } from "svelte/internal";
 import { derived, Readable, Writable, writable } from "svelte/store";
 
@@ -76,8 +76,15 @@ export class FirestoreWritable<T extends Record<string, any>> implements Readabl
    * If not, we'll get it for you, but it's a bit slower so don't do that on hot code paths
    */
   async push(stageState?: Partial<T>): Promise<void> {
+    if (!this.connected) throw new Error("Store has not been connected to firestore, cannot push");
     if (stageState === undefined) stageState = get_store_value(this.stageStore);
-    await setDoc(this.documentSupplier(), stageState as any, { merge: true });
+
+    await setDoc(
+      this.documentSupplier(), 
+      stageState as PartialWithFieldValue<T>,
+      { merge: true }
+    );
+
     this.stageStore.set({});
   }
 
