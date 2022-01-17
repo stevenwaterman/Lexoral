@@ -1,12 +1,34 @@
+<script lang="ts">
+  export let diff: boolean = false;
+</script>
+
 <style>
   pre {
     font-size: 10pt;
-    display: block;
-    overflow-x: auto;
-    padding: 1em;
+
     background-color: var(--grey-5);
-    border: 1px solid var(--border);
     color: var(--blue-0);
+    margin: 0;
+
+    padding: 2em 3em;
+
+    grid-column: span 3;
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+
+    min-height: 0;
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  .diff {
+    padding-left: 0em;
+    padding-right: 0em;
+    white-space: normal;
+  }
+
+  .diff :global(div) {
+    white-space: pre;
   }
 
   pre :global(.hljs-subst) {
@@ -65,8 +87,6 @@
   }
 </style>
 
-<pre>
-  <code>
-    <slot/>
-  </code>
+<pre class:diff>
+  <code><slot/></code>
 </pre>

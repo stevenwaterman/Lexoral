@@ -24,9 +24,12 @@
 
 	<Snippet config={snippets.exampleTs} />
 	<Snippet config={snippets.exampleSvelte} />
-  <Snippet config={snippets.firestoreWritable1} />
-  <Diff from={snippets.firestoreWritable1} to={snippets.firestoreWritable2} />
-  <Diff from={snippets.firestoreWritable2} to={snippets.firestoreWritable3} />
-  <Diff from={snippets.firestoreWritable3} to={snippets.firestoreWritable4} />
-  <Diff from={snippets.firestoreWritable4} to={snippets.firestoreWritable5} />
+  <Snippet config={snippets.stage1} />
+  <Diff from={snippets.stage1} to={snippets.stage2} />
+  <Diff from={snippets.stage2} to={snippets.stage3} />
+  <Diff from={snippets.stage3} to={snippets.stage4} />
+  <Diff from={snippets.stage4} to={snippets.stage5} />
+  <Diff from={snippets.stage5} to={snippets.stage6} />
+  <Diff from={snippets.stage6} to={snippets.stage7} />
+  <Diff from={snippets.stage7} to={snippets.stage8} />
 </BlogPost>

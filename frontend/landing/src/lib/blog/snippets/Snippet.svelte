@@ -28,7 +28,35 @@
   $: highlightedSnippet = hljs.highlightAuto(formattedSnippet).value;
 </script>
 
-<p>{config.name}</p>
-<Highlight>
-  {@html highlightedSnippet}
-</Highlight>
+<style>
+  .container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    align-items: center;
+
+    border: 0.2em solid var(--blue-0);
+    border-radius: 0.5em;
+    background-color: var(--blue-0);
+
+    margin-top: 1em;
+    margin-bottom: 1em;
+
+    /* max-height: 90vh; */
+    overflow: hidden;
+  }
+
+  .name {
+    margin-left: 0.5em;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    color: var(--grey-5);
+  }
+</style>
+
+<div class="container">
+  <h2 class="name">{config.name}</h2>
+  
+  <Highlight>
+    {@html highlightedSnippet}
+  </Highlight>
+</div>
