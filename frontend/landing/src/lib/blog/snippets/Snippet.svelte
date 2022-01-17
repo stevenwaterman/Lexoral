@@ -1,12 +1,19 @@
 <script lang="ts">
+  import hljs from "highlight.js/lib/core";
+  import typescript from "highlight.js/lib/languages/typescript";
+  import xml from "highlight.js/lib/languages/xml";
+  import javascript from "highlight.js/lib/languages/javascript";
+  import css from "highlight.js/lib/languages/css";
   import prettier from "prettier";
   import type { SnippetConfig } from "../blogData";
-
-  import Highlight, { HighlightSvelte } from "svelte-highlight";
-  import { typescript } from "svelte-highlight/src/languages";
-  import { github } from "svelte-highlight/src/styles";
+  import Highlight from "./Highlight.svelte";
 
   export let config: SnippetConfig;
+
+  hljs.registerLanguage("ts", typescript);
+  hljs.registerLanguage("xml", xml);
+  hljs.registerLanguage("js", javascript);
+  hljs.registerLanguage("css", css);
 
   let parser: string;
   $: parser = {
@@ -14,23 +21,14 @@
     ts: "typescript"
   }[config.language];
 
-  let snippet: string;
-  $: snippet = prettier.format(config.snippet, { parser });
+  let formattedSnippet: string;
+  $: formattedSnippet = prettier.format(config.snippet, { parser });
+
+  let highlightedSnippet: string;
+  $: highlightedSnippet = hljs.highlightAuto(formattedSnippet).value;
 </script>
 
-<svelte:head>
-  {@html github}
-</svelte:head>
-
-<style>
-  :global(.hljs) {
-    font-size: 0.75em;
-  }
-</style>
-
 <p>{config.name}</p>
-{#if config.language === "svelte"}
-  <HighlightSvelte code={snippet}/>
-{:else if config.language === "ts"}
-  <Highlight language={typescript} code={snippet}/>
-{/if}
+<Highlight>
+  {@html highlightedSnippet}
+</Highlight>

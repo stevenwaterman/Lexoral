@@ -24,5 +24,9 @@
 
 	<Snippet config={snippets.exampleTs} />
 	<Snippet config={snippets.exampleSvelte} />
+  <Snippet config={snippets.firestoreWritable1} />
   <Diff from={snippets.firestoreWritable1} to={snippets.firestoreWritable2} />
+  <Diff from={snippets.firestoreWritable2} to={snippets.firestoreWritable3} />
+  <Diff from={snippets.firestoreWritable3} to={snippets.firestoreWritable4} />
+  <Diff from={snippets.firestoreWritable4} to={snippets.firestoreWritable5} />
 </BlogPost>

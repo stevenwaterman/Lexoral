@@ -85,7 +85,7 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
 
   summary {
     margin-top: 1em;
-    color: var(--grey-1);
+    color: var(--grey-0);
   }
 
   hr {

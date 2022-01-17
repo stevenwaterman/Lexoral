@@ -4,7 +4,7 @@
   }
 
   p {
-    color: var(--grey-2);
+    color: var(--grey-1);
   }
 
   @media (max-width: 1599px) {

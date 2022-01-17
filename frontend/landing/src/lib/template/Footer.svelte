@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     
-    background-color: var(--grey-1);
+    background-color: var(--grey-0);
     border-top: 0.2em solid var(--blue-1);
     color: var(--page-background);
 

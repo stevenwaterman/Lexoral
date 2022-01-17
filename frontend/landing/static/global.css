@@ -78,8 +78,8 @@ select {
 }
 
 html {
-  --text: var(--grey-1);
-  --secondary-text: var(--grey-2);
+  --text: var(--grey-0);
+  --secondary-text: var(--grey-1);
   --light-text: var(--grey-4);
   
   --weak-focus: var(--blue-3);
@@ -96,10 +96,11 @@ html {
 
   --page-background: var(--grey-4);
   --border: var(--grey-3);
-  --form-border: var(--grey-2);
+  --form-border: var(--grey-1);
 
-  --grey-1: #242230;
-  --grey-2: #525666;
+  --grey-0: #242230;
+  --grey-1: #525666;
+  --grey-2: #8E93A4;
   --grey-3: #D2D4DB;
   --grey-4: #E9EBED;
   --grey-5: #F4F5F6;
@@ -108,20 +109,32 @@ html {
   --red-1: #BB2A25;
   --red-2: #DA4944;
   --red-3: #E47A77;
+  --red-4: #EB9C99;
+  --red-5: #F2BDBB;
+  --red-6: #FFE9E2;
   
+  --yellow-0: #a16e0d;
   --yellow-1: #EB9C0A;
   --yellow-2: #F6AE2D;
   --yellow-3: #F8C462;
+  --yellow-4: #F9D38A;
+  --yellow-5: #FBE1B1;
   
   --green-0: #33512A;
   --green-1: #607641;
   --green-2: #7CB36B;
   --green-3: #9FC893;
+  --green-4: #B7D6AE;
+  --green-5: #CFE4C9;
+  --green-6: #E9FFE2;
   
   --blue-0: #2C3F63;
   --blue-1: #4C6CA9;
   --blue-2: #728DC0;
   --blue-3: #9CAFD3;
+  --blue-4: #B9C6DF;
+  --blue-5: #D5DDEC;
+  --blue-6: #E2E9FF;
 }
 
 html {
@@ -162,7 +175,7 @@ button:enabled {
 }
 
 button:disabled {
-  background-color: var(--grey-2);
+  background-color: var(--grey-1);
   color: var(--light-text);
 }
 

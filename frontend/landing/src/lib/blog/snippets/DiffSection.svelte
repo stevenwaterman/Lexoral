@@ -2,19 +2,28 @@
   import type { Change } from "diff";
 
   export let change: Change;
+
+  let type: "added" | "removed" | "hidden" | "same";
+  $: if (change.added) type = "added";
+     else if (change.removed) type = "removed";
+     else if (change.count > 5) type = "hidden";
+     else type = "same";
 </script>
 
 <style>
   .added {
-    background-color: var(--green-3);
+    /* background-color: #E6FFEC; */
+    background-color: var(--green-6);
   }
 
   .removed {
-    background-color: var(--red-3);
+    /* background-color: #FFEBE9; */
+    background-color: var(--red-6);
   }
 
-  .same {
-    background-color: var(--blue-3);
+  .hidden {
+    /* background-color: #DDF4FF; */
+    background-color: var(--blue-6);
   }
 
   summary {
@@ -25,12 +34,10 @@
   }
 </style>
 
-{#if change.added}
-  <div class="added">{@html change.value}</div>
-{:else if change.removed}
-  <div class="removed">{@html change.value}</div>
-{:else if change.count <= 4}
-  <div class="same">{@html change.value}</div>
-{:else}
-  <div class="same"><details><summary>&lt;{change.count} identical lines&gt;</summary>{@html change.value}</details></div>
-{/if}
+<div class={type}>
+  {#if type === "hidden"}
+    <details><summary>&lt;{change.count} identical lines&gt;</summary>{@html change.value}</details>
+  {:else}
+    {@html change.value}
+  {/if}
+</div>
