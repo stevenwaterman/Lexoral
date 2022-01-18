@@ -1,7 +1,5 @@
 <script lang="ts">
 	import BlogPost from "$lib/blog/BlogPost.svelte";
-  import Diff from "$lib/blog/snippets/Diff.svelte";
-
 	import Snippet from "$lib/blog/snippets/Snippet.svelte";
 	import snippets from "./snippets";
 </script>
@@ -25,11 +23,11 @@
 	<Snippet config={snippets.exampleTs} />
 	<Snippet config={snippets.exampleSvelte} />
   <Snippet config={snippets.stage1} />
-  <Diff from={snippets.stage1} to={snippets.stage2} />
-  <Diff from={snippets.stage2} to={snippets.stage3} />
-  <Diff from={snippets.stage3} to={snippets.stage4} />
-  <Diff from={snippets.stage4} to={snippets.stage5} />
-  <Diff from={snippets.stage5} to={snippets.stage6} />
-  <Diff from={snippets.stage6} to={snippets.stage7} />
-  <Diff from={snippets.stage7} to={snippets.stage8} />
+  <Snippet diffFrom={snippets.stage1} config={snippets.stage2} />
+  <Snippet diffFrom={snippets.stage2} config={snippets.stage3} />
+  <Snippet diffFrom={snippets.stage3} config={snippets.stage4} />
+  <Snippet diffFrom={snippets.stage4} config={snippets.stage5} />
+  <Snippet diffFrom={snippets.stage5} config={snippets.stage6} />
+  <Snippet diffFrom={snippets.stage6} config={snippets.stage7} />
+  <Snippet diffFrom={snippets.stage7} config={snippets.stage8} />
 </BlogPost>

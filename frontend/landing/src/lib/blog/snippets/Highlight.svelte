@@ -1,92 +1,153 @@
 <script lang="ts">
-  export let diff: boolean = false;
+  import { Change, diffLines } from "diff";
+  import type { LineChange } from "./change";
+  import HighlightSection from "./HighlightSection.svelte";
+
+  export let from: string | undefined;
+  export let to: string;
+
+  let changes: Change[];
+  $: changes = diffLines(from ?? to, to);
+
+  function toLineChange(changes: Change[]): LineChange[] {
+    let fromStartLine: number = 1;
+    let toStartLine: number = 1;
+
+    const output: LineChange[] = [];
+    for (let i = 0; i < changes.length; i++) {
+      const change = changes[i];
+      const lines = change.value.split("\n");
+      if (lines[lines.length - 1] === "") lines.pop();
+
+      if (change.added) {
+        output.push({ ...change, lines, toStartLine });
+        toStartLine += change.count + 1;
+      }
+      else if (change.removed) {
+        output.push({ ...change, lines, fromStartLine });
+        fromStartLine += change.count + 1;
+      }
+      else {
+        const first = i === 0;
+        const last = i === changes.length - 1;
+
+        const startLineCount = first ? 0 : 3;
+        const endLineCount = last ? 0 : 3;
+        const midLineCount = lines.length - startLineCount - endLineCount;
+
+        if (midLineCount >= 6) {
+          const startLines = lines.slice(0, startLineCount);
+          const midLines = lines.slice(startLineCount, lines.length - endLineCount);
+          const endLines = lines.slice(lines.length - endLineCount, lines.length);
+
+          if (startLineCount > 0) {
+            output.push({ ...change, count: startLines.length, lines: startLines, fromStartLine, toStartLine });
+            fromStartLine += startLineCount;
+            toStartLine += startLineCount;
+          }
+
+          if (midLineCount > 0) {
+            output.push({ ...change, count: midLines.length, lines: midLines, fromStartLine, toStartLine, hidden: true });
+            fromStartLine += midLineCount;
+            toStartLine += midLineCount;
+          }
+
+          if (endLineCount > 0) {
+            output.push({ ...change, count: endLines.length, lines: endLines, fromStartLine, toStartLine });
+            fromStartLine += endLineCount;
+            toStartLine += endLineCount;
+          }
+        } else {
+          output.push({ ...change, lines, fromStartLine, toStartLine });
+          fromStartLine += change.count;
+          toStartLine += change.count;
+        }
+      }
+    }
+
+    return output;
+  }
+
+  let lineChanges: LineChange[];
+  $: lineChanges = toLineChange(changes);
 </script>
 
 <style>
-  pre {
-    font-size: 10pt;
+  code {
+    grid-column: span 3;
 
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+
+    font-size: 10pt;
     background-color: var(--grey-5);
     color: var(--blue-0);
-    margin: 0;
 
-    padding: 2em 3em;
-
-    grid-column: span 3;
     border-bottom-left-radius: 0.5em;
     border-bottom-right-radius: 0.5em;
-
-    min-height: 0;
-    max-height: 100%;
-    overflow: auto;
   }
 
-  .diff {
-    padding-left: 0em;
-    padding-right: 0em;
-    white-space: normal;
-  }
-
-  .diff :global(div) {
-    white-space: pre;
-  }
-
-  pre :global(.hljs-subst) {
+  code :global(.hljs-subst) {
     color: var(--grey-2);
   }
 
-  pre :global(.hljs-attr),
-  pre :global(.hljs-property) {
+  code :global(.hljs-attr),
+  code :global(.hljs-property) {
     color: var(--blue-1);
   }
 
-  pre :global(.hljs-attribute),
-  pre :global(.hljs-doctag),
-  pre :global(.hljs-keyword),
-  pre :global(.hljs-meta-keyword),
-  pre :global(.hljs-name),
-  pre :global(.hljs-selector-tag),
-  pre :global(.hljs-function) {
+  code :global(.hljs-attribute),
+  code :global(.hljs-doctag),
+  code :global(.hljs-keyword),
+  code :global(.hljs-meta-keyword),
+  code :global(.hljs-name),
+  code :global(.hljs-selector-tag),
+  code :global(.hljs-function) {
       color: var(--red-1);
   }
 
-  pre :global(.hljs-deletion),
-  pre :global(.hljs-number),
-  pre :global(.hljs-quote),
-  pre :global(.hljs-selector-class),
-  pre :global(.hljs-selector-id),
-  pre :global(.hljs-string),
-  pre :global(.hljs-template-tag),
-  pre :global(.hljs-type),
-  pre :global(.hljs-comment),
-  pre :global(.hljs-literal) {
+  code :global(.hljs-deletion),
+  code :global(.hljs-number),
+  code :global(.hljs-quote),
+  code :global(.hljs-selector-class),
+  code :global(.hljs-selector-id),
+  code :global(.hljs-string),
+  code :global(.hljs-template-tag),
+  code :global(.hljs-type),
+  code :global(.hljs-comment),
+  code :global(.hljs-literal) {
     color: var(--green-1);
   }
 
-  pre :global(.hljs-section),
-  pre :global(.hljs-title.class_),
-  pre :global(.hljs-built_in),
-  pre :global(.hljs-addition),
-  pre :global(.hljs-bullet),
-  pre :global(.hljs-pre) {
+  code :global(.hljs-section),
+  code :global(.hljs-title.class_),
+  code :global(.hljs-built_in),
+  code :global(.hljs-addition),
+  code :global(.hljs-bullet),
+  code :global(.hljs-code) {
     color: var(--yellow-0);
   }
 
-  pre :global(.hljs-title.function_),
-  pre :global(.hljs-meta),
-  pre :global(.hljs-meta-string) {
+  code :global(.hljs-title.function_),
+  code :global(.hljs-meta),
+  code :global(.hljs-meta-string) {
     color: #8250df;
   }
 
-  pre :global(.hljs-emphasis) {
+  code :global(.hljs-emphasis) {
     font-style: italic
   }
 
-  pre :global(.hljs-strong) {
+  code :global(.hljs-strong) {
     font-weight: 700
   }
 </style>
 
-<pre class:diff>
-  <code><slot/></code>
-</pre>
+<code>
+  {#each lineChanges as change}
+    <HighlightSection {change} />
+  {/each}
+</code>  

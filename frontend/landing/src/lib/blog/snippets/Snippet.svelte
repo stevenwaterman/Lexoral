@@ -9,6 +9,7 @@
   import Highlight from "./Highlight.svelte";
 
   export let config: SnippetConfig;
+  export let diffFrom: SnippetConfig | undefined = undefined;
 
   hljs.registerLanguage("ts", typescript);
   hljs.registerLanguage("xml", xml);
@@ -21,16 +22,20 @@
     ts: "typescript"
   }[config.language];
 
-  let formattedSnippet: string;
-  $: formattedSnippet = prettier.format(config.snippet, { parser });
+  function highlight(snippet?: string): string | undefined {
+    if (snippet === undefined) return undefined;
 
-  let highlightedSnippet: string;
-  $: highlightedSnippet = hljs.highlightAuto(formattedSnippet).value;
+    const trimmed = snippet.trim();
+    const formatted = prettier.format(trimmed, { parser }).trimEnd();
+    const highlighted = hljs.highlightAuto(formatted).value;
+    return highlighted;
+  }
 </script>
 
 <style>
   .container {
     display: grid;
+    grid-template-columns: 1fr auto auto;
     grid-template-rows: auto 1fr;
     align-items: center;
 
@@ -41,7 +46,6 @@
     margin-top: 1em;
     margin-bottom: 1em;
 
-    /* max-height: 90vh; */
     overflow: hidden;
   }
 
@@ -51,12 +55,31 @@
     margin-bottom: 0.25em;
     color: var(--grey-5);
   }
+
+  .diffLabel {
+    color: var(--grey-5);
+    user-select: none;
+  }
+
+  .diffCheckbox {
+    margin-left: 1em;
+    margin-right: 3em;
+    color: var(--grey-5);
+  }
 </style>
 
 <div class="container">
   <h2 class="name">{config.name}</h2>
+
+  {#if diffFrom !== undefined}
+    <label
+      class="diffLabel"
+      for={`diff-${diffFrom.name}-${config.name}-checkbox`}
+      title={`Tick to show changes from ${diffFrom.name} to ${config.name}`}
+    >Show Changes</label>
+    <input class="diffCheckbox" id={`diff-${diffFrom.name}-${config.name}-checkbox`} type="checkbox" checked autocomplete="off"/>
+  {/if}
   
-  <Highlight>
-    {@html highlightedSnippet}
-  </Highlight>
+  <Highlight from={highlight(diffFrom?.snippet)} to={highlight(config.snippet)} />
 </div>
+
