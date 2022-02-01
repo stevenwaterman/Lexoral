@@ -21,11 +21,11 @@
 
       if (change.added) {
         output.push({ ...change, lines, toStartLine });
-        toStartLine += change.count + 1;
+        toStartLine += change.count;
       }
       else if (change.removed) {
         output.push({ ...change, lines, fromStartLine });
-        fromStartLine += change.count + 1;
+        fromStartLine += change.count;
       }
       else {
         const first = i === 0;
