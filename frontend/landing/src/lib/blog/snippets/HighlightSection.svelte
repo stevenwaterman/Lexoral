@@ -11,17 +11,88 @@
 </script>
 
 <style>
-  :global(.diffCheckbox:checked + * .added) {
-    background-color: var(--green-6);
+  .fromLine,
+  .toLine {
+    font-weight: 700;
+    color: var(--grey-2);
+    text-align: right;
+    user-select: none;
+  }
+
+  .fromLine {
+    display: none;
+    grid-column: 1;
+    padding-left: 0.5em;
+    padding-right: 0.25em;
+  }
+
+  .toLine {
+    grid-column: 2;
+    border-right: 0.1em solid var(--border);
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+  }
+
+  .code {
+    white-space: pre;
+    grid-column: 3;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
   }
 
   .removed {
     display: none;
+    background-color: var(--red-6);
+  }
+
+  details {
+    display: none;
+  }
+
+  summary {
+    text-align: center;
+    font-weight: 900;
+    font-style: italic;
+    user-select: none;
+    cursor: pointer;
+    background-color: var(--blue-6);
+    grid-column: span 3;
+  }
+
+
+  :global(.diffCheckbox:checked + * .added) {
+    background-color: var(--green-6);
   }
 
   :global(.diffCheckbox:checked + * .removed) {
     display: revert;
+  }
+
+  :global(.diffCheckbox:checked + * .fromLine) {
+    display: revert;
+  }
+
+  :global(.diffCheckbox:checked + * .fromLine) {
+    display: revert;
+  }
+
+  :global(.diffCheckbox:checked + code > .hidden) {
+    display: none;
+  }
+
+  :global(.diffCheckbox:checked + * details) {
+    display: contents;
+  }
+
+
+  /*
+  :global(.diffCheckbox:checked + * .removed) {
+    display: revert;
     background-color: var(--red-6);
+  }
+
+  :global(.diffCheckbox:checked + * .hidden) {
+    display: none !important;
   }
 
   summary {
@@ -39,7 +110,7 @@
   }
 
   details {
-    display: contents;
+    display: none;
     grid-column: span 3;
   }
 
@@ -49,10 +120,6 @@
 
   :global(.diffCheckbox:checked + * details) {
     display: revert;
-  }
-
-  :global(.diffCheckbox:checked + * details[open]) {
-    display: contents;
   }
 
   .fromLine,
@@ -86,24 +153,22 @@
     grid-column: 3;
     padding-left: 0.5em;
     padding-right: 0.5em;
-  }
+  } */
 </style>
 
 {#if type === "hidden"}
   <details>
     <summary>&lt;Show {change.count} identical lines&gt;</summary>
-      {#each change.lines as line, idx}
-          <div class={`fromLine ${type}`}>{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
-          <div class={`toLine ${type}`}>{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
-          <div class={`code ${type}`}>{@html line || " "}</div>
-      {/each}
+    {#each change.lines as line, idx}
+        <div class={`fromLine ${type}`}>{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
+        <div class={`toLine ${type}`}>{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
+        <div class={`code ${type}`}>{@html line || " "}</div>
+    {/each}
   </details>
-{:else}
-  {#each change.lines as line, idx}
-    <div class={`fromLine ${type}`}>{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
-    <div class={`toLine ${type}`}>{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
-    <div class={`code ${type}`}>{@html line || " "}</div>
-  {/each}
 {/if}
 
-
+{#each change.lines as line, idx}
+  <div class={`fromLine ${type}`}>{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
+  <div class={`toLine ${type}`}>{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
+  <div class={`code ${type}`}>{@html line || " "}</div>
+{/each}
