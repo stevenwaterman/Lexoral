@@ -59,6 +59,10 @@
     grid-column: span 3;
   }
 
+  details[open] summary {
+    display: none;
+  }
+
 
   :global(.diffCheckbox:checked + * .added) {
     background-color: var(--green-6);

@@ -144,13 +144,12 @@ const stage4: SnippetConfig = {
       });
     }
     
-    async push(stageState?: Partial<T>): Promise<void> {
+    async push(): Promise<void> {
       if (!this.connected) throw new Error("Store has not been connected to firestore");
-      if (stageState === undefined) stageState = get_store_value(this.stageStore);
   
       await setDoc(
         this.documentSupplier(), 
-        stageState as PartialWithFieldValue<T>,
+        get_store_value(this.stageStore) as PartialWithFieldValue<T>,
         { merge: true }
       );
   
@@ -200,13 +199,12 @@ const stage5: SnippetConfig = {
       })
     }
     
-    async push(stageState?: Partial<T>): Promise<void> {
+    async push(): Promise<void> {
       if (!this.connected) throw new Error("Store has not been connected to firestore");
-      if (stageState === undefined) stageState = get_store_value(this.stageStore);
   
       await setDoc(
         this.documentSupplier(), 
-        stageState as PartialWithFieldValue<T>,
+        get_store_value(this.stageStore) as PartialWithFieldValue<T>,
         { merge: true }
       );
   
@@ -256,13 +254,12 @@ const stage6: SnippetConfig = {
       });
     }
     
-    async push(stageState?: Partial<T>): Promise<void> {
+    async push(): Promise<void> {
       if (!this.connected) throw new Error("Store has not been connected to firestore");
-      if (stageState === undefined) stageState = get_store_value(this.stageStore);
   
       await setDoc(
         this.documentSupplier(), 
-        stageState as PartialWithFieldValue<T>,
+        get_store_value(this.stageStore) as PartialWithFieldValue<T>,
         { merge: true }
       );
   
@@ -326,13 +323,12 @@ const stage7: SnippetConfig = {
       });
     }
     
-    async push(stageState?: Partial<T>): Promise<void> {
+    async push(): Promise<void> {
       if (!this.connected) throw new Error("Store has not been connected to firestore");
-      if (stageState === undefined) stageState = get_store_value(this.stageStore);
   
       await setDoc(
         this.documentSupplier(), 
-        stageState as PartialWithFieldValue<T>,
+        get_store_value(this.stageStore) as PartialWithFieldValue<T>,
         { merge: true }
       );
   
@@ -408,13 +404,12 @@ const stage8: SnippetConfig = {
       });
     }
     
-    async push(stageState?: Partial<T>): Promise<void> {
+    async push(): Promise<void> {
       if (!this.connected) throw new Error("Store has not been connected to firestore");
-      if (stageState === undefined) stageState = get_store_value(this.stageStore);
 
       await setDoc(
         this.documentSupplier(), 
-        stageState as PartialWithFieldValue<T>,
+        get_store_value(this.stageStore) as PartialWithFieldValue<T>,
         { merge: true }
       );
 
