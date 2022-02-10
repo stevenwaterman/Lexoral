@@ -108,6 +108,13 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
       padding: 1em;
     }
   }
+
+  article :global(p code) {
+    background-color: var(--blue-6);
+    color: var(--blue-0);
+    font-size: 0.85em;
+    padding: 0.1em 0.2em;
+  }
 </style>
 
 <svelte:head>

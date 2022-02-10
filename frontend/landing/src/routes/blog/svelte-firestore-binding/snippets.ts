@@ -1,6 +1,28 @@
 import type { SnippetConfig } from "$lib/blog/blogData";
 
-const exampleTs: SnippetConfig = {
+const creditExample: SnippetConfig = {
+  name: "Credit.svelte",
+  language: "svelte",
+  snippet: `
+  <script lang="ts">
+    import { creditStore } from "./credit";
+  </script>
+
+  <span>Credit: {$creditStore}</span>`
+};
+
+const volumeExample: SnippetConfig = {
+	name: "Volume.svelte",
+	language: "svelte",
+	snippet: `
+    <script lang="ts">
+      import { volumeStore } from "./audioSettings";
+    </script>
+
+    <input type="range" min={0} max={100} step={1} bind:value={$volumeStore}/>`
+};
+
+const finalTs: SnippetConfig = {
 	name: "audio.ts",
 	language: "ts",
 	snippet: `
@@ -19,7 +41,7 @@ const exampleTs: SnippetConfig = {
     );`
 };
 
-const exampleSvelte: SnippetConfig = {
+const finalSvelte: SnippetConfig = {
 	name: "Volume.svelte",
 	language: "svelte",
 	snippet: `
@@ -452,8 +474,10 @@ const stage8: SnippetConfig = {
 }
 
 export default {
-	exampleTs,
-	exampleSvelte,
+  creditExample,
+  volumeExample,
+	finalTs,
+	finalSvelte,
   stage1,
   stage2,
   stage3,

@@ -5,60 +5,88 @@
 </script>
 
 <BlogPost id="svelte-firestore-binding">
+  <p>
+    I've always been weirdly fascinated by databases.
+    It's probably a symptom of how I got into programming - abusing excel spreadsheets to do things they were never meant to.
+    Still though, there's something satisfying about categorising data, querying it, and learning answers to the questions you never thought to ask.
+  </p>
+
+  <p>
+    Databases, as a standalone application, are incredible pieces of engineering.
+    <em>However</em>, I've definitely been frustrated at how hard it is to mesh the database with your application.
+    You've probably felt that too.
+  </p>
+
+  <p>
+    SQL feels like magic, but taking it to production is a delicate balancing act.
+    ORMs promise the world, then make your life miserable as soon as you stray from the well-beaten path.
+    You'll get it to work eventually, but good luck trying to explain it to anyone else!
+  </p>
+
+  <h2>A cloud-native approach</h2>
+
+  <p>
+    Lexoral is <em>cloud-native</em>, which means we like using buzzwords that nobody really understands.
+    It also means that Lexoral was built around the cloud platform, rather than just taking a finished product and deploying it on the cloud.
+    It means we take advantage of the more modern features, like serverless compute, process orchestration, and <em>Firestore</em>.
+  </p>
+
+  <p>
+    Firestore is a cloud-hosted NoSQL database.
+    Using the Firestore API, you treat your database as one gigantic JSON object.
+    It's a bit like having the entire database stored in memory - letting you read and write the data at any path.
+    That's great, but it gets better.
+  </p>
+
+  <p>
+    Firestore's real value comes when you <em>subscribe</em> to a path in the database, getting real-time updates whenever the data changes.
+    Those reactive database queries pair <em>really</em> nicely with Svelte's reactive frontend updates.
+    Combining the two, our app can display a value from the database, updating whenever the database is updated.
+    Even better, we could utilise Svelte's <em>store</em> API, creating a data container that is always in sync with the database:
+  </p>
+
+  <Snippet config={snippets.creditExample} />
+
+  <p>
+    In that example, the store is read-only, but Svelte supports read-write stores too.
+    Writable stores are especially fancy because you can bind them to an HTML input element.
+    Since users aren't allowed to give themselves free credit (sorry), let's have a look at a volume slider instead:
+  </p>
+
+  <Snippet config={snippets.volumeExample} />
+
 	<p>
-    I'm a big fan of Firestore, because it provides a very high-level view of the database.
-    It has its downsides, but most of the time it just feels like you're working with data in-memory.
-    I'm <em>also</em> a big fan of Svelte, and especially its <strong>store</strong> API.
-    Svelte stores are very simple observable data containers, which can either be created atomically with read-write access, or derived from a set of other stores.
-    I'm going to assume that you know what svelte stores are, but you can read more about them here: TODO
-  </p>
-    
-  <p>
-    In this post, I'll talk about a utility class we use a lot in Lexoral, that exposes a firestore document as a svelte store.
-    The end result is a svelte store with two-way bindings to firestore.
-    Any time the svelte store is written to, those changes are eventually persisted to firestore.
-    Any time the data in firestore changes, the svelte store updates to. And because it's a svelte store, you can do crazy things like binding a HTML slider to a value in firestore:
+    With a custom store implementation, that's all it takes to get a two-way database binding.
+    A volume slider that stores your preference in the database, and synchronises across tabs, days, and devices.
+    You can adjust the slider on one tab and watch it move on the other.
+    Sounds great!
   </p>
 
-	<Snippet config={snippets.exampleTs} />
-	<Snippet config={snippets.exampleSvelte} />
+  <h2>Ruining the magic</h2>
 
   <p>
-    In under 20 lines, we've made a slider that controls a value in the database.
-    That works in both directions too - if the value in firestore changes, the slider will update too.
-    If we change the slider, the new value will be persisted in the database.
+    Our custom store wasn't some grand vision, it was built up piece-by-piece over time.
+    Rather than looking at the finished product and trying to explain it to you, let's start with something simple and work our way up.
   </p>
 
   <p>
-    It's not just sliders either, we could bind a text box to a string field, or a checkbox to a boolean.
-    What's going on here?
-  </p>
-
-  <h2>Pulling back the curtain</h2>
-
-  <p>
-    Our custom Svelte store wasn't some grand vision implemented from scratch, it was built up piece-by-piece.
-    Rather than trying to explain it to you, let's explain how we ended up here.
-  </p>
-
-  <p>
-    It started off as a simple wrapper around a native writable store.
-    We listen for updates from the database and update the inner store accordingly.
-    Any store needs a <code>subscribe</code> method, so we expose the one from the inner store.
+    It started off as a simple read-only store, like in the credit example from earlier.
+    Internally, it had a native writable store, which got updated whenever the database value changed.
+    Any store needs a <code>subscribe</code> method, so we expose the one from the native store:
   </p>
 
   <Snippet config={snippets.stage1} />
 
   <p>
-    That's all it takes to get a read-only store that binds to firestore.
-    Whenever an update comes in, we set the value on the inner store which notifies all the subscribers.
-    It's perfect for displaying database value on the frontend - such as your current credit.
+    It might look a little complicated, but there's really not much to it.
+    We created a new class that implements the <code>Readable</code> store inferface.
+    In the constructor, it listens for changes to the document, and updates <code>remoteStore</code> when they happen.
+    Since any calls to <code>subscribe</code> are passed to the internal store, any changes to that store update our subscribers!
   </p>
 
   <p>
-    While your current credit is (sadly) not editable, a read-only store is pretty limiting.
-    For example, a read-write binding would mean we could synchronise your volume or playback speed between tabs and even across devices.
-    Thankfully, making the store writable is an easy task:
+    That's already pretty useful, but a writable store would be even nicer.
+    Thankfully, it's not complicated to add:
   </p>
 
   <Snippet diffFrom={snippets.stage1} config={snippets.stage2} />
@@ -66,14 +94,15 @@
   <p>
     Those of you familiar with Svelte and its store inferface will notice that this method is called <code>commit</code> rather than <code>set</code>.
     That means it's not a valid <code>Writable</code> store.
-    It seems strange, but it's a logical decision.
+    It seems strange, but it's a deliberate choice.
   </p>
 
   <p>
     The main reason for calling the method <code>commit</code> rather than <code>set</code> is because we're already violating the spec.
-    Notice the <code>setDoc</code> call with <code>merge</code> option active.
-    In a writable Svelte store, you expect the store value to be set to exactly what you pass in as the new value.
-    In our store, and in firestore, we actually use a patching interface, allowing you to update one field without knowing the value of all the others.
+    Notice the <code>setDoc</code> call with <code>merge</code> enabled.
+    In a writable Svelte store, you expect the new value to be set to exactly what you pass in.
+    In this case, you're actually providing a <em>patch</em> - a partial override.
+    That allows you to update one field without knowing the value of all the others, which is important later.
   </p>
 
   <p>
@@ -84,8 +113,8 @@
 
   <p>
     Instead, we'll separate it into two steps.
-    When our store is created, it doesn't connect to firestore straight away.
-    Then, once the user is logged in and firebase is initialised, we can set up the database connection.
+    When our store is created, it doesn't connect to Firestore straight away.
+    Then, once the user is logged in and Firebase is initialised, we can set up the database connection.
     Any attempts to update the store value before then will just throw an error:
   </p>
 
@@ -95,13 +124,13 @@
     Perfect!
     That store now does everything we need it to.
     It's a two-way binding to firestore, and it doesn't even crash on startup!
-    There's one small problem: cost.
-    The performance sucks too.
+    The implementation is perfect, and has no issues whatsoever, as long as you ignore the fact that it costs a fortune and the performance is terrible.
+    What's up with that?
   </p>
 
   <p>
-    With firestore, you need to try and limit the number of database writes.
-    Not only do you have to pay for each write, it's actually not possible to update a single document more than about once per second.
+    With Firestore, it's vital that you limit the number of database writes.
+    Not only do you have to pay for each write, Firestore can only update a document about once per second.
     Currently, we write to the database every time the store value changes - which could be 10+ times per second.
     It'll get expensive and slow, fast.
   </p>
@@ -120,28 +149,27 @@
   </p>
 
   <p>
-    Rather than pushing updates immediately, <code>commit</code> now updates the staging area, and the database write doesn't happen until <code>push</code> is called.
-    That lets us batch up the updates, and only write to the database when necessary.
-    The cost is a fraction of what it was before, and there's no more performance bottlenecks.
+    Rather than pushing updates immediately, <code>commit</code> stores the pending updates and doesn't write to the database until <code>push</code> is called.
+    By batching the updates and only writing to the database when necessary, we significantly the cost is a fraction of what it was before, and there's no more performance bottlenecks.
   </p>
 
   <p>
-    Also notice that there's no check in <code>commit</code> to make sure we have connected the store to firestore.
-    It's not necessary any more, since we can just cache the changes until we are connected.
-    This is actually how the demo functionality works in Lexoral - we still use these firestore binding stores, but simply never connect them to the database.
+    You might be surprised to see that you can now call <code>commit</code> without connecting to the database. 
+    Since it's just updating our local state, that check has been moved to <code>push</code> instead.
   </p>
 
   <p>
-    However, it's easy to forget to call <code>push</code>.
-    It's easy to call it too much.
-    In general, it's not very nice to work with.
+    However, it's hard to know when to call <code>push</code>.
+    If you forget, then you never save that data.
+    If you do it too much, you're wasting money and ruining the performance.
+    In general, it's just not a very ergonomic API.
     What if we automated it?
   </p>
 
   <Snippet diffFrom={snippets.stage4} config={snippets.stage5} />
 
   <p>
-    In this latest version, any changes to our local store are batched up and automatically pushed to firestore after a period of inactivity.
+    Now any changes to our local store are batched up and automatically pushed to firestore after a period of inactivity.
     Any time we commit something, a timer is started - which lasts one second by default.
     If we commit something else before then, the timer resets.
     If not, then we push the changes when the timer runs out.
@@ -149,7 +177,7 @@
 
   <p>
     One second might not seem like very long, but you have to remember that the end goal is to bind a slider to this store.
-    Moving the slider causes up to 60 commits per second!
+    Adjusting the slider can cause 60 commits per second!
     A one-second debounce timer is enough to reduce the number of database writes to one, without really affecting the user experience.
     Remember that any commits are made instantly on the current window, the debounce timer just delays them being written to firstore and pushed to other sessions.
   </p>
@@ -162,7 +190,8 @@
   </p>
 
   <p>
-    To solve that, we provide a way to create a valid <code>Writable</code> store, bound to a specific <em>field</em> on a firestore document.
+    To solve that, let's provide a way to get <code>Writable</code> stores bound to specific <em>fields</em> on the document.
+    In other words, take our 'audio settings' store and create a 'volume' store for its volume field.
     For now, it's read-only:
   </p>
 
@@ -170,20 +199,23 @@
 
   <p>
     So given a <code>FirestoreWritable</code> for my audio settings, we can call <code>getField("volume")</code>.
-    That gives us a store that just represents the volume field on the audio settings document.
-    Not much use if we can't update the value, so let's make it a valid <code>Writable</code> by adding <code>set</code> and <code>update</code>:
+    The resulting store is a bound to <em>just</em> the volume field on that document.
+    Then, let's make it a valid <code>Writable</code> by adding <code>set</code> and <code>update</code>:
   </p>
 
   <Snippet diffFrom={snippets.stage6} config={snippets.stage7} />
 
   <p>
-    Both of these methods eventually just propagate their update to the parent store.
-    That's why it was so important to be able to perform a partial update - we want these single-field stores to be standalone.
-    We're now at the point where we can take a look back at the example I showed you at the start:
+    Both of these functions eventually call <code>commit</code> on the parent.
+    That's why it was so important to be able to perform a partial update - it allows these single-field stores to be standalone.
   </p>
 
-  <Snippet config={snippets.exampleTs} />
-	<Snippet config={snippets.exampleSvelte} />
+  <p>
+    That store implementation is looking pretty good now, so let's see it in action:
+  </p>
+
+  <Snippet config={snippets.finalTs} />
+	<Snippet config={snippets.finalSvelte} />
 
   <p>
     In <code>audio.ts</code>, we create a new store, binding it to the document at a specific path in firestore.
@@ -203,9 +235,9 @@
   </p>
 
   <p>
-    There is still one issue with our current implementation - it can be quite wasteful in terms of memory.
-    Every time we call <code>getField</code> to get the volume store, it creates a new one, even though they're all identical.
-    We can solve that with a cache in the parent store:
+    There is still one issue with our current implementation - it's quite wasteful.
+    Every time we call <code>getField</code>, it creates a new store, even though all the stores for a given field are identical.
+    We can solve that by adding a cache:
   </p>
 
   <Snippet diffFrom={snippets.stage7} config={snippets.stage8} />
