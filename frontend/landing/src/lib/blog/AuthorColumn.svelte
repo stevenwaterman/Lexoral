@@ -103,7 +103,7 @@
 	<meta name="twitter:creator" content={`@${authorDetails.links.twitter ?? "Lexoral"}`}>
 </svelte:head>
 
-<TextContainer defaultPadding={false}>
+<TextContainer defaultPadding={false} style="position: sticky; top: 1em;">
   <div class="authorCol">
     <div class="details">
       <img src={`/assets/blog/authors/${author}.jpg`} alt={authorDetails.longName}/>
@@ -139,7 +139,7 @@
 
       {#if authorDetails.links.twitch}
         <li>
-          <a rel="external" href={authorDetails.links.twitch}>
+          <a rel="external" href={`https://twitch.tv/${authorDetails.links.twitch}/`}>
             <Fa icon={faTwitch}/> @{authorDetails.links.twitch}
           </a>
         </li>
@@ -155,7 +155,7 @@
 
       {#if authorDetails.links.website}
         <li>
-          <a rel="external" href={authorDetails.links.website}>
+          <a rel="external" href={`https://${authorDetails.links.website}`}>
             <Fa icon={faGlobe}/> {authorDetails.links.website}
           </a>
         </li>

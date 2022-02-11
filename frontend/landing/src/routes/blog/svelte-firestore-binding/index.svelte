@@ -14,7 +14,7 @@
   <p>
     Databases, as a standalone application, are incredible pieces of engineering.
     <em>However</em>, I've definitely been frustrated at how hard it is to mesh the database with your application.
-    You've probably felt that too.
+    You've probably felt it too.
   </p>
 
   <p>
@@ -27,7 +27,7 @@
 
   <p>
     Lexoral is <em>cloud-native</em>, which means we like using buzzwords that nobody really understands.
-    It also means that Lexoral was built around the cloud platform, rather than just taking a finished product and deploying it on the cloud.
+    It also means that Lexoral was built <em>around</em> the cloud platform, rather than just taking a finished product and deploying it on the cloud.
     It means we take advantage of the more modern features, like serverless compute, process orchestration, and <em>Firestore</em>.
   </p>
 
@@ -41,8 +41,12 @@
   <p>
     Firestore's real value comes when you <em>subscribe</em> to a path in the database, getting real-time updates whenever the data changes.
     Those reactive database queries pair <em>really</em> nicely with Svelte's reactive frontend updates.
-    Combining the two, our app can display a value from the database, updating whenever the database is updated.
-    Even better, we could utilise Svelte's <em>store</em> API, creating a data container that is always in sync with the database:
+    Combining the two, our app can display a value from the database, updating the display whenever the value changes.
+  </p>
+
+  <p>
+    Even better, we can use Svelte's <em>store</em> API, creating a data container that keeps itself in sync with the database.
+    Then, if we wanted to display the user's current credit amount, automatically updating whenever it changed server-side, it would be as simple as:
   </p>
 
   <Snippet config={snippets.creditExample} />
@@ -57,20 +61,27 @@
 
 	<p>
     With a custom store implementation, that's all it takes to get a two-way database binding.
-    A volume slider that stores your preference in the database, and synchronises across tabs, days, and devices.
+    A volume slider that stores your preference in the database, and synchronises across tabs, days, or even devices.
     You can adjust the slider on one tab and watch it move on the other.
-    Sounds great!
+    Sounds like magic!
+  </p>
+
+  <p>
+    It's probably obvious by now, but none of this is hypothetical.
+    I've actually just described exactly how Svelte handles your volume settings, behind the scenes.
+    Here's how we did it.
   </p>
 
   <h2>Ruining the magic</h2>
 
   <p>
     Our custom store wasn't some grand vision, it was built up piece-by-piece over time.
-    Rather than looking at the finished product and trying to explain it to you, let's start with something simple and work our way up.
+    Rather than looking at the finished product and trying to explain it to you, let's retrace our steps.
+    We'll start with something simple, and add features until we get to today.
   </p>
 
   <p>
-    It started off as a simple read-only store, like in the credit example from earlier.
+    It started off as a basic read-only store, like in the credit example from earlier.
     Internally, it had a native writable store, which got updated whenever the database value changed.
     Any store needs a <code>subscribe</code> method, so we expose the one from the native store:
   </p>
@@ -78,15 +89,15 @@
   <Snippet config={snippets.stage1} />
 
   <p>
-    It might look a little complicated, but there's really not much to it.
+    It might look a little complicated at first, but there's really not much to it.
     We created a new class that implements the <code>Readable</code> store inferface.
     In the constructor, it listens for changes to the document, and updates <code>remoteStore</code> when they happen.
-    Since any calls to <code>subscribe</code> are passed to the internal store, any changes to that store update our subscribers!
+    Any calls to <code>subscribe</code> are passed to the internal store, meaning all our subscribers get notified of that update.
   </p>
 
   <p>
     That's already pretty useful, but a writable store would be even nicer.
-    Thankfully, it's not complicated to add:
+    Thankfully, it's not complicated to add a method that updates the database:
   </p>
 
   <Snippet diffFrom={snippets.stage1} config={snippets.stage2} />
@@ -98,15 +109,20 @@
   </p>
 
   <p>
-    The main reason for calling the method <code>commit</code> rather than <code>set</code> is because we're already violating the spec.
-    Notice the <code>setDoc</code> call with <code>merge</code> enabled.
-    In a writable Svelte store, you expect the new value to be set to exactly what you pass in.
-    In this case, you're actually providing a <em>patch</em> - a partial override.
-    That allows you to update one field without knowing the value of all the others, which is important later.
+    The main reason for calling the method <code>commit</code> rather than <code>set</code> is that we have <em>already</em> violated the spec.
+    Notice that we enable the <code>merge</code> option when updating the database with <code>setDoc</code>.
+    That means that when you call <code>commit</code> with an argument, the new value in the database <em>isn't</em> the argument you provided.
+    Instead, your argument is merged with the existing data, like a patch, or a list of overrides.
   </p>
 
   <p>
-    First, we have more pressing issues.
+    Compare that to the <code>Writable</code> interface - which expects the new value to be exactly what you passed in.
+    It makes sense to stray from the spec here, because it's quite rare that you want to replace an entire document in Firestore.
+    Much more often, you just want to edit one or two fields.
+    This will be important later, but we've got more pressing issues right now!
+  </p>
+
+  <p>
     Currently, our store connects to the database as soon as it is created - but there's no guarantee the user is authenticated yet.
     We could just accept that, and demand that no stores are created until the user is logged in, but it's easy to mess up and hard to debug.
   </p>
@@ -130,36 +146,41 @@
 
   <p>
     With Firestore, it's vital that you limit the number of database writes.
-    Not only do you have to pay for each write, Firestore can only update a document about once per second.
+    Every time you change something, you have to pay.
+    Making things worse, Firestore can only handle about one write pers second, on a given document.
     Currently, we write to the database every time the store value changes - which could be 10+ times per second.
     It'll get expensive and slow, fast.
   </p>
 
   <p>
-    To avoid those issues, we need to minimise the number of database writes.
-    There's no reason why we need to push updates to firestore that often, so let's batch them up and combine updates into one:
+    Clearly we need to reduce how often we write to the database.
+    We could <em>try</em> asking the users to stop adjusting their volume so fast, but I think we can find a more robust solution!
+    There's no reason why we need to push updates to Firestore that often, so let's batch them up and combine all the updates into one:
   </p>
 
   <Snippet diffFrom={snippets.stage3} config={snippets.stage4} />
 
   <p>
-    You'll notice that we now have 3 internal stores.
-    The new <code>stageStore</code> contains the updates that have been made locally but not pushed to firestore yet.
-    <code>localStore</code> is derived from the other two, combining their values to show us what the current state is - aka what the remote state would be after a push.
+    You'll notice that we now have 3 internal stores, instead of just one.
+    The new <code>stageStore</code> contains the updates that have been made locally but not pushed to Firestore yet.
+    <code>localStore</code> is derived from the other two, combining their values to show us what the current state is.
+    In other words, it pretends we push immediately and shows us what the database value <em>would</em> be.
   </p>
 
   <p>
-    Rather than pushing updates immediately, <code>commit</code> stores the pending updates and doesn't write to the database until <code>push</code> is called.
-    By batching the updates and only writing to the database when necessary, we significantly the cost is a fraction of what it was before, and there's no more performance bottlenecks.
-  </p>
-
-  <p>
+    Rather than immediately sending changes to the database, <code>commit</code> stores the pending updates, where they wait until <code>push</code> is called.
     You might be surprised to see that you can now call <code>commit</code> without connecting to the database. 
     Since it's just updating our local state, that check has been moved to <code>push</code> instead.
   </p>
 
   <p>
-    However, it's hard to know when to call <code>push</code>.
+    It's not until <code>push</code> is called that we actually send anything to the database.
+    It performs a single database write which combines all the commits together into one, then clears the pending store.
+    By grouping the updates and only writing to the database when necessary, we reduce the cost to a fraction of what it was before, and there's no more performance bottlenecks.
+  </p>
+
+  <p>
+    However, it's hard to know <em>when</em> to call <code>push</code>.
     If you forget, then you never save that data.
     If you do it too much, you're wasting money and ruining the performance.
     In general, it's just not a very ergonomic API.
@@ -176,17 +197,22 @@
   </p>
 
   <p>
-    One second might not seem like very long, but you have to remember that the end goal is to bind a slider to this store.
-    Adjusting the slider can cause 60 commits per second!
-    A one-second debounce timer is enough to reduce the number of database writes to one, without really affecting the user experience.
+    One second might not seem like very long, but you have to remember that the end goal is to bind this store to a slider.
+    Adjusting the slider can cause 60 commits per second, but you're unlikely to pause for more than a second when adjusting the volume.
+    It's high enough that it rarely triggers until you're done, while low enough that you don't really notice the delay.
     Remember that any commits are made instantly on the current window, the debounce timer just delays them being written to firstore and pushed to other sessions.
   </p>
 
   <p>
-    Speaking of binding the store to a slider, how would that work?
-    It's not a valid <code>Writable</code>.
-    Even if it was, our store represents an entire firestore document, which is a JSON object.
-    Not exactly something you could update with a slider.
+    It's also adjustable - when creating the store, you can choose a higher or lower delay based on your use case.
+    There's not much risk in setting it a bit high - pending updates are still applied to your local window instantly.
+    A ten-second debounce timer would just mean a ten-second delay before your volume synchronises across devices.
+  </p>
+
+  <p>
+    We've talked a lot about binding this store to a volume slider, but how would that work?
+    It's not a valid <code>Writable</code>, and it's not even storing a numeric value!
+    Our store represents an entire Firestore document, meaning a JSON object - not exactly something you could update with a slider.
   </p>
 
   <p>

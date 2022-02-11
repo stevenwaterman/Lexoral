@@ -1,5 +1,6 @@
 <script lang="ts">
   export let defaultPadding: boolean = true;
+  export let style: string = "";
 </script>
 
 <style>
@@ -22,6 +23,6 @@
   }
 </style>
 
-<div class="textContainer" class:defaultPadding>
+<div class="textContainer" class:defaultPadding style={style}>
   <slot/>
 </div>

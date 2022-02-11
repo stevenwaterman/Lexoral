@@ -70,6 +70,8 @@
 
   let lineChanges: LineChange[];
   $: lineChanges = toLineChange(changes);
+
+  // TODO this doesn't work at all with screen readers
 </script>
 
 <style>

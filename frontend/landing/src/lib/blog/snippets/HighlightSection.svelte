@@ -47,6 +47,7 @@
 
   details {
     display: none;
+    grid-column: span 3;
   }
 
   summary {
@@ -57,6 +58,10 @@
     cursor: pointer;
     background-color: var(--blue-6);
     grid-column: span 3;
+  }
+
+  details[open] {
+    display: contents;
   }
 
   details[open] summary {
@@ -85,79 +90,8 @@
   }
 
   :global(.diffCheckbox:checked + * details) {
-    display: contents;
-  }
-
-
-  /*
-  :global(.diffCheckbox:checked + * .removed) {
-    display: revert;
-    background-color: var(--red-6);
-  }
-
-  :global(.diffCheckbox:checked + * .hidden) {
-    display: none !important;
-  }
-
-  summary {
-    text-align: center;
-    font-weight: 900;
-    font-style: italic;
-    user-select: none;
-    display: none;
-    cursor: pointer;
-    background-color: var(--blue-6);
-  }
-
-  :global(.diffCheckbox:checked + * summary) {
     display: revert;
   }
-
-  details {
-    display: none;
-    grid-column: span 3;
-  }
-
-  details[open] summary {
-    display: none;
-  }
-
-  :global(.diffCheckbox:checked + * details) {
-    display: revert;
-  }
-
-  .fromLine,
-  .toLine {
-    font-weight: 700;
-    color: var(--grey-2);
-    text-align: right;
-    user-select: none;
-  }
-
-  .fromLine {
-    display: none;
-    grid-column: 1;
-    padding-left: 0.5em;
-    padding-right: 0.25em;
-  }
-
-  :global(.diffCheckbox:checked + * .fromLine) {
-    display: revert;
-  }
-
-  .toLine {
-    grid-column: 2;
-    border-right: 0.1em solid var(--border);
-    padding-right: 0.5em;
-    padding-left: 0.5em;
-  }
-
-  .code {
-    white-space: pre;
-    grid-column: 3;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  } */
 </style>
 
 {#if type === "hidden"}

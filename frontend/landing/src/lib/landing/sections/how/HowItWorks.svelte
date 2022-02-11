@@ -66,10 +66,11 @@
 
     background-image: linear-gradient(to right, var(--blue-3) 30%, var(--grey-5) 50%, var(--blue-3) 51%);
     background-size: 200%;
+    background-position-x: 110%;
 
     animation-name: progress;
     animation-duration: 15s;
-    animation-delay: 6s;
+    animation-delay: 2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
   }
