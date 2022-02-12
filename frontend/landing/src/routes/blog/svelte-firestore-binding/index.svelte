@@ -31,6 +31,11 @@
     It means we take advantage of the more modern features, like serverless compute, process orchestration, and <em>Firestore</em>.
   </p>
 
+  <figure>
+    <img src="/assets/blog/svelte-firestore-binding/Pipeline.svg"/>
+    <figcaption>I mean, just look at our transcription pipeline...</figcaption>
+  </figure>
+
   <p>
     Firestore is a cloud-hosted NoSQL database.
     Using the Firestore API, you treat your database as one gigantic JSON object.

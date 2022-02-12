@@ -266,3 +266,14 @@ blockquote {
     font-size: 1.5em;
   }
 }
+
+figure {
+  padding-bottom: 1em;
+}
+
+figcaption {
+  text-align: center;
+  color: var(--grey-1);
+  font-size: 0.85em;
+  font-style: italic;
+}
