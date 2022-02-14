@@ -11,6 +11,10 @@
 </script>
 
 <style>
+  div {
+    display: inline;
+  }
+
   .fromLine,
   .toLine {
     font-weight: 700;
@@ -98,15 +102,15 @@
   <details>
     <summary>&lt;Show {change.count} identical lines&gt;</summary>
     {#each change.lines as line, idx}
-        <div class={`fromLine ${type}`}>{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
-        <div class={`toLine ${type}`}>{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
+        <div class={`fromLine ${type}`} aria-hidden="true">{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
+        <div class={`toLine ${type}`} aria-hidden="true">{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
         <div class={`code ${type}`}>{@html line || " "}</div>
     {/each}
   </details>
 {/if}
 
 {#each change.lines as line, idx}
-  <div class={`fromLine ${type}`}>{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
-  <div class={`toLine ${type}`}>{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
+  <div class={`fromLine ${type}`} aria-hidden="true">{change.fromStartLine === undefined ? " " : change.fromStartLine + idx}</div>
+  <div class={`toLine ${type}`} aria-hidden="true">{change.toStartLine === undefined ? " " : change.toStartLine + idx}</div>
   <div class={`code ${type}`}>{@html line || " "}</div>
 {/each}

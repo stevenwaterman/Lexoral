@@ -8,6 +8,7 @@
   // TODO screen reader support on snippets
   // TODO link styling
   // TODO dropdown hover styling
+  // TODO plus minus signs
 </script>
 
 <BlogPost id="svelte-firestore-binding">
@@ -68,7 +69,7 @@
 
   <p>
     Combining the two, our app can display a value from the database, updating the display whenever the value changes.
-    Even better, we can use Svelte's <a href="https://svelte.dev/docs#run-time-svelte-store" rel="external"><em>store</em> API</a>, creating a data container that keeps <em>itself</em> in sync with the database.
+    Even better, we can use Svelte's <a href="https://svelte.dev/docs#run-time-svelte-store" rel="external">store API</a>, creating a data container that keeps <em>itself</em> in sync with the database.
     Then, if we wanted to an up-to-date display of how much credit you have, it would be as simple as:
   </p>
 
