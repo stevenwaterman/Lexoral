@@ -75,7 +75,7 @@
 </script>
 
 <style>
-  code {
+  .visualCode {
     grid-column: span 3;
 
     display: grid;
@@ -90,6 +90,15 @@
 
     border-bottom-left-radius: 0.5em;
     border-bottom-right-radius: 0.5em;
+  }
+
+  .sr-code {
+    position: absolute !important; /* Outside the DOM flow */
+    height: 1px; width: 1px; /* Nearly collapsed */
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE 7+ only support clip without commas */
+    clip: rect(1px, 1px, 1px, 1px); /* All other browsers */
+    opacity: 0;
   }
 
   code :global(.hljs-subst) {
@@ -148,8 +157,12 @@
   }
 </style>
 
-<code>
+<code class="visualCode" aria-hidden="true">
   {#each lineChanges as change}
     <HighlightSection {change} />
   {/each}
-</code>  
+</code>
+
+<code class="sr-code">
+  {@html to}
+</code>
