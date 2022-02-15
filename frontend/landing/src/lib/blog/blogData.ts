@@ -42,7 +42,10 @@ export type BlogPost = {
 	date: Date;
 	featured: boolean;
 	published: boolean;
-	containHeader?: true;
+	header?: {
+    position?: "bottom" | "center" | "top" | "left" | "right";
+    fit?: "contain" | "cover" | "fill";
+  };
 };
 
 export const blogPosts = {
@@ -57,17 +60,24 @@ export const blogPosts = {
 		date: new Date("2022-01-04T12:10:00Z"),
 		featured: true,
 		published: true,
-		containHeader: true
+		header: {
+      fit: "contain"
+    }
 	},
 	"svelte-firestore-binding": {
 		type: "tech",
 		author: "SteWaterman",
-		title: "Firestore via Svelte store",
-		shortDescription: "",
-		longDescription: "",
-		date: new Date(""),
+		title: "Database sync like magic, with Svelte + Firestore",
+		shortDescription:
+			"Svelte and Firestore are a match made in heaven, making it easy to sync data between the browser and the database.",
+		longDescription:
+			"Both Firestore and Svelte are event-driven and reactive. By forgetting everything we know about data layers and building one from first principles, we've made it easy to synchronise data both ways between the browser and the database.",
+		date: new Date("2022-02-16T13:00:00Z"),
 		featured: true,
-		published: true
+		published: true,
+    header: {
+      position: "bottom"
+    }
 	}
 } as const;
 blogPosts as Record<string, BlogPost>;

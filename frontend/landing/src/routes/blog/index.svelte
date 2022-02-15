@@ -3,11 +3,11 @@
   import PostLink from "$lib/blog/postLinks/PostLink.svelte";
   import FeaturedLink from "$lib/blog/postLinks/FeaturedLink.svelte";
   import Template from "$lib/template/Template.svelte";
-import Fa from "svelte-fa/src/fa.svelte";
-import { faRss } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa/src/fa.svelte";
+  import { faRss } from "@fortawesome/free-solid-svg-icons";
 
   const posts = Object.entries(blogPosts).filter(post => post[1].published) as Array<[BlogId, BlogPost]>;
-  posts.sort((a,b) => a[1].date.valueOf() - b[1].date.valueOf());
+  posts.sort((a,b) => b[1].date.valueOf() - a[1].date.valueOf());
 
   const featured = posts.filter(post => post[1].featured);
   const featuredPosts = featured.slice(0, 3).map(tup => tup[0]);

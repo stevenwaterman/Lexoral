@@ -89,7 +89,7 @@
 
 <ul class="contact">
   <li>
-    <a class="contactMethod" href="mailto:chat@lexoral.com">
+    <a class="contactMethod" href="mailto:steven@lexoral.com">
       <Fa icon={faEnvelope} />
       <p>Email Me</p>
       <p>steven@lexoral.com</p>

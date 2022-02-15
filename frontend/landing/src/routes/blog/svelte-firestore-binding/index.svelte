@@ -2,13 +2,6 @@
 	import BlogPost from "$lib/blog/BlogPost.svelte";
 	import Snippet from "$lib/blog/snippets/Snippet.svelte";
 	import snippets from "./snippets";
-
-  // TODO header image
-  // TODO description + date
-  // TODO screen reader support on snippets
-  // TODO link styling
-  // TODO dropdown hover styling
-  // TODO plus minus signs
 </script>
 
 <BlogPost id="svelte-firestore-binding">
@@ -28,6 +21,12 @@
     SQL feels like magic, but taking it to production is a delicate balancing act.
     ORMs promise the world, then make your life miserable as soon as you do something unexpected.
     You'll get it to work eventually, but good luck trying to explain it to anyone else!
+  </p>
+
+  <p>
+    We've taken a totally different approach, writing a custom Svelte store that binds to Firestore.
+    If you're not interested in how we did it, you can just <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/editor/src/utils/firestoreWritable.ts">read the code for yourself</a>.
+    Otherwise, read on!
   </p>
 
   <h2>A cloud-native approach</h2>
@@ -258,20 +257,27 @@
   <Snippet diffFrom={snippets.stage5} config={snippets.stage6} />
 
   <p>
-    So given a <code>FirestoreWritable</code> for my audio settings, we can call <code>getField("volume")</code>.
-    The resulting store is a bound to <em>just</em> the volume field on that document.
-    Next, let's make it a valid <code>Writable</code> by adding <code>set</code> and <code>update</code>:
+    We've added a new Svelte store implementation, <code>FirestoreWritableField</code>.
+    As the name suggests, it binds to a specific field on the Firestore document.
+    It's not meant to be created directly by the user - instead we've added <code>getField</code> onto the original store.
+  </p>
+
+  <p>
+    The child store is implemented using a <code>derived</code> store, which simply extracts the required field from the value of the parent store.
+    Any time the parent store updates, we check to see if our field has changed, and if so, notify our subscribers.
+    Despite the name of the class, it's not actually writable yet, so let's make it a valid Svelte <code>Writable</code> by adding <code>set</code> and <code>update</code>:
   </p>
 
   <Snippet diffFrom={snippets.stage6} config={snippets.stage7} />
 
   <p>
-    Both of these functions eventually call <code>commit</code> on the parent.
-    That's why it was so important to be able to perform a partial update - it allows these single-field stores to be standalone.
+    There's no need to worry about Firestore when writing these methods - we simply propagate the calls up to the parent and set the value for our field.
+    That's why it was so important for us to be able to apply a partial patch to the parent store - it allows these single-field stores to be standalone.
   </p>
 
   <p>
-    That store implementation is looking pretty good now, so let's see it in action:
+    That store implementation is looking pretty good now!
+    It's got everything we need to actually use it in an application, so let's try it out:
   </p>
 
   <Snippet config={snippets.finalTs} />

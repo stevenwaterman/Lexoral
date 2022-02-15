@@ -21,10 +21,6 @@ ol {
   margin: 0;
 }
 
-a {
-  color: unset;
-}
-
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
 ul[role='list'],
 ol[role='list'] {
@@ -114,7 +110,7 @@ html {
   --red-5: #F2BDBB;
   --red-6: #FFE9E2;
   
-  --yellow-0: #a16e0d;
+  --yellow-0: #A16E0D;
   --yellow-1: #EB9C0A;
   --yellow-2: #F6AE2D;
   --yellow-3: #F8C462;
@@ -267,13 +263,30 @@ blockquote {
   }
 }
 
-figure {
-  padding-bottom: 1em;
-}
-
 figcaption {
   text-align: center;
   color: var(--grey-1);
   font-size: 0.85em;
   font-style: italic;
 }
+
+/* unvisited link */
+a:link {
+  color: var(--blue-0);
+}
+
+/* visited link */
+a:visited {
+  color: var(--green-1);
+}
+
+/* mouse over link */
+a:hover {
+  color: var(--yellow-1);
+}
+
+/* selected link */
+a:active {
+  color: var(--yellow-2);
+}
+ 

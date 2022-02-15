@@ -1,5 +1,4 @@
 <script lang="ts">
-  export let defaultPadding: boolean = true;
   export let style: string = "";
 </script>
 
@@ -15,14 +14,8 @@
     overflow: hidden;
     font-size: 14pt;
   }
-
-  .defaultPadding {
-    padding: 3em 4em;
-    /* margin-top: -2em; */
-    margin-bottom: 4em;
-  }
 </style>
 
-<div class="textContainer" class:defaultPadding style={style}>
+<div class="textContainer" style={style}>
   <slot/>
 </div>

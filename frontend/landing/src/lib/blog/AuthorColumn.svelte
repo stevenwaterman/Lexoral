@@ -1,8 +1,8 @@
 <script lang="ts">
   import TextContainer from "$lib/template/TextContainer.svelte";
   import Fa from "svelte-fa/src/fa.svelte";
-  import { faEnvelope, faGlobe, faRssSquare } from "@fortawesome/free-solid-svg-icons";
-  import { faTwitch, faTwitter, faSlack, faGithub, faGit, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+  import { faEnvelope, faGlobe } from "@fortawesome/free-solid-svg-icons";
+  import { faTwitch, faTwitter, faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
   import type { Author, AuthorDetails } from "./blogData";
   import { authors } from "./blogData";
@@ -103,7 +103,7 @@
 	<meta name="twitter:creator" content={`@${authorDetails.links.twitter ?? "Lexoral"}`}>
 </svelte:head>
 
-<TextContainer defaultPadding={false} style="position: sticky; top: 1em;">
+<TextContainer style="position: sticky; top: 1em;">
   <div class="authorCol">
     <div class="details">
       <img src={`/assets/blog/authors/${author}.jpg`} alt={authorDetails.longName}/>

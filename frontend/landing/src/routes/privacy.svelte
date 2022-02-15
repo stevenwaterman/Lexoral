@@ -4,12 +4,12 @@ import TextContainer from "$lib/template/TextContainer.svelte";
 </script>
 
 <Template title="Privacy Policy">
-  <TextContainer>
+  <TextContainer style="padding: 3em 4em;">
     <h1>Privacy Policy</h1>
 
     <p>This privacy policy explains how Lexoral uses the personal data we collect from you when you use our website.</p>
   
-  
+
     <h2>Topics:</h2>
   
     <ul>

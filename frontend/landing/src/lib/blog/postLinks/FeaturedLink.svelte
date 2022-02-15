@@ -13,6 +13,7 @@
 <style>
   a {
     position: relative;
+    color: var(--text);
   }
 
   .container {
@@ -37,12 +38,8 @@
     width: 100%;
     height: 100%;
 
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
-  }
-
-  .headerImage.contain {
-    object-fit: contain
   }
   
   .padded {
@@ -126,7 +123,7 @@
   </div>
 
   <div class="container">
-    <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader} alt="Header"/>
+    <img class="headerImage" src={`/assets/blog/${id}/header.png`} alt="Header"/>
     <div class="padded">
       <div class="meta">
         <p>{post.date.toLocaleDateString()}</p>

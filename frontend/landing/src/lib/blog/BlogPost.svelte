@@ -1,6 +1,4 @@
 <script lang="ts">
-import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
-
   import Template from "$lib/template/Template.svelte";
   import TextContainer from "$lib/template/TextContainer.svelte";
   import Advert from "./Advert.svelte";
@@ -17,6 +15,12 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
 
   let authorDetails: AuthorDetails;
   $: authorDetails = authors[post.author];
+
+  let fit: BlogPost["header"]["fit"];
+  $: fit = post.header?.fit ?? "cover"
+
+  let position: BlogPost["header"]["position"];
+  $: position = post.header?.position ?? "center";
 
   /*
   TODO list
@@ -44,17 +48,22 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
   .headerImage {
     max-height: 20em;
     width: 100%;
-    object-position: center;
-    object-fit: cover;
-  }
-
-  .headerImage.contain {
-    object-fit: contain;
   }
 
   .padded {
-    padding: 4em;
-    padding-top: 1em;
+    padding: 1em 2em 4em 2em;
+  }
+
+  .padded > :global(*) {
+    padding-left: 30pt;
+    padding-right: 30pt;
+  }
+
+  .padded :global(figure) {
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 2em;
+    margin-bottom: 2em;
   }
 
   .metadata {
@@ -109,6 +118,11 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
     }
   }
 
+  h1 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   article :global(p code) {
     background-color: var(--blue-6);
     color: var(--blue-0);
@@ -134,9 +148,9 @@ import FinalCta from "$lib/landing/sections/finish/FinalCTA.svelte";
 
 <Template title={post.title}>
   <div class="grid">
-    <TextContainer defaultPadding={false}>
+    <TextContainer>
       <article>
-        <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader} alt="Header"/>
+        <img class="headerImage" src={`/assets/blog/${id}/header.png`} style={`object-fit: ${fit}; object-position: ${position};`} alt="Header"/>
         <div class="padded">
           <div class="metadata">
             <p class="type">{post.type}</p>

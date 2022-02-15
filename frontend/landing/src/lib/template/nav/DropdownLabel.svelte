@@ -9,25 +9,24 @@
 <style>
   .label {
     position: relative;
+  }
+
+  .topLink {
+    color: var(--page-background);
+    text-decoration: none;
     padding-left: 1.5em;
     padding-right: 1.5em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
   }
 
-  .topLink {
-    color: var(--page-background);
-    text-decoration: none;
-  }
-
-  .label:hover .topLink {
-    color: var(--grey-5);
+  .topLink:hover {
+    color: var(--yellow-1);
   }
 
   .label:focus-within .topLink {
-    color: var(--grey-5);
+    color: var(--yellow-4);
   }
-
 
   .menu {
     display: flex;
@@ -39,7 +38,7 @@
     top: 100%;
     left: 50%;
     z-index: 100;
-    margin-top: -0.2em;
+    margin-top: 0.3em;
 
     transform-origin: 50% 0;
     transform: translateX(-50%) scale(0);

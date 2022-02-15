@@ -43,9 +43,6 @@
     border-radius: 0.5em;
     background-color: var(--blue-0);
 
-    margin-top: 1em;
-    margin-bottom: 1em;
-
     overflow: hidden;
   }
 
@@ -68,7 +65,7 @@
   }
 </style>
 
-<div class="container">
+<figure class="container wide">
   <h2 class="name">{config.name}</h2>
 
   {#if diffFrom !== undefined}
@@ -81,5 +78,5 @@
   {/if}
   
   <Highlight from={highlight(diffFrom?.snippet)} to={highlight(config.snippet)} />
-</div>
+</figure>
 
