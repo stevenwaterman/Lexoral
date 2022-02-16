@@ -72,7 +72,7 @@ export const blogPosts = {
 			"Svelte and Firestore are a match made in heaven, making it easy to sync data between the browser and the database.",
 		longDescription:
 			"Both Firestore and Svelte are event-driven and reactive. By forgetting everything we know about data layers and building one from first principles, we've made it easy to synchronise data both ways between the browser and the database.",
-		date: new Date("2022-02-16T13:00:00Z"),
+		date: new Date("2022-02-16T18:30:00Z"),
 		featured: true,
 		published: true,
     header: {
