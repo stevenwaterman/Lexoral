@@ -9,7 +9,9 @@ const config = {
 
 	kit: {
 		adapter: adapter({ pages: "../public" }),
-		hydrate: false,
+    browser: {
+      hydrate: false
+    },
 		router: false,
 		target: "body",
 		vite: {
