@@ -32,7 +32,7 @@
   <h2>A cloud-native approach</h2>
 
   <p>
-    Lexoral is <em>cloud-native</em>, which means we like using buzzwords that nobody really understands.
+    Lexoral is <em>cloud-native</em>, which means we like confusing people with buzzwords and complicated architecture diagrams.
     It also means that Lexoral was built <em>around</em> its cloud platform, rather than just taking a finished product and deploying it onto the cloud.
     It means we take advantage of the more modern features, like serverless compute, process orchestration, and <em>Firestore</em>.
   </p>
@@ -55,14 +55,17 @@
 
   <p>
     Using the Firestore API, you can treat your database as one gigantic JSON object.
-    It's a bit like having the entire database stored in memory - letting you read and write the data at any path.
+    It's a bit like having the entire database stored in the browser's memory - letting you read and write the data at any path straight from the client.
+    Sounds scary, but Firestore has its own security layer, meaning you can restrict access to parts of the database depending on the user's authentication status.
+    Essentially, you don't need a backend for <a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete" rel="external">CRUD</a>.
     That's great, but it gets better.
   </p>
 
   <p>
     Firestore's real value comes when you <em>subscribe</em> to a path in the database, getting real-time updates whenever the data changes.
-    Those reactive database queries pair <em>really</em> nicely with Svelte's reactive frontend updates.
-    If you haven't heard of <a href="https://svelte.dev" rel="external">Svelte</a> before, it's a compile-time Javascript framework that selectively re-renders parts of the web page when variables are updated.
+    Those reactive database queries pair <em>really</em> nicely with Svelte's reactive updates.
+    If you haven't heard of <a href="https://svelte.dev" rel="external">Svelte</a> before, it's a frontend framework that selectively re-renders parts of the web page when variables are updated.
+    It's not a runtime library, like React or Vue, instead it traverses the dependency graph between your variables at compile-time and custom-generates code to surgically update the DOM.
     You can probably see how it fits in with Firestore.
   </p>
 
@@ -116,7 +119,12 @@
   <p>
     It might look a little complicated at first, but there's really not much to it.
     We created a new class that implements the <code>Readable</code> store inferface.
-    In the constructor, it starts listening for changes to the Firestore document, and updates <code>remoteStore</code> when they happen.
+    In the constructor, it accepts a reference to a Firestore document, similar to a file path.
+  </p>
+
+  <p>
+    For Lexoral, that's usually something like <code>/users/{"{uid}"}/settings/audio</code> - meaning Firestore can check the current user's ID against the ID in the requested document.
+    Our store then starts listening for changes to the document, and updating <code>remoteStore</code> when they happen.
     Any calls to <code>subscribe</code> are passed to the internal store, meaning all our subscribers get notified of that update.
   </p>
 
@@ -204,6 +212,7 @@
     It's not until <code>push</code> is called that we actually send anything to the database.
     It performs a single database write which combines all the commits together into one, then clears the pending store.
     By grouping the updates and only writing to the database when necessary, we reduce the cost to a fraction of what it was before, and there's no more performance bottlenecks.
+    Since each user is writing to their own document, the only way to write to a document more than once a second is to use two devices simultaneously.
   </p>
 
   <p>
