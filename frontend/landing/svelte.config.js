@@ -10,10 +10,9 @@ const config = {
 	kit: {
 		adapter: adapter({ pages: "../public" }),
     browser: {
-      hydrate: false
+      hydrate: false,
+		  router: false
     },
-		router: false,
-		target: "body",
 		vite: {
 			optimizeDeps: {
 				include: ["highlight.js/lib/core"]
