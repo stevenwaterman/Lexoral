@@ -13,6 +13,7 @@ const config = {
       hydrate: false,
 		  router: false
     },
+    trailingSlash: "always",
 		vite: {
 			optimizeDeps: {
 				include: ["highlight.js/lib/core"]
