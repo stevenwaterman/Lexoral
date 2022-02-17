@@ -92,7 +92,7 @@
       grid-row: 2;
       margin: 0;
       margin-right: 1em;
-      margin-bottom: 0.5em;
+      margin-bottom: 1em;
       align-self: flex-start;
     }
   }
