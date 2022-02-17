@@ -153,6 +153,12 @@
   code :global(.hljs-strong) {
     font-weight: 700
   }
+
+  @media (max-width: 799px) {
+    .visualCode {
+      overflow-x: auto;
+    }
+  }
 </style>
 
 <code class="visualCode" aria-hidden="true">

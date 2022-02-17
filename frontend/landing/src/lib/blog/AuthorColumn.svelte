@@ -74,6 +74,19 @@
     font-size: 2em;
   }
 
+  @media (min-width: 1600px) and (max-height: 899px) {
+    .links {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      width: 100%;
+    }
+
+    .linkText {
+      display: none;
+    }
+  }
+
   @media (max-width: 1599px) {
     .authorCol {
       grid-template-columns: 20em auto;
@@ -116,7 +129,7 @@
       {#if authorDetails.links.email}
         <li>
           <a rel="external" href={`mailto:${authorDetails.links.email}`}>
-            <Fa icon={faEnvelope}/> {authorDetails.links.email}
+            <Fa icon={faEnvelope}/> <span class="linkText">{authorDetails.links.email}</span>
           </a>
         </li>
       {/if}
@@ -124,7 +137,7 @@
       {#if authorDetails.links.github}
         <li>
           <a rel="external" href={`https://github.com/${authorDetails.links.github}/`}>
-            <Fa icon={faGithub}/> @{authorDetails.links.github}
+            <Fa icon={faGithub}/> <span class="linkText">@{authorDetails.links.github}</span>
           </a>
         </li>
       {/if}
@@ -132,7 +145,7 @@
       {#if authorDetails.links.twitter}
         <li>
           <a rel="external" href={`https://twitter.com/${authorDetails.links.twitter}/`}>
-            <Fa icon={faTwitter}/> @{authorDetails.links.twitter}
+            <Fa icon={faTwitter}/> <span class="linkText">@{authorDetails.links.twitter}</span>
           </a>
         </li>
       {/if}
@@ -140,7 +153,7 @@
       {#if authorDetails.links.twitch}
         <li>
           <a rel="external" href={`https://twitch.tv/${authorDetails.links.twitch}/`}>
-            <Fa icon={faTwitch}/> @{authorDetails.links.twitch}
+            <Fa icon={faTwitch}/> <span class="linkText">@{authorDetails.links.twitch}</span>
           </a>
         </li>
       {/if}
@@ -148,7 +161,7 @@
       {#if authorDetails.links.linkedin}
         <li>
           <a rel="external" href={`https://www.linkedin.com/in/${authorDetails.links.linkedin}/`}>
-            <Fa icon={faLinkedin}/> @{authorDetails.links.linkedin}
+            <Fa icon={faLinkedin}/> <span class="linkText">@{authorDetails.links.linkedin}</span>
           </a>
         </li>
       {/if}
@@ -156,7 +169,7 @@
       {#if authorDetails.links.website}
         <li>
           <a rel="external" href={`https://${authorDetails.links.website}`}>
-            <Fa icon={faGlobe}/> {authorDetails.links.website}
+            <Fa icon={faGlobe}/> <span class="linkText">{authorDetails.links.website}</span>
           </a>
         </li>
       {/if}

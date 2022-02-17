@@ -51,17 +51,50 @@
     margin-top: 0.25em;
     margin-bottom: 0.25em;
     color: var(--grey-5);
+
+    grid-column: 1;
   }
 
   .diffLabel {
     color: var(--grey-5);
     user-select: none;
+
+    grid-column: 2;
   }
 
   .diffCheckbox {
     margin-left: 1em;
     margin-right: 3em;
     color: var(--grey-5);
+
+    grid-column: 3;
+  }
+
+  @media (max-width: 799px) {
+    .container {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .name {
+      grid-row: span 2;
+    }
+
+    .diffLabel {
+      grid-row: 1;
+      margin-right: 1em;
+      margin-top: 0.5em;
+      align-self: flex-end;
+    }
+
+    .diffCheckbox {
+      grid-column: 2;
+      grid-row: 2;
+      margin: 0;
+      margin-right: 1em;
+      margin-bottom: 0.5em;
+      align-self: flex-start;
+    }
   }
 </style>
 
@@ -73,10 +106,9 @@
       class="diffLabel"
       for={`diff-${diffFrom.name}-${config.name}-checkbox`}
       title={`Tick to show changes from ${diffFrom.name} to ${config.name}`}
-    >Show Changes</label>
+    >Show Diff</label>
     <input class="diffCheckbox" id={`diff-${diffFrom.name}-${config.name}-checkbox`} type="checkbox" checked autocomplete="off"/>
   {/if}
   
   <Highlight from={highlight(diffFrom?.snippet)} to={highlight(config.snippet)} />
 </figure>
-

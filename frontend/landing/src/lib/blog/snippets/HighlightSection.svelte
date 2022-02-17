@@ -62,6 +62,11 @@
     cursor: pointer;
     background-color: var(--blue-6);
     grid-column: span 3;
+
+    /* Keep the summary text visible when scrolling left-right */
+    max-width: calc(100vw - 0.4em - 1px);
+    position: sticky;
+    left: 0;
   }
 
   details[open] {

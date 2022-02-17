@@ -101,6 +101,18 @@
     margin-bottom: 2em;
   }
 
+  h1 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  article :global(p code) {
+    background-color: var(--blue-6);
+    color: var(--blue-0);
+    font-size: 0.85em;
+    padding: 0.1em 0.2em;
+  }
+
   @media (max-width: 1599px) {
     .grid {
       grid-template-columns: auto;
@@ -113,21 +125,20 @@
     .grid {
       width: 100vw;
     }
+
     .padded {
-      padding: 1em;
+      padding: 1em 0;
     }
-  }
 
-  h1 {
-    padding-left: 0;
-    padding-right: 0;
-  }
+    .padded > :global(*) {
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
 
-  article :global(p code) {
-    background-color: var(--blue-6);
-    color: var(--blue-0);
-    font-size: 0.85em;
-    padding: 0.1em 0.2em;
+    h1 {
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
   }
 </style>
 
