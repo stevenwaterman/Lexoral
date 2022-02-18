@@ -78,6 +78,21 @@ export const blogPosts = {
     header: {
       position: "bottom"
     }
+	},
+  "you-dont-need-js": {
+		type: "tech",
+		author: "SteWaterman",
+		title: "5 things you don't need Javascript for",
+		shortDescription:
+			"Javascript can do a lot, but it's really over-used. Here's 5 things you'll be surprised to learn you can do in-browser without Javascript.",
+		longDescription:
+			"Javascript can do a lot, but it's really over-used. HTML and CSS are surprisingly powerful on their own, so let's have a look at some of the things you can achieve without Javascript (or a backend) - from animated diagrams to togglable dark mode",
+		date: new Date("2022-02-16T18:30:00Z"),
+		featured: true,
+		published: true,
+    header: {
+      position: "bottom"
+    }
 	}
 } as const;
 blogPosts as Record<string, BlogPost>;

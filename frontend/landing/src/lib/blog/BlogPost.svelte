@@ -59,7 +59,7 @@
     padding-right: 30pt;
   }
 
-  .padded :global(figure) {
+  .padded > :global(figure) {
     padding-left: 0;
     padding-right: 0;
     margin-top: 2em;
@@ -181,7 +181,8 @@
 
     <AuthorColumn author={post.author}/>
   </div>
-
-  <div/>
+  
+  <!-- //HACK This div bodges the footer to be blue instead of white -->
+  <div/> 
   <Advert/>
 </Template>
