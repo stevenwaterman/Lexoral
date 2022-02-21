@@ -179,8 +179,7 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
 
   <p>
     Accordion Menus are commonly used for FAQs, where you have a list of headers and each one can be expanded to show the content inside.
-    This is another case of me telling you about a fairly basic feature of HTML+CSS, but <code>{"<details>"}</code> exists!
-    You can even animate it opening:
+    This is another case of me telling you about a fairly basic feature of HTML+CSS, but <code>{"<details>"}</code> exists:
   </p>
 
   <figure>
@@ -200,6 +199,12 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
   <p>
     If you're not sure whether to use a details element, try reading the <a rel="external" href="https://service-manual.nhs.uk/design-system/components/details">NHS service manual</a> for it.
     They've done way more usability testing than you ever will, and have some decent guidelines for when it's appropriate to use.
+  </p>
+
+  <p>
+    One downside of a pure-CSS approach here is that <code>details</code> is really difficult to animate without Javascript.
+    It's possible to animate the box opening using <code>transition</code>, as long as you know the height of the box when open.
+    Currently, browsers don't support animating the element being closed, so you'll have to restort to Javascript or <a rel="external" href="https://stackoverflow.com/a/38215801/6382484">a custom in/out animation</a>.
   </p>
 
   <h2>5. Dark Mode</h2>
@@ -237,22 +242,18 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
 
   <p>
     This isn't just a toy example either.
-    The browser will automatically remember the checkbox state, meaning you can save the user's preference for free, with no extra work needed.
-    Try it out, and see what you think - whether it's for dark mode, or something else.
+    The browser will automatically remember the checkbox state, meaning you can save the user's preference for free - try ticking the box and refreshing this page!
+    Using checkboxes for styling is incredibly useful, and is much simpler to make accessible than a custom-built Javascript solution.
   </p>
 
   <h2>Conclusion</h2>
 
   <p>
     It's daunting to learn the ins-and-outs of HTML/CSS.
-    There's 20 years worth of new features, and it can be frustrating when <em>that stupid div won't just go in the middle why won't it go in the middle I hate this I hate programming why did I become a programmer I should have just become a doctor like my parents wante...</em>
-  </p>
-
-  <p>
-    Anyway, I think I've shown how powerful of a tool CSS can be when you really stretch yourself.
-    The point of this post was never for you to just copy my example code, though you should feel free to do so.
-    Instead, it's to give you some pointers towards the more useful parts of the language.
-    If you want to learn more, here's some of the things I use all the time that you might not know about:
+    It can be frustrating when you know exactly what you want it to do but can't figure out how to tell the computer.
+    However, it's easier now than ever before to make websites look great.
+    CSS has had 20 years worth of development, and is full of new features to make life easier.
+    If you want some further reading, check out:
   </p>
 
   <ul>
@@ -266,6 +267,18 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
     <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators">Combinators</a></li>
     <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Functions">CSS Functions (transform, min, max, calc, gradients)</a></li>
   </ul>
+
+  <p>
+    Some of the things I've mentioned are <em>reasonably</em> new, meaning that if you need to support Internet Explorer, these techniques probably aren't for you.
+    For example, <code>position: sticky</code> and <code>:focus-within</code> aren't supported in any version of IE.
+    Hopefully you can forget that Internet Explorer ever existed, in which case everything I've used here has close to 100% support in browsers!
+  </p>
+    
+  <p>
+    Anyway, I think I've shown how powerful of a tool CSS can be when you really stretch yourself.
+    The point of this post was never for you to just copy my example code, though you should feel free to do so.
+    Instead, it's to give you some pointers towards the more useful parts of the language, and encourage you to explore what the more basic parts of web dev have on offer.
+  </p>
 
   <p>
     Send me a message if you make something cool!

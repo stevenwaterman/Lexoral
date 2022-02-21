@@ -54,7 +54,7 @@ const animation: SnippetConfig = {
 
   .trail {
     stroke-width: 2;
-    stroke-dasharray: 1 20 1 10 5 10 10 5 30 150;
+    stroke-dasharray: 1 10 5 10 10 5 30 150;
     animation-name: trail;
     animation-timing-function: ease-out;
   }
@@ -62,7 +62,7 @@ const animation: SnippetConfig = {
   @keyframes trail {
     from, 20% { 
       stroke-width: 3;
-      stroke-dashoffset: 100;
+      stroke-dashoffset: 80;
     }
     100%, to {
       stroke-width: 0.5;
