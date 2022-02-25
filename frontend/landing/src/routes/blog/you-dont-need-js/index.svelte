@@ -1,8 +1,8 @@
 <script lang="ts">
   import BlogPost from "$lib/blog/BlogPost.svelte";
-import Accordion from "$lib/blog/postComponents/you-dont-need-js/Accordion.svelte";
+  import Accordion from "$lib/blog/postComponents/you-dont-need-js/Accordion.svelte";
   import Animation from "$lib/blog/postComponents/you-dont-need-js/Animation.svelte";
-import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte";
+  import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte";
   import Sidebar from "$lib/blog/postComponents/you-dont-need-js/Sidebar.svelte";
   import StickyPositioning from "$lib/blog/postComponents/you-dont-need-js/StickyPositioning.svelte";
   import Snippet from "$lib/blog/snippets/Snippet.svelte";
@@ -17,14 +17,14 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
 
 <BlogPost id="you-dont-need-js">
   <p>
-    Every day, I see people use Javascript to do things that are supported by default in plain HTML & CSS.
-    That's almost never a good idea - it's much slower, causes content to jump around the page after loading, <a href="https://shkspr.mobi/blog/2021/01/the-unreasonable-effectiveness-of-simple-html/" rel="external">and breaks your site for people with crappy browsers</a>.
-    I knew I could do better, so I built this landing page and blog without <em>any</em> Javascript in the browser.
+    Every day, I see people use Javascript to do things that are supported by default in good old HTML & CSS.
+    That's usually a bad idea - it's much slower, causes content to jump around the page after loading, <a href="https://shkspr.mobi/blog/2021/01/the-unreasonable-effectiveness-of-simple-html/" rel="external">and breaks your site for people with crappy browsers</a>.
+    I was determined to do better, and built this landing page and blog without <em>any</em> client-side Javascript.
   </p>
 
   <p>
-    I figured out a few cool techniques when making this site, and wanted to share them with you!
-    Hopefully, by giving you some of the tools that I use on a daily basis, websites will <a rel="external" href="https://en.wikipedia.org/wiki/Law_of_the_instrument">stop all looking like nails</a>.
+    Along the way, I figured out a few cool techniques and wanted to share them with you!
+    Hopefully, you can learn more about the features I use on a daily basis, and incorporate them into your own sites.
   </p>
 
   <h2>1. Animations</h2>
@@ -45,13 +45,13 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
 
   <p>
     For another, more advanced example of how you can create animated diagrams with CSS, check out our landing page!
-    The <a href="https://lexoral.com/#how-it-works">How it Works</a> section contains quite a complicated animated diagram.
+    The <a href="https://lexoral.com/#how-it-works">How it Works</a> section contains a detailed animation.
     If you want to copy from it, Lexoral is <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/frontend/landing/src/lib/landing/sections/how/animation">open-source on GitHub</a>.
   </p>
 
   <p>
-    It's certainly a bit more complicated than a normal video.
-    However, I think there's plenty of reasons to prefer animating SVGs with CSS:
+    Creating an animation like that is certainly more complicated than a simple video.
+    If you can look past the complexity, there's plenty of reasons to prefer an animated SVG:
   </p>
 
   <ul>
@@ -64,7 +64,8 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
 
   <p>
     If you want to learn more about CSS animations, I can recommend starting with <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations" rel="external">the MDN guide</a>.
-    As for creating your own SVGs, either use a visual editor like <a href="https://inkscape.org/" rel="external">Inkscape</a>, or a more dev-oriented tool like <a href="https://yqnn.github.io/svg-path-editor/" rel="external">this one</a>.
+    To create the SVGs, either use a visual editor like <a href="https://inkscape.org/" rel="external">Inkscape</a>, or a more dev-oriented tool like <a href="https://yqnn.github.io/svg-path-editor/" rel="external">this one</a>.
+    Often it's easier to just write the SVG markup by hand, in which case <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element" rel="external">MDN has a great reference page</a>.
   </p>
 
   <h2>2. Sidebars</h2>
@@ -85,16 +86,16 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
   </figure>
 
   <p>
-    This is nothing more than clever use of <a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">pseudo-classes</a> in CSS.
+    This example is just clever use of <a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">pseudo-classes</a> in CSS.
     You probably skipped that link, but go back and click it.
-    Even if you think you know everything about them, click it and read down that list.
+    Even if you think you know everything about CSS, click it and read down that list pseudo-classes.
     Look how many there are.
     Think about how you could use them.
   </p>
 
   <p>
-    It's too easy to see <code>:hover</code> and assume it's just used for styling links when you hover over them.
-    I've just shown you one other use for it but here's 9 more off the top of my head:
+    It's too easy to see <code>:hover</code> and assume it's just for styling links when you hover over them.
+    We've just seen it used to create a sidebar, but here's 9 more ways you could use it:
   </p>
 
   <ol>
@@ -109,7 +110,7 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
     <li>Making the 'Reject Cookies' button move out of the way when people try to click it</li>
   </ol>
 
-  <p>
+  <p style="font-size: 0.7em;">
     That last one was a joke.
     Please don't do that.
     I'm serious.
@@ -118,27 +119,22 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
   </p>
 
   <p>
-    A few of those ideas would need the hover effect to only start after a short delay.
-    For example, it would be quite hard to use Wikipedia if a popup obscured half the screen every time you moused over a link.
-    For that, you can use the <code>transition-delay</code> property.
+    A few of those ideas would need a delay before the hover effect activated - it would be quite hard to use Wikipedia if a popup obscured half the screen every time you moused over a link.
+    You might have to fall back to using Javascript in that case, but try and do it with the <code>transition-delay</code> property first.
   </p>
 
   <h2>3. Sticky Positioning</h2>
 
   <p>
-    PSA: <code>position: sticky;</code> exists. Please stop recreating it with Javascript.
-  </p>
-
-  <p>
-    Some of you are thinking: 'What kind of amateur would try and re-create sticky positioning with Javascript?!'.
+    PSA: <code>position: sticky;</code> exists now. Please stop reimplementing it with Javascript.
+    Some of you are confused why I'm mentioning such a basic feature.
     If that's you, skip to the next section.
   </p>
 
   <p>
-    If you're still here, that means you're feeling pretty self-concious about your JS-based sticky positioning.
-    You can do it with CSS instead, and it works way better!
-    It's easy to tell when someone has tried to DIY their sticky positioning, because the element always lags one frame behind when scrolling.
-    That's really off-putting, so let's look at how we can do it properly:
+    Some of you have no idea what I'm talking about, and are feeling pretty self-concious.
+    When you want an HTML element to move down the page as you scroll, you can do that with plain CSS!
+    Not only that, it actually works way better than trying to recreate it with Javascript:
   </p>
 
   <figure>
@@ -150,10 +146,11 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
   </figure>
 
   <p>
+    It's easy to tell when someone has tried to DIY their sticky positioning, because the element always lags one frame behind when scrolling.
     Notice how when you scroll down, the blue square is always in exactly the same position.
     In a Javascript-based solution, it would always be one frame behind, meaning that the faster you scroll down, the higher up the screen it would be.
     Then, when you stop scrolling, it jumps to the correct position.
-    I would have coded a JS-based example to compare, but even if I try and add JS to this blog, the CI pipeline will just refuse to include it!
+    I would have coded a JS-based example to compare, but JS is banned in my CI pipeline!
   </p>
 
   <p>
@@ -172,7 +169,7 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
 
   <p>
     It's a little difficult to wrap your head around, but I'd recommend reading through the <a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">MDN article on the position attribute</a>.
-    I get a lot of value from it, so I'd say it's worth having a good understanding of all the possible values and what they do.
+    I use the <code>position</code> attribute all the time, so I think it's worth having a good understanding of all the possible values and what they do.
   </p>
 
   <h2>4. Accordion Menus</h2>
@@ -191,7 +188,7 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
   </figure>
 
   <p>
-    It's <a rel="external" href="https://www.nngroup.com/articles/accordions-complex-content/">not recommended</a> to use accordion menus due to them having a lot of usability issues.
+    It's <a rel="external" href="https://www.nngroup.com/articles/accordions-complex-content/">not always a good idea</a> to use accordion menus due to them having a lot of usability issues.
     However, the <code>{"<details>"}</code> element is super useful when you want to hide some content from the user, especially if it's very long and most users won't want to read it.
     For example, I used one just above here to hide the long code snippets.
   </p>
@@ -224,14 +221,14 @@ import DarkMode from "$lib/blog/postComponents/you-dont-need-js/DarkMode.svelte"
   </figure>
 
   <p>
-    We have created a checkbox which toggles dark mode, without using Javascript, or anything more than CSS.
-    This is a more general technique, which works any time you want two different versions of an element.
+    We've created a checkbox which toggles dark mode, without using Javascript, or anything more than CSS.
+    This is a more general technique, which works any time you want to let the user toggle between two different versions of an element, or two different styles.
     For example, I used it in <a href="https://lexoral.com/blog/svelte-firestore-binding/">my last blog post</a> to toggle between different versions of a code snippet.
   </p>
 
   <p>
     The trick here is combining the <code>:checked</code> pseudo-class with the <code>~</code> sibling combinator.
-    A CSS rule like <code>p ~ a</code> affects all <code>{"<a>"}</code> elements that have a <code>{"<p>"}</code> element sibling that comes before them in the HTML document.
+    A CSS rule like <code>p ~ a</code> applies to all <code>{"<a>"}</code> elements that have a <code>{"<p>"}</code> element sibling before them in the HTML document.
   </p>
 
   <p>
