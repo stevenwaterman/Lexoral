@@ -50,6 +50,8 @@
 
 <!-- Todo add paragraph about purpose of pitch -->
 
+<!-- One-line summary -->
+
 <!-- Why interviews are important -->
 <p>
   I believe in the power of interviews.

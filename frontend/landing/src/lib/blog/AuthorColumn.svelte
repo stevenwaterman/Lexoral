@@ -128,7 +128,7 @@
     <ul class="links">
       {#if authorDetails.links.email}
         <li>
-          <a rel="external" href={`mailto:${authorDetails.links.email}`}>
+          <a href={`mailto:${authorDetails.links.email}`}>
             <Fa icon={faEnvelope}/> <span class="linkText">{authorDetails.links.email}</span>
           </a>
         </li>
@@ -136,7 +136,7 @@
 
       {#if authorDetails.links.github}
         <li>
-          <a rel="external" href={`https://github.com/${authorDetails.links.github}/`}>
+          <a href={`https://github.com/${authorDetails.links.github}/`}>
             <Fa icon={faGithub}/> <span class="linkText">@{authorDetails.links.github}</span>
           </a>
         </li>
@@ -144,7 +144,7 @@
 
       {#if authorDetails.links.twitter}
         <li>
-          <a rel="external" href={`https://twitter.com/${authorDetails.links.twitter}/`}>
+          <a href={`https://twitter.com/${authorDetails.links.twitter}/`}>
             <Fa icon={faTwitter}/> <span class="linkText">@{authorDetails.links.twitter}</span>
           </a>
         </li>
@@ -152,7 +152,7 @@
 
       {#if authorDetails.links.twitch}
         <li>
-          <a rel="external" href={`https://twitch.tv/${authorDetails.links.twitch}/`}>
+          <a href={`https://twitch.tv/${authorDetails.links.twitch}/`}>
             <Fa icon={faTwitch}/> <span class="linkText">@{authorDetails.links.twitch}</span>
           </a>
         </li>
@@ -160,7 +160,7 @@
 
       {#if authorDetails.links.linkedin}
         <li>
-          <a rel="external" href={`https://www.linkedin.com/in/${authorDetails.links.linkedin}/`}>
+          <a href={`https://www.linkedin.com/in/${authorDetails.links.linkedin}/`}>
             <Fa icon={faLinkedin}/> <span class="linkText">@{authorDetails.links.linkedin}</span>
           </a>
         </li>
@@ -168,7 +168,7 @@
 
       {#if authorDetails.links.website}
         <li>
-          <a rel="external" href={`https://${authorDetails.links.website}`}>
+          <a href={`https://${authorDetails.links.website}`}>
             <Fa icon={faGlobe}/> <span class="linkText">{authorDetails.links.website}</span>
           </a>
         </li>

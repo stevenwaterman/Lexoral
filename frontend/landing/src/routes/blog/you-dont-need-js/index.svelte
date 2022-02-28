@@ -18,7 +18,7 @@
 <BlogPost id="you-dont-need-js">
   <p>
     Every day, I see people use Javascript to do things that are supported by default in good old HTML & CSS.
-    That's usually a bad idea - it's much slower, can cause content to jump around the page after loading, <a href="https://shkspr.mobi/blog/2021/01/the-unreasonable-effectiveness-of-simple-html/" rel="external">and breaks your site for people with crappy browsers</a>.
+    That's usually a bad idea - it's much slower, can cause content to jump around the page after loading, <a href="https://shkspr.mobi/blog/2021/01/the-unreasonable-effectiveness-of-simple-html/">and breaks your site for people with crappy browsers</a>.
     I was determined to do better, and built this landing page and blog without <em>any</em> client-side Javascript.
   </p>
 
@@ -46,7 +46,7 @@
   <p>
     For another, more advanced example of how you can create animated diagrams with CSS, check out our landing page!
     The <a href="https://lexoral.com/#how-it-works">How it Works</a> section contains a detailed animation.
-    If you want to copy from it, Lexoral is <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/frontend/landing/src/lib/landing/sections/how/animation">open-source on GitHub</a>.
+    If you want to copy from it, Lexoral is <a href="https://github.com/stevenwaterman/Lexoral/tree/stage/frontend/landing/src/lib/landing/sections/how/animation">open-source on GitHub</a>.
   </p>
 
   <p>
@@ -63,9 +63,9 @@
   </ul>
 
   <p>
-    If you want to learn more about CSS animations, I can recommend starting with <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations" rel="external">the MDN guide</a>.
-    To create the SVGs, either use a visual editor like <a href="https://inkscape.org/" rel="external">Inkscape</a>, or a more dev-oriented tool like <a href="https://yqnn.github.io/svg-path-editor/" rel="external">this one</a>.
-    Often it's easier to just write the SVG markup by hand, in which case <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element" rel="external">MDN has a great reference page</a>.
+    If you want to learn more about CSS animations, I can recommend starting with <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations">the MDN guide</a>.
+    To create the SVGs, either use a visual editor like <a href="https://inkscape.org/">Inkscape</a>, or a more dev-oriented tool like <a href="https://yqnn.github.io/svg-path-editor/">this one</a>.
+    Often it's easier to just write the SVG markup by hand, in which case <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element">MDN has a great reference page</a>.
   </p>
 
   <h2>2. Sidebars</h2>
@@ -86,7 +86,7 @@
   </figure>
 
   <p>
-    This example is just clever use of <a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">pseudo-classes</a> in CSS.
+    This example is just clever use of <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">pseudo-classes</a> in CSS.
     You probably skipped that link, but go back and click it.
     Even if you think you know everything about CSS, click it and read down that list pseudo-classes.
     Look how many there are.
@@ -167,7 +167,7 @@
   </p>
 
   <p>
-    It's a little difficult to wrap your head around, but I'd recommend reading through the <a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">MDN article on the position attribute</a>.
+    It's a little difficult to wrap your head around, but I'd recommend reading through the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">MDN article on the position attribute</a>.
     I use <code>position</code> all the time, so I think it's worth having a good understanding of all the possible values and what they do.
   </p>
 
@@ -187,20 +187,20 @@
   </figure>
 
   <p>
-    It's <a rel="external" href="https://www.nngroup.com/articles/accordions-complex-content/">not always a good idea</a> to use accordion menus due to them having a lot of usability issues.
+    It's <a href="https://www.nngroup.com/articles/accordions-complex-content/">not always a good idea</a> to use accordion menus due to them having a lot of usability issues.
     However, the <code>{"<details>"}</code> element is super useful when you want to hide some content from the user, especially if it's very long and most users won't want to read it.
     For example, I used one just above here to hide the source code for the example.
   </p>
 
   <p>
-    If you're not sure whether to use a details element, try reading the <a rel="external" href="https://service-manual.nhs.uk/design-system/components/details">NHS service manual</a> for it.
+    If you're not sure whether to use a details element, try reading the <a href="https://service-manual.nhs.uk/design-system/components/details">NHS service manual</a> for it.
     They've done way more usability testing than you ever will, and have some decent guidelines for when it's appropriate to use.
   </p>
 
   <p>
     One downside of a pure-CSS approach here is that <code>details</code> is tricky to animate without Javascript.
     It's possible to animate the box opening using <code>transition</code>, as long as you know the height of the box when open.
-    Currently, browsers don't natively support animating the element being closed, so you'll have to restort to Javascript or <a rel="external" href="https://stackoverflow.com/a/38215801/6382484">a custom in/out animation</a>.
+    Currently, browsers don't natively support animating the element being closed, so you'll have to restort to Javascript or <a href="https://stackoverflow.com/a/38215801/6382484">a custom in/out animation</a>.
   </p>
 
   <h2>5. Dark Mode</h2>
@@ -252,15 +252,15 @@
   </p>
 
   <ul>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox">Flexbox</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Grids">Grid</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning">Position</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/SVG">SVG</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transitions">Transition</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">Animation</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">Pseudo-Classes</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators">Combinators</a></li>
-    <li><a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Functions">CSS Functions (transform, min, max, calc, gradients)</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox">Flexbox</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Grids">Grid</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning">Position</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/SVG">SVG</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transitions">Transition</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">Animation</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">Pseudo-Classes</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators">Combinators</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Functions">CSS Functions (transform, min, max, calc, gradients)</a></li>
   </ul>
 
   <p>

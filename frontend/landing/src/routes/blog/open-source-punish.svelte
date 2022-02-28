@@ -48,7 +48,7 @@
   </ul>
 
   <p>
-    It's not really stealing, because it's your legal right to do so under our <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/LICENSE">license</a>.
+    It's not really stealing, because it's your legal right to do so under our <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/LICENSE">license</a>.
     Here's how you can use our open-source nature to punish us:
   </p>
 
@@ -56,15 +56,15 @@
   <h2>Reading the Code</h2>
 
   <p>
-    Our code is hosted on GitHub, and is publicly available <a rel="external" href="https://github.com/stevenwaterman/Lexoral/">here</a>.
+    Our code is hosted on GitHub, and is publicly available <a href="https://github.com/stevenwaterman/Lexoral/">here</a>.
     All our code is on there, updated multiple times a day, even the things we haven't released yet.
-    Even this blog post is open-source: you can see its code and make suggestions <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/landing/src/routes/blog/open-source-punish.svelte">here</a>.
-    I try to keep the documentation up-to-date, but if you're confused, feel free to <a rel="external" href="https://github.com/stevenwaterman/Lexoral/issues/new">open an issue</a> and ask for help.
+    Even this blog post is open-source: you can see its code and make suggestions <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/landing/src/routes/blog/open-source-punish.svelte">here</a>.
+    I try to keep the documentation up-to-date, but if you're confused, feel free to <a href="https://github.com/stevenwaterman/Lexoral/issues/new">open an issue</a> and ask for help.
   </p>
   
   <p>
     Not only can you look through the current state of the code, you can also look at every previous version, or the history for any file.
-    You can see the full list of changes, known as commits, <a rel="external" href="https://github.com/stevenwaterman/Lexoral/commits/stage">on GitHub</a>.
+    You can see the full list of changes, known as commits, <a href="https://github.com/stevenwaterman/Lexoral/commits/stage">on GitHub</a>.
     Each one has a timestamp and a description, so you can get a rough idea of what was changed.
   </p>
 
@@ -88,16 +88,16 @@
   </p>
 
   <p>
-    First of all, you'll want to <a rel="external" href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">fork Lexoral on GitHub</a>.
+    First of all, you'll want to <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">fork Lexoral on GitHub</a>.
     This gives you a copy of our code that you can edit on your own, independent of our version.
-    The Lexoral repository is set up to deploy to <a rel="exteranl" href="https://cloud.google.com/">Google Cloud</a> automatically using <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/.github/workflows">GitHub Actions</a> and <a rel="external" href="https://github.com/stevenwaterman/Lexoral/tree/stage/terraform">Terraform</a>.
+    The Lexoral repository is set up to deploy to <a rel="exteranl" href="https://cloud.google.com/">Google Cloud</a> automatically using <a href="https://github.com/stevenwaterman/Lexoral/tree/stage/.github/workflows">GitHub Actions</a> and <a href="https://github.com/stevenwaterman/Lexoral/tree/stage/terraform">Terraform</a>.
   </p>
 
   <p>
     You'll need to set up a Google Cloud Platform account, and create a project on there.
     Then, replace any mentions of <code>lexoral-prod</code> with the name of your new project.
     There may be a few other things to change over, but you should be able to get it working with a little bit of effort.
-    You'll also need to work through the list of <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/terraform/manual_setup_required.md">manual setup steps</a>, because we haven't managed to automate everything yet.
+    You'll also need to work through the list of <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/terraform/manual_setup_required.md">manual setup steps</a>, because we haven't managed to automate everything yet.
   </p>
 
   <p>

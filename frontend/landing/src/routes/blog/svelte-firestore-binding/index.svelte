@@ -25,7 +25,7 @@
 
   <p>
     We've taken a totally different approach, writing a custom Svelte store that binds to Firestore.
-    If you're not interested in how we did it, you can just <a rel="external" href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/editor/src/utils/firestoreWritable.ts">read the code for yourself</a>.
+    If you're not interested in how we did it, you can just <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/editor/src/utils/firestoreWritable.ts">read the code for yourself</a>.
     Otherwise, read on!
   </p>
 
@@ -57,21 +57,21 @@
     Using the Firestore API, you can treat your database as one gigantic JSON object.
     It's a bit like having the entire database stored in the browser's memory - letting you read and write the data at any path straight from the client.
     Sounds scary, but Firestore has its own security layer, meaning you can restrict access to parts of the database depending on the user's authentication status.
-    Essentially, you don't need a backend for <a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete" rel="external">CRUD</a>.
+    Essentially, you don't need a backend for <a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>.
     That's great, but it gets better.
   </p>
 
   <p>
     Firestore's real value comes when you <em>subscribe</em> to a path in the database, getting real-time updates whenever the data changes.
     Those reactive database queries pair <em>really</em> nicely with Svelte's reactive updates.
-    If you haven't heard of <a href="https://svelte.dev" rel="external">Svelte</a> before, it's a frontend framework that selectively re-renders parts of the web page when variables are updated.
+    If you haven't heard of <a href="https://svelte.dev">Svelte</a> before, it's a frontend framework that selectively re-renders parts of the web page when variables are updated.
     It's not a runtime library, like React or Vue, instead it traverses the dependency graph between your variables at compile-time and custom-generates code to surgically update the DOM.
     You can probably see how it fits in with Firestore.
   </p>
 
   <p>
     Combining the two, our app can display a value from the database, updating the display whenever the value changes.
-    Even better, we can use Svelte's <a href="https://svelte.dev/docs#run-time-svelte-store" rel="external">store API</a>, creating a data container that keeps <em>itself</em> in sync with the database.
+    Even better, we can use Svelte's <a href="https://svelte.dev/docs#run-time-svelte-store">store API</a>, creating a data container that keeps <em>itself</em> in sync with the database.
     Then, if we wanted to an up-to-date display of how much credit you have, it would be as simple as:
   </p>
 
@@ -332,7 +332,7 @@
   <h2>Conclusion</h2>
 
   <p>
-    I'm not saying that you should take our code and use it yourself (but if you want to, <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/editor/src/utils/firestoreWritable.ts" rel="external">you can</a>).
+    I'm not saying that you should take our code and use it yourself (but if you want to, <a href="https://github.com/stevenwaterman/Lexoral/blob/stage/frontend/editor/src/utils/firestoreWritable.ts">you can</a>).
     I <em>am</em> saying that cloud-native development is a crazy, magical place, where you need to think outside of the box.
     Creating our custom store implementation was a slow process, where we had a problem, fixed it, and moved on to the next one.
     There was no grand vision, just an emergent solution based on the problems we faced.
