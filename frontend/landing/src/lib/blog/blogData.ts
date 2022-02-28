@@ -91,7 +91,7 @@ export const blogPosts = {
 		featured: true,
 		published: true,
     header: {
-      position: "top"
+      position: "center"
     }
 	}
 } as const;
