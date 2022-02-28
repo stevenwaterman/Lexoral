@@ -23,14 +23,16 @@
   </p>
 
   <p>
-    Along the way, I learned a few cool techniques and want to share them with you!
-    Hopefully, you can learn more about the features I use on a daily basis, and incorporate them into your own sites.
+    Along the way, I discovered just how much CSS has to offer, and I'd love to share some of that with you today.
+    I know a lot of people are a bit scared of CSS, and see it as black magic, so I won't be showing you anything too complicated.
+    Instead, I'm just going to focus on simple techniques and overlooked features - things you could easily incorporate into your own sites.
   </p>
 
-  <h2>1. Animations</h2>
+  <h2>1. Animating SVGs</h2>
 
   <p>
-    You can create some really cool effects by combining SVGs with CSS animations.
+    You probably know that you can animate HTML elements with CSS.
+    However, did you know that you can <em>also</em> animate SVGs, in exactly the same way?
     One of my favourite techniques is setting the <code>stroke-dasharray</code> property to a high value, then animating <code>stroke-dashoffset</code>.
     That results in the path being 'drawn' over time, or a line moving along a path, like in this animation of some fireworks:
   </p>
