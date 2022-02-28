@@ -44,6 +44,7 @@
         Their problems weren't meaningful, and it didn't feel like I was really helping anyone.
       {/if}
       I needed to make a difference - to work on something I truly believed in.
+      That brings us to Lexoral: a new platform for social science researchers that takes the pain out of interview admin.
     {/if}
   </p>
 {/if}
