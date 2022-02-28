@@ -18,21 +18,21 @@
 <BlogPost id="you-dont-need-js">
   <p>
     Every day, I see people use Javascript to do things that are supported by default in good old HTML & CSS.
-    That's usually a bad idea - it's much slower, causes content to jump around the page after loading, <a href="https://shkspr.mobi/blog/2021/01/the-unreasonable-effectiveness-of-simple-html/" rel="external">and breaks your site for people with crappy browsers</a>.
+    That's usually a bad idea - it's much slower, can cause content to jump around the page after loading, <a href="https://shkspr.mobi/blog/2021/01/the-unreasonable-effectiveness-of-simple-html/" rel="external">and breaks your site for people with crappy browsers</a>.
     I was determined to do better, and built this landing page and blog without <em>any</em> client-side Javascript.
   </p>
 
   <p>
-    Along the way, I figured out a few cool techniques and wanted to share them with you!
+    Along the way, I learned a few cool techniques and want to share them with you!
     Hopefully, you can learn more about the features I use on a daily basis, and incorporate them into your own sites.
   </p>
 
   <h2>1. Animations</h2>
 
   <p>
-    You can achieve a lot by combining SVGs with simple CSS animations.
+    You can create some really cool effects by combining SVGs with CSS animations.
     One of my favourite techniques is setting the <code>stroke-dasharray</code> property to a high value, then animating <code>stroke-dashoffset</code>.
-    That has the effect of animating a line being drawn, or a line moving along a path, like in the fireworks animation below:
+    That results in the path being 'drawn' over time, or a line moving along a path, like in this animation of some fireworks:
   </p>
 
   <figure>
@@ -73,8 +73,8 @@
   <p>
     You want a side navigation bar that hides when it's not in use.
     Put away that script file, we've got CSS for this.
-    We'll use <code>transform</code> to move it off-screen when it's not being used, then override that when the user hovers over it.
-    Importantly, we should also show the menu when you use the Tab key to select one of the links in the menu - making it much more accessible:
+    We'll use <code>transform</code> to move it off-screen by default, then override that when the user hovers over the element.
+    Importantly, we should also show the menu when you use the <code>Tab</code> key to select one of the links in the menu - an important step towards keeping our site accessible:
   </p>
 
   <figure>
@@ -94,7 +94,7 @@
   </p>
 
   <p>
-    It's too easy to see <code>:hover</code> and assume it's just for styling links when you hover over them.
+    It's too easy to see <code>:hover</code> and assume it's just for styling hyperlinks.
     We've just seen it used to create a sidebar, but here's 9 more ways you could use it:
   </p>
 
@@ -120,7 +120,7 @@
 
   <p>
     A few of those ideas would need a delay before the hover effect activated - it would be quite hard to use Wikipedia if a popup obscured half the screen every time you moused over a link.
-    You might have to fall back to using Javascript in that case, but try and do it with the <code>transition-delay</code> property first.
+    You might have to fall back to using Javascript in that case, but try the <code>transition-delay</code> property first.
   </p>
 
   <h2>3. Sticky Positioning</h2>
@@ -134,7 +134,7 @@
   <p>
     Some of you have no idea what I'm talking about, and are feeling pretty self-concious.
     When you want an HTML element to move down the page as you scroll, you can do that with plain CSS!
-    Not only that, it actually works way better than trying to recreate it with Javascript:
+    Not only that, it actually works way better than a Javascript version:
   </p>
 
   <figure>
@@ -146,18 +146,17 @@
   </figure>
 
   <p>
-    It's easy to tell when someone has tried to DIY their sticky positioning, because the element always lags one frame behind when scrolling.
     Notice how when you scroll down, the blue square is always in exactly the same position.
-    In a Javascript-based solution, it would always be one frame behind, meaning that the faster you scroll down, the higher up the screen it would be.
+    It's easy to tell when someone has tried to DIY their sticky positioning, because the element always lags one frame behind when scrolling.
+    The faster you scroll down, the higher up the screen it would be.
     Then, when you stop scrolling, it jumps to the correct position.
-    I would have coded a JS-based example to compare, but JS is banned in my CI pipeline!
   </p>
 
   <p>
-    Sticky positioning is a combination of <code>relative</code> (default) and <code>fixed</code> positioning.
+    Sticky positioning is a combination of <code>relative</code> and <code>fixed</code> positioning.
     It's mostly used for navigation menus that should follow you as you scroll down the page.
-    It's used on this page too, if you have a wide enough monitor.
-    The little panel to the right with my face on it uses <code>sticky</code> positioning, meaning I'm always staring at you as you read my blogs.
+    It's used on this page too, if you are viewing it on a large landscape screen.
+    The panel to the right with my face on it uses <code>sticky</code> positioning, meaning I'm always staring at you as you read my blogs.
   </p>
 
   <p>
@@ -169,7 +168,7 @@
 
   <p>
     It's a little difficult to wrap your head around, but I'd recommend reading through the <a rel="external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">MDN article on the position attribute</a>.
-    I use the <code>position</code> attribute all the time, so I think it's worth having a good understanding of all the possible values and what they do.
+    I use <code>position</code> all the time, so I think it's worth having a good understanding of all the possible values and what they do.
   </p>
 
   <h2>4. Accordion Menus</h2>
@@ -190,7 +189,7 @@
   <p>
     It's <a rel="external" href="https://www.nngroup.com/articles/accordions-complex-content/">not always a good idea</a> to use accordion menus due to them having a lot of usability issues.
     However, the <code>{"<details>"}</code> element is super useful when you want to hide some content from the user, especially if it's very long and most users won't want to read it.
-    For example, I used one just above here to hide the long code snippets.
+    For example, I used one just above here to hide the source code for the example.
   </p>
 
   <p>
@@ -199,16 +198,16 @@
   </p>
 
   <p>
-    One downside of a pure-CSS approach here is that <code>details</code> is really difficult to animate without Javascript.
+    One downside of a pure-CSS approach here is that <code>details</code> is tricky to animate without Javascript.
     It's possible to animate the box opening using <code>transition</code>, as long as you know the height of the box when open.
-    Currently, browsers don't support animating the element being closed, so you'll have to restort to Javascript or <a rel="external" href="https://stackoverflow.com/a/38215801/6382484">a custom in/out animation</a>.
+    Currently, browsers don't natively support animating the element being closed, so you'll have to restort to Javascript or <a rel="external" href="https://stackoverflow.com/a/38215801/6382484">a custom in/out animation</a>.
   </p>
 
   <h2>5. Dark Mode</h2>
 
   <p>
     You can have an entirely functional dark mode on your website without any Javascript, cookies, or separate URLs - all in the browser.
-    The secret ingredient here is <code>:checked</code> - a CSS selector that only matches <strong>checked</strong> checkboxes.
+    The secret ingredient is <code>:checked</code> - a CSS selector that only matches <strong>checked</strong> checkboxes.
     You might be able to see where this is going:
   </p>
 
@@ -221,13 +220,12 @@
   </figure>
 
   <p>
-    We've created a checkbox which toggles dark mode, without using Javascript, or anything more than CSS.
-    This is a more general technique, which works any time you want to let the user toggle between two different versions of an element, or two different styles.
+    This is actually a more general technique, which works any time you want to let the user toggle between two different versions of an element, or two different styles.
     For example, I used it in <a href="https://lexoral.com/blog/svelte-firestore-binding/">my last blog post</a> to toggle between different versions of a code snippet.
   </p>
 
   <p>
-    The trick here is combining the <code>:checked</code> pseudo-class with the <code>~</code> sibling combinator.
+    The trick is to combine the <code>:checked</code> pseudo-class with the <code>~</code> sibling combinator.
     A CSS rule like <code>p ~ a</code> applies to all <code>{"<a>"}</code> elements that have a <code>{"<p>"}</code> element sibling before them in the HTML document.
   </p>
 
