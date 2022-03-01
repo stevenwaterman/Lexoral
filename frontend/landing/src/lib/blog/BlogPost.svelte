@@ -59,6 +59,12 @@
     padding-right: 30pt;
   }
 
+  .padded > :global(ol),
+  .padded > :global(ul) {
+    padding-left: 60pt;
+    padding-right: 30pt;
+  }
+
   .padded > :global(figure) {
     padding-left: 0;
     padding-right: 0;
