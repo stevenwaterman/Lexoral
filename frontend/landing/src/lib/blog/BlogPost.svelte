@@ -55,13 +55,13 @@
   }
 
   .padded > :global(*) {
-    margin-left: 30pt;
-    margin-right: 30pt;
+    padding-left: 30pt;
+    padding-right: 30pt;
   }
 
   .padded > :global(figure) {
-    margin-left: 0;
-    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
     margin-top: 2em;
     margin-bottom: 2em;
   }
