@@ -91,7 +91,7 @@ const sidebar: SnippetConfig = {
     overflow: hidden;
     position: relative;
     height: 15em;
-    width: 25em;
+    max-width: 25em;
     margin: auto;
     border: 0.2em solid black;
   }
@@ -143,7 +143,7 @@ const stickyPositioning: SnippetConfig = {
 	language: "svelte",
 	snippet: `<style>
   .scroller {
-    width: 25em;
+    max-width: 25em;
     height: 10em;
     margin: auto;
     padding: 1em;
@@ -243,7 +243,7 @@ const darkMode: SnippetConfig = {
   .container {
     position: relative;
     border: 0.2em solid black;
-    width: 25em;
+    max-width: 25em;
     margin: auto;
   }
 
