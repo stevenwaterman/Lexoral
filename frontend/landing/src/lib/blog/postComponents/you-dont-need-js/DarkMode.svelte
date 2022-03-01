@@ -2,7 +2,7 @@
   .container {
     position: relative;
     border: 0.2em solid black;
-    width: 25em;
+    max-width: 25em;
     margin: auto;
   }
 

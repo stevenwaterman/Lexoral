@@ -1,6 +1,6 @@
 <style>
   .scroller {
-    width: 25em;
+    max-width: 25em;
     height: 10em;
     margin: auto;
     padding: 1em;

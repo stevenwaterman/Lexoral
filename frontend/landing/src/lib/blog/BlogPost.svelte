@@ -62,7 +62,6 @@
   .padded > :global(ol),
   .padded > :global(ul) {
     padding-left: 60pt;
-    padding-right: 30pt;
   }
 
   .padded > :global(figure) {
@@ -144,6 +143,11 @@
     h1 {
       padding-left: 0.5em;
       padding-right: 0.5em;
+    }
+
+    .padded > :global(ol),
+    .padded > :global(ul) {
+      padding-left: calc(0.5em + 30pt);
     }
   }
 </style>
