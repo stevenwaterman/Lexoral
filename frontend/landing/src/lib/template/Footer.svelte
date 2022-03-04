@@ -112,7 +112,7 @@
       <li><a href="https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw">Slack</a></li>
       <li><a href="https://twitter.com/lexoral/">Twitter</a></li>
       <li><a href="https://github.com/stevenwaterman/Lexoral/">GitHub</a></li>
-      <li><a href="https://www.twitch.tv/stewaterman">Twitch</a></li>
+      <li><a href="https://www.twitch.tv/lexoral">Twitch</a></li>
     </ul>
 
     <h3 class="contactHeader">Contact</h3>

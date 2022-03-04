@@ -177,7 +177,7 @@
             {label: "Slack", link: "https://join.slack.com/t/lexoral-users/shared_invite/zt-yk0j76n5-KcQwnmCJ7FKkLsj_ik05Pw", external: true},
             {label: "Twitter", link: "https://twitter.com/lexoral/", external: true},
             {label: "GitHub", link: "https://github.com/stevenwaterman/Lexoral/", external: true},
-            {label: "Twitch", link:"https://www.twitch.tv/stewaterman/", external: true}
+            {label: "Twitch", link:"https://www.twitch.tv/lexoral/", external: true}
           ]}
         />
       </li>

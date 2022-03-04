@@ -113,7 +113,7 @@
   </li>
 
   <li>
-    <a class="contactMethod" href="https://www.twitch.tv/stewaterman">
+    <a class="contactMethod" href="https://www.twitch.tv/lexoral">
       <Fa icon={faTwitch} />
       <p>Watch on Twitch</p>
       <p>Streaming daily</p>
