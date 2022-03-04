@@ -295,7 +295,7 @@ const darkMode: SnippetConfig = {
   }
 
 
-  @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: light) {
     .lightOverride {
       display: none;
     }
@@ -311,7 +311,7 @@ const darkMode: SnippetConfig = {
     }
   }
 
-  @media (prefers-color-scheme: light) {
+  @media (prefers-color-scheme: dark) {
     .darkOverride {
       display: none;
     }
