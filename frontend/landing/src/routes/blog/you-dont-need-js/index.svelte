@@ -13,6 +13,26 @@
   summary {
     text-align: center;
   }
+
+  .noAnimation {
+    display: none;
+  }
+
+  .animationWarning {
+    text-align: center;
+    font-weight: bold;
+    color: var(--red-0);
+  }
+
+  @media (prefers-reduced-motion) {
+    .animation {
+      display: none;
+    }
+
+    .noAnimation {
+      display: revert;
+    }
+  }
 </style>
 
 <BlogPost id="you-dont-need-js">
@@ -38,7 +58,16 @@
   </p>
 
   <figure>
-    <Animation/>
+    <div class="animation">
+      <Animation/>
+    </div>
+    <div class="noAnimation">
+      <p class="animationWarning">Your accessibility settings indicate you are sensitive to animations and motion on the page, so this example is hidden by default.</p>
+      <details class="forceAnimation">
+        <summary>Show anyway</summary>
+        <Animation/>
+      </details>
+    </div>
     <details>
       <summary>Show the code</summary>
       <Snippet config={snippets.animation}/>

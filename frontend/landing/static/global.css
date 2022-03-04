@@ -63,9 +63,9 @@ select {
    scroll-behavior: auto;
   }
   
-  *,
-  *::before,
-  *::after {
+  :not(.forceAnimation) *,
+  :not(.forceAnimation) *::before,
+  :not(.forceAnimation) *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -292,3 +292,7 @@ a:active {
   color: var(--yellow-2);
 }
  
+summary {
+  user-select: none;
+  cursor: pointer;
+}
