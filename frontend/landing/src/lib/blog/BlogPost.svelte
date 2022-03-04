@@ -182,6 +182,7 @@
           <h1>{post.title}</h1>
           <summary>{post.longDescription}</summary>
 
+          <slot name="updates"></slot>
           <hr/>
 
           <slot></slot>

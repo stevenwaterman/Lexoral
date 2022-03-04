@@ -148,7 +148,8 @@ const stickyPositioning: SnippetConfig = {
     margin: auto;
     padding: 1em;
     border: 0.2em solid black;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 
   p {
@@ -255,34 +256,84 @@ const darkMode: SnippetConfig = {
     position: absolute;
     top: 0.5em;
     right: 0.5em;
-    height: 2em;
+    height: 1.8em;
   }
 
   label {
     padding-right: 1.2em;
+    user-select: none;
   }
 
   .title {
     margin: 0;
   }
 
-  #exampleCheckbox:checked {
+
+  .darkOverride {
+    color: black;
+  }
+
+  #darkModeCheckbox:checked {
     color: whitesmoke;
   }
 
-  #exampleCheckbox:checked ~ label {
+  #darkModeCheckbox:checked ~ label {
     color: whitesmoke;
   }
 
-  #exampleCheckbox:checked ~ .body {
-    background-color: darkslategrey;
+
+  .lightOverride {
     color: whitesmoke;
+  }
+
+  #lightModeCheckbox:checked {
+    color: black;
+  }
+
+  #lightModeCheckbox:checked ~ label {
+    color: black;
+  }
+
+
+  @media (prefers-color-scheme: dark) {
+    .lightOverride {
+      display: none;
+    }
+
+    .body {
+      background-color: white;
+      color: black;
+    }
+    
+    #darkModeCheckbox:checked ~ .body {
+      background-color: darkslategrey;
+      color: whitesmoke;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    .darkOverride {
+      display: none;
+    }
+
+    .body {
+      background-color: darkslategrey;
+      color: whitesmoke;
+    }
+    
+    #lightModeCheckbox:checked ~ .body {
+      background-color: white;
+      color: black;
+    }
   }
 </style>
 
 <div class="container">
-  <input id="exampleCheckbox" type="checkbox">
-  <label for="exampleCheckbox">Dark Mode</label>
+  <input class="lightOverride" id="lightModeCheckbox" type="checkbox">
+  <label class="lightOverride" for="lightModeCheckbox">Light Mode</label>
+
+  <input class="darkOverride" id="darkModeCheckbox" type="checkbox">
+  <label class="darkOverride" for="darkModeCheckbox">Dark Mode</label>
 
   <div class="body">
     <h3 class="title">My Website</h3>

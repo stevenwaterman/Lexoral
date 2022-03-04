@@ -33,9 +33,33 @@
       display: revert;
     }
   }
+
+  .updates {
+    margin-top: 1em;
+  }
 </style>
 
 <BlogPost id="you-dont-need-js">
+  <details class="updates" slot="updates">
+    <summary>This post has been updated. Expand for more details.</summary>
+
+    <p>
+      This post was updated 2022-03-04 based on discussions on <a href="https://news.ycombinator.com/item?id=30512512">Hacker News</a>.
+    </p>
+
+    <ul>
+      <li>Warned about potential performance issues of complicated svg-based animations</li>
+      <li>If your accessibility settings indicate you prefer less motion on the page, the first example is now hidden by default with an explanation, rather than simply not animating</li>
+      <li>Sticky positioning example fixed to work on Safari - <code>overflow</code> must be set to a value other than <code>auto</code></li>
+      <li>Indicated that checkbox-based dark mode is not a replacement for the CSS media query, and should be used in tandem</li>
+      <li>Added more discussion around progressive enhancement, and reinforced that these examples are not production-ready</li>
+    </ul>
+
+    <p>
+      You can also see the full <a href="https://github.com/stevenwaterman/Lexoral/commits/stage/frontend/landing/src/routes/blog/you-dont-need-js/index.svelte">commit history</a> for this post.
+    </p>
+  </details>
+
   <p>
     Every day, I see people use Javascript to do things that are supported by default in good old HTML & CSS.
     That's usually a bad idea - it's much slower, can cause content to jump around the page after loading, <a href="https://shkspr.mobi/blog/2021/01/the-unreasonable-effectiveness-of-simple-html/">and breaks your site for people with crappy browsers</a>.
@@ -81,8 +105,8 @@
   </p>
 
   <p>
-    Creating an animation like that is certainly more complicated than a simple video.
-    If you can look past the complexity, there's plenty of reasons to prefer an animated SVG:
+    Creating an animation like that is certainly more complicated than a simple video, and very detailed animations can cause hard-to-debug performance issues.
+    However, there's plenty of reasons to prefer an animated SVG:
   </p>
 
   <ul>
@@ -238,7 +262,15 @@
 
   <p>
     You can have an entirely functional dark mode on your website without any Javascript, cookies, or separate URLs - all in the browser.
-    The secret ingredient is <code>:checked</code> - a CSS selector that only matches <strong>checked</strong> checkboxes.
+    There's 2 components to this.
+    First, you should be using the <code>prefers-color-scheme</code> <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme">media query</a>.
+    This allows you to automatically display a light-mode or dark-mode version of the site, based on the user's preferences.
+  </p>
+
+  <p>
+    However, the best way to make your website accessible is to give the user <em>choice</em>.
+    Maybe they like dark mode usually, but on your website they would prefer light mode.
+    We can make use of <code>:checked</code> - a CSS selector that only matches <strong>checked</strong> checkboxes.
     You might be able to see where this is going:
   </p>
 
@@ -261,15 +293,15 @@
   </p>
 
   <p>
-    The actual rule used is <code>#exampleCheckbox:checked ~ .body</code> - which applies some styles to the body class <em>only</em> when the checkbox is checked.
+    The actual rule used is <code>#checkboxId:checked ~ .body</code> - which applies some styles to the body class <em>only</em> when the checkbox is checked.
     Since the affected element must be a subsequent sibling, we can't put the dark mode checkbox inside the body element.
     Instead, we put it before the body element, then use <code>position: absolute</code> to position it inside.
   </p>
 
   <p>
     This isn't just a toy example either.
-    The browser will automatically remember the checkbox state, meaning you can save the user's preference for free - try ticking the box and refreshing this page!
-    Using checkboxes for styling is incredibly useful, and is much simpler to make accessible than a custom-built Javascript solution.
+    Most browsers will automatically remember the checkbox state, meaning you can save the user's preference for free - try ticking the box and refreshing this page!
+    It won't always work, so you should probably include a little bit of JavaScript to store the user's preference in local storage.
   </p>
 
   <h2>Conclusion</h2>
@@ -299,6 +331,20 @@
     For example, <code>position: sticky</code> and <code>:focus-within</code> aren't supported in any version of IE.
     Hopefully you can forget that Internet Explorer ever existed, in which case everything I've used here has close to 100% support in browsers!
   </p>
+
+  <p>
+    Despite that, it's still best to embrace <a href="https://en.wikipedia.org/wiki/Progressive_enhancement">progressive enhancement</a>.
+    You should assume that your users will be using the most barebones browser imaginable, and make your site work as well as possible.
+    Then, assume they're using a slightly better browser, and add things that make it work even better for those people.
+  </p>
+
+  <p>
+    It's like when we were talking about dark mode.
+    I recommended that you should include a small piece of JavaScript code to maintain the state of the user's override checkbox.
+    If they didn't enable JavaScript, the website would still work fine, but you've used that code to make it slightly better when JS is available.
+    A purely JS solution would be completely broken for anyone without JavaScript.
+    <a href="https://kryogenix.org/code/browser/everyonehasjs.html">And that's a lot of people</a>.
+  </p>
     
   <p>
     Anyway, I think I've shown how powerful of a tool CSS can be when you really stretch yourself.
@@ -307,6 +353,6 @@
   </p>
 
   <p>
-    Send me a message if you make something cool!
+    <a href="mailto:steven@lexoral.com">Send me a message</a> if you make something cool!
   </p>
 </BlogPost>

@@ -5,7 +5,8 @@
     margin: auto;
     padding: 1em;
     border: 0.2em solid black;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 
   p {
