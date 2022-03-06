@@ -111,7 +111,7 @@
 
   <ul>
     <li>Negligible bandwidth use</li>
-    <li>Better device compatability</li>
+    <li>Better device compatibility</li>
     <li>Perfect quality at any resolution</li>
     <li>Responsive & Scalable</li>
     <li>Can be checked in to VCS</li>
