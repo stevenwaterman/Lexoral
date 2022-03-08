@@ -92,7 +92,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm ci -g dry-dry
+    - run: npm i -g dry-dry
     - run: dry i
       working-directory: functions/utils
     - run: dry run build --dry-keep-package-json
@@ -139,7 +139,7 @@ jobs:
       with:
         name: utils
         path: functions/utils
-    - run: npm ci -g dry-dry
+    - run: npm i -g dry-dry
     - run: dry i
       working-directory: functions/${{ matrix.functionName }}
     - run: dry run build --dry-keep-package-json
