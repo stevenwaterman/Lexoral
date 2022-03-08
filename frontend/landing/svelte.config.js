@@ -27,7 +27,8 @@ const config = {
           path.startsWith("/dashboard")
         )) return;
         throw new Error(`${status} ${path}${referrer ? ` (${referenceType} from ${referrer})` : ''}`);
-      }
+      },
+      default: true
     }
 	}
 };
