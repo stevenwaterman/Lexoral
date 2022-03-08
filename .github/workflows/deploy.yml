@@ -140,7 +140,7 @@ jobs:
         name: utils
         path: functions/utils
     - run: npm i -g dry-dry
-    - run: dry ci
+    - run: dry i
       working-directory: functions/${{ matrix.functionName }}
     - run: dry run build --dry-keep-package-json
       working-directory: functions/${{ matrix.functionName }}
