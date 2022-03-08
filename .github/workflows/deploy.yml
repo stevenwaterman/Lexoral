@@ -93,7 +93,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm i -g dry-dry
-    - run: dry i
+    - run: dry ci
       working-directory: functions/utils
     - run: dry run build --dry-keep-package-json
       working-directory: functions/utils
@@ -140,7 +140,7 @@ jobs:
         name: utils
         path: functions/utils
     - run: npm i -g dry-dry
-    - run: dry i
+    - run: dry ci
       working-directory: functions/${{ matrix.functionName }}
     - run: dry run build --dry-keep-package-json
       working-directory: functions/${{ matrix.functionName }}
@@ -148,7 +148,7 @@ jobs:
       working-directory: functions
     - run: cp -r utils master/utils
       working-directory: functions
-    - run: npm ci
+    - run: npm i
       working-directory: functions/master
     - uses: actions/upload-artifact@v2
       with:
