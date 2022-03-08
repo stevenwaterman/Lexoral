@@ -37,6 +37,5 @@ export async function writePatchToFirestore(lastCommonAncestor: number, lastDbAn
   }
 
   sendToast("Saving");
-  debugger;
   await batch.commit();
 }
