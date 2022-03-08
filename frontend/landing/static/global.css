@@ -63,9 +63,9 @@ select {
    scroll-behavior: auto;
   }
   
-  :not(.forceAnimation) *,
-  :not(.forceAnimation) *::before,
-  :not(.forceAnimation) *::after {
+  :not(.forceAnimation),
+  :not(.forceAnimation)::before,
+  :not(.forceAnimation)::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

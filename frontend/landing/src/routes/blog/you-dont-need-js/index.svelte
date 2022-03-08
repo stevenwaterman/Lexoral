@@ -87,9 +87,9 @@
     </div>
     <div class="noAnimation">
       <p class="animationWarning">Your accessibility settings indicate you are sensitive to animations and motion on the page, so this example is hidden by default.</p>
-      <details class="forceAnimation">
+      <details>
         <summary>Show anyway</summary>
-        <Animation/>
+        <Animation forceAnimation/>
       </details>
     </div>
     <details>

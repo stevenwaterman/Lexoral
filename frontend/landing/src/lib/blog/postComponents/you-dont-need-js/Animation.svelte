@@ -1,3 +1,7 @@
+<script lang="ts">
+  export let forceAnimation: boolean = false;
+</script>
+
 <style>
   svg {
     height: 20em;
@@ -67,11 +71,11 @@
 </style>
 
 <svg viewBox="0 0 100 100">
-  <path class="flight" d="M 0 100 C 35 92 49 76 50 50"/>
-  <path class="trail" d="M 50 50 C 41 23 26 23 1 41" style="stroke: yellowgreen"/>
-  <path class="trail" d="M 50 50 C 30 43 14 51 0 100" style="stroke: turquoise"/>
-  <path class="trail" d="M 50 50 C 84 46 96 63 100 85" style="stroke: goldenrod"/>
-  <path class="trail" d="M 50 50 C 71 31 95 43 100 63" style="stroke: mediumorchid"/>
-  <path class="trail" d="M 50 50 C 61 -6 76 3 73 100" style="stroke: firebrick"/>
-  <circle class="explosion" cx="50" cy="50" r="20"/>
+  <path class="flight" class:forceAnimation d="M 0 100 C 35 92 49 76 50 50"/>
+  <path class="trail" class:forceAnimation d="M 50 50 C 41 23 26 23 1 41" style="stroke: yellowgreen"/>
+  <path class="trail" class:forceAnimation d="M 50 50 C 30 43 14 51 0 100" style="stroke: turquoise"/>
+  <path class="trail" class:forceAnimation d="M 50 50 C 84 46 96 63 100 85" style="stroke: goldenrod"/>
+  <path class="trail" class:forceAnimation d="M 50 50 C 71 31 95 43 100 63" style="stroke: mediumorchid"/>
+  <path class="trail" class:forceAnimation d="M 50 50 C 61 -6 76 3 73 100" style="stroke: firebrick"/>
+  <circle class="explosion" class:forceAnimation cx="50" cy="50" r="20"/>
 </svg>
