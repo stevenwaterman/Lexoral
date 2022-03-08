@@ -14,7 +14,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i
+    - run: npm ci
       working-directory: frontend/landing
     - run: npm run build
       working-directory: frontend/landing
@@ -33,7 +33,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i
+    - run: npm ci
       working-directory: frontend/dashboard
     - run: npm run build-stage
       working-directory: frontend/dashboard
@@ -50,7 +50,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i
+    - run: npm ci
       working-directory: frontend/editor
 
     - run: npm run build-stage
@@ -75,7 +75,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i
+    - run: npm ci
       working-directory: workflows
     - run: npm run synth
       working-directory: workflows
@@ -92,7 +92,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i -g dry-dry
+    - run: npm ci -g dry-dry
     - run: dry i
       working-directory: functions/utils
     - run: dry run build --dry-keep-package-json
@@ -139,7 +139,7 @@ jobs:
       with:
         name: utils
         path: functions/utils
-    - run: npm i -g dry-dry
+    - run: npm ci -g dry-dry
     - run: dry i
       working-directory: functions/${{ matrix.functionName }}
     - run: dry run build --dry-keep-package-json
@@ -148,7 +148,7 @@ jobs:
       working-directory: functions
     - run: cp -r utils master/utils
       working-directory: functions
-    - run: npm i
+    - run: npm ci
       working-directory: functions/master
     - uses: actions/upload-artifact@v2
       with:
@@ -230,7 +230,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i
+    - run: npm ci
       working-directory: frontend/dashboard
     - run: npm run build-prod
       working-directory: frontend/dashboard
@@ -247,7 +247,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
-    - run: npm i
+    - run: npm ci
       working-directory: frontend/editor
 
     - run: npm run build-prod

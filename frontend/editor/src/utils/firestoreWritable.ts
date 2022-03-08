@@ -63,7 +63,7 @@ export class FirestoreWritable<T extends Record<string, any>> implements Readabl
     let timer: NodeJS.Timeout | undefined = undefined;
     this.stageStore.subscribe(stageState => {
       if (timer !== undefined) clearTimeout(timer);
-      if (stageState === {}) return;
+      if (Object.keys(stageState).length === 0) return;
       timer = setTimeout(() => this.push(stageState), this.debounceDelayMs);
     })
   }
@@ -78,6 +78,7 @@ export class FirestoreWritable<T extends Record<string, any>> implements Readabl
   async push(stageState?: Partial<T>): Promise<void> {
     if (!this.connected) throw new Error("Store has not been connected to firestore, cannot push");
     if (stageState === undefined) stageState = get_store_value(this.stageStore);
+    if (Object.keys(stageState).length === 0) return;
 
     await setDoc(
       this.documentSupplier(), 

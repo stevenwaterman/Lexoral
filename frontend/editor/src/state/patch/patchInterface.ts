@@ -116,6 +116,7 @@ function setCommitTimer() {
 }
 
 async function commit() {
+  console.log("Committing");
   const dbCursor = dbListener.getCursor();
 
   const lastCommonAncestor = dbCursor.current;

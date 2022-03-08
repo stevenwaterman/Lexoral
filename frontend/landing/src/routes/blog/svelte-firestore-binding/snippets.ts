@@ -216,7 +216,7 @@ const stage5: SnippetConfig = {
       let timer: NodeJS.Timeout | undefined = undefined;
       this.stageStore.subscribe(stageState => {
         if (timer !== undefined) clearTimeout(timer);
-        if (stageState === {}) return;
+        if (Object.keys(stageState).length === 0) return;
         timer = setTimeout(() => this.push(stageState), this.debounceDelayMs);
       })
     }
@@ -271,7 +271,7 @@ const stage6: SnippetConfig = {
       let timer: NodeJS.Timeout | undefined = undefined;
       this.stageStore.subscribe(stageState => {
         if (timer !== undefined) clearTimeout(timer);
-        if (stageState === {}) return;
+        if (Object.keys(stageState).length === 0) return;
         timer = setTimeout(() => this.push(stageState), this.debounceDelayMs);
       });
     }
@@ -340,7 +340,7 @@ const stage7: SnippetConfig = {
       let timer: NodeJS.Timeout | undefined = undefined;
       this.stageStore.subscribe(stageState => {
         if (timer !== undefined) clearTimeout(timer);
-        if (stageState === {}) return;
+        if (Object.keys(stageState).length === 0) return;
         timer = setTimeout(() => this.push(stageState), this.debounceDelayMs);
       });
     }
@@ -421,7 +421,7 @@ const stage8: SnippetConfig = {
       let timer: NodeJS.Timeout | undefined = undefined;
       this.stageStore.subscribe(stageState => {
         if (timer !== undefined) clearTimeout(timer);
-        if (stageState === {}) return;
+        if (Object.keys(stageState).length === 0) return;
         timer = setTimeout(() => this.push(stageState), this.debounceDelayMs);
       });
     }
