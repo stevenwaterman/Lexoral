@@ -82,6 +82,10 @@
   }
 </style>
 
+<svelte:head>
+  <link rel="alternate" type="application/rss+xml" href="https://lexoral.com/rss.xml" title="Lexoral Blog">
+</svelte:head>
+
 <Template title="Lexoral Blog">
   <div class="title">
     <h1>Our Blog <a class="rss" href="/rss.xml" title="RSS feed"><Fa icon={faRss}/></a></h1>
