@@ -34,13 +34,7 @@ import { toDateString } from "$lib/utils/date";
   .headerImage {
     width: 100%;
     height: 4em;
-
-    object-fit: cover;
     object-position: center;
-  }
-
-  .headerImage.contain {
-    object-fit: contain
   }
 
   a {
@@ -72,7 +66,7 @@ import { toDateString } from "$lib/utils/date";
   href={`/blog/${id}`}
   class="container"
 >
-  <img class="headerImage" src={`/assets/blog/${id}/header.png`} class:contain={post.containHeader} alt="Header"/>
+  <img class="headerImage" src={`/assets/blog/${id}/header.png`} style={`object-fit: ${post.header.fit}`} alt="Header"/>
   <h3>{post.title}</h3>
   <p>{toDateString(post.date)}</p>
   <p class="type">{post.type}</p>
