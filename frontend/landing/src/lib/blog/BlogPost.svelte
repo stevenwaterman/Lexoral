@@ -1,6 +1,7 @@
 <script lang="ts">
   import Template from "$lib/template/Template.svelte";
   import TextContainer from "$lib/template/TextContainer.svelte";
+  import { toDateString } from "$lib/utils/date";
   import Advert from "./Advert.svelte";
   import AuthorColumn from "./AuthorColumn.svelte";
   import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "./blogData";
@@ -11,7 +12,7 @@
   $: post = blogPosts[id];
 
   let dateString: string;
-  $: dateString = post.date.toLocaleDateString();
+  $: dateString = toDateString(post.date);
 
   let authorDetails: AuthorDetails;
   $: authorDetails = authors[post.author];

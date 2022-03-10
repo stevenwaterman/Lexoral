@@ -1,4 +1,6 @@
 <script lang="ts">
+import { toDateString } from "$lib/utils/date";
+
   import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "../blogData";
 
   export let id: BlogId;
@@ -126,7 +128,7 @@
     <img class="headerImage" src={`/assets/blog/${id}/header.png`} alt="Header"/>
     <div class="padded">
       <div class="meta">
-        <p>{post.date.toLocaleDateString()}</p>
+        <p>{toDateString(post.date)}</p>
         <p>{authorDetails.longName}</p>
       </div>
   
