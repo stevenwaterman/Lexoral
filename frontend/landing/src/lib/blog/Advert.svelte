@@ -118,7 +118,7 @@
 
     <div class="textCol2">
       <p class="heading">After the trial?</p>
-      <p>Our pricing is simple:<br>£6 per hour of transciption</p>
+      <p>Our pricing is simple:<br>£6 per hour of transcription</p>
       <p>Only pay for what you use</p>
     </div>
     <LinkButton link="/#pricing">Pricing</LinkButton>
