@@ -8,8 +8,12 @@
   import { patchInterface } from "../state/patch/patchInterface";
   import OptionsModal from "../options/OptionsModal.svelte";
 
-  function save() {
+  function saveSrt() {
     exportTranscript("srt");
+  }
+
+  function saveTxt() {
+    exportTranscript("txt");
   }
 
   function undo() {
@@ -94,8 +98,12 @@
   </a>
 
   <div class="buttons right">
-    <button on:click={save}>
-      <Fa icon={faDownload}/>
+    <button on:click={saveSrt}>
+      <Fa icon={faDownload}/> .srt
+    </button>
+
+    <button on:click={saveTxt}>
+      <Fa icon={faDownload}/> .txt
     </button>
 
     <button on:click={settings}>
