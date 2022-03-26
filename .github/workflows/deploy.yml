@@ -6,6 +6,20 @@ on:
       - stage
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: prod
+        filters: |
+          backend:
+            - 'functions/**'
+            - 'terraform/**'
+            - 'workflows/**'
+
   build-static-frontend:
     runs-on: ubuntu-latest
     
@@ -68,6 +82,8 @@ jobs:
         path: frontend/public/demo
 
   synth-workflows:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -85,6 +101,8 @@ jobs:
         path: workflows/synth
 
   build-utils:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -106,7 +124,8 @@ jobs:
           functions/utils/package-lock.json
 
   build-functions:
-    needs: [build-utils]
+    needs: [build-utils, changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -163,15 +182,8 @@ jobs:
           functions/master/index.js
           functions/master/package.json
 
-  deployment-gate-stage:
+  push-git-prod:
     needs: [build-static-frontend, build-dashboard-stage, build-editor-stage, build-functions, synth-workflows]
-    runs-on: ubuntu-latest
-
-    steps:
-    - run: echo "Everything built successfully"
-
-  deploy-frontend-stage:
-    needs: [deployment-gate-stage]
     runs-on: ubuntu-latest
 
     steps:
@@ -179,139 +191,9 @@ jobs:
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout --orphan stage-deployed-frontend
-        git reset --hard
-    - uses: actions/download-artifact@v2
-      with:
-        name: public
-        path: .
-    - uses: actions/download-artifact@v2
-      with:
-        name: editor-stage
-        path: editor
-    - uses: actions/download-artifact@v2
-      with:
-        name: demo-stage
-        path: demo
-    - uses: actions/download-artifact@v2
-      with:
-        name: dashboard-stage
-        path: dashboard
-    - run: |
-        git add .
-        git commit -m "Update hosted version"
+        git merge prod stage
     - uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         branch: stage-deployed-frontend
-
-  deploy-backend-stage:
-    needs: [deployment-gate-stage]
-    runs-on: ubuntu-latest
-    environment: stage
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v2
-      with:
-        path: terraform/functions
-    - uses: hashicorp/setup-terraform@v1
-    - run: terraform init && terraform apply -auto-approve
-      working-directory: terraform/stage
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-  build-dashboard-prod:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - run: npm ci
-      working-directory: frontend/dashboard
-    - run: npm run build-prod
-      working-directory: frontend/dashboard
-    - uses: actions/upload-artifact@v2
-      with:
-        name: dashboard-prod
-        path: frontend/public/dashboard
-
-  build-editor-prod:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - run: npm ci
-      working-directory: frontend/editor
-
-    - run: npm run build-prod
-      working-directory: frontend/editor
-    - uses: actions/upload-artifact@v2
-      with:
-        name: editor-prod
-        path: frontend/public/editor
-
-    - run: npm run build-prod-demo
-      working-directory: frontend/editor
-    - uses: actions/upload-artifact@v2
-      with:
-        name: demo-prod
-        path: frontend/public/demo
-
-  deploy-backend-prod:
-    needs: [build-dashboard-prod, build-editor-prod, deploy-frontend-stage, deploy-backend-stage]
-    runs-on: ubuntu-latest
-    environment: prod
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v2
-      with:
-        path: terraform/functions
-    - uses: hashicorp/setup-terraform@v1
-    - run: terraform init && terraform apply -auto-approve
-      working-directory: terraform/prod
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-  deploy-frontend-prod:
-    needs: [deploy-backend-prod]
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git checkout --orphan prod-deployed-frontend
-        git reset --hard
-    - uses: actions/download-artifact@v2
-      with:
-        name: public
-        path: .
-    - uses: actions/download-artifact@v2
-      with:
-        name: editor-prod
-        path: editor
-    - uses: actions/download-artifact@v2
-      with:
-        name: demo-prod
-        path: demo
-    - uses: actions/download-artifact@v2
-      with:
-        name: dashboard-prod
-        path: dashboard
-    - run: |
-        git add .
-        git commit -m "Update hosted version"
-    - uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
-        branch: prod-deployed-frontend
