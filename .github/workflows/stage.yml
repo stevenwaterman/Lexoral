@@ -239,7 +239,7 @@ jobs:
     if: ${{ !failure() }}
     needs: [deploy-frontend-stage, deploy-backend-stage]
     runs-on: ubuntu-latest
-    environment: prod
+    environment: approval
 
     steps:
     - uses: actions/checkout@v2
@@ -253,6 +253,6 @@ jobs:
         git commit --no-edit
     - uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.STEVEN_PAT }}
         force: true
         branch: prod
