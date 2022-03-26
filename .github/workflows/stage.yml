@@ -182,9 +182,26 @@ jobs:
           functions/master/index.js
           functions/master/package.json
 
+  deploy-backend-stage:
+    needs: [build-functions, synth-workflows, check-backend-changes]
+    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
+    runs-on: ubuntu-latest
+    environment: stage
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        path: terraform/functions
+    - uses: hashicorp/setup-terraform@v1
+    - run: terraform init && terraform apply -auto-approve
+      working-directory: terraform/stage
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
   push-git-prod:
     if: ${{ !failure() }}
-    needs: [build-static-frontend, build-dashboard-stage, build-editor-stage, build-functions, synth-workflows]
+    needs: [build-static-frontend, build-dashboard-stage, build-editor-stage, deploy-backend-stage]
     runs-on: ubuntu-latest
 
     steps:
