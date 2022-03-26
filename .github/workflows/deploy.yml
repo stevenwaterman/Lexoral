@@ -194,7 +194,8 @@ jobs:
         git config --local user.name "GitHub Action"
         git fetch --all
         git checkout prod
-        git merge --squash stage 
+        git pull
+        git merge --squash stage
         git commit --no-edit
     - uses: ad-m/github-push-action@master
       with:
