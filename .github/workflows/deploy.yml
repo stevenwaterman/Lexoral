@@ -192,7 +192,9 @@ jobs:
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git merge prod stage
+        git checkout prod
+        git merge --squash stage
+        git commit --no-edit
     - uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
