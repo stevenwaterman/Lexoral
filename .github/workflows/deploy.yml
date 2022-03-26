@@ -192,7 +192,7 @@ jobs:
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git fetch --depth=1
+        git fetch --all
         git checkout prod
         git merge --squash stage 
         git commit --no-edit
