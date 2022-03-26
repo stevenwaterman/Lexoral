@@ -189,12 +189,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+        ref: "prod"
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git fetch --all
-        git checkout prod
-        git pull
         git merge --squash stage
         git commit --no-edit
     - uses: ad-m/github-push-action@master
