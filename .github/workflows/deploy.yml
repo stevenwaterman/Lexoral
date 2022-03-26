@@ -194,7 +194,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git fetch --depth=1
         git checkout prod
-        git merge --squash --allow-unrelated-histories -s ours stage 
+        git merge --squash stage 
         git commit --no-edit
     - uses: ad-m/github-push-action@master
       with:
