@@ -6,7 +6,7 @@ on:
       - stage
 
 jobs:
-  changes:
+  check-backend-changes:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -82,8 +82,8 @@ jobs:
         path: frontend/public/demo
 
   synth-workflows:
-    needs: [changes]
-    if: ${{ needs.changes.outputs.backend == 'true' }}
+    needs: [check-backend-changes]
+    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -101,8 +101,8 @@ jobs:
         path: workflows/synth
 
   build-utils:
-    needs: [changes]
-    if: ${{ needs.changes.outputs.backend == 'true' }}
+    needs: [check-backend-changes]
+    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -124,8 +124,8 @@ jobs:
           functions/utils/package-lock.json
 
   build-functions:
-    needs: [build-utils, changes]
-    if: ${{ needs.changes.outputs.backend == 'true' }}
+    needs: [build-utils, check-backend-changes]
+    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -183,6 +183,7 @@ jobs:
           functions/master/package.json
 
   push-git-prod:
+    if: ${{ !failure() }}
     needs: [build-static-frontend, build-dashboard-stage, build-editor-stage, build-functions, synth-workflows]
     runs-on: ubuntu-latest
 
