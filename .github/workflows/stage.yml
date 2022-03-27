@@ -250,8 +250,7 @@ jobs:
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git merge --squash origin/stage
-        git commit --no-edit
+        git merge origin/stage
     - uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.STEVEN_PAT }}
