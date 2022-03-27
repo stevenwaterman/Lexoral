@@ -6,7 +6,7 @@ on:
       - stage
 
 jobs:
-  check-backend-changes:
+  changes:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -19,8 +19,15 @@ jobs:
             - 'functions/**'
             - 'terraform/**'
             - 'workflows/**'
+          frontend:
+            - 'frontend/**'
+
+
+
 
   build-static-frontend:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     
     steps:
@@ -40,6 +47,8 @@ jobs:
         path: frontend/public
 
   build-dashboard-stage:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     
     steps:
@@ -57,6 +66,8 @@ jobs:
         path: frontend/public/dashboard
 
   build-editor-stage:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     
     steps:
@@ -81,9 +92,49 @@ jobs:
         name: demo-stage
         path: frontend/public/demo
 
+  deploy-frontend-stage:
+    needs: [build-static-frontend, build-dashboard-stage, build-editor-stage]
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan stage-deployed-frontend
+        git reset --hard
+    - uses: actions/download-artifact@v2
+      with:
+        name: public
+        path: .
+    - uses: actions/download-artifact@v2
+      with:
+        name: editor-stage
+        path: editor
+    - uses: actions/download-artifact@v2
+      with:
+        name: demo-stage
+        path: demo
+    - uses: actions/download-artifact@v2
+      with:
+        name: dashboard-stage
+        path: dashboard
+    - run: |
+        git add .
+        git commit -m "Update hosted version"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: stage-deployed-frontend
+
+
+
+
   synth-workflows:
-    needs: [check-backend-changes]
-    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
+    needs: [changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -101,8 +152,8 @@ jobs:
         path: workflows/synth
 
   build-utils:
-    needs: [check-backend-changes]
-    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
+    needs: [changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -124,8 +175,8 @@ jobs:
           functions/utils/package-lock.json
 
   build-functions:
-    needs: [build-utils, check-backend-changes]
-    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
+    needs: [build-utils, changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -182,45 +233,9 @@ jobs:
           functions/master/index.js
           functions/master/package.json
 
-  deploy-frontend-stage:
-    needs: [build-static-frontend, build-dashboard-stage, build-editor-stage]
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git checkout --orphan stage-deployed-frontend
-        git reset --hard
-    - uses: actions/download-artifact@v2
-      with:
-        name: public
-        path: .
-    - uses: actions/download-artifact@v2
-      with:
-        name: editor-stage
-        path: editor
-    - uses: actions/download-artifact@v2
-      with:
-        name: demo-stage
-        path: demo
-    - uses: actions/download-artifact@v2
-      with:
-        name: dashboard-stage
-        path: dashboard
-    - run: |
-        git add .
-        git commit -m "Update hosted version"
-    - uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
-        branch: stage-deployed-frontend
-
   deploy-backend-stage:
-    needs: [build-functions, synth-workflows, check-backend-changes]
-    if: ${{ needs.check-backend-changes.outputs.backend == 'true' }}
+    needs: [build-functions, synth-workflows, changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     environment: stage
 
@@ -234,6 +249,9 @@ jobs:
       working-directory: terraform/stage
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+
+
 
   push-git-prod:
     if: ${{ !failure() }}
