@@ -6,7 +6,28 @@ on:
       - prod
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: prod
+        filters: |
+          backend:
+            - 'functions/**'
+            - 'terraform/**'
+            - 'workflows/**'
+          frontend:
+            - 'frontend/**'
+
+
+
+
   build-static-frontend:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     
     steps:
@@ -25,7 +46,95 @@ jobs:
         name: public
         path: frontend/public
 
+  build-dashboard:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm ci
+      working-directory: frontend/dashboard
+    - run: npm run build-prod
+      working-directory: frontend/dashboard
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dashboard
+        path: frontend/public/dashboard
+
+  build-editor:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm ci
+      working-directory: frontend/editor
+
+    - run: npm run build-prod
+      working-directory: frontend/editor
+    - uses: actions/upload-artifact@v2
+      with:
+        name: editor
+        path: frontend/public/editor
+
+    - run: npm run build-prod-demo
+      working-directory: frontend/editor
+    - uses: actions/upload-artifact@v2
+      with:
+        name: demo
+        path: frontend/public/demo
+
+  deploy-frontend:
+    needs: [changes, build-static-frontend, build-dashboard, build-editor, deploy-backend]
+    if: ${{ !failure() && needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan prod-deployed-frontend
+        git reset --hard
+    - uses: actions/download-artifact@v2
+      with:
+        name: public
+        path: .
+    - uses: actions/download-artifact@v2
+      with:
+        name: editor
+        path: editor
+    - uses: actions/download-artifact@v2
+      with:
+        name: demo
+        path: demo
+    - uses: actions/download-artifact@v2
+      with:
+        name: dashboard
+        path: dashboard
+    - run: |
+        git add .
+        git commit -m "Update hosted version"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: prod-deployed-frontend
+
+
+
+
   synth-workflows:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -43,6 +152,8 @@ jobs:
         path: workflows/synth
 
   build-utils:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -64,7 +175,8 @@ jobs:
           functions/utils/package-lock.json
           
   build-functions:
-    needs: [build-utils]
+    needs: [changes, build-utils]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -121,50 +233,9 @@ jobs:
           functions/master/index.js
           functions/master/package.json
 
-  build-dashboard-prod:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - run: npm ci
-      working-directory: frontend/dashboard
-    - run: npm run build-prod
-      working-directory: frontend/dashboard
-    - uses: actions/upload-artifact@v2
-      with:
-        name: dashboard-prod
-        path: frontend/public/dashboard
-
-  build-editor-prod:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - run: npm ci
-      working-directory: frontend/editor
-
-    - run: npm run build-prod
-      working-directory: frontend/editor
-    - uses: actions/upload-artifact@v2
-      with:
-        name: editor-prod
-        path: frontend/public/editor
-
-    - run: npm run build-prod-demo
-      working-directory: frontend/editor
-    - uses: actions/upload-artifact@v2
-      with:
-        name: demo-prod
-        path: frontend/public/demo
-
-  deploy-backend-prod:
-    needs: [build-functions, synth-workflows]
+  deploy-backend:
+    needs: [changes, build-functions, synth-workflows]
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     environment: prod
 
@@ -178,39 +249,3 @@ jobs:
       working-directory: terraform/prod
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-  deploy-frontend-prod:
-    needs: [build-static-frontend, build-dashboard-prod, build-editor-prod, deploy-backend-prod]
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git checkout --orphan prod-deployed-frontend
-        git reset --hard
-    - uses: actions/download-artifact@v2
-      with:
-        name: public
-        path: .
-    - uses: actions/download-artifact@v2
-      with:
-        name: editor-prod
-        path: editor
-    - uses: actions/download-artifact@v2
-      with:
-        name: demo-prod
-        path: demo
-    - uses: actions/download-artifact@v2
-      with:
-        name: dashboard-prod
-        path: dashboard
-    - run: |
-        git add .
-        git commit -m "Update hosted version"
-    - uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
-        branch: prod-deployed-frontend

@@ -46,7 +46,7 @@ jobs:
         name: public
         path: frontend/public
 
-  build-dashboard-stage:
+  build-dashboard:
     needs: [changes]
     if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
@@ -62,10 +62,10 @@ jobs:
       working-directory: frontend/dashboard
     - uses: actions/upload-artifact@v2
       with:
-        name: dashboard-stage
+        name: dashboard
         path: frontend/public/dashboard
 
-  build-editor-stage:
+  build-editor:
     needs: [changes]
     if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
@@ -82,18 +82,18 @@ jobs:
       working-directory: frontend/editor
     - uses: actions/upload-artifact@v2
       with:
-        name: editor-stage
+        name: editor
         path: frontend/public/editor
 
     - run: npm run build-stage-demo
       working-directory: frontend/editor
     - uses: actions/upload-artifact@v2
       with:
-        name: demo-stage
+        name: demo
         path: frontend/public/demo
 
-  deploy-frontend-stage:
-    needs: [build-static-frontend, build-dashboard-stage, build-editor-stage]
+  deploy-frontend:
+    needs: [changes, build-static-frontend, build-dashboard, build-editor]
     if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
 
@@ -110,15 +110,15 @@ jobs:
         path: .
     - uses: actions/download-artifact@v2
       with:
-        name: editor-stage
+        name: editor
         path: editor
     - uses: actions/download-artifact@v2
       with:
-        name: demo-stage
+        name: demo
         path: demo
     - uses: actions/download-artifact@v2
       with:
-        name: dashboard-stage
+        name: dashboard
         path: dashboard
     - run: |
         git add .
@@ -175,7 +175,7 @@ jobs:
           functions/utils/package-lock.json
 
   build-functions:
-    needs: [build-utils, changes]
+    needs: [changes, build-utils]
     if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
 
@@ -233,8 +233,8 @@ jobs:
           functions/master/index.js
           functions/master/package.json
 
-  deploy-backend-stage:
-    needs: [build-functions, synth-workflows, changes]
+  deploy-backend:
+    needs: [changes, build-functions, synth-workflows]
     if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     environment: stage
@@ -255,7 +255,7 @@ jobs:
 
   push-git-prod:
     if: ${{ !failure() }}
-    needs: [deploy-frontend-stage, deploy-backend-stage]
+    needs: [changes, deploy-frontend, deploy-backend]
     runs-on: ubuntu-latest
     environment: approval
 
