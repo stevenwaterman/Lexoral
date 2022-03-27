@@ -23,7 +23,7 @@ export const authors = {
 			email: "steven@lexoral.com",
 			github: "StevenWaterman",
 			twitter: "SteWaterman",
-			twitch: "SteWaterman",
+			twitch: "Lexoral",
 			linkedin: "steven-waterman",
 			website: "www.stevenwaterman.uk"
 		}
