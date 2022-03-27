@@ -1,0 +1,20 @@
+{
+  "name": "lexoral-smoke-test",
+  "version": "1.0.0",
+  "author": "Steven Waterman",
+  "license": "GPL-3.0-only",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "host": "serve -n -l 5000 public",
+    "run": "cypress run",
+    "open": "cypress open",
+    "test": "start-server-and-test host http://localhost:5000 run",
+    "test-open": "start-server-and-test host http://localhost:5000 open"
+  },
+  "devDependencies": {
+    "cypress": "^9.5.2",
+    "serve": "^13.0.2",
+    "start-server-and-test": "^1.14.0"
+  }
+}
