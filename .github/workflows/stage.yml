@@ -271,8 +271,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm i && npm test
+      - uses: cypress-io/github-action@v2
         working-directory: frontend/smoketest
+        with:
+          start: serve -n -l 5000 public
 
 
 
