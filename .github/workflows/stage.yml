@@ -256,9 +256,30 @@ jobs:
 
 
 
+  test:
+    if: ${{ !failure() && (needs.changes.outputs.backend == 'true' || needs.changes.outputs.frontend == 'true') }}
+    needs: [changes, deploy-frontend, deploy-backend]
+    runs-on: ubuntu-latest
+    environment: stage
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          ref: stage-deployed-frontend
+          path: frontend/smoketest/public
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm i && npm test
+        working-directory: frontend/smoketest
+
+
+
+
   push-git-prod:
     if: ${{ !failure() }}
-    needs: [changes, deploy-frontend, deploy-backend]
+    needs: [test]
     runs-on: ubuntu-latest
     environment: approval
 
