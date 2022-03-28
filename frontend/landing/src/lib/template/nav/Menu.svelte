@@ -195,7 +195,7 @@
       </li>
       
       <li class="signIn">
-        <LinkButton link="/dashboard" external>Sign in</LinkButton>
+        <LinkButton id="signin" link="/dashboard" external>Sign in</LinkButton>
       </li>
     </ul>
   </div>
