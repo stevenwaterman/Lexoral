@@ -268,14 +268,11 @@ jobs:
         with:
           ref: stage-deployed-frontend
           path: frontend/smoketest/public
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: npm i -g serve
       - uses: cypress-io/github-action@v2
         with:
-          start: serve -n -l 5000 public
+          start: npm start
           working-directory: frontend/smoketest
+          env: TEST_USER_PASSWORD=${{ secrets.TEST_USER_PASSWORD }}
 
 
 
