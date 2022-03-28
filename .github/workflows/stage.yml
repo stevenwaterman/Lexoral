@@ -272,9 +272,9 @@ jobs:
         with:
           node-version: '14'
       - uses: cypress-io/github-action@v2
-        working-directory: frontend/smoketest
         with:
           start: serve -n -l 5000 public
+          working-directory: frontend/smoketest
 
 
 
