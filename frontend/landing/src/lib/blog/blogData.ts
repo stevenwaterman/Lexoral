@@ -48,7 +48,8 @@ export type BlogPost = {
   };
 };
 
-export const blogPosts = {
+const assertBlogPosts = <T extends Record<string, BlogPost>>(posts: T) => posts;
+export const blogPosts = assertBlogPosts({
 	"open-source-punish": {
 		type: "org",
 		author: "SteWaterman",
@@ -93,9 +94,18 @@ export const blogPosts = {
     header: {
       position: "center"
     }
-	}
-} as const;
-blogPosts as Record<string, BlogPost>;
+	},
+  "speaking-with-confidence": {
+    type: "how-to",
+    author: "SteWaterman",
+    title: "You can learn to speak with confidence",
+    shortDescription: "TODO",
+    longDescription: "TODO",
+    date: new Date("2022-03-28T12:00:00Z"),
+    featured: true,
+    published: true
+  }
+} as const);
 
 export type BlogId = keyof typeof blogPosts;
 
