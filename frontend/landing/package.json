@@ -4,7 +4,7 @@
 	"author": "Steven Waterman",
 	"license": "GPL-3.0-only",
 	"scripts": {
-		"dev": "svelte-kit dev -p 5000",
+		"dev": "svelte-kit dev -p 5000 --host",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
