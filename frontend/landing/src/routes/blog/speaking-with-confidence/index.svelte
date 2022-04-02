@@ -2,241 +2,280 @@
 	import BlogPost from "$lib/blog/BlogPost.svelte";
 </script>
 
+<!-- TODO Header image -->
+
 <BlogPost id="speaking-with-confidence">
   <p>
-    Many of us dread public speaking, whether that means giving a presentation, recording a video, or attending an interview.
-    It's incredibly stressful to try and put yourself out there, speaking in front of a group, especially in high-stakes situations.
+    If speaking confidently doesn't come naturally to you, you're not alone.
+    When someone stands up and captivates an audience, it's easy to sit there and wonder what makes them different.
+    What makes them so confident, standing there like it's the most natural thing in the world?
+    Why can't I feel as calm and in-control as they do?
   </p>
 
   <p>
-    I'm the same, or at least I used to be.
-    I seem confident.
-    I live-code on stream 5 days a week, I give tech talks, I was even a software consultant advising senior management on technical decisions.
-  </p>
-
-  <p>
-    You might not think it, but <strong>I'm a shy anxious introvert</strong>.
-    Over time, I've learned to be a confident speaker.
-    Since a lot of you won't read this whole post, I'll just put my best tip right here in the intro:
+    I'll let you in on a little secret:
+    I am that person, but I <em>don't</em> feel calm and in-control.
+    I livestream myself coding 5 days a week, I give tech talks, and I've spent a career explaining to senior managers why they're completely wrong.
+    Despite that, I'm actually a shy anxious introvert.
   </p>
 
   <p>
     <strong>Speaking Confidently is an action, not a feeling</strong>.
-    A confident speaker is someone who portrays confidence when speaking, not someone who <em>feels</em> confident doing it.
+    A confident speaker is someone who <em>portrays</em> confidence when speaking, not someone who <em>feels</em> confident doing it.
+    That means you <em>don't</em> need to try and change how you feel, just how you <em>act</em>.
+    Thankfully, out of the two, changing how you act is <em>much</em> easier!
   </p>
 
-  <p>
-    Think of a confident speaker - someone you idolise and want to be like.
-    You're probably thinking of someone that speaks clearly, takes control of a room, and looks like they have fun doing it.
-    You don't think of someone that quitely mumbles but feels really confident doing it.
-  </p>
+  <!-- TODO Anxious person piloting a mech / pretending to be a confident person / putting on a mask -->
 
   <p>
-    I don't always feel confident speaking, though it is getting better over time.
-    Despite that, I <em>am</em> a confident speaker.
-    I can project an image of confidence, and get people on my side when speaking.
-    This post is full of tips to help you do that too - no matter how you really feel on the inside.
-  </p>
-
-  <p>
-    I need to preface my advice by saying that it <em>isn't</em> going to be applicable to everyone.
-    I'm a young white guy in tech, basically a walking stereotype, and that makes it a lot easier to seem confident.
-    I'll try and say when a specific bit of advice needs to be seen in that context, but generally you'll need to bear in mind that this <em>my experience</em>.
+    Before we start, please consider whether <em>I'm</em> the right person to give you this advice.
+    This post is all about <em>my</em> experience, which might not be applicable to you.
+    I'm a young white guy in tech, which makes it <em>much</em> easier to seem confident.
     The less similar we are, the less useful my advice is.
   </p>
 
   <p>
-    Despite all that, I hope that by passing on some of the things that helped me, I can help you.
+    This post is split into two parts.
+    First, we'll discuss how you can <em>look</em> confident when speaking.
+    Then, we'll cover how you can calm your nerves and stop panicking quite so much.
+    I'd love to say that I can help you <em>feel</em> confident, but that's a lie, and it just comes with practice.
+    Instead, we'll cover a few coping methods to help you stay composed.
   </p>
 
+  <hr>
 
   <h2>Take an Improv Class</h2>
 
   <p>
-    If I had to give one actionable bit of advice, it would be to take an Improvised Comedy class.
-    At university, I joined an improv group, even going as far as performing on stage at the Edinburgh Fringe Festival.
-    Out of the things that helped me, this had by far the largest impact.
-    You certainly don't have to go as far as I did with it, but there is huge value in taking at least a couple of classes.
+    If you want to learn how to <em>act confident</em>, first you'll need to learn how to <em>act</em>.
+    At university, I joined an improvised comedy group, and even performed on stage at the Edinburgh Fringe Festival.
+    Out of everything I talk about in this post, I think that improv is the most important.
   </p>
 
   <p>
-    Improv forces you to analyse your body language, voice, and how you present yourself in-character.
-    To know if you're portraying a character well, you need to examine how you move and how it affects the way you're perceived.
-    Once you get in the habit of subconciously watching your body language and voice, it becomes something you can decide.
-    If you can play a confident character on stage, you can play a confident version of yourself when speaking.
+    It forces you to analyse your body language, voice, and how you present yourself.
+    It makes you think about the core aspects of a character, how they would behave in a given setting, and how you could copy their mannerisms.
+    Once you get in the habit of watching body language and voice, it becomes something you can <em>decide</em>.
   </p>
 
   <p>
-    It's not all about playing characters though - if it was, I'd just tell you to try acting.
-    A core aspect of improv is putting you in new situations with barely any time to react.
-    Just like when you get asked a question in an interview, you need to think on your feet and take everything in your stride, without breaking character.
-    If you get nervous in that kind of situation, improv will force you to get used to it very quickly.
+    <strong>If you can play a confident character on stage, you can do it everywhere.</strong>
+  </p>
+
+  <!-- TODO Someone literally playing a confident character in an everyday situation eg pretending to be a king at the supermarket -->
+
+  <p>
+    So why improv specifically, and not just theatre?
+    A core aspect of improv is putting you in new situations with little time to react.
+    You need to think on your feet and take everything in your stride, without breaking character.
+    If that makes you nervous, improv forces you to get comfortable with it.
   </p>
 
   <p>
-    Overall, I think there's an incredible number of benefits to trying improv - I wouldn't be where I am today without it.
-    It may seem a little bit weird that I talk so much about playing a character, and how that's useful when speaking in person.
-    The truth is, speaking with confidence doesn't actually require you to be confident.
+    While improv <em>did</em> help me learn how to act, it also gave me the tools to <em>understand</em> a character, which is much more valuable.
+    If I've convinced you to try improv, stop reading now and go join a class instead.
+    Rather than just using <em>my</em> mental model for confidence, it'll feel easier if you develop your own.
   </p>
 
 
-  <h2>Start Faking Confidence</h2>
+  <h2>Analysing Confidence</h2>
 
   <p>
-    We talked before about the fact that confident speaking is really only about how you act, not how you feel.
-    While the header for this section may seem a bit extreme, what we're really talking about is how you can <em>portray</em> confidence when speaking.
-    You don't need to <em>be</em> confident, you just need to <em>seem</em> confident.
-    <strong>Nobody can read your mind</strong>.
+    This section will talk about how <em>I</em> think of confidence, in a very abstract sense.
+    Most other posts about how to speak confidently will skip this bit, and just give you little tips like <em>'give a firm handshake'</em>.
+    That <em>feels</em> helpful, but you don't actually understand <em>why</em> that projects confidence.
+    When you have a <em>framework</em>, you can think of your own tips, and find things that work for you.
   </p>
 
   <p>
-    Why bother though?
-    Isn't it pointless to be perceived as confident if you're still nervous on the inside?
-    It's time to learn about the <a href="https://en.wikipedia.org/wiki/Halo_effect">Halo Effect</a>.
+    <strong>Confidence is about over-estimating your power</strong>
   </p>
-
-  <blockquote>
-    The tendency for positive impressions of a person, company, brand or product in one area to positively influence one's opinion or feelings in other areas
-  </blockquote>
-  
-  <ul>
-    <li>If you appear confident, they'll believe the things you say.</li>
-    <li>If you appear nervous, they'll start looking for issues.</li>
-  </ul>
-
-  <p>
-    So how do you <em>pretend</em> to be confident?
-    As always, I'd recommend taking an improv class and figuring it out for yourself.
-    That's a big ask, so let's have a look at my mental model for confidence, and a few of the tips that I learned along the way.
-    This might be confusing at first, but you already know it subconciously.
-  </p>
-
-
-  <h3>My Mental Model for Confidence</h3>
 
   <p>
     In any conversation, people have different amounts of <em>power</em> - the ability to control and influence the situation.
-    Confident people tend to assume they have more power than they actually do, while nervous people under-estimate.
-    <strong>Confidence is really about power dynamics.</strong>
-    When a confident person over-estimates their power, we tend to just accept it.
+    In a round-table discussion between equals, confident people tend to speak more than nervous people.
+    Speaking, and making your voice heard, is one way of influencing the situation.
+    In other words, despite the fact that everyone <em>should</em> be equal, the confident people ended up high-power.
   </p>
 
   <p>
-    That's not <em>always</em> true, and it depends on how fixed the power dynamic is.
-    If the power dynamics are explicit, it's almost impossible to try and change them.
-    At a round-table discussion, everyone knows that the chair is in charge and the other participants are equals.
-    If a nervous person feels like they can't speak, the chair will use their position at the top of the hierarchy to step in and make sure everyone contributes.
+    In <em>that</em> situation, the power dynamic is actually explicit, and the chair should step in to reinforce it.
+    They'll tell the confident people to stop talking for a minute, and ask the nervous people what <em>they</em> think.
+    As the most dominant person in the room, the chair has a lot of control over the situation, and uses it to declare that everyone else is valued equally.
+  </p>
+
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/unlimitedpower.png"
+      title="I promise you, this is not what it feels like to chair a meeting."
+      alt="A terrible mspaint doodle of Emperor Palpatine in a board room shouting 'unlimited power' and shooting lightning at the other attendees."
+    />
+  </figure>
+  
+
+  <p>
+    By forcing the confident people to stop and let others speak, the chair is establishing where everyone sits in the power dynamic.
+    Typically, confident people <em>do</em> over-estimate their power, but in most situations nobody will correct them.
+    Instead, everyone just accepts that the person <em>is</em> high power, and it stays that way.
   </p>
 
   <p>
-    In general, confident people are used to higher-power positions, while nervous people are used to lower-power positions.
-    <strong>To look confident, over-estimate how much power you have.</strong>
+    To look confident, you have to over-estimate your power, and take control of the situation.
+    Act like you <em>know</em> everyone cares about your ideas, and influence the environment to reinforce that.
   </p>
 
 
   <h3>A Warning</h3>
 
   <p>
-    Before we get into some specific tips, I need a disclaimer.
+    Power dynamics are a touchy and ever-changing subject, especially when you start to deal with prejudices like racism or sexism.
     Over-estimating your power makes you look confident, but going <em>too</em> far makes you look arrogant.
     You need a good understanding of how much power you <em>really</em> have, to know how much you can push it.
+    That depends on the situation, and varies significantly between cultures.
   </p>
 
   <p>
-    If you are a minority in the situation, or it feels like you don't fit in, you might be at a very low-power position.
-    Trying to follow these tips will probably be too much, and you risk being perceived as rude or entitled.
-    Instead, you'll look confident by just acting the same as everyone else - speaking clearly and answering any questions.
+    If you're a minority in the situation, or it feels like you don't fit in, you might be in a very low-power position by default.
+    In that case, trying to use the tips I'm about to tell you will be too much and you risk being perceived as rude or entitled.
+    If you're in a low-power position, you can look confident by just acting like equals.
   </p>
 
 
-  <h3>5 Tips for Acting Confident</h3>
+  <h2>5 Tips for Acting Confident</h2>
 
   <p>
-    I'm going to try and avoid talking about power dynamics explicitly in this section.
-    That's not the kind of thing people talk about directly, and it makes me sound like an alien.
-    It also makes the tips seem much more daunting than they really are - you're already nervous, and talking about power struggles will just make it worse!
+    I'm not going to talk about power dynamics directly in this section.
+    It's not the kind of thing people explicitly think about, so I'll sound like an alien.
+    It would also make the tips seem much more daunting than they really are - you're already nervous, and talking about power struggles will just make it worse!
   </p>
 
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/aliens.png"
+      title="Improv changed me..."
+      alt="A terrible mspaint doodle of a family of aliens watching a man give a work presentation, saying 'Look! Power grab!'"
+    />
+  </figure>
+  
+
   <p>
-    Instead, I'll just frame this as how a confident person might influence the situation they're in.
-    For each tip, think about how we are signalling a high-power position, and what it does to the dynamic.
+    Instead, I'll frame these tips as how a confident person might influence the situation they're in.
+    For each tip, you can still think for yourself about how we signal a high-power position, and what it does to the dynamic.
+    This isn't a complete list of <em>everything</em> you might want to do, just a few ideas to get you started.
   </p>
 
 
+  <h3>Own the Space</h3>
+
   <p>
-    <strong>Own the Space</strong>.
     Nervous people tend to make themselves physically smaller, crossing their arms and legs.
     The opposite is also true.
     A confident person is used to being the center of attention, and will naturally act like it:
   </p>
 
   <ul>
-    <li>At an interview, get up and start drawing on their whiteboard to explain your point better.</li>
-    <li>At a presentation, walk around the room and sit on a table somewhere.</li>
-    <li>In a meeting, speak up and ask a quiet person what they think.</li>
+    <li>At an interview, get up and start drawing on their whiteboard to explain your point.</li>
+    <li>At a presentation, walk around the room and sit on a table.</li>
+    <li>In a meeting, speak up and ask a quiet person what <em>they</em> think.</li>
   </ul>
 
 
+  <h3>Don't Dress Up</h3>
+
   <p>
-    <strong>Don't Dress Up</strong>.
     If there's an unspoken dress code, like wearing a suit to an interview, you could just decide not to.
     As a confident person, you know you'll be taken seriously either way.
     You don't want to be disrespectful, so just try and blend in with the other people there.
-    In many offices, that would mean jeans and a shirt, while a lot of tech comanies wouldn't bat an eye if you turned up in shorts and a Hawaiian shirt!
+    In many offices, that would mean jeans and a shirt, while a lot of tech companies wouldn't bat an eye if you turned up in shorts and a Hawaiian shirt!
   </p>
 
+
+  <h3>Start Asking the Questions</h3>
 
   <p>
-    <strong>Start Asking the Questions</strong>.
     When you get asked a question, it's very easy to feel like you're back at school taking a test.
-    As confident person, you see that as an opportunity to start a conversation, and open a dialog.
-    Ask a follow-up to their question.
-    You're equals, not teacher and student.
+    As a confident person, you see that as an opportunity to start a conversation, and open a dialog.
+    Turn the tables and ask a follow-up to their question.
   </p>
+
+  <!-- TODO Uno reverse card -->
 
   <p>
     If you're asked how a specific technique works, answer the question and then ask whether it's something they've used before, how their experience was, and whether it's something they'd do again.
     Ask a follow-up to <em>that</em> too!
-    They might not have expected the interview to be a two-way conversation, but you've turned the tables and decided for them.
-    They'll see you as more of an equal, and think more highly of you.
+    They might not have planned for the interview to be an open discussion, but you've decided for them.
+  </p>
+
+
+  <h3>Speak Clearly</h3>
+
+  <p>
+    Confident people tend to talk slowly and clearly, because <em>they</em> know that what <em>they</em> have to say is valuable.
+    Slow yourself down, and speak from the chest, projecting your voice so that <em>everyone</em> can hear.
   </p>
 
   <p>
-    <strong>Slow Down</strong>.
-    Confident people tend to talk slowly and clearly, because they know that everyone else wants to hear what they have to say.
-    That's really annoying, because we subconciously speed up when nervous!
-    Record yourself practicing and play it at double speed - if you can't understand it easily then you need to slow down.
-    That's too slow for the real thing, but you'll go faster due to nerves so it all balances out.
+    Frustratingly, we naturally speak quickly and quietly when we're nervous.
+    Try recording yourself and playing it back at double speed.
+    If you can't understand it, you need to slow down.
+    That feels incredibly slow, but you'll speed up in the real thing due to nerves, so it all balances out.
+  </p>
+
+
+  <h3>Treat Superiors as Friends</h3>
+
+  <p>
+    Sometimes, the other tips will be too much.
+    In a low-power position, where being the center of attention is too much to ask, confident people will expect to be seen as equals.
+    To do that, they'll just be friendly, ignoring the context of the meeting as much as possible.
   </p>
 
   <p>
-    <strong>Remember the Human</strong>.
-    The <em>people</em> you're talking to are <em>people</em>.
+    <strong>Remember the human.</strong>
+  </p>
+
+  <p>
+    Even if you're sat across from the CEO of a company, they still know how to have a normal conversation.
+    It's not like they go home and talk about eating leftovers by saying:
+  </p>
+
+  <blockquote>
+    Alright team, we need to give 110% tonight.
+    We've put plan A on the backburner, so we need move the goalposts and circle back on actioning that tupperware.
+    It's not best practice, but leftovers are our silver bullet today.
+    Let's generate additional impact by leveraging the low-hanging fruit...
+  </blockquote>
+
+  <!-- TODO Military war room meeting tupperware -->
+
+  <p>
     Treat them as equals, and go in with the mindset that you're there to have a chat with friends.
     They're probably just as fed up with the formalities as you are.
-    That's not always the case, but even if they're confused by how friendly you are, it just comes across as confidence.
+    That's not always the case, but even if they're confused by how friendly you are, it usually comes across as confidence.
   </p>
+
+
 
   <hr>
 
+
+
+  <h2>You Can't Fake Knowledge</h2>
+
   <p>
-    While other people can't read your mind, it's hard to fake confidence while having a panic attack.
-    The second half of this post discusses coping methods that help you feel calm.
-    They don't help directly, just make it easier to do the things that <em>do</em> help.
+    We've covered how you can pretend to be confident, but we need to talk about some of the ways you can feel calmer while doing it.
+    The tips in this section won't <em>directly</em> help you speak confidently, they'll just make it easier to do the things that <em>will</em> help.
   </p>
-  
-
-  <h2>Stop Faking Knowledge</h2>
 
   <p>
-    We've discussed the fact that others can see your actions, but not your thoughts.
-    Unfortunately, when it comes to factual knowledge, thoughts and actions are the same thing.
+    Nobody can read your mind, but when it comes to factual knowledge, thoughts and actions are the same thing.
     You can't tell someone a fact without knowing it - which means you can't fake knowledge.
-    Sure, you could <em>imply</em> that you know a fact without actually knowing it, but that falls apart as soon as they <a href="https://www.youtube.com/watch?v=ObisQoGN6Cc">ask you directly</a>.
+    Sure, you could <em>imply</em> that you know a fact without <em>actually</em> knowing it, but that falls apart as soon as they <a href="https://www.youtube.com/watch?v=ObisQoGN6Cc">ask you directly</a>.
   </p>
 
   <p>
-    If you're terrified about getting a question that you can't answer, stop and ask yourself what's going on.
+    If you're terrified about being asked a question you can't answer, stop yourself and try to find the root of the problem.
     How much preparation have you done?
     Are there specific areas you don't know well enough?
     Is anyone <em>actually</em> in a position to contradict you?
@@ -249,21 +288,21 @@
     The best way to feel calm before some public speaking is to be well-prepared.
     I'm not saying that you need a perfectly polished slide deck, with 50 pocket slides ready to go.
     In fact, many of my favourite presentations have been improvised with a whiteboard and pen.
-    It's about having a thorough understanding of the topic, meaning that you can go off on tangents and have productive discussions as a result of questions.
+    It's about having a thorough understanding of the topic, meaning that you can answer a question by going off on a tangent and starting a productive discussion.
   </p>
 
   <p>
-    <strong>If you are the expert</strong>, nobody is going to question you.
+    <strong>If you're the expert</strong>, nobody is going to question you.
     If you're there to teach people something, and you know way more about it than they do, then you have nothing to worry about with factual knowledge.
     Don't try and pretend you know more than you do, because nobody is trying to catch you out with trick questions.
     Instead, just share your experience, your knowledge, and your thoughts.
   </p>
 
   <p>
-    <strong>If you are the newbie</strong>, be honest about it.
+    <strong>If you're the newbie</strong>, be honest about it.
     When someone who is truly confident gets asked a question they don't know the answer to, they just admit it.
     At the start of this post, I confidently told you all about how I'm not a very confident person.
-    Counterintuitively, that probably made you think I was more confident, rather than less.
+    Counterintuitively, that probably made you think I was <em>more</em> confident, rather than less.
     If you attended a talk and asked someone a niche question, which response would you rather hear?
   </p>
 
@@ -288,7 +327,7 @@
   <p>
     <strong>If it's imposter syndrome</strong>, then it's not really about your knowledge.
     It's an incredibly common experience, worrying that everyone is going to learn that you're a fraud and not as good as you say.
-    The topic is far too large for me cover in this post, but I have one piece of advice that could help:
+    The topic is <em>far</em> too large for me cover in this post, but I have one piece of advice that could help:
   </p>
 
 
@@ -296,14 +335,19 @@
 
   <p>
     I mean this in the best way possible.
-    You can mess up spectacularly - stumble over your words, turn up late, take 5 toilet breaks - and nobody will remember except you.
-    If you think that you're significantly worse than everyone else at something, it's because you forget their failures and remember your own.
+    You can mess up spectacularly - stumble over your words, turn up late, take 5 toilet breaks - and <em>nobody</em> will remember except you.
+    If you think that you're significantly worse than everyone else, it's because you have forgetten <em>their</em> failures and remembered your own.
   </p>
 
   <p>
+    <strong>You are the main character in your life, but a side character in theirs.</strong>
+  </p>
+
+  <!-- TODO Entire crowd thinking they are the main character -->
+
+  <p>
     In the absolute worst case, it'll be a funny anecdote about an anonymous person, the details lost to time.
-    They had bigger things to worry about, like whether you liked them, what you could see in the background of their webcam, and how long it was until lunch time.
-    <strong>You are the main character in your own life, but an NPC in theirs.</strong>
+    They had bigger things to worry about, like whether <em>you</em> liked <em>them</em>, what you could see in the background of their webcam, and how long it was until lunch.
   </p>
 
 
@@ -326,45 +370,48 @@
   </ul>
 
   <p>
-    By that, I'm asking how long it will be until I don't care about the problem any more, even if the worst case scenario happens.
+    I'm asking how long it'll be until I don't care about it any more, even if the worst case scenario happens.
     The <em>vast majority</em> of the time, it's one of the first two - but no matter what the answer is, it's comforting.
+  </p>
+
+  <p>
     A 5-minute problem won't matter soon.
     Go have a snack and wait it out.
     A 5-year problem can't be solved in a day, so you need to take a breath, take some time out, and come back to it with a fresh mind.
   </p>
 
+  <!-- TODO Nuclear war happens: "I'll deal with this after my snack" -->
+
   <p>
     It forces you to stop panicking and put things into perspective.
-    If it's a serious problem, it gives you a chance to figure out how you should try and fix it.
+    If it's a serious problem, it gives you a chance to figure out how you could try and fix it.
     If it's not as serious, it just reminds you that every bad situation <em>will end</em>.
   </p>
 
-  <p>
-    So the next time you hear me muttering <code>5 hours</code> to myself, you know why.
-    I'm not in a great place, but I'm about to feel a lot better.
-  </p>
+
+
+  <hr>
+
+
 
   <h2>Conclusion</h2>
 
   <p>
-    Confidently speaking is something I learned, and it's something that you can learn too.
+    Confident Speaking is something I learned, and it's something that you can learn too.
     It takes practice, and it takes a huge amount of self-reflection, but it's possible.
-    I suppose the main take-away from this post is that confidently speaking is an action, not a feeling.
-    Sure, I do feel more confident when speaking than I used to, and that makes it easier to perform the action of 'speaking confidently', but it's not a requirement.
+    If you take away one thing from this post, remember that speaking confidently is an action, not a feeling.
   </p>
 
   <p>
-    I hope this post has helped you, and made it feel like learning to speak confidently is a goal that you could reasonably achieve.
+    I hope this post helped you, and made it feel like learning to speak confidently is something you could reasonably achieve.
     It wouldn't surprise me if the title of this post was more helpful than anything else.
-    A simple reminder that it's all a skill.
-    A learned behaviour, something that can be taught, and not just an innate talent that some of us are born with, and some of us aren't.
-    If it's something you want to be good at, then practice it.
-    You'll get a little better each time.
+    A simple reminder that it's a skill, something you can practice, and something you'll get better at each time you try.
   </p>
 
+  <!-- TODO Level up! Speech 100 -->
+
   <p>
-    Thank you very much for getting to the end of this post.
-    While it's not the kind of thing that I usually write about, I felt like there was a real opportunity to help people.
+    While this isn't the kind of thing I normally write, I felt like there was a real opportunity to help people.
     If it helped you, or if you just want to chat, please do get in touch!
   </p>
 </BlogPost>
