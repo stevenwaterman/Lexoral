@@ -292,7 +292,7 @@ a:active {
   color: var(--yellow-2);
 }
  
-summary {
+details summary {
   user-select: none;
   cursor: pointer;
 }
