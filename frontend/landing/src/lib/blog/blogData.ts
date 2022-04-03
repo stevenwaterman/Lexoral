@@ -103,7 +103,10 @@ export const blogPosts = assertBlogPosts({
     longDescription: "Do the words 'public speaking' strike fear into your heart? It doesn't come naturally to me either, but over time I've slowly improved. This post is all about the things that helped me, so you can learn too.",
     date: new Date("2022-03-30T12:00:00Z"),
     featured: true,
-    published: true
+    published: true,
+    header: {
+      position: "top"
+    }
   }
 } as const);
 
