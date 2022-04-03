@@ -199,7 +199,13 @@
     Turn the tables and ask a follow-up to their question.
   </p>
 
-  <!-- TODO Uno reverse card -->
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/unoreverse.png"
+      title="So tell me, what is *your* biggest weakness?"
+      alt="A terrible mspaint doodle of an interview candidate playing the 'reverse' card from Uno."
+    />
+  </figure>
 
   <p>
     If you're asked how a specific technique works, answer the question and then ask whether it's something they've used before, how their experience was, and whether it's something they'd do again.
@@ -343,7 +349,13 @@
     <strong>You are the main character in your life, but a side character in theirs.</strong>
   </p>
 
-  <!-- TODO Entire crowd thinking they are the main character -->
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/maincharacter.png"
+      title="Yeah, but THEY are all wrong, I KNOW it's me!"
+      alt="A terrible mspaint doodle of a bustling crowd all believing that they are the main character."
+    />
+  </figure>
 
   <p>
     In the absolute worst case, it'll be a funny anecdote about an anonymous person, the details lost to time.
@@ -408,7 +420,13 @@
     A simple reminder that it's a skill, something you can practice, and something you'll get better at each time you try.
   </p>
 
-  <!-- TODO Level up! Speech 100 -->
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/speech100.png"
+      title="Sadly, you'll never be done learning, and even if you were, there's no way of knowing!"
+      alt="A terrible mspaint doodle of a man levelling up in a game and reaching speech level 100."
+    />
+  </figure>
 
   <p>
     While this isn't the kind of thing I normally write, I felt like there was a real opportunity to help people.
