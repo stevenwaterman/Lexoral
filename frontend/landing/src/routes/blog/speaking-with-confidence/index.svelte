@@ -26,7 +26,6 @@
     Thankfully, out of the two, changing how you act is <em>much</em> easier!
   </p>
 
-  <!-- TODO Anxious person piloting a mech / pretending to be a confident person / putting on a mask -->
 
   <p>
     Before we start, please consider whether <em>I'm</em> the right person to give you this advice.
@@ -63,7 +62,13 @@
     <strong>If you can play a confident character on stage, you can do it everywhere.</strong>
   </p>
 
-  <!-- TODO Someone literally playing a confident character in an everyday situation eg pretending to be a king at the supermarket -->
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/meatfeast.png"
+      title="Meatball Marinara? What is that? Some kind of curse? I shall have you banished!"
+      alt="A terrible mspaint doodle of the king riding into subway on horseback and demanding a meat feast."
+    />
+  </figure>
 
   <p>
     So why improv specifically, and not just theatre?
@@ -107,12 +112,11 @@
 
   <figure>
     <img
-      src="/assets/blog/speaking-with-confidence/unlimitedpower.png"
+      src="/assets/blog/speaking-with-confidence/header.png"
       title="I promise you, this is not what it feels like to chair a meeting."
       alt="A terrible mspaint doodle of Emperor Palpatine in a board room shouting 'unlimited power' and shooting lightning at the other attendees."
     />
   </figure>
-  
 
   <p>
     By forcing the confident people to stop and let others speak, the chair is establishing where everyone sits in the power dynamic.
@@ -253,7 +257,13 @@
     Let's generate additional impact by leveraging the low-hanging fruit...
   </blockquote>
 
-  <!-- TODO Military war room meeting tupperware -->
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/warroom.png"
+      title="Whatever that green food is, I'm pretty sure it was banned by the Geneva Convention."
+      alt="A terrible mspaint doodle of a war room, with many military generals crowded around a table, with some leftovers being projected onto a screen behind them."
+    />
+  </figure>
 
   <p>
     Treat them as equals, and go in with the mindset that you're there to have a chat with friends.
@@ -392,7 +402,13 @@
     A 5-year problem can't be solved in a day, so you need to take a breath, take some time out, and come back to it with a fresh mind.
   </p>
 
-  <!-- TODO Nuclear war happens: "I'll deal with this after my snack" -->
+  <figure>
+    <img
+      src="/assets/blog/speaking-with-confidence/fine.png"
+      title="This is a 5 year problem. Time to enjoy my lemonade, like Steven said to do."
+      alt="A terrible mspaint doodle of a man in a burning house sitting down and drinking a glass of lemonade, looking unphased."
+    />
+  </figure>
 
   <p>
     It forces you to stop panicking and put things into perspective.
