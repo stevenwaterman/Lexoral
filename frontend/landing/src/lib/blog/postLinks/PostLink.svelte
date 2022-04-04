@@ -1,7 +1,8 @@
 <script lang="ts">
-import { toDateString } from "$lib/utils/date";
+  import { toDateString } from "$lib/utils/date";
 
-  import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "../blogData";
+  import type { AuthorDetails, BlogId, BlogPost } from "../blogData";
+  import { authors, blogPosts } from "../blogData";
 
   export let id: BlogId;
 
@@ -35,10 +36,12 @@ import { toDateString } from "$lib/utils/date";
     width: 100%;
     height: 4em;
     object-position: center;
+    object-fit: contain;
   }
 
   a {
     text-decoration: unset;
+    color: var(--text);
   }
 
   h3 {

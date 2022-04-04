@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { BlogId, BlogPost, blogPosts } from "$lib/blog/blogData";
+  import type { BlogId, BlogPost } from "$lib/blog/blogData";
+  import { blogPosts } from "$lib/blog/blogData";
   import PostLink from "$lib/blog/postLinks/PostLink.svelte";
   import FeaturedLink from "$lib/blog/postLinks/FeaturedLink.svelte";
   import Template from "$lib/template/Template.svelte";
@@ -100,11 +101,11 @@
     {/each}
   </ol>
 
-  <!-- <h2>All Posts</h2>
+  <h2>All Posts</h2>
 
   <ol class="recent">
     {#each posts as [id, _] (id)}
       <li><PostLink {id}/></li>
     {/each}
-  </ol> -->
+  </ol>
 </Template>
