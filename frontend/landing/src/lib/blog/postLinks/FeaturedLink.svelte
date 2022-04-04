@@ -1,7 +1,8 @@
 <script lang="ts">
-import { toDateString } from "$lib/utils/date";
+  import { toDateString } from "$lib/utils/date";
 
-  import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "../blogData";
+  import type { AuthorDetails, BlogId, BlogPost } from "../blogData";
+  import { authors, blogPosts } from "../blogData";
 
   export let id: BlogId;
 
