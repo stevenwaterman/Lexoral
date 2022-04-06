@@ -9,6 +9,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
 
     justify-items: center;
     gap: 3em;
@@ -97,6 +98,14 @@
   </li>
 
   <li>
+    <a class="contactMethod" href="https://www.twitch.tv/lexoral">
+      <Fa icon={faTwitch} />
+      <p>Watch on Twitch</p>
+      <p>Live Most Days</p>
+    </a>
+  </li>
+
+  <li>
     <a class="contactMethod" href="/blog">
       <Fa icon={faRssSquare} />
       <p>Read our Blog</p>
@@ -109,14 +118,6 @@
       <Fa icon={faSlack} />
       <p>Join our Slack</p>
       <p>Chat with other Users</p>
-    </a>
-  </li>
-
-  <li>
-    <a class="contactMethod" href="https://www.twitch.tv/lexoral">
-      <Fa icon={faTwitch} />
-      <p>Watch on Twitch</p>
-      <p>Streaming daily</p>
     </a>
   </li>
 

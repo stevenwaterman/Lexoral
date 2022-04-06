@@ -11,8 +11,8 @@
 <Template title="Lexoral">
     <Hero/>
     <Pricing/>
-    <HowItWorks/>
-    <UseCases/>
     <Community/>
+    <UseCases/>
+    <HowItWorks/>
     <FinalCta/>
 </Template>

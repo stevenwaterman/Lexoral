@@ -10,7 +10,7 @@
   .grid {
     display: grid;
     grid-template-columns: 10em 1fr auto;
-    gap: 4em;
+    column-gap: 4em;
 
     justify-items: center;
     align-items: center;
@@ -21,13 +21,13 @@
 
   @media (max-width: 1499px) {
     .grid {
-      gap: 2em;
+      column-gap: 2em;
     }
   }
 
   @media (max-width: 1199px) {
     .grid {
-      gap: 4em;
+      column-gap: 4em;
       grid-template-columns: 10em 1fr;
     }
   }

@@ -1,3 +1,6 @@
+<script>
+  import LinkButton from "$lib/components/LinkButton.svelte";
+</script>
 <style>
   .stevenMessage {
     max-width: 26em;
@@ -33,7 +36,7 @@
   }
 </style>
 
-<div class="stevenMessage">
+<!-- <div class="stevenMessage">
   <p class="messageSubhead">Hi, I'm Steven - I like cats, robot wars, and the sound of a calm river in the depths of a forest.</p>
 
   <p>
@@ -62,4 +65,34 @@
   <p class="quoteAttribution">
     Artie Waterman<br>PhD Student, Durham University
   </p>
+</div> -->
+
+<div class="stevenMessage">
+  <p class="messageSubhead">Hi, I'm Steven - I like cats, robot wars, and the sound of a calm river in the depths of a forest.</p>
+
+  <p>
+    I've spent my career building software to make people's lives easier at a whole range of big companies.
+    When I saw my partner struggling with transcribing their PhD research, I knew I had to build Lexoral.
+  </p>
+
+  <p>
+    I try to be <strong>100% transparent</strong> with the Lexoral community.
+    That's why it's open-source, and why I work live on Twitch.
+  </p>
+  
+  <p>
+    You're always allowed to get in touch, even if it's not about Lexoral.
+    Use any of the links on screen!
+  </p>
+  
+  <p>
+    If you want to chat face-to-face, book a slot in my <strong>Office Hours</strong> below.
+    They're open to anyone, and we'll spend half an hour on a call about Lexoral, your projects, or anything else.
+  </p> 
+  
+  <p>
+    Please don't be shy, I'm excited to chat with you ♥
+  </p>
+
+  <LinkButton newTab={true} external={true} link="https://calendly.com/lexoral/30min">Book a Slot</LinkButton>
 </div>
