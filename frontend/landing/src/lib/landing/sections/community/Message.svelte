@@ -87,7 +87,7 @@
   
   <p>
     If you want to chat face-to-face, book a slot in my <strong>Office Hours</strong> below.
-    They're open to anyone, and we'll spend half an hour on a call about Lexoral, your projects, or anything else.
+    They're open to anyone, and we'll spend half an hour on a call about Lexoral, your projects, or anything!
   </p> 
   
   <p>
