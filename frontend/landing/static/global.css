@@ -279,7 +279,7 @@ a:link {
 
 /* visited link */
 a:visited {
-  color: var(--green-1);
+  color: var(--green-0);
 }
 
 /* mouse over link */

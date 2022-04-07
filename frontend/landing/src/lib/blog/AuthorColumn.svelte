@@ -1,7 +1,7 @@
 <script lang="ts">
   import TextContainer from "$lib/template/TextContainer.svelte";
   import Fa from "svelte-fa/src/fa.svelte";
-  import { faEnvelope, faGlobe } from "@fortawesome/free-solid-svg-icons";
+  import { faCalendarCheck, faEnvelope, faGlobe } from "@fortawesome/free-solid-svg-icons";
   import { faTwitch, faTwitter, faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
   import type { Author, AuthorDetails } from "./blogData";
@@ -130,6 +130,14 @@
         <li>
           <a href={`mailto:${authorDetails.links.email}`}>
             <Fa icon={faEnvelope}/> <span class="linkText">{authorDetails.links.email}</span>
+          </a>
+        </li>
+      {/if}
+
+      {#if authorDetails.links.calendly}
+        <li>
+          <a href={`https://calendly.com/${authorDetails.links.calendly}`}>
+            <Fa icon={faCalendarCheck}/> <span class="linkText">Office Hours</span>
           </a>
         </li>
       {/if}

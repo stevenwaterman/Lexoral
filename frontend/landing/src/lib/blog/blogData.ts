@@ -5,6 +5,7 @@ export type AuthorDetails = {
 	bio: string;
 	links: {
 		email?: string;
+    calendly?: string;
 		github?: string;
 		twitter?: string;
 		twitch?: string;
@@ -13,7 +14,8 @@ export type AuthorDetails = {
 	};
 };
 
-export const authors = {
+const assertAuthors = <T extends Record<string, AuthorDetails>>(authors: T) => authors;
+export const authors = assertAuthors({
 	SteWaterman: {
 		shortName: "Steven",
 		longName: "Steven Waterman",
@@ -21,6 +23,7 @@ export const authors = {
 		bio: "I've spent my career building software to make people's lives easier, including Lexoral. It's my full-time job, and I'm always happy to chat with you - feel free to get in touch!",
 		links: {
 			email: "steven@lexoral.com",
+      calendly: "lexoral/30min",
 			github: "StevenWaterman",
 			twitter: "SteWaterman",
 			twitch: "Lexoral",
@@ -28,8 +31,7 @@ export const authors = {
 			website: "www.stevenwaterman.uk"
 		}
 	}
-} as const;
-authors as Record<string, AuthorDetails>;
+} as const);
 
 export type Author = keyof typeof authors;
 
