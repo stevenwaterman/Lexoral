@@ -11,6 +11,12 @@
 
   let authorDetails: AuthorDetails;
   $: authorDetails = authors[post.author];
+
+  let fit: BlogPost["header"]["fit"];
+  $: fit = post.header?.fit ?? "cover"
+
+  let position: BlogPost["header"]["position"];
+  $: position = post.header?.position ?? "center";
 </script>
 
 <style>
@@ -58,7 +64,8 @@
     text-decoration: unset;
   }
 
-  h2 {
+  h3 {
+    font-size: 2em;
     margin-top: 0.5em;
   }
 
@@ -126,14 +133,20 @@
   </div>
 
   <div class="container">
-    <img class="headerImage" src={`/assets/blog/${id}/header.png`} alt="Header"/>
+    <img class="headerImage" src={`/assets/blog/${id}/header.png`} style={`object-fit: ${fit}; object-position: ${position};`} alt="Header"/>
     <div class="padded">
       <div class="meta">
         <p>{toDateString(post.date)}</p>
         <p>{authorDetails.longName}</p>
       </div>
   
-      <h2>{post.title}</h2>
+      <h3>
+        {#if post.stylisedTitle}
+          {@html post.stylisedTitle}
+        {:else}
+          {post.title}
+        {/if}
+      </h3>
       <summary>{post.longDescription}</summary>
     </div>
   </div>

@@ -2,8 +2,6 @@
 	import BlogPost from "$lib/blog/BlogPost.svelte";
 </script>
 
-<!-- TODO Header image -->
-
 <BlogPost id="speaking-with-confidence">
   <p>
     If speaking confidently doesn't come naturally to you, you're not alone.

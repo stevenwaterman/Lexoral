@@ -104,7 +104,7 @@
     <p class="textCol2"><span class="heading">After the trial?</span><br>Our simple pricing means you only pay for what you use</p>
     <LinkButton link="/#pricing">Pricing</LinkButton>
   
-    <p class="textCol3"><span class="heading">Still not convinced?</span><br>We're always looking to improve - let us know what's worrying you</p>
+    <p class="textCol3"><span class="heading">Still not convinced?</span><br>We're always looking to improve - let's chat about it</p>
     <LinkButton link="/#community">Contact us</LinkButton>
 
     <Arrow/>

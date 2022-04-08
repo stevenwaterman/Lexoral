@@ -50,9 +50,12 @@
 
   .recent {
     display: grid;
-    gap: 1em;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 1em;
+    row-gap: 2em;
     list-style: none;
     width: 100%;
+    margin-top: 2em;
     margin-bottom: 4em;
   }
 
@@ -80,7 +83,19 @@
       padding-left: 0;
       padding-right: 0;
     }
+
+    .recent {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
+
+  @media (max-width: 799px) {
+    .recent {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  
 </style>
 
 <svelte:head>

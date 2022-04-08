@@ -4,7 +4,8 @@
   import { toDateString } from "$lib/utils/date";
   import Advert from "./Advert.svelte";
   import AuthorColumn from "./AuthorColumn.svelte";
-  import { AuthorDetails, authors, BlogId, BlogPost, blogPosts } from "./blogData";
+  import type { AuthorDetails, BlogId, BlogPost } from "./blogData";
+  import { authors, blogPosts } from "./blogData";
 
   export let id: BlogId;
 
@@ -180,7 +181,13 @@
             <p class="author">By {authorDetails.longName}</p>
           </div>
 
-          <h1>{post.title}</h1>
+          <h1>
+            {#if post.stylisedTitle}
+              {@html post.stylisedTitle}
+            {:else}
+              {post.title}
+            {/if}
+          </h1>
           <summary>{post.longDescription}</summary>
 
           <slot name="updates"></slot>

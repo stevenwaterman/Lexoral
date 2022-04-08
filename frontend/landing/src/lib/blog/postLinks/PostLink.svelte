@@ -11,67 +11,138 @@
 
   let authorDetails: AuthorDetails;
   $: authorDetails = authors[post.author];
+
+  let fit: BlogPost["header"]["fit"];
+  $: fit = post.header?.fit ?? "cover"
+
+  let position: BlogPost["header"]["position"];
+  $: position = post.header?.position ?? "center";
 </script>
 
 <style>
+  a {
+    position: relative;
+    color: var(--text);
+  }
+
   .container {
-    border-radius: 0.5em;
-    height: 4em;
-    width: 100%;
+    border-radius: 2em;
 
     display: grid;
-    grid-template-columns: 8em 1fr auto auto auto;
-    gap: 2em;
-    align-items: center;
-    justify-items: flex-start;
-    padding-right: 2em;
+    grid-template-rows: 8em 1fr;
+    font-size: 0.8em;
 
     background-color: var(--grey-5);
     overflow: hidden;
 
-    box-shadow: 0 0 0.25em 0 var(--blue-3);
+    box-shadow: 0 0 0.5em 0 var(--type-color);
+    transition: 0.1s box-shadow;
+  }
+
+  summary {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  a:hover .container {
+    box-shadow: 0 0 1em 0 var(--type-color);
   }
 
   .headerImage {
     width: 100%;
-    height: 4em;
-    object-position: center;
+    height: 100%;
+
     object-fit: contain;
+    object-position: center;
+  }
+  
+  .padded {
+    padding: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 1em;
   }
 
   a {
     text-decoration: unset;
-    color: var(--text);
   }
 
   h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
+    margin-top: 0.5em;
   }
 
-  p {
-    margin-bottom: 0;
+  .meta {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    font-style: italic;
     font-weight: 300;
-    font-size: 0.8em;
+  }
+
+  .meta p {
+    margin-bottom: 0;
   }
 
   .type {
+    position: absolute;
+    padding: 0.5em 1em;
+    border-radius: 1em;
     text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.8em;
+
+    left: -1em;
+    top: -1em;
+    transform: rotate(-10deg);
+    background-color: var(--type-color);
+  }
+
+  .org {
+    --type-color: var(--yellow-3);
+  }
+
+  .tech {
+    --type-color: var(--blue-3);
+  }
+
+  .howto {
+    --type-color: var(--green-3);
+  }
+
+  @media (max-width: 1599px) {
+    .meta {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 799px) {
+    .container {
+      grid-template-columns: auto;
+      grid-template-rows: 12em 1fr;
+    }
   }
 </style>
 
 <a
   href={`/blog/${id}`}
-  class="container"
+  class:org={post.type === "org"}
+  class:tech={post.type === "tech"}
+  class:howto={post.type === "how-to"}
 >
-  <img class="headerImage" src={`/assets/blog/${id}/header.png`} style={`object-fit: ${post.header.fit}`} alt="Header"/>
-  <h3>{post.title}</h3>
-  <p>{toDateString(post.date)}</p>
-  <p class="type">{post.type}</p>
-  <p>{authorDetails.longName}</p>
+  <div class="type">
+    {post.type}
+  </div>
+
+  <div class="container">
+    <img class="headerImage" src={`/assets/blog/${id}/header.png`} style={`object-fit: ${fit}; object-position: ${position};`} alt="Header"/>
+    <div class="padded">
+      <div class="meta">
+        <p>{toDateString(post.date)}</p>
+        <p>{authorDetails.longName}</p>
+      </div>
+  
+      <h3>{post.title}</h3>
+      <summary>{post.shortDescription}</summary>
+    </div>
+  </div>
 </a>

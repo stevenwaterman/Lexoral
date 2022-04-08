@@ -1,6 +1,8 @@
 <script>
+  import Calendly from "$lib/components/Calendly.svelte";
   import LinkButton from "$lib/components/LinkButton.svelte";
 </script>
+
 <style>
   .stevenMessage {
     max-width: 26em;
@@ -94,5 +96,5 @@
     Please don't be shy, I'm excited to chat with you ♥
   </p>
 
-  <LinkButton newTab={true} external={true} link="https://calendly.com/lexoral/30min">Book a Slot</LinkButton>
+  <Calendly/>
 </div>

@@ -23,7 +23,7 @@ export const authors = assertAuthors({
 		bio: "I've spent my career building software to make people's lives easier, including Lexoral. It's my full-time job, and I'm always happy to chat with you - feel free to get in touch!",
 		links: {
 			email: "steven@lexoral.com",
-      calendly: "lexoral/30min",
+      calendly: "lexoral/office-hours",
 			github: "StevenWaterman",
 			twitter: "SteWaterman",
 			twitch: "Lexoral",
@@ -39,6 +39,7 @@ export type BlogPost = {
 	type: "org" | "tech" | "how-to";
 	author: keyof typeof authors;
 	title: string;
+  stylisedTitle?: string;
 	shortDescription: string;
 	longDescription: string;
 	date: Date;
@@ -108,6 +109,21 @@ export const blogPosts = assertBlogPosts({
     published: true,
     header: {
       position: "top"
+    }
+  },
+  "office-hours": {
+    type: "org",
+    author: "SteWaterman",
+    title: "We Need to Talk (if you want)",
+    stylisedTitle: "We Need to Talk <span style='font-size:0.5em;white-space:nowrap;'>(if you want)</span>",
+    shortDescription: "I've always been open to chat with people, but now it's official. You can book a slot in my diary to chat about anything.",
+    longDescription: "I've always been available to chat, but now I've taken it a step further. Anyone can book time in my diary to chat about anything - even if you just want my advice. Why did I decide to do that? Let's talk about it.",
+    date: new Date("2022-04-07T12:30:00Z"),
+    featured: true,
+    published: true,
+    header: {
+      position: "top",
+      fit: "cover"
     }
   }
 } as const);
