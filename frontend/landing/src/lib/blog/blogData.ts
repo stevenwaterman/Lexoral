@@ -118,7 +118,7 @@ export const blogPosts = assertBlogPosts({
     stylisedTitle: "We Need to Talk <span style='font-size:0.5em;white-space:nowrap;'>(if you want)</span>",
     shortDescription: "I've always been open to chat with people, but now it's official. You can book a slot in my diary to chat about anything.",
     longDescription: "I've always been available to chat, but now I've taken it a step further. Anyone can book time in my diary to chat about anything - even if you just want my advice. Why did I decide to do that? Let's talk about it.",
-    date: new Date("2022-04-07T12:30:00Z"),
+    date: new Date("2022-04-08T18:00:00Z"),
     featured: true,
     published: true,
     header: {
