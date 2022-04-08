@@ -173,7 +173,9 @@
   <div class="grid">
     <TextContainer>
       <article>
-        <img class="headerImage" src={`/assets/blog/${id}/header.png`} style={`object-fit: ${fit}; object-position: ${position};`} alt="Header"/>
+        <a href={`/assets/blog/${id}/header.png`}>
+          <img class="headerImage" src={`/assets/blog/${id}/header.png`} style={`object-fit: ${fit}; object-position: ${position};`} alt="Header"/>
+        </a>
         <div class="padded">
           <div class="metadata">
             <p class="type">{post.type}</p>
