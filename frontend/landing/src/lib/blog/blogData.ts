@@ -108,7 +108,8 @@ export const blogPosts = assertBlogPosts({
     featured: true,
     published: true,
     header: {
-      position: "top"
+      position: "top",
+      fit: "cover"
     }
   },
   "office-hours": {

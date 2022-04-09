@@ -110,7 +110,7 @@
 
   <figure>
     <img
-      src="/assets/blog/speaking-with-confidence/header.png"
+      src="/assets/blog/speaking-with-confidence/power.png"
       title="I promise you, this is not what it feels like to chair a meeting."
       alt="A terrible mspaint doodle of Emperor Palpatine in a board room shouting 'unlimited power' and shooting lightning at the other attendees."
     />
