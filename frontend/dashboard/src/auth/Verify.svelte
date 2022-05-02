@@ -5,8 +5,8 @@
   import { navigate } from "svelte-navigator";
   
   $: if ($userStore === undefined) throw new Error("Page has been loaded before auth state has updated");
-  $: if ($userStore === null) navigate("/dashboard/auth/login");
-  $: if ($userStore?.emailVerified === true) navigate("/dashboard");
+  $: if ($userStore === null) navigate("/dashboard/auth/login", {replace: true});
+  $: if ($userStore?.emailVerified === true) navigate("/dashboard", {replace: true});
 
   let manuallySent: boolean = false;
 

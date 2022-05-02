@@ -6,14 +6,14 @@
 
   function toTimeString(seconds: number, showHours: boolean): string {    
     if (showHours) {
-      const hours = (seconds / 3600).toFixed(0);
-      const mins = ((seconds % 3600) / 60).toFixed(0).padStart(2, "0");
-      const secs = (seconds % 60).toFixed(0).padStart(2, "0");
+      const hours = Math.floor(seconds / 3600);
+      const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+      const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
       return `${hours}:${mins}:${secs}`
       
     } else {
-      const mins = ((seconds % 3600) / 60).toFixed(0);
-      const secs = (seconds % 60).toFixed(0).padStart(2, "0");
+      const mins = Math.floor((seconds % 3600) / 60);
+      const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
       return `${mins}:${secs}`
     }
   }

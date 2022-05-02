@@ -4,8 +4,8 @@
   import { userStore } from "./user";
 
   $: if ($userStore === undefined) throw new Error("Page has been loaded before auth state has updated");
-  $: if ($userStore !== null) navigate("/dashboard");
-  $: if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify");
+  $: if ($userStore !== null) navigate("/dashboard", {replace: true});
+  $: if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify", {replace: true});
   
   let email: string = "";
   let password: string = "";
@@ -32,11 +32,11 @@
     createUserWithEmailAndPassword(auth, email, password)
       .then(async ({user}) => {
         if (user.emailVerified) {
-          navigate("/dashboard");
+          navigate("/dashboard", {replace: true});
         } else {
           console.log("Sending email verification");
           await sendEmailVerification(user);
-          navigate("/dashboard/auth/verify");
+          navigate("/dashboard/auth/verify", {replace: true});
         }
       })
       .catch(err => {

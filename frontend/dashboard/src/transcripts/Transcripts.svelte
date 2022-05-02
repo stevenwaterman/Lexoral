@@ -9,8 +9,8 @@
   import { navigate } from "svelte-navigator";
 
   $: if ($userStore === undefined) throw new Error("Page has been loaded before auth state has updated");
-  $: if ($userStore === null) navigate("/dashboard/auth/login");
-  $: if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify");
+  $: if ($userStore === null) navigate("/dashboard/auth/login", {replace: true});
+  $: if ($userStore?.emailVerified === false) navigate("/dashboard/auth/verify", {replace: true});
 
   const pageSize = 10;
 

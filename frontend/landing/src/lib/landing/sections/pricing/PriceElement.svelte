@@ -71,5 +71,5 @@
   <h3 class="type">{type}</h3>
   <span class="perHour">£{hourPrice.toFixed(2)}</span>
   <span class="clarification">per hour uploaded</span>
-  <span class="perMin">({minPrice.toFixed(0)}p / min)</span>
+  <span class="perMin">({Math.floor(minPrice)}p / min)</span>
 </div>
