@@ -1,0 +1,952 @@
+[
+  {
+    "options": [
+      "Hello,"
+    ],
+    "startTime": 0.207,
+    "endTime": 0.711
+  },
+  {
+    "options": [
+      "I'm"
+    ],
+    "startTime": 0.947,
+    "endTime": 1.13
+  },
+  {
+    "options": [
+      "Steven,",
+      "Stephen,"
+    ],
+    "startTime": 1.13,
+    "endTime": 1.679
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 1.679,
+    "endTime": 1.75
+  },
+  {
+    "options": [
+      "founder"
+    ],
+    "startTime": 1.75,
+    "endTime": 2.248
+  },
+  {
+    "options": [
+      "of"
+    ],
+    "startTime": 2.248,
+    "endTime": 2.28
+  },
+  {
+    "options": [
+      "Lexoral."
+    ],
+    "startTime": 2.28,
+    "endTime": 2.934
+  },
+  {
+    "options": [
+      "The"
+    ],
+    "startTime": 3.619,
+    "endTime": 3.898
+  },
+  {
+    "options": [
+      "text"
+    ],
+    "startTime": 3.898,
+    "endTime": 4.23
+  },
+  {
+    "options": [
+      "that"
+    ],
+    "startTime": 4.23,
+    "endTime": 4.332
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 4.332,
+    "endTime": 4.419
+  },
+  {
+    "options": [
+      "can"
+    ],
+    "startTime": 4.419,
+    "endTime": 4.452
+  },
+  {
+    "options": [
+      "see,"
+    ],
+    "startTime": 4.452,
+    "endTime": 4.748
+  },
+  {
+    "options": [
+      "here"
+    ],
+    "startTime": 4.748,
+    "endTime": 5.138
+  },
+  {
+    "options": [
+      "is"
+    ],
+    "startTime": 5.138,
+    "endTime": 5.15
+  },
+  {
+    "options": [
+      "an"
+    ],
+    "startTime": 5.15,
+    "endTime": 5.398
+  },
+  {
+    "options": [
+      "AI"
+    ],
+    "startTime": 5.398,
+    "endTime": 5.608
+  },
+  {
+    "options": [
+      "transcription"
+    ],
+    "startTime": 5.608,
+    "endTime": 6.408
+  },
+  {
+    "options": [
+      "of"
+    ],
+    "startTime": 6.408,
+    "endTime": 6.55
+  },
+  {
+    "options": [
+      "me"
+    ],
+    "startTime": 6.55,
+    "endTime": 7.029
+  },
+  {
+    "options": [
+      "speaking."
+    ],
+    "startTime": 7.055,
+    "endTime": 7.82
+  },
+  {
+    "options": [
+      "So,"
+    ],
+    "startTime": 8.431,
+    "endTime": 8.558
+  },
+  {
+    "options": [
+      "I"
+    ],
+    "startTime": 8.558,
+    "endTime": 8.748
+  },
+  {
+    "options": [
+      "recorded"
+    ],
+    "startTime": 8.748,
+    "endTime": 9.015
+  },
+  {
+    "options": [
+      "this"
+    ],
+    "startTime": 9.015,
+    "endTime": 9.171
+  },
+  {
+    "options": [
+      "audio"
+    ],
+    "startTime": 9.171,
+    "endTime": 9.538
+  },
+  {
+    "options": [
+      "first"
+    ],
+    "startTime": 9.538,
+    "endTime": 10.151
+  },
+  {
+    "options": [
+      "and"
+    ],
+    "startTime": 10.387,
+    "endTime": 10.45
+  },
+  {
+    "options": [
+      "then"
+    ],
+    "startTime": 10.45,
+    "endTime": 10.617
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 10.617,
+    "endTime": 10.754
+  },
+  {
+    "options": [
+      "AI"
+    ],
+    "startTime": 10.754,
+    "endTime": 11.066
+  },
+  {
+    "options": [
+      "transcribed."
+    ],
+    "startTime": 11.066,
+    "endTime": 11.787
+  },
+  {
+    "options": [
+      "It"
+    ],
+    "startTime": 11.787,
+    "endTime": 11.896
+  },
+  {
+    "options": [
+      "into"
+    ],
+    "startTime": 11.896,
+    "endTime": 12.098
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 12.098,
+    "endTime": 12.161
+  },
+  {
+    "options": [
+      "text"
+    ],
+    "startTime": 12.161,
+    "endTime": 12.547
+  },
+  {
+    "options": [
+      "that"
+    ],
+    "startTime": 12.547,
+    "endTime": 12.551
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 12.551,
+    "endTime": 12.71
+  },
+  {
+    "options": [
+      "see"
+    ],
+    "startTime": 12.71,
+    "endTime": 12.888
+  },
+  {
+    "options": [
+      "now."
+    ],
+    "startTime": 12.888,
+    "endTime": 13.405
+  },
+  {
+    "options": [
+      "And"
+    ],
+    "startTime": 13.678,
+    "endTime": 13.75
+  },
+  {
+    "options": [
+      "in"
+    ],
+    "startTime": 13.75,
+    "endTime": 13.943
+  },
+  {
+    "options": [
+      "fact,"
+    ],
+    "startTime": 13.943,
+    "endTime": 14.229
+  },
+  {
+    "options": [
+      "this"
+    ],
+    "startTime": 14.229,
+    "endTime": 14.351
+  },
+  {
+    "options": [
+      "is"
+    ],
+    "startTime": 14.351,
+    "endTime": 14.488
+  },
+  {
+    "options": [
+      "a"
+    ],
+    "startTime": 14.488,
+    "endTime": 14.595
+  },
+  {
+    "options": [
+      "live"
+    ],
+    "startTime": 14.595,
+    "endTime": 14.991
+  },
+  {
+    "options": [
+      "demo"
+    ],
+    "startTime": 14.991,
+    "endTime": 15.404
+  },
+  {
+    "options": [
+      "of"
+    ],
+    "startTime": 15.404,
+    "endTime": 15.603
+  },
+  {
+    "options": [
+      "Lexoral."
+    ],
+    "startTime": 15.603,
+    "endTime": 16.347
+  },
+  {
+    "options": [
+      "So"
+    ],
+    "startTime": 17.67,
+    "endTime": 18.031
+  },
+  {
+    "options": [
+      "if"
+    ],
+    "startTime": 18.031,
+    "endTime": 18.082
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 18.082,
+    "endTime": 18.233
+  },
+  {
+    "options": [
+      "see"
+    ],
+    "startTime": 18.233,
+    "endTime": 18.315
+  },
+  {
+    "options": [
+      "any"
+    ],
+    "startTime": 18.315,
+    "endTime": 18.542
+  },
+  {
+    "options": [
+      "mistakes,"
+    ],
+    "startTime": 18.542,
+    "endTime": 19.23
+  },
+  {
+    "options": [
+      "try"
+    ],
+    "startTime": 19.35,
+    "endTime": 19.638
+  },
+  {
+    "options": [
+      "fixing"
+    ],
+    "startTime": 19.638,
+    "endTime": 20.048
+  },
+  {
+    "options": [
+      "them,"
+    ],
+    "startTime": 20.048,
+    "endTime": 20.268
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 21.183,
+    "endTime": 21.319
+  },
+  {
+    "options": [
+      "can"
+    ],
+    "startTime": 21.319,
+    "endTime": 21.447
+  },
+  {
+    "options": [
+      "click"
+    ],
+    "startTime": 21.447,
+    "endTime": 21.747
+  },
+  {
+    "options": [
+      "anywhere"
+    ],
+    "startTime": 21.747,
+    "endTime": 22.259
+  },
+  {
+    "options": [
+      "in"
+    ],
+    "startTime": 22.259,
+    "endTime": 22.44
+  },
+  {
+    "options": [
+      "this"
+    ],
+    "startTime": 22.44,
+    "endTime": 22.548
+  },
+  {
+    "options": [
+      "demo"
+    ],
+    "startTime": 22.548,
+    "endTime": 23.051
+  },
+  {
+    "options": [
+      "to"
+    ],
+    "startTime": 23.401,
+    "endTime": 23.609
+  },
+  {
+    "options": [
+      "hear"
+    ],
+    "startTime": 23.609,
+    "endTime": 23.803
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 23.803,
+    "endTime": 23.904
+  },
+  {
+    "options": [
+      "audio"
+    ],
+    "startTime": 23.904,
+    "endTime": 24.318
+  },
+  {
+    "options": [
+      "of"
+    ],
+    "startTime": 24.318,
+    "endTime": 24.467
+  },
+  {
+    "options": [
+      "me,"
+    ],
+    "startTime": 24.467,
+    "endTime": 24.647
+  },
+  {
+    "options": [
+      "reading"
+    ],
+    "startTime": 24.647,
+    "endTime": 24.868
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 24.868,
+    "endTime": 25.014
+  },
+  {
+    "options": [
+      "text"
+    ],
+    "startTime": 25.014,
+    "endTime": 25.651
+  },
+  {
+    "options": [
+      "and"
+    ],
+    "startTime": 26.557,
+    "endTime": 26.656
+  },
+  {
+    "options": [
+      "then"
+    ],
+    "startTime": 26.656,
+    "endTime": 27.248
+  },
+  {
+    "options": [
+      "in"
+    ],
+    "startTime": 27.252,
+    "endTime": 27.377
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 27.377,
+    "endTime": 27.535
+  },
+  {
+    "options": [
+      "dropdown"
+    ],
+    "startTime": 27.535,
+    "endTime": 27.948
+  },
+  {
+    "options": [
+      "that"
+    ],
+    "startTime": 27.948,
+    "endTime": 28.143
+  },
+  {
+    "options": [
+      "appears,"
+    ],
+    "startTime": 28.143,
+    "endTime": 28.588
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 28.791,
+    "endTime": 28.856
+  },
+  {
+    "options": [
+      "can"
+    ],
+    "startTime": 28.856,
+    "endTime": 29.088
+  },
+  {
+    "options": [
+      "pick"
+    ],
+    "startTime": 29.088,
+    "endTime": 29.3
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 29.3,
+    "endTime": 29.383
+  },
+  {
+    "options": [
+      "right"
+    ],
+    "startTime": 29.383,
+    "endTime": 29.595
+  },
+  {
+    "options": [
+      "option",
+      "option,"
+    ],
+    "startTime": 29.595,
+    "endTime": 30.239
+  },
+  {
+    "options": [
+      "out"
+    ],
+    "startTime": 30.337,
+    "endTime": 30.503
+  },
+  {
+    "options": [
+      "of"
+    ],
+    "startTime": 30.503,
+    "endTime": 30.635
+  },
+  {
+    "options": [
+      "the"
+    ],
+    "startTime": 30.635,
+    "endTime": 30.689
+  },
+  {
+    "options": [
+      "one, so",
+      "1. So",
+      "ones"
+    ],
+    "startTime": 30.689,
+    "endTime": 30.939
+  },
+  {
+    "options": [
+      "that"
+    ],
+    "startTime": 30.939,
+    "endTime": 30.993
+  },
+  {
+    "options": [
+      "shows",
+      "it shows"
+    ],
+    "startTime": 30.993,
+    "endTime": 31.1
+  },
+  {
+    "options": [
+      "you,"
+    ],
+    "startTime": 31.1,
+    "endTime": 31.44
+  },
+  {
+    "options": [
+      "if"
+    ],
+    "startTime": 31.44,
+    "endTime": 31.747
+  },
+  {
+    "options": [
+      "none"
+    ],
+    "startTime": 32.392,
+    "endTime": 32.55
+  },
+  {
+    "options": [
+      "of"
+    ],
+    "startTime": 32.55,
+    "endTime": 32.705
+  },
+  {
+    "options": [
+      "them"
+    ],
+    "startTime": 32.705,
+    "endTime": 32.811
+  },
+  {
+    "options": [
+      "are"
+    ],
+    "startTime": 32.811,
+    "endTime": 32.942
+  },
+  {
+    "options": [
+      "right,"
+    ],
+    "startTime": 32.942,
+    "endTime": 33.028
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 33.028,
+    "endTime": 33.515
+  },
+  {
+    "options": [
+      "can"
+    ],
+    "startTime": 33.731,
+    "endTime": 33.75
+  },
+  {
+    "options": [
+      "just"
+    ],
+    "startTime": 33.75,
+    "endTime": 33.876
+  },
+  {
+    "options": [
+      "type"
+    ],
+    "startTime": 33.876,
+    "endTime": 34.159
+  },
+  {
+    "options": [
+      "your"
+    ],
+    "startTime": 34.159,
+    "endTime": 34.401
+  },
+  {
+    "options": [
+      "own"
+    ],
+    "startTime": 34.401,
+    "endTime": 34.451
+  },
+  {
+    "options": [
+      "in."
+    ],
+    "startTime": 34.451,
+    "endTime": 34.74
+  },
+  {
+    "options": [
+      "Give"
+    ],
+    "startTime": 36.647,
+    "endTime": 36.655
+  },
+  {
+    "options": [
+      "it"
+    ],
+    "startTime": 36.655,
+    "endTime": 36.751
+  },
+  {
+    "options": [
+      "a"
+    ],
+    "startTime": 36.751,
+    "endTime": 36.895
+  },
+  {
+    "options": [
+      "try,"
+    ],
+    "startTime": 36.895,
+    "endTime": 37.336
+  },
+  {
+    "options": [
+      "and"
+    ],
+    "startTime": 37.451,
+    "endTime": 37.551
+  },
+  {
+    "options": [
+      "let"
+    ],
+    "startTime": 37.551,
+    "endTime": 37.695
+  },
+  {
+    "options": [
+      "me"
+    ],
+    "startTime": 37.695,
+    "endTime": 37.771
+  },
+  {
+    "options": [
+      "know"
+    ],
+    "startTime": 37.771,
+    "endTime": 37.947
+  },
+  {
+    "options": [
+      "if"
+    ],
+    "startTime": 37.898,
+    "endTime": 37.947
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 37.947,
+    "endTime": 37.985
+  },
+  {
+    "options": [
+      "have"
+    ],
+    "startTime": 37.985,
+    "endTime": 38.106
+  },
+  {
+    "options": [
+      "any"
+    ],
+    "startTime": 38.106,
+    "endTime": 38.247
+  },
+  {
+    "options": [
+      "questions,"
+    ],
+    "startTime": 38.247,
+    "endTime": 39.047
+  },
+  {
+    "options": [
+      "but"
+    ],
+    "startTime": 39.194,
+    "endTime": 39.547
+  },
+  {
+    "options": [
+      "if"
+    ],
+    "startTime": 39.547,
+    "endTime": 39.714
+  },
+  {
+    "options": [
+      "not,"
+    ],
+    "startTime": 39.714,
+    "endTime": 40.164
+  },
+  {
+    "options": [
+      "thanks"
+    ],
+    "startTime": 40.164,
+    "endTime": 40.386
+  },
+  {
+    "options": [
+      "for"
+    ],
+    "startTime": 40.386,
+    "endTime": 40.519
+  },
+  {
+    "options": [
+      "coming"
+    ],
+    "startTime": 40.519,
+    "endTime": 40.868
+  },
+  {
+    "options": [
+      "and"
+    ],
+    "startTime": 40.868,
+    "endTime": 40.977
+  },
+  {
+    "options": [
+      "I"
+    ],
+    "startTime": 40.977,
+    "endTime": 41.048
+  },
+  {
+    "options": [
+      "hope"
+    ],
+    "startTime": 40.977,
+    "endTime": 41.195
+  },
+  {
+    "options": [
+      "that"
+    ],
+    "startTime": 41.195,
+    "endTime": 41.353
+  },
+  {
+    "options": [
+      "you"
+    ],
+    "startTime": 41.353,
+    "endTime": 41.405
+  },
+  {
+    "options": [
+      "enjoyed"
+    ],
+    "startTime": 41.353,
+    "endTime": 41.741
+  },
+  {
+    "options": [
+      "using"
+    ],
+    "startTime": 41.741,
+    "endTime": 41.95
+  },
+  {
+    "options": [
+      "Lexoral."
+    ],
+    "startTime": 41.95,
+    "endTime": 42.582
+  }
+]

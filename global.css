@@ -1,0 +1,298 @@
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.4;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.25;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+   scroll-behavior: auto;
+  }
+  
+  :not(.forceAnimation),
+  :not(.forceAnimation)::before,
+  :not(.forceAnimation)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  --text: var(--grey-0);
+  --secondary-text: var(--grey-1);
+  --light-text: var(--grey-4);
+  
+  --weak-focus: var(--blue-3);
+  --focus: var(--green-3);
+  --strong-focus: var(--red-3);
+
+  --info: var(--blue-1);
+  --warn: var(--yellow-1);
+  --error: var(--red-1);
+  --success: var(--green-1);
+
+  --primary: var(--green-3);
+  --secondary: var(--blue-3);
+
+  --page-background: var(--grey-4);
+  --border: var(--grey-3);
+  --form-border: var(--grey-1);
+
+  --grey-0: #242230;
+  --grey-1: #525666;
+  --grey-2: #8E93A4;
+  --grey-3: #D2D4DB;
+  --grey-4: #E9EBED;
+  --grey-5: #F4F5F6;
+  --grey-6: #FAFBFC;
+
+  --red-0: #661815;
+  --red-1: #BB2A25;
+  --red-2: #DA4944;
+  --red-3: #E47A77;
+  --red-4: #EB9C99;
+  --red-5: #F2BDBB;
+  --red-6: #FFE9E2;
+  
+  --yellow-0: #A16E0D;
+  --yellow-1: #EB9C0A;
+  --yellow-2: #F6AE2D;
+  --yellow-3: #F8C462;
+  --yellow-4: #F9D38A;
+  --yellow-5: #FBE1B1;
+  
+  --green-0: #33512A;
+  --green-1: #607641;
+  --green-2: #7CB36B;
+  --green-3: #9FC893;
+  --green-4: #B7D6AE;
+  --green-5: #CFE4C9;
+  --green-6: #E9FFE2;
+  
+  --blue-0: #2C3F63;
+  --blue-1: #4C6CA9;
+  --blue-2: #728DC0;
+  --blue-3: #9CAFD3;
+  --blue-4: #B9C6DF;
+  --blue-5: #D5DDEC;
+  --blue-6: #E2E9FF;
+}
+
+html {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  color: var(--text);
+  background-color: var(--page-background);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16pt;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  position: relative;
+  width: 100%;
+
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+button {
+  padding: 0.5em 1em 0.5em 1em;
+  transition-property: background-color, color;
+  transition-duration: 200ms;
+  border: none;
+  border-radius: 0.5em;
+  text-decoration: none;
+
+  background-color: var(--blue-1);
+  color: var(--light-text);
+}
+
+button:enabled {
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: var(--grey-1);
+  color: var(--light-text);
+}
+
+button:enabled:hover {
+  background-color: var(--green-3);
+  color: var(--text);
+}
+
+button.danger:enabled {
+  background-color: var(--red-1);
+  color: var(--light-text);
+}
+
+button.danger:enabled:hover {
+  background-color: var(--red-3);
+  color: var(--text);
+}
+
+button:enabled:active {
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+
+input {
+  font-size: 0.75em;
+  padding: 0.5em 1em;
+  border: 1px solid var(--form-border);
+  border-radius: 0.5em;
+  text-decoration: none;
+}
+
+input[type=range] {
+  padding: 0.5em 0;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 3.5em;
+
+  transform: scaleX(0.95);
+  transform-origin: 0% 0%;
+}
+
+
+h2 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+p:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+ol:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+ul:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+blockquote:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+blockquote {
+  margin-left: 1em;
+  padding-left: 1em;
+  border-left: 0.25em solid var(--blue-2);
+  text-align: justify;
+}
+
+@media (max-width: 799px) {
+  body {
+    font-size: 14pt;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+}
+
+figcaption {
+  text-align: center;
+  color: var(--grey-1);
+  font-size: 0.85em;
+  font-style: italic;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+/* unvisited link */
+a:link {
+  color: var(--blue-0);
+}
+
+/* visited link */
+a:visited {
+  color: var(--green-0);
+}
+
+/* mouse over link */
+a:hover {
+  color: var(--yellow-1);
+}
+
+/* selected link */
+a:active {
+  color: var(--yellow-2);
+}
+ 
+details summary {
+  user-select: none;
+  cursor: pointer;
+}
