@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Lexoral Blog</title>
+<description>Our blog discusses the things we get up to when building Lexoral</description>
+<link>https://lexoral.com/blog</link>
+<atom:link href="https://lexoral.com/rss.xml" rel="self" type="application/rss+xml"/>
+<item>
+<guid isPermaLink="true">https://lexoral.com/blog/open-source-punish</guid>
+<title>Lexoral is open-source so you can punish us</title>
+<link>https://lexoral.com/blog/open-source-punish</link>
+<description>You can read the code for Lexoral, and even use it in your own projects. There's a lot of benefits to being open-source, but there's one that you don't hear people talking about: it lets you punish us for not sticking to our promises.</description>
+<pubDate>Tue, 04 Jan 2022 12:10:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://lexoral.com/blog/svelte-firestore-binding</guid>
+<title>Database sync like magic, with Svelte + Firestore</title>
+<link>https://lexoral.com/blog/svelte-firestore-binding</link>
+<description>Both Firestore and Svelte are event-driven and reactive. By forgetting everything we know about data layers and building one from first principles, we've made it easy to synchronise data both ways between the browser and the database.</description>
+<pubDate>Wed, 16 Feb 2022 18:30:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://lexoral.com/blog/you-dont-need-js</guid>
+<title>5 things you don't need Javascript for</title>
+<link>https://lexoral.com/blog/you-dont-need-js</link>
+<description>Javascript can do a lot, but it's really over-used. HTML and CSS are surprisingly powerful on their own, so let's have a look at some of the things you can achieve without Javascript (or a backend) - from animated diagrams to dark mode.</description>
+<pubDate>Mon, 28 Feb 2022 12:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://lexoral.com/blog/speaking-with-confidence</guid>
+<title>You can learn to Speak Confidently</title>
+<link>https://lexoral.com/blog/speaking-with-confidence</link>
+<description>Do the words 'public speaking' strike fear into your heart? It doesn't come naturally to me either, but over time I've slowly improved. This post is all about the things that helped me, so you can learn too.</description>
+<pubDate>Mon, 04 Apr 2022 12:30:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://lexoral.com/blog/office-hours</guid>
+<title>We Need to Talk (if you want)</title>
+<link>https://lexoral.com/blog/office-hours</link>
+<description>I've always been available to chat, but now I've taken it a step further. Anyone can book time in my diary to chat about anything - even if you just want my advice. Why did I decide to do that? Let's talk about it.</description>
+<pubDate>Fri, 08 Apr 2022 18:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
